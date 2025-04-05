@@ -1,0 +1,23 @@
+    ToDo Global / Automatic variable implementation
+    Available:
+    Debug (db)
+    ErrorAction (ea)
+    ErrorVariable (ev)
+    InformationAction (infa)
+    InformationVariable (iv)
+    OutVariable (ov)
+    OutBuffer (ob)
+    PipelineVariable (pv)
+    ProgressAction (proga)
+    Verbose (vb)
+    WarningAction (wa)
+    WarningVariable (wv)
+
+    Recommended:
+    Debug (db)
+    ErrorAction (ea)
+    Verbose (vb)
+    Command:
+    Install-Dev_Env_Win -ErrorAction Inquire
+    Install-Dev_Env_Win -ErrorAction Break -Debug
+

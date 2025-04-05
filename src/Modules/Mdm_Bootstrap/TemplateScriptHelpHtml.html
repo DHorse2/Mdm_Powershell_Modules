@@ -1,0 +1,105 @@
+<!-- $fullHtml = @" -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerShell Help - {{CompanyName}} - {{ModuleName}}</title>
+    <style>
+        html,
+        body {
+            background-color: white;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        pre {
+            white-space: pre-wrap;
+        }
+
+        .wrapper {
+            display: inline-block;
+            /* Allows the wrapper to sit next to the heading */
+            vertical-align: middle;
+            /* Aligns the button vertically with the heading */
+            margin-left: 10px;
+            /* Adds some space between the heading and the button */
+        }
+
+        .circle {
+            width: 40px;
+            /* Set the size of the circle */
+            height: 40px;
+            /* Set the size of the circle */
+            border-radius: 50%;
+            /* Makes it round */
+            background-color: #ccc;
+            /* Background color for the outer circle */
+            display: flex;
+            /* Centers the button inside the circle */
+            justify-content: center;
+            /* Centers the button horizontally */
+            align-items: center;
+            /* Centers the button vertically */
+        }
+
+        .btn {
+            background-color: transparent;
+            /* Button background */
+            border: none;
+            /* No border */
+            cursor: pointer;
+            /* Pointer cursor on hover */
+        }
+
+        .outer {
+            width: 35px;
+            height: 35px;
+            background-color: #3c249c;
+        }
+
+        .inner {
+            width: 25px;
+            height: 25px;
+            background-color: #6754b0;
+        }
+
+        .dark-mode {
+            filter: invert(100%)
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        let button = document.querySelector('.btn')
+        button.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark-mode')
+        })
+    </script>
+    <h1>Help for Module: {{ModuleName}}</h1>
+    <div class="wrapper">
+        <div class="circle outer">
+            <div class="circle inner">
+                <button class="btn" type="button">dark mode</button>
+            </div>
+        </div>
+    </div>
+    {{HtmlContent}}
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+
+==================================================================
+Installing Mdm Modules at 20254105_084151
+==================================================================
+Source: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules
+Destination: C:\Program Files\WindowsPowerShell\Modules
+Logfile: G:\Script\Powershell\Mdm_Powershell_Modules\log\Mdm_Installation_Log_20254105_084151.txt
+========================================================
+Copying SOURCE: "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules"
+DESTINATION: "C:\Program Files\WindowsPowerShell\Modules"
+
+Command: Robocopy "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules" "C:\Program Files\WindowsPowerShell\Modules" /MIR /FP /TEE /LOG+:"G:\Script\Powershell\Mdm_Powershell_Modules\log\Mdm_Installation_Log_20254105_084151.txt"
+
+Starting processing...
+
+-------------------------------------------------------------------------------
+   ROBOCOPY     ::     Robust File Copy for Windows                              
+-------------------------------------------------------------------------------
+
+  Started : April 5, 2025 8:41:55 AM
+   Source : G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\
+     Dest : C:\Program Files\WindowsPowerShell\Modules\
+
+    Files : *.*
+	    
+  Options : *.* /FP /TEE /S /E /DCOPY:DA /COPY:DAT /PURGE /MIR /R:1000000 /W:30 
+
+------------------------------------------------------------------------------
+
+	                   0	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\
+	*EXTRA Dir        -1	C:\Program Files\WindowsPowerShell\Modules\PSReadLine\
+	*EXTRA Dir        -1	C:\Program Files\WindowsPowerShell\Modules\PSReadLine\2.0.0\
+	  *EXTRA File 		  271360	C:\Program Files\WindowsPowerShell\Modules\PSReadLine\2.0.0\Microsoft.PowerShell.PSReadLine.dll
+2025/04/05 08:41:55 ERROR 5 (0x00000005) Deleting Extra File C:\Program Files\WindowsPowerShell\Modules\PSReadLine\2.0.0\Microsoft.PowerShell.PSReadLine.dll
+Access is denied.
+
+	                   8	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\
+	    New File  		     463	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Bootstrap_Readme.md100%  
+	    Newer     		   40402	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Dev_Env_Install_Modules_Win.ps1100%  
+	    Newer     		     140	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\logText100%  
+	                  12	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help\
+	    Newer     		   10388	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help\Mdm_Bootstrap-Help.html100%  
+	    Newer     		   10036	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help\Mdm_Dev_Env_Install-Help.html100%  
+	    Newer     		   43353	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help\Mdm_Modules-Help.html100%  
+	    Newer     		   27869	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help\Mdm_Std_Library-Help.html100%  
+	    New File  		    3404	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help\ModuleCommandList.txt100%  
+	    New File  		    5526	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help\ModuleCommandList_All.txt100%  
+	    Newer     		       0	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help\ModuleCommandList_Mdm_Bootstrap.txt
+	    Newer     		       0	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help\ModuleCommandList_Mdm_Bootstrap_List.txt
+	    New File  		     869	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help\ModuleCommandList_Mdm_Dev_Env_Install.txt100%  
+	    New File  		     154	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help\ModuleCommandList_Mdm_Dev_Env_Install_List.txt100%  
+	    Newer     		    3026	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help\ModuleCommandList_Mdm_Std_Library.txt100%  
+	    Newer     		     608	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help\ModuleCommandList_Mdm_Std_Library_List.txt100%  
+	                   2	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Dev_Env_Install\
+	                   3	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\
+	*EXTRA Dir        -1	C:\Program Files\WindowsPowerShell\Modules\Mdm_Modules\help\
+	  *EXTRA File 		    3404	C:\Program Files\WindowsPowerShell\Modules\Mdm_Modules\help\ModuleCommandList.txt
+	  *EXTRA File 		       0	C:\Program Files\WindowsPowerShell\Modules\Mdm_Modules\help\ModuleCommandList_Mdm_Bootstrap.txt
+	  *EXTRA File 		       0	C:\Program Files\WindowsPowerShell\Modules\Mdm_Modules\help\ModuleCommandList_Mdm_Bootstrap_List.txt
+	  *EXTRA File 		       0	C:\Program Files\WindowsPowerShell\Modules\Mdm_Modules\help\ModuleCommandList_Mdm_Dev_Env_Install.txt
+	  *EXTRA File 		       0	C:\Program Files\WindowsPowerShell\Modules\Mdm_Modules\help\ModuleCommandList_Mdm_Dev_Env_Install_List.txt
+	  *EXTRA File 		       0	C:\Program Files\WindowsPowerShell\Modules\Mdm_Modules\help\ModuleCommandList_Mdm_Std_Library.txt
+	  *EXTRA File 		       0	C:\Program Files\WindowsPowerShell\Modules\Mdm_Modules\help\ModuleCommandList_Mdm_Std_Library_List.txt
+	                   3	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\
+	    Newer     		   40290	G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psm1100%  
+
+------------------------------------------------------------------------------
+
+               Total    Copied   Skipped  Mismatch    FAILED    Extras
+    Dirs :         6         0         6         0         0         3
+   Files :        28        16        12         0         0         8
+   Bytes :   238.7 k   182.1 k    56.5 k         0         0   268.3 k
+   Times :   0:00:00   0:00:00                       0:00:00   0:00:00
+
+
+   Speed :             447,309 Bytes/sec.
+   Speed :              25.595 MegaBytes/min.
+   Ended : April 5, 2025 8:41:55 AM
+

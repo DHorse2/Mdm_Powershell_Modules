@@ -1,0 +1,20 @@
+<#
+.SYNOPSIS
+.
+.DESCRIPTION
+.
+.PARAMETER xxx
+.
+.PARAMETER xxxx
+.
+.OUTPUTS
+.
+.EXAMPLE
+.
+.LINK
+XXX: http://www.XXX
+.LINK
+YYY
+.NOTES
+    .
+#>

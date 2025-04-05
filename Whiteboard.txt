@@ -1,0 +1,14 @@
+C:_Program Files_Microsoft Visual Studio_2022_Community_VC_Auxiliary
+
+
+Having some more Powershell experience under the belt, I now understand the difference:
+    Pipelining sends results to the process {} block, 
+    while 'standard' parameters sends them to the end {} block 
+    (which means the whole function 
+    if you don't use any of begin{}, process {} or end {} blocks)
+
+
+  (Get-Content test.txt) | ForEach-Object { $_ -replace "foo", "bar" } | Set-Content test2.txt
+
+<#\n.SYNOPSIS\n    .\n.DESCRIPTION\n    .\n.PARAMETER xxx\n    .\n.PARAMETER xxxx\n    .\n.EXAMPLE\n    .\n.NOTES\n    .\n.OUTPUTS\n    .\n#>\nfunction 
+

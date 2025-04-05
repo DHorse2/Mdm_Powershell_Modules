@@ -1,0 +1,45 @@
+Import-Module: The 'C:\program files\powershell\7\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1' 
+module cannot be imported because its manifest contains one or more members that are not valid. 
+The valid manifest members are (
+'ModuleToProcess', 
+'NestedModules', 
+'GUID', 'Author', 'CompanyName', 
+'Copyright', 'ModuleVersion', 'Description', 
+'PowerShellVersion', 'PowerShellHostName', 'PowerShellHostVersion', 
+'CLRVersion', 'DotNetFrameworkVersion', 'ProcessorArchitecture', 
+'RequiredModules', 
+'TypesToProcess', 'FormatsToProcess', 'ScriptsToProcess', 
+'PrivateData', 
+'RequiredAssemblies', 
+'ModuleList', 'FileList', 
+'FunctionsToExport', 'VariablesToExport', 'AliasesToExport', 'CmdletsToExport', 'DscResourcesToExport', 
+'CompatiblePSEditions', 'HelpInfoURI', 'RootModule', 'DefaultCommandPrefix'
+). 
+Remove the members that are not valid ('Company'), then try to import the module again.
+
+Write-Error: Failed to import function C:\program files\powershell\7\Modules\Mdm_Bootstrap\Add-RegistryPath.ps1: 
+The term 'C:\program files\powershell\7\Modules\Mdm_Bootstrap\Add-RegistryPath.ps1' is not recognized as a name of a 
+cmdlet, function, script file, or executable program.
+
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+
+Write-Error: Failed to import function C:\program files\powershell\7\Modules\Mdm_Bootstrap\Initialize-Dev_Env_Win.ps1: The term 'C:\program files\powershell\7\Modules\Mdm_Bootstrap\Initialize-Dev_Env_Win.ps1' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+Write-Error: Failed to import function C:\program files\powershell\7\Modules\Mdm_Bootstrap\Set-ScriptSecElevated.ps1: The term 'C:\program files\powershell\7\Modules\Mdm_Bootstrap\Set-ScriptSecElevated.ps1' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+
+
+param (
+    [switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug
+)
+
+
+debug:
+{
+        "name": "PowerShell: Launch Script",
+        "type": "PowerShell",
+        "request": "launch",
+        "script": "countcharacters.ps1",
+        "cwd": "${workspaceFolder}"
+}
+

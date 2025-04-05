@@ -1,0 +1,15 @@
+
+==================================================================
+Installing Mdm Modules at 20251205_091234
+==================================================================
+Source: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules
+Destination: C:\Program Files\WindowsPowerShell\Modules
+Logfile: G:\Script\Powershell\Mdm_Powershell_Modules\log\Mdm_Installation_Log_20251205_091234.txt
+========================================================
+Copying SOURCE: "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules"
+DESTINATION: "C:\Program Files\WindowsPowerShell\Modules"
+
+Command: Robocopy "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules" "C:\Program Files\WindowsPowerShell\Modules" /E /FP /nc /ns /TEE /LOG+:"G:\Script\Powershell\Mdm_Powershell_Modules\log\Mdm_Installation_Log_20251205_091234.txt"
+
+Starting processing...
+Remove modules if they exist

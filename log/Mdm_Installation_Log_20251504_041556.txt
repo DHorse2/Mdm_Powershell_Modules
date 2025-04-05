@@ -1,0 +1,144 @@
+
+==================================================================
+Installing Mdm Modules at 20251504_041556
+==================================================================
+Source: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules
+Destination: C:\Program Files\WindowsPowerShell\Modules
+Logfile: G:\Script\Powershell\Mdm_Powershell_Modules\log\Mdm_Installation_Log_20251504_041556.txt
+========================================================
+Copying SOURCE: "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules"
+DESTINATION: "C:\Program Files\WindowsPowerShell\Modules"
+
+Command: Robocopy "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules" "C:\Program Files\WindowsPowerShell\Modules" /MIR /FP /NS /NS /TEE /LOG+:"G:\Script\Powershell\Mdm_Powershell_Modules\log\Mdm_Installation_Log_20251504_041556.txt"
+
+Starting processing...
+xxxxxxxxxxxxxxxxxx
+
+Processing Help for Mdm Modules.
+========================================================
+Module: Mdm_Bootstrap
+Add-RegistryPath
+Assert-RegistryValue
+Build-ModuleExports
+Initialize-Dev_Env_Win
+Set-DirectoryToScriptRoot
+Set-ScriptSecElevated
+Help documentation saved to: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help
+========================================================
+Module: Mdm_Dev_Env_Install
+Failed to get help for module: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Dev_Env_Install.
+Failed to import module: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Dev_Env_Install.
+Error: Get-Help could not find Mdm_Dev_Env_Install in a help file in this session. To download updated help topics type: "Update-Help". To get help online, search for the help topic in the TechNet library at https://go.microsoft.com/fwlink/?LinkID=107116.
+Get-Vs
+Get-Dev_Env_Versions
+Install-Dev_Env_IDE_Win
+Install-Dev_Env_LLM_Win
+Install-Dev_Env_OS_Win
+Install-Dev_Env_Whisper_Win
+Install-Dev_Env_Win
+Help documentation saved to: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help
+========================================================
+Module: Mdm_Modules
+Add-RegistryPath
+Assert-ScriptSecElevated
+Assert-Verbose
+Build-ModuleExports
+Get-Dev_Env_Versions
+Get-DirectoryNameFromSaved
+Get-FileNamesFromPath
+Get-Mdm_Help
+Get-ModuleConfig
+Get-ModuleProperty
+Get-ModuleStatus
+Initialize-Dev_Env_Win
+Install-Dev_Env_IDE_Win
+Install-Dev_Env_LLM_Win
+Install-Dev_Env_OS_Win
+Install-Dev_Env_Whisper_Win
+Install-Dev_Env_Win
+My_Command_Definition
+My_Command_InvocationName
+My_Command_Name
+My_Command_Orgin
+My_InvocationMy_PSCommandPath
+My_PSCommandPath
+Save-DirectoryName
+Script_DoStart
+Script_Initialize_Std
+Script_Last_Error
+Script_List_Positional_Parameters
+Script_Name
+Script_ResetStdGlobals
+Script_Write_Error
+Search-Dir
+Set-DisplayColors
+There is no help for function: Set-DisplayColors.
+Error: Cannot bind argument to parameter 'textIn' because it is null.
+Set-LocationToPath
+Set-LocationToScriptRoot
+Set-ModuleConfig
+Set-ModuleProperty
+Set-ModuleStatus
+Set-ScriptSecElevated
+Show-Data
+Wait-AnyKey
+Wait-CheckDoPause
+Wait-YorNorQ
+Write-Mdm_Help
+Help documentation saved to: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help
+========================================================
+Module: Mdm_Std_Library
+Assert-ScriptSecElevated
+Assert-Verbose
+Get-DirectoryNameFromSaved
+Get-FileNamesFromPath
+Get-Mdm_Help
+My_Command_Definition
+My_Command_InvocationName
+My_Command_Name
+My_Command_Orgin
+My_InvocationMy_PSCommandPath
+My_PSCommandPath
+Save-DirectoryName
+Script_DisplayStdGlobals
+Script_DoStart
+Script_Initialize_Std
+Script_Last_Error
+Script_List_Positional_Parameters
+Script_Name
+Script_ResetStdGlobals
+Script_Write_Error
+Search-Dir
+Set-DisplayColors
+There is no help for function: Set-DisplayColors.
+Error: Cannot bind argument to parameter 'textIn' because it is null.
+Set-LocationToPath
+Set-LocationToScriptRoot
+Show-Data
+Wait-AnyKey
+Wait-CheckDoPause
+Wait-YorNorQ
+Write-Mdm_Help
+Help documentation saved to: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help
+xxxxxxxxxxxxxxxxxx
+
+Reloading Mdm Modules.
+Standard import (Mdm_Modules) test...
+xxxxxxxxxxxxxxxxxx
+Automatic Function Imports Test (Build-ModuleExports Mdm_Modules)
+Build-ModuleExports G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules
+xxxxxxxxxxxxxxxxxx
+
+Updating System Help for Mdm Modules.
+xxxxxxxxxxxxxxxxxx
+Write-Mdm_Help
+xxxxxxxxxxxxxxxxxx
+Get-Mdm_Help
+================================= Execute COPY command:
+Robocopy "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\help" "C:\Program Files\WindowsPowerShell\Modules\Mdm_Bootstrap\help" /MIR /FP /NS /V /LOG+:"G:\Script\Powershell\Mdm_Powershell_Modules\log\Mdm_Installation_Log_20251504_041556.txt"
+Installation completed at 2025-04-04 4:16:16 PM
+started at 20251504_041556
+Source: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules
+Destination: C:\Program Files\WindowsPowerShell\Modules
+Logfile: G:\Script\Powershell\Mdm_Powershell_Modules\log\Mdm_Installation_Log_20251504_041556.txt
+==================================================================

@@ -1,0 +1,22 @@
+
+==================================================================
+Installing Mdm Modules at 20253605_103620
+==================================================================
+Source: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules
+Destination: C:\Program Files\WindowsPowerShell\Modules
+Logfile: G:\Script\Powershell\Mdm_Powershell_Modules\log\Mdm_Installation_Log_20253605_103620.txt
+==================================================================
+Updating Registry
+Updating: HKEY_CLASSES_ROOT\Directory\Background\shell\Open with VSCodium
+Updating: HKEY_CLASSES_ROOT\Directory\shell
+Updating: HKEY_CLASSES_ROOT\Directory\shell\Open with VSCodium
+Updating: HKEY_CLASSES_ROOT\Directory\Background\shell
+Updating: HKEY_CLASSES_ROOT\Directory\Background\shell\Open with VSCodium
+==================================================================
+Copying SOURCE: "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules"
+DESTINATION: "C:\Program Files\WindowsPowerShell\Modules"
+
+Command: Robocopy "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules" "C:\Program Files\WindowsPowerShell\Modules" /E /FP /nc /ns /np /TEE /LOG+:"G:\Script\Powershell\Mdm_Powershell_Modules\log\Mdm_Installation_Log_20253605_103620.txt"
+
+Starting processing...
+Remove modules if they exist

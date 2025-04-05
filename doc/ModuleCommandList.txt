@@ -1,0 +1,21 @@
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Function        Initialize-Dev_Env_Win                             1.0        Mdm_Modules
+Function        Add-RegistryPath                                   1.0        Mdm_Modules
+Function        Set-ScriptSecElevated                              1.0        Mdm_Modules
+Function        Get-Dev_Env_Versions                               1.0        Mdm_Modules
+Function        Install-Dev_Env_Win                                1.0        Mdm_Modules
+Function        Setup-Dev_Env_IDE_Win                              1.0        Mdm_Modules
+Function        Setup-Dev_Env_LLM_Win                              1.0        Mdm_Modules
+Function        Setup-Dev_Env_OS_Win                               1.0        Mdm_Modules
+Function        Setup-Dev_Env_Whisper_Win                          1.0        Mdm_Modules
+Function        Assert-ScriptSecElevated                           1.0        Mdm_Modules
+Function        Save-DirectoryName                                 1.0        Mdm_Modules
+Function        Get-DirectoryNameFromSaved                         1.0        Mdm_Modules
+Function        Set-DirectoryToScriptRoot                          1.0        Mdm_Modules
+Function        Get-FileNamesFromPath                              1.0        Mdm_Modules
+Function        Wait-AnyKey                                        1.0        Mdm_Modules
+Function        Wait-CheckPauseDo                                  1.0        Mdm_Modules
+Function        Wait-YorNorQ                                       1.0        Mdm_Modules
+

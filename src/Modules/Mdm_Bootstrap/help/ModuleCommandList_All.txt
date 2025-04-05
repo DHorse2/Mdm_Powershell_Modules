@@ -1,0 +1,98 @@
+Set-DirectoryToScriptRoot
+Build-ModuleExports
+Assert-RegistryValue
+Add-RegistryPath
+Initialize-Dev_Env_Win
+Set-ScriptSecElevated
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Function        Set-DirectoryToScriptRoot                          1.0        Mdm_Bootstrap
+Function        Build-ModuleExports                                1.0        Mdm_Bootstrap
+Function        Assert-RegistryValue                               1.0        Mdm_Bootstrap
+Function        Add-RegistryPath                                   1.0        Mdm_Bootstrap
+Function        Initialize-Dev_Env_Win                             1.0        Mdm_Bootstrap
+Function        Set-ScriptSecElevated                              1.0        Mdm_Bootstrap
+
+Get-Dev_Env_Versions
+Install-Dev_Env_Win
+Install-Dev_Env_IDE_Win
+Install-Dev_Env_LLM_Win
+Install-Dev_Env_OS_Win
+Install-Dev_Env_Whisper_Win
+Get-Vs
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Function        Get-Dev_Env_Versions                               1.0        Mdm_Dev_Env_Install
+Function        Install-Dev_Env_Win                                1.0        Mdm_Dev_Env_Install
+Function        Install-Dev_Env_IDE_Win                            1.0        Mdm_Dev_Env_Install
+Function        Install-Dev_Env_LLM_Win                            1.0        Mdm_Dev_Env_Install
+Function        Install-Dev_Env_OS_Win                             1.0        Mdm_Dev_Env_Install
+Function        Install-Dev_Env_Whisper_Win                        1.0        Mdm_Dev_Env_Install
+Alias           Get-Vs                                             1.0        Mdm_Dev_Env_Install
+
+Script_Initialize_Std
+Script_ResetStdGlobals
+Script_DisplayStdGlobals
+Set-DisplayColors
+Assert-ScriptSecElevated
+Assert-Verbose
+Build-ModuleExports
+Get-FileNamesFromPath
+Save-DirectoryName
+Get-DirectoryNameFromSaved
+Set-LocationToPath
+Set-LocationToScriptRoot
+Wait-AnyKey
+Wait-CheckDoPause
+Wait-YorNorQ
+My_PSCommandPath
+Script_Name
+My_Command_InvocationName
+My_Command_Orgin
+My_Command_Name
+My_Command_Definition
+My_InvocationMy_PSCommandPath
+Script_List_Positional_Parameters
+Script_Last_Error
+Script_Write_Error
+Show-Data
+Search-Dir
+Script_DoStart
+Write-Mdm_Help
+Get-Mdm_Help
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Function        Script_Initialize_Std                              1.0        Mdm_Std_Library
+Function        Script_ResetStdGlobals                             1.0        Mdm_Std_Library
+Function        Script_DisplayStdGlobals                           1.0        Mdm_Std_Library
+Function        Set-DisplayColors                                  1.0        Mdm_Std_Library
+Function        Assert-ScriptSecElevated                           1.0        Mdm_Std_Library
+Function        Assert-Verbose                                     1.0        Mdm_Std_Library
+Function        Build-ModuleExports                                1.0        Mdm_Std_Library
+Function        Get-FileNamesFromPath                              1.0        Mdm_Std_Library
+Function        Save-DirectoryName                                 1.0        Mdm_Std_Library
+Function        Get-DirectoryNameFromSaved                         1.0        Mdm_Std_Library
+Function        Set-LocationToPath                                 1.0        Mdm_Std_Library
+Function        Set-LocationToScriptRoot                           1.0        Mdm_Std_Library
+Function        Wait-AnyKey                                        1.0        Mdm_Std_Library
+Function        Wait-CheckDoPause                                  1.0        Mdm_Std_Library
+Function        Wait-YorNorQ                                       1.0        Mdm_Std_Library
+Function        My_PSCommandPath                                   1.0        Mdm_Std_Library
+Function        Script_Name                                        1.0        Mdm_Std_Library
+Function        My_Command_InvocationName                          1.0        Mdm_Std_Library
+Function        My_Command_Orgin                                   1.0        Mdm_Std_Library
+Function        My_Command_Name                                    1.0        Mdm_Std_Library
+Function        My_Command_Definition                              1.0        Mdm_Std_Library
+Function        My_InvocationMy_PSCommandPath                      1.0        Mdm_Std_Library
+Function        Script_List_Positional_Parameters                  1.0        Mdm_Std_Library
+Function        Script_Last_Error                                  1.0        Mdm_Std_Library
+Function        Script_Write_Error                                 1.0        Mdm_Std_Library
+Function        Show-Data                                          1.0        Mdm_Std_Library
+Function        Search-Dir                                         1.0        Mdm_Std_Library
+Function        Script_DoStart                                     1.0        Mdm_Std_Library
+Function        Write-Mdm_Help                                     1.0        Mdm_Std_Library
+Function        Get-Mdm_Help                                       1.0        Mdm_Std_Library
+

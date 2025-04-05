@@ -1,0 +1,232 @@
+<!-- $fullHtml = @" -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerShell Help - MacroDM - Mdm_Dev_Env_Install</title>
+    <style>
+        html,
+        body {
+            background-color: white;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        pre {
+            white-space: pre-wrap;
+        }
+
+        .wrapper {
+            display: inline-block;
+            /* Allows the wrapper to sit next to the heading */
+            vertical-align: middle;
+            /* Aligns the button vertically with the heading */
+            margin-left: 10px;
+            /* Adds some space between the heading and the button */
+        }
+
+        .circle {
+            width: 40px;
+            /* Set the size of the circle */
+            height: 40px;
+            /* Set the size of the circle */
+            border-radius: 50%;
+            /* Makes it round */
+            background-color: #ccc;
+            /* Background color for the outer circle */
+            display: flex;
+            /* Centers the button inside the circle */
+            justify-content: center;
+            /* Centers the button horizontally */
+            align-items: center;
+            /* Centers the button vertically */
+        }
+
+        .btn {
+            background-color: transparent;
+            /* Button background */
+            border: none;
+            /* No border */
+            cursor: pointer;
+            /* Pointer cursor on hover */
+        }
+
+        .outer {
+            width: 35px;
+            height: 35px;
+            background-color: #3c249c;
+        }
+
+        .inner {
+            width: 25px;
+            height: 25px;
+            background-color: #6754b0;
+        }
+
+        .dark-mode {
+            filter: invert(100%)
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        let button = document.querySelector('.btn')
+        button.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark-mode')
+        })
+    </script>
+    <h1>Help for Module: Mdm_Dev_Env_Install</h1>
+    <div class="wrapper">
+        <div class="circle outer">
+            <div class="circle inner">
+                <button class="btn" type="button">dark mode</button>
+            </div>
+        </div>
+    </div>
+    <h1>Mdm_Dev_Env_Install</h1>
+<h2>Get-Vs</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> List current versions.</p>
+<p><strong>Detailed Description:</strong> Text: Cycles through components and display the current version.</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Get-Dev_Env_Versions; parameter=System.Management.Automation.PSObject[]}</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Text: Switch to pause at each step/page.</p>
+<p>  - <strong>DoVerbose</strong>: Text: Provide detailed information.</p>
+<p>  - <strong>DoDebug</strong>: Text: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> returnValue: @{type=@{name=Should output a file and display.}}</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Get-Dev_Env_Versions -DoVerbose      Remarks:    </pre>
+<p></p>
+<h2>Get-Dev_Env_Versions</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> List current versions.</p>
+<p><strong>Detailed Description:</strong> Text: Cycles through components and display the current version.</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Get-Dev_Env_Versions; parameter=System.Management.Automation.PSObject[]}</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Text: Switch to pause at each step/page.</p>
+<p>  - <strong>DoVerbose</strong>: Text: Provide detailed information.</p>
+<p>  - <strong>DoDebug</strong>: Text: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> returnValue: @{type=@{name=Should output a file and display.}}</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Get-Dev_Env_Versions -DoVerbose      Remarks:    </pre>
+<p></p>
+<h2>Install-Dev_Env_IDE_Win</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install the IDE (Intergrated development environment).</p>
+<p><strong>Detailed Description:</strong> Text: This script sets up a Windows development environment for neural network projects.
+It installs Chocolatey (if not already installed), Python, Git, VSCode,
+creates a project directory and a Python virtual environment,
+and then installs TensorFlow, Keras, and PyTorch.</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Install-Dev_Env_IDE_Win; parameter=System.Management.Automation.PSObject[]}</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> returnValue: @{type=@{name=A log (todo).}}</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Install-Dev_Env_IDE_Win -DoVerbose      Remarks:    </pre>
+<p></p>
+<h2>Install-Dev_Env_LLM_Win</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install the Large Language Model (LLM)</p>
+<p><strong>Detailed Description:</strong> Text: Install the LLM (NN or AI).
+Create Python virtual environment. Activates it.
+Upgrades pip and installs neural network libraries.
+Libraries: TensorFlow, Keras, PyTorch.</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Install-Dev_Env_LLM_Win; parameter=System.Management.Automation.PSObject[]}</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Install-Dev_Env_LLM_Win      Remarks:    </pre>
+<p></p>
+<h2>Install-Dev_Env_OS_Win</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Prepares windows and powershell to install tools.</p>
+<p><strong>Detailed Description:</strong> Text: This script sets up a Windows OS for the development environment.
+It installs Chocolatey (if not already installed).
+It will update PowerShell (from vs 5 to 7).
+todo: sed, win linux, other tools?</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Install-Dev_Env_OS_Win; parameter=System.Management.Automation.PSObject[]}</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Install-Dev_Env_OS_Win -DoPause      Remarks:    </pre>
+<p></p>
+<h2>Install-Dev_Env_Whisper_Win</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install local voice recognition (Whisper).</p>
+<p><strong>Detailed Description:</strong> Text: Whisper is models designed to run voice recognition locally.</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Install-Dev_Env_Whisper_Win; parameter=System.Management.Automation.PSObject[]}</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Install-Dev_Env_Whisper_Win      Remarks:    </pre>
+<p></p>
+<h2>Install-Dev_Env_Win</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install the Windows Development Environment.</p>
+<p><strong>Detailed Description:</strong> Text: Performs these installations:
+    Install-Dev_Env_OS_Win 
+    Install-Dev_Env_IDE_Win
+    Install-Dev_Env_LLM_Win
+    Install-Dev_Env_Whisper_Win
+When complete it displays current version for the environment.</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Install-Dev_Env_Win; parameter=System.Management.Automation.PSObject[]}</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: N/A</p>
+<p></p>
+<p><strong>Return: </strong> returnValue: @{type=@{name=todo Should create a log.}}</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Install-Dev_Env_Win -DoPause -UpdatePath      Remarks:    </pre>
+<p></p>
+</body>
+
+</html>
+

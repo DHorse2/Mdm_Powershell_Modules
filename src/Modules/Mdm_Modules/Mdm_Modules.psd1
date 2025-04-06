@@ -13,11 +13,12 @@
     "Get-ModuleProperty", "Set-ModuleProperty",
     "Get-ModuleConfig", "Set-ModuleConfig",
     "Get-ModuleStatus", "Set-ModuleStatus",
+    "Build-ModuleExports",
 
     # Mdm_Bootstrap
     "Initialize-Dev_Env_Win", 
     "Add-RegistryPath", 
-    "Set-ScriptSecElevated",
+    "Assert-RegistryValue",
     
     # Mdm_Dev_Env_Install
     "Get-Dev_Env_Versions",
@@ -26,27 +27,19 @@
     "Install-Dev_Env_LLM_Win",
     "Install-Dev_Env_OS_Win",
     "Install-Dev_Env_Whisper_Win",
+    "Install-Dev_Env_Modules",
 
     # Mdm_Std_Library
-    "Script_Initialize_Std",
+    # Script:
+    "Initialize_Std",
+    "Script_DoStart",
     "Script_ResetStdGlobals",
-
-    "Assert-ScriptSecElevated",
-    "Assert-Verbose",
-    "Build-ModuleExports",
-    "Get-DirectoryNameFromSaved",
-    "Get-FileNamesFromPath",
-    "Save-DirectoryName",
+    "Script_DisplayStdGlobals",
     "Set-DisplayColors",
-    "Set-LocationToPath",
-    "Set-LocationToScriptRoot",
+    "Assert-ScriptSecElevated",
     "Set-ScriptSecElevated",
-    #       Waiting & pausing
-    "Wait-AnyKey",
-    "Wait-CheckDoPause",
-    "Wait-YorNorQ",
-
-    #       This script:
+    "Assert-Verbose",
+    # This script:
     "My_PSCommandPath",
     "Script_Name",
     "My_Command_InvocationName",
@@ -57,13 +50,36 @@
     "Script_List_Positional_Parameters",
     "Script_Last_Error",
     "Script_Write_Error",
-    # More
-    "Show-Data",
-    "Search-Dir",
-    "Script_DoStart",
 
+    # Path and directory
+    "Get-FileNamesFromPath",
+    "Set-LocationToPath",
+    "Set-LocationToScriptRoot",
+    "Save-DirectoryName",
+    "Get-DirectoryNameFromSaved",
+
+    "Set-LocationToPath",
+    "Set-LocationToScriptRoot",
+    "Set-DirectoryToScriptRoot",
+    # Waiting & pausing
+    "Wait-AnyKey",
+    "Wait-CheckDoPause",
+    "Wait-YorNorQ",
+
+    # Etl
+    "ExtractText",
+    "PackTextArray",
+    "EscapeText",
+    "TrimText",
+    "LogText",
+    "Write-HtlmData",
+    "Search-Dir",
+
+    # Help
     "Write-Mdm_Help",
-    "Get-Mdm_Help"
+    "Get-Mdm_Help",
+    "Get-HelpHtml",
+    "Export-Help"
     # )
 
     # Cmdlets to export from this module.

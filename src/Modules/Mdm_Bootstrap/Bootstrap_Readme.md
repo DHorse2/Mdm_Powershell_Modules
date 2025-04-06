@@ -11,3 +11,38 @@ Remove-Item Env:__PSLockDownPolicy
 Set-ExecutionPolicy Unrestricted -Scope CurrentUser
 $ExecutionContext.SessionState.LanguageMode = “FullLanguage”
 
+The folder includes two registry import files:
+    regEnvLanguageModeConstrained.reg
+    regEnvLanguageModeFull.reg
+If you have permissions you can import "regEnvLanguageModeFull" to the registry.
+
+Dev_Env_LanguageMode "Full" will also set it.
+Dev_Env_LanguageMode ? will display options and documentation on the topic.
+
+## Bootstrapping the Mdm Modules
+
+The bootstrap command will install all the modules:
+```powershell
+Dev_Env_Install_Modules_Win
+```
+
+## It has numerous options and switches:
+    ```powershell
+    [switch]$DoVerbose,
+    [switch]$DoPause,
+    [switch]$DoDebug,
+
+    [string]$source = "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules",
+    [string]$destination = "$env:PROGRAMFILES\WindowsPowerShell\Modules",
+    [string]$logFilePath = "G:\Script\Powershell\Mdm_Powershell_Modules\log",
+    [string]$logFileName = "Mdm_Installation_Log",
+    [switch]$LogOneFile,
+
+    [switch]$SkipHelp,
+    [switch]$SkipRegistry,
+    [switch]$DoNewWindow,
+
+    [string]$nameFilter = "Mdm_*",
+    [string]$companyName = "MacroDM",
+    [string]$copyOptions = "/E /FP /nc /ns /np /TEE"
+    ```

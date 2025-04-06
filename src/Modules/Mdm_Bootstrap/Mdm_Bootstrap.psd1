@@ -19,8 +19,6 @@
     # FunctionsToExport      = @()
     # FunctionsToExport =
     # Mdm_Bootstrap
-        # "Build-ModuleExports",
-
     #     "Initialize-Dev_Env_Win",
         # "Add-RegistryPath",
         # "Set-ScriptSecElevated",

@@ -1,4 +1,8 @@
 
+# Search
+file to exclude:
+help*,log*,.inactive*,doc*
+
 # Help
 This command gets the manifest as a hash table, so you can get the keys as properties. The command returns the value of the HelpInfoUri key.
 ```powershell

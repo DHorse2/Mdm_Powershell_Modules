@@ -55,7 +55,7 @@ Function Get-Dev_Env_Versions {
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
     # Import-Module Mdm_Std_Library
     Script_ResetStdGlobals
-    Script_Initialize_Std -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Verbose:$DoVerbose -Debug:$DoDebug
+    Initialize_Std -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Verbose:$DoVerbose -Debug:$DoDebug
 
     # Language mode: FullLanguage needed, Add cert
     # Set-ExecutionPolicy Unrestricted
@@ -242,7 +242,7 @@ function Install-Dev_Env_IDE_Win {
 [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
     # Import-Module Mdm_Std_Library
-    Script_Initialize_Std -$DoPause -$DoVerbose
+    Initialize_Std -$DoPause -$DoVerbose
 
     Wait-AnyKey
 
@@ -501,10 +501,8 @@ function Install-Dev_Env_Modules {
     .SYNOPSIS
         Install these modules on the local system.
     .DESCRIPTION
-        NOT IN USE.
+        NOT IN USE. Performs an .Add($_) for each object
     .PARAMETER inputObjects
-        .
-    .PARAMETER xxxx
         .
     .PARAMETER DoPause
         Switch: Pause between steps.

@@ -38,7 +38,14 @@ Import-Module -Name "$scriptPath\$importName\$importName" -Force -ErrorAction St
 $importName = "Mdm_Dev_Env_Install"
 Import-Module -Name "$scriptPath\$importName\$importName" -Force -ErrorAction Stop
 
-. $scriptPath\Mdm_Modules\Mdm_ModuleState.ps1
+. "$scriptPath\Mdm_Modules\Mdm_ModuleState.ps1"
+Export-ModuleMember -Function `
+    Get-ModuleProperty, Set-ModuleProperty, `
+    Get-ModuleConfig, Set-ModuleConfig, `
+    Get-ModuleConfig, Set-ModuleConfig
+
+. "$scriptPath\Mdm_Modules\Build-ModuleExports.ps1"
+Export-ModuleMember -Function Build-ModuleExports
 
 #
 # Export-ModuleMember -Function * -Alias * -Cmdlet *

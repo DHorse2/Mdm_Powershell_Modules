@@ -6,23 +6,23 @@
  #   Direct: C:\Test\test.ps1
  # Function: C:\Test\test.ps1
 
-# $My_Invocation.Script_Name:
+# $MyInvocation.Script_Name:
  #   Direct:
  # Function: C:\Test\test.ps1
 
-# $My_Invocation.My_Command_.Name:
+# $MyInvocation.My_Command_.Name:
  #   Direct: test.ps1
  # Function: My_Command_Name
 
-# $My_Invocation.My_Command_.Definition:
+# $MyInvocation.My_Command_.Definition:
  #   Direct: C:\Test\test.ps1
  # Function:
     # Begin of My_Command_Definition()
     # Note this is the contents of the My_Command_Definition() function, not the execution results
-    # return $My_Invocation.My_Command_.Definition;
+    # return $MyInvocation.My_Command_.Definition;
     # End of My_Command_Definition()
 
 
-# $My_Invocation.My_PSCommandPath:
+# $MyInvocation.My_PSCommandPath:
  #   Direct:
  # Function: C:\Test\test.ps1

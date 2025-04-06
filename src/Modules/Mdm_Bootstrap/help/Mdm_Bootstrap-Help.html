@@ -123,7 +123,7 @@ $destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Add to HKLM Environtment Path</p>
 <p><strong>Detailed Description:</strong> Text: This loads the specifiect Path key (PATH by default) and adds the new path to it.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Add-RegistryPath; parameter=@{description=System.Management.Automation.PSObject[]; parameterValue=String; name=envPathToUpdate; required=false; globbing=false; pipelineInput=false; position=1}}</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Add-RegistryPath; parameter=@{name=envPathToUpdate; description=System.Management.Automation.PSObject[]; parameterValue=String; required=false; globbing=false; pipelineInput=false; position=1}}</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>envPathToUpdate</strong>: Text: The Path key to use.</p>
@@ -150,22 +150,6 @@ null/ItemProperty if PassThur switch is present.}}</p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Assert-RegistryValue "PATH"      Remarks:    </pre>
 <p></p>
-<h2>Build-ModuleExports</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> The scans a module folder with a view to automatically load/import it.</p>
-<p><strong>Detailed Description:</strong> Text: It didn&apos;t work. The problem isn&apos;t clear.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Build-ModuleExports; parameter=System.Management.Automation.PSObject[]}</p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>moduleRoot</strong>: N/A</p>
-<p>  - <strong>modulePublic</strong>: Text: Path for Public cmdlets to export.</p>
-<p>  - <strong>modulePrivate</strong>: Text: Path for Private functions.</p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=Imports modules.}}</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Build-ModuleExports      Remarks:    </pre>
-<p></p>
 <h2>Initialize-Dev_Env_Win</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Setup (bootstrap) Windows for the Development Environment.</p>
@@ -186,42 +170,6 @@ $destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Initialize-Dev_Env_Win -SilentMode -UpdatePath      Remarks:    </pre>
-<p></p>
-<h2>Set-DirectoryToScriptRoot</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Set directory to the script&apos;s root directory.</p>
-<p><strong>Detailed Description:</strong> Text: Set the working directory to the script&apos;s root directory..</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Set-DirectoryToScriptRoot; parameter=System.Management.Automation.PSObject[]}</p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>scriptPath</strong>: Text: Optional path to use.</p>
-<p>  - <strong>scriptDrive</strong>: Text: Optional drive letter.</p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Set-DirectoryToScriptRoot      Remarks:    </pre>
-<p></p>
-<h2>Set-ScriptSecElevated</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Elevate script to Administrator.</p>
-<p><strong>Detailed Description:</strong> Text: Get the security principal for the Administrator role.
-Check to see if we are currently running &quot;as Administrator&quot;,
-Create a new process object that starts PowerShell,
-Indicate that the process should be elevated (&quot;runas&quot;),
-Start the new process.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Set-ScriptSecElevated; parameter=@{description=System.Management.Automation.PSObject[]; parameterValue=Object; name=message; required=false; globbing=false; pipelineInput=false; position=1}}</p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>message</strong>: Text: Message to display when elevating.</p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=None. Returns or Executes current script in an elevated process.
-
-Set-ScriptSecElevated
-Get the ID and security principal of the current user account}}</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Set-ScriptSecElevated "Elevating myself."      Remarks:    </pre>
 <p></p>
 </body>
 

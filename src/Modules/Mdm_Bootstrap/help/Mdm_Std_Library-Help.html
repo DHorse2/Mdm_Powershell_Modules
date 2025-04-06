@@ -149,6 +149,15 @@ Start the new process.</p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: If (Assert-Verbose) { $null }      Remarks:    </pre>
 <p></p>
+<h2>EscapeText</h2>
+<p>There is no help for function: EscapeText. Error: Cannot bind argument to parameter 'textIn' because it is null.</p>
+<p></p>
+<h2>Export-Help</h2>
+<p>There is no help for function: Export-Help. Error: Cannot bind argument to parameter 'textIn' because it is null.</p>
+<p></p>
+<h2>ExtractText</h2>
+<p>There is no help for function: ExtractText. Error: Cannot bind argument to parameter 'textIn' because it is null.</p>
+<p></p>
 <h2>Get-DirectoryNameFromSaved</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Get saved directory.</p>
@@ -156,7 +165,7 @@ Start the new process.</p>
 and later restore that state.
 Don&apos;t alter the Saved Working Directory
 when setting to a passed Working Directory.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Get-DirectoryNameFromSaved; parameter=@{description=System.Management.Automation.PSObject[]; parameterValue=String; name=dirWdPassed; required=false; globbing=false; pipelineInput=false; position=1}}</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Get-DirectoryNameFromSaved; parameter=@{name=dirWdPassed; description=System.Management.Automation.PSObject[]; parameterValue=String; required=false; globbing=false; pipelineInput=false; position=1}}</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>dirWdPassed</strong>: Text: An optional directory to use.</p>
@@ -170,7 +179,7 @@ when setting to a passed Working Directory.</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Creates a list of files in a directory.</p>
 <p><strong>Detailed Description:</strong> Text: Creates a list of files in a directory.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Get-FileNamesFromPath; parameter=@{description=System.Management.Automation.PSObject[]; parameterValue=String; name=SourcePath; required=false; globbing=false; pipelineInput=false; position=1}}</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Get-FileNamesFromPath; parameter=@{name=SourcePath; description=System.Management.Automation.PSObject[]; parameterValue=String; required=false; globbing=false; pipelineInput=false; position=1}}</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>SourcePath</strong>: Text: The folder to list the files of.</p>
@@ -179,6 +188,9 @@ when setting to a passed Working Directory.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Get-FileNamesFromPath "C:\Progams places"      Remarks:    </pre>
+<p></p>
+<h2>Get-HelpHtml</h2>
+<p>There is no help for function: Get-HelpHtml. Error: Cannot bind argument to parameter 'textIn' because it is null.</p>
 <p></p>
 <h2>Get-Mdm_Help</h2>
 <p><strong>Type:</strong> Function</p>
@@ -194,6 +206,26 @@ when setting to a passed Working Directory.</p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Get-Mdm_Help -DoVerbose -DoPause      Remarks:    </pre>
 <p></p>
+<h2>Initialize_Std</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Initializes a script..</p>
+<p><strong>Detailed Description:</strong> Text: This processes switches, automatic variables, state.</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Initialize_Std; parameter=System.Management.Automation.PSObject[]}</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> returnValue: @{type=@{name=Global variables are set.}}</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- -------------------------- EXAMPLE 2 --------------------------        Label:   Introduction:         Syntax: Initialize_Std -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Verbose:$DoVerbose -Debug:$DoDebug Script_ResetStdGlobals
+Initialize_Std -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Verbose:$DoVerbose -Debug:$DoDebug      Remarks:         </pre>
+<p></p>
+<h2>LogText</h2>
+<p>There is no help for function: LogText. Error: Cannot bind argument to parameter 'textIn' because it is null.</p>
+<p></p>
 <h2>My_Command_Definition</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> My_Command_Definition.</p>
@@ -201,7 +233,7 @@ when setting to a passed Working Directory.</p>
 <p><strong>Syntax:</strong> syntaxItem: @{name=My_Command_Definition}</p>
 <p></p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=$My_Invocation.My_Command_.Definition}}</p>
+<p><strong>Return: </strong> returnValue: @{type=@{name=$MyInvocation.My_Command_.Definition}}</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: My_Command_Definition      Remarks:    </pre>
@@ -213,7 +245,7 @@ when setting to a passed Working Directory.</p>
 <p><strong>Syntax:</strong> syntaxItem: @{name=My_Command_InvocationName}</p>
 <p></p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=$My_Invocation.InvocationName}}</p>
+<p><strong>Return: </strong> returnValue: @{type=@{name=$MyInvocation.InvocationName}}</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: My_Command_InvocationName      Remarks:    </pre>
@@ -225,7 +257,7 @@ when setting to a passed Working Directory.</p>
 <p><strong>Syntax:</strong> syntaxItem: @{name=My_Command_Name}</p>
 <p></p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=$My_Invocation.My_Command_.Name}}</p>
+<p><strong>Return: </strong> returnValue: @{type=@{name=$MyInvocation.My_Command_.Name}}</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: My_Command_Name      Remarks:    </pre>
@@ -237,7 +269,7 @@ when setting to a passed Working Directory.</p>
 <p><strong>Syntax:</strong> syntaxItem: @{name=My_Command_Orgin}</p>
 <p></p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=$My_Invocation.My_Command_.CommandOrigin}}</p>
+<p><strong>Return: </strong> returnValue: @{type=@{name=$MyInvocation.My_Command_.CommandOrigin}}</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: My_Command_Orgin      Remarks:    </pre>
@@ -249,7 +281,7 @@ when setting to a passed Working Directory.</p>
 <p><strong>Syntax:</strong> syntaxItem: @{name=My_InvocationMy_PSCommandPath}</p>
 <p></p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=$My_Invocation.My_PSCommandPath}}</p>
+<p><strong>Return: </strong> returnValue: @{type=@{name=$MyInvocation.My_PSCommandPath}}</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: My_InvocationMy_PSCommandPath      Remarks:    </pre>
@@ -266,12 +298,15 @@ when setting to a passed Working Directory.</p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: My_PSCommandPath      Remarks:    </pre>
 <p></p>
+<h2>PackTextArray</h2>
+<p>There is no help for function: PackTextArray. Error: Cannot bind argument to parameter 'textIn' because it is null.</p>
+<p></p>
 <h2>Save-DirectoryName</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Save working directory.</p>
 <p><strong>Detailed Description:</strong> Text: Save working directory with a view to restoring it later.
 The default is to save the current directoy.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Save-DirectoryName; parameter=@{description=System.Management.Automation.PSObject[]; parameterValue=String; name=dirWdPassed; required=false; globbing=false; pipelineInput=false; position=1}}</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Save-DirectoryName; parameter=@{name=dirWdPassed; description=System.Management.Automation.PSObject[]; parameterValue=String; required=false; globbing=false; pipelineInput=false; position=1}}</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>dirWdPassed</strong>: Text: The Working Directory Name.</p>
@@ -307,23 +342,6 @@ The default is to save the current directoy.</p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Script_DoStart -DoVerbose      Remarks:    </pre>
 <p></p>
-<h2>Script_Initialize_Std</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Initializes a script..</p>
-<p><strong>Detailed Description:</strong> Text: This processes switches, automatic variables, state.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Script_Initialize_Std; parameter=System.Management.Automation.PSObject[]}</p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=Global variables are set.}}</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 -------------------------- -------------------------- EXAMPLE 2 --------------------------        Label:   Introduction:         Syntax: Script_Initialize_Std -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Verbose:$DoVerbose -Debug:$DoDebug Script_ResetStdGlobals
-Script_Initialize_Std -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Verbose:$DoVerbose -Debug:$DoDebug      Remarks:         </pre>
-<p></p>
 <h2>Script_Last_Error</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Script_Last_Error.</p>
@@ -340,7 +358,7 @@ Script_Initialize_Std -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Script_List_Positional_Parameters.</p>
 <p><strong>Detailed Description:</strong> Text: Script_List_Positional_Parameters.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Script_List_Positional_Parameters; parameter=@{description=System.Management.Automation.PSObject[]; parameterValue=String; name=functionName; required=true; globbing=false; pipelineInput=false; position=1}}</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Script_List_Positional_Parameters; parameter=@{name=functionName; description=System.Management.Automation.PSObject[]; parameterValue=String; required=true; globbing=false; pipelineInput=false; position=1}}</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>functionName</strong>: Text: The function name to examine.</p>
@@ -353,11 +371,11 @@ Script_Initialize_Std -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug 
 <h2>Script_Name</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Get Script Name.</p>
-<p><strong>Detailed Description:</strong> Text: Get $My_Invocation.Script_Name.</p>
+<p><strong>Detailed Description:</strong> Text: Get $MyInvocation.Script_Name.</p>
 <p><strong>Syntax:</strong> syntaxItem: @{name=Script_Name}</p>
 <p></p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=$My_Invocation.Script_Name}}</p>
+<p><strong>Return: </strong> returnValue: @{type=@{name=$MyInvocation.Script_Name}}</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Script_Name      Remarks:    </pre>
@@ -421,6 +439,21 @@ Script_Initialize_Std -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug 
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Search-Dir "G:\Script\Powershell\".      Remarks:    </pre>
 <p></p>
+<h2>Set-DirectoryToScriptRoot</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Set directory to the script&apos;s root directory.</p>
+<p><strong>Detailed Description:</strong> Text: Set the working directory to the script&apos;s root directory..</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Set-DirectoryToScriptRoot; parameter=System.Management.Automation.PSObject[]}</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>scriptPath</strong>: Text: Optional path to use.</p>
+<p>  - <strong>scriptDrive</strong>: Text: Optional drive letter.</p>
+<p></p>
+<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Set-DirectoryToScriptRoot      Remarks:    </pre>
+<p></p>
 <h2>Set-DisplayColors</h2>
 <p>There is no help for function: Set-DisplayColors. Error: Cannot bind argument to parameter 'textIn' because it is null.</p>
 <p></p>
@@ -453,20 +486,8 @@ Script_Initialize_Std -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug 
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Set-LocationToScriptRoot -saveDirectory      Remarks:    </pre>
 <p></p>
-<h2>Show-Data</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Show-Data.</p>
-<p><strong>Detailed Description:</strong> Text: Sends pipeline object to file.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Show-Data; parameter=System.Management.Automation.PSObject[]}</p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>InputObject</strong>: N/A</p>
-<p>  - <strong>FileName</strong>: N/A</p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=Html file.}}</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: $YourPipeline | Show-Data "Filename.txt"      Remarks:    </pre>
+<h2>TrimText</h2>
+<p>There is no help for function: TrimText. Error: Cannot bind argument to parameter 'textIn' because it is null.</p>
 <p></p>
 <h2>Wait-AnyKey</h2>
 <p><strong>Type:</strong> Function</p>
@@ -514,6 +535,24 @@ Script_Initialize_Std -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug 
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: $theResponse = Wait-YorNorQ "Wait?"      Remarks:    </pre>
+<p></p>
+<h2>Write-HtlmData</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Write-HtlmData.</p>
+<p><strong>Detailed Description:</strong> Text: Sends pipeline object to file.</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Write-HtlmData; parameter=System.Management.Automation.PSObject[]}</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>InputObject</strong>: N/A</p>
+<p>  - <strong>FileName</strong>: N/A</p>
+<p>  - <strong>head</strong>: N/A</p>
+<p>  - <strong>header</strong>: N/A</p>
+<p>  - <strong>title</strong>: N/A</p>
+<p></p>
+<p><strong>Return: </strong> returnValue: @{type=@{name=Html file.}}</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: $YourPipeline | Write-HtlmData "Filename.txt"      Remarks:    </pre>
 <p></p>
 <h2>Write-Mdm_Help</h2>
 <p><strong>Type:</strong> Function</p>

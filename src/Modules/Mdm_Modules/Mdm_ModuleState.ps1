@@ -164,5 +164,5 @@ function Set-ModuleStatus {
     Set-Item -Path "Module.Status" -Value $Status
 }
 # Export the functions to be used by other modules or scripts
-# Export-ModuleMember -Function Get-ModuleStatus, Set-ModuleStatus
+# Export-ModuleMember -Function Get-ModuleConfig, Set-ModuleConfig
 # ```

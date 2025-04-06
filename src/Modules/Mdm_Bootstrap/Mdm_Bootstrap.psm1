@@ -28,10 +28,6 @@ $scriptPath = (get-item $PSScriptRoot ).parent.FullName
 Import-Module -Name "$scriptPath\$importName\$importName" -Force -ErrorAction Inquire
 $now = Get-Date -UFormat '%Y%m%d%R%z'
 
-# . "Build-Mdm_ModuleExports.ps1"
-. "$scriptPath\Mdm_Bootstrap\Build-Mdm_ModuleExports.ps1"
-Export-ModuleMember -Function Build-ModuleExports
-
 # MAIN
 function Initialize-Dev_Env_Win {
     <#
@@ -319,71 +315,6 @@ Function Assert-RegistryValue {
         }
     }
 }
-
-# Set-ScriptSecElevated
-function Set-ScriptSecElevated ($message) {
-    <#
-    .SYNOPSIS
-        Elevate script to Administrator.
-    .DESCRIPTION
-        Get the security principal for the Administrator role.
-        Check to see if we are currently running "as Administrator",
-        Create a new process object that starts PowerShell,
-        Indicate that the process should be elevated ("runas"),
-        Start the new process.
-    .PARAMETER message
-        Message to display when elevating.
-    .EXAMPLE
-        Set-ScriptSecElevated "Elevating myself."
-    .NOTES
-        This works but I think there are problems depending on the shell type.
-        ISE for example.
-    .OUTPUTS
-        None. Returns or Executes current script in an elevated process.
-#>
-    # Set-ScriptSecElevated
-    # Get the ID and security principal of the current user account
-    $myWindowsID = [System.Security.Principal.WindowsIdentity]::GetCurrent()
-    $myWindowsPrincipal = new-object System.Security.Principal.WindowsPrincipal($myWindowsID)
-            
-    # Get the security principal for the Administrator role
-    $adminRole = [System.Security.Principal.WindowsBuiltInRole]::Administrator
-            
-    # Check to see if we are currently running "as Administrator"
-    if ($myWindowsPrincipal.IsInRole($adminRole)) {
-        Write-Verbose "We are running ""as Administrator""."
-        # $Host.UI.RawUI.WindowTitle = $myInvocation.My_Command_.Definition + "(Elevated)"
-        $Host.UI.RawUI.WindowTitle = $Host.UI.RawUI.WindowTitle + " (Elevated)"
-        # $Host.UI.RawUI.BackgroundColor = "DarkGray"
-        # clear-host
-    }
-    else {
-        Write-Verbose "We are not running ""as Administrator"" - relaunching as administrator."
-        if ($DoVerbose) { 
-            Write-Host -NoNewLine "Press any key to continue..." -NoNewline
-            $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") 
-        }
-            
-        # Create a new process object that starts PowerShell
-        $newProcess = new-object System.Diagnostics.ProcessStartInfo "PowerShell";
-            
-        # Specify the current script path and name as a parameter
-        $newProcess.Arguments = $myInvocation.My_Command_.Definition;
-            
-        # Indicate that the process should be elevated
-        $newProcess.Verb = "runas";
-            
-        # Start the new process
-        [System.Diagnostics.Process]::Start($newProcess);
-            
-        # Exit from the current, unelevated, process
-        exit
-    }
-            
-    # Run your code that needs to be elevated here
-    # Write-Verbose -NoNewLine "Press any key to continue..."
-    # $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-}
 #
 #############################
 #
@@ -395,47 +326,8 @@ function Set-ScriptSecElevated ($message) {
 # "g:\Script\PowerShell\src\Modules\Mdm_Modules\Mdm_Bootstrap\Initialize-Dev_Env_Win.ps1"
 #
 # function Initialize-Dev_Env_Win ([switch]$UpdatePath, [switch]$DoVerbose) { }
-function Set-DirectoryToScriptRoot {
-    <#
-    .SYNOPSIS
-        Set directory to the script's root directory.
-    .DESCRIPTION
-        Set the working directory to the script's root directory..
-    .PARAMETER scriptPath
-        Optional path to use.
-    .PARAMETER scriptDrive
-        Optional drive letter.
-    .EXAMPLE
-        Set-DirectoryToScriptRoot
-    .OUTPUTS
-        none.
-#>
-    [CmdletBinding()]
-    param (
-        $scriptPath = (get-item $PSScriptRoot).parent.FullName,
-        $scriptDrive = (Split-Path -Path "$scriptPath" -Qualifier)
-    )
-    
-    # Drive and Path:
-    # NOTE on script location: 
-    # This script is found and run in the "Mdm_Bootstrap" module of "Modules"
-    # So the parent directory is the Root Root of this Project's Modules
-    # $scriptPath = Split-Path -Path "$PSScriptRoot" -Parent
-    # .\src\Modules\Mdm_Modules\Mdm_Bootstrap
-    # $scriptPath = (get-item $PSScriptRoot ).parent.FullName
-    # $scriptDrive = Split-Path -Path "$scriptPath" -Qualifier
-    Set-Location $scriptDrive
-    # NOTE: Must be directories to invoke directory creation
-    # NOTE: New-Item doesn't work in priveledged directories
-    # New-Item -ItemType File -Path $destination -Force
-    Set-Location -Path "$scriptPath"
-    Get-Location    
-}
 #
 Export-ModuleMember -Function `
     Initialize-Dev_Env_Win, `
     Assert-RegistryValue, `
-    Add-RegistryPath, `
-    Build-ModuleExports, `
-    Set-DirectoryToScriptRoot, `
-    Set-ScriptSecElevated `
+    Add-RegistryPath

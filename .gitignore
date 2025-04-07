@@ -1,0 +1,6 @@
+log/
+.inactivecode/
+.notes/
+.vscode/
+test/
+*.lnk

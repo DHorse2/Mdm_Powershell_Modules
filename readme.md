@@ -1,10 +1,20 @@
-## Mdm System Management Modules
+# Mdm System Management Modules
 
-# Order of script execution for a new system.
+## Order of script execution for a new system.
+If Language Mode is not Full:
+Dev_Env_LanguageMode
+
+Then:
+Dev_Env_Install_Modules_Win
+
 Initialize-Dev_Env_Win
+
 Install-Dev_Env_Win
 
-# Development Environment Install
+## Modules
+
+### Development Environment Install
+
 CommandType     Name                         Version    Source
 -----------     ----                         -------    ------
 Function        Install-Dev_Env_Win          1.0        Mdm_Dev_Env_Install
@@ -14,7 +24,8 @@ Function        Install-Dev_Env_Whisper_Win  1.0        Mdm_Dev_Env_Install
 Function        Get-Dev_Env_Versions         1.0        Mdm_Dev_Env_Install
 Function        Install-Dev_Env_OS_Win       1.0        Mdm_Dev_Env_Install
 
-# Standard Functions
+### Standard Functions
+
 CommandType     Name                         Version    Source
 -----------     ----                         -------    ------
 Function        Assert-ScriptSecElevated     1.0        Mdm_Std_Library
@@ -29,8 +40,7 @@ Function        Wait-AnyKey                  1.0        Mdm_Std_Library
 Function        Wait-CheckDoPause            1.0        Mdm_Std_Library
 Function        Wait-YorNorQ       
 
-# Mdm Bootstrap
-Loades all these PowerShell scripts
+### Mdm Bootstrap
 
 CommandType     Name                         Version    Source
 -----------     ----                         -------    ------
@@ -42,7 +52,7 @@ Function        Set-DirectoryToScriptRoot    1.0        Mdm_Bootstrap
 
 
 
-# Other stuff
+## Other stuff
 Author: David G Horsman
 Companies:
 dba MacroDM (2010)

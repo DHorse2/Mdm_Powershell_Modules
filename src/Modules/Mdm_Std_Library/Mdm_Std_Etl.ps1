@@ -179,23 +179,23 @@ function Set-DirectoryToScriptRoot {
 #>
     [CmdletBinding()]
     param (
-        $scriptPath = (get-item $PSScriptRoot).parent.FullName,
-        $scriptDrive = (Split-Path -Path "$scriptPath" -Qualifier)
+        $global:scriptPath = (get-item $PSScriptRoot).parent.FullName,
+        $scriptDrive = (Split-Path -Path "$global:scriptPath" -Qualifier)
     )
     
     # Drive and Path:
     # NOTE on script location: 
     # This script is found and run in the "Mdm_Bootstrap" module of "Modules"
     # So the parent directory is the Root Root of this Project's Modules
-    # $scriptPath = Split-Path -Path "$PSScriptRoot" -Parent
+    # $global:scriptPath = Split-Path -Path "$PSScriptRoot" -Parent
     # .\src\Modules\Mdm_Modules\Mdm_Bootstrap
-    # $scriptPath = (get-item $PSScriptRoot ).parent.FullName
-    # $scriptDrive = Split-Path -Path "$scriptPath" -Qualifier
+    # $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName
+    # $scriptDrive = Split-Path -Path "$global:scriptPath" -Qualifier
     Set-Location $scriptDrive
     # NOTE: Must be directories to invoke directory creation
     # NOTE: New-Item doesn't work in priveledged directories
     # New-Item -ItemType File -Path $destination -Force
-    Set-Location -Path "$scriptPath"
+    Set-Location -Path "$global:scriptPath"
     Get-Location    
 }
 
@@ -323,6 +323,9 @@ function ExtractText {
                     if ($property.Name -eq "Name") {
                         $textOut += "$($property.Name): $($property.Value)`n"
                     }
+                    elseif ($propery.Name -eq "Text") {
+                        $textOut += "$($property.Value)`n"
+                    }
                     elseif ($propery.Name -eq "description") {
                         $textOut += "$($property.Name): $($property.Value)`n"
                     }
@@ -350,7 +353,6 @@ function ExtractText {
     Write-Debug "Result: $textOut (type: $textOutType)"
     return $textOut
 }
-# escape text
 function PackTextArray {
     [CmdletBinding()]
     Param(
@@ -370,6 +372,7 @@ function PackTextArray {
         @(, $OutputObjects)
     }
 }
+# escape text
 function EscapeText {
     [CmdletBinding()]
     param (
@@ -424,6 +427,8 @@ function TrimText {
     )
     return EscapeText $textIn $localLogFileNameFull -keepEscapes
 }
+# Logging
+#############################
 function LogText {
     # per https://stackoverflow.com/questions/24432190/generic-parameter-in-powershell
     # (todo: Inprogress. Implement pipelines)
@@ -436,60 +441,14 @@ function LogText {
         [switch]$keepEscapes,
         [switch]$isError,
         [switch]$isWarning,
-        $foregroundColor = "White",
-        $backgroundColor = "Black"
+        $foregroundColor,
+        $backgroundColor,
+        $ErrorPSItem
     )
     process {
-        foreach ($logMessage in $logMessages) {
-            # pre-process message (for html)
-            # todo. Should the log be html also?
-            $logMessage = EscapeText $logMessage -keepEscapes
-
-            if (-not $localLogFileNameFull) {
-                $localLogFileNameFull = $global:logFileNameFull
-            }
-            # Check if folder not exists, and create it
-            $logFilePath = Split-Path -Path $localLogFileNameFull
-            if (-not(Test-Path $logFilePath -PathType Container)) {
-                New-Item -path $logFilePath -ItemType Directory
-            }
-            # Check if file exists, and create it
-            if (-not(Test-Path $localLogFileNameFull -PathType Leaf)) {
-                New-Item -path $localLogFileNameFull -ItemType File
-            }
-            # $global:logData += $logMessage
-            $logMessage | Out-File -FilePath $localLogFileNameFull –Append
-            # Display message to user
-            if ($isError) { 
-                Write-Error -Message $logMessage
-            }
-            elseif ($isWarning) { 
-                Write-Warning -Message $logMessage
-            }
-            else { 
-                Write-Host $logMessage `
-                    -ForegroundColor:$foregroundColor -BackgroundColor:$backgroundColor
-            }
-
-        }
-    }
-}
-function LogTextOld {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        $logMessage,
-        $localLogFileNameFull = "",
-        [switch]$keepWhitespace,
-        [switch]$keepEscapes,
-        [switch]$isError
-    )
-    process {
-        # pre-process message (for html)
-        # todo. Should the log be html also?
-        $logMessage = EscapeText $logMessage -keepEscapes
-
+        # Log File
         if (-not $localLogFileNameFull) {
+            # $localLogFileNameFull = Get-LogFileName
             $localLogFileNameFull = $global:logFileNameFull
         }
         # Check if folder not exists, and create it
@@ -501,11 +460,142 @@ function LogTextOld {
         if (-not(Test-Path $localLogFileNameFull -PathType Leaf)) {
             New-Item -path $localLogFileNameFull -ItemType File
         }
-        # $global:logData += $logMessage
-        $logMessage | Out-File -FilePath $localLogFileNameFull –Append
-        if ($isError) { Write-Error -Message $logMessage }
-        else { Write-Host $logMessage }
+
+        foreach ($logMessage in $logMessages) {
+            # pre-process message (for html)
+            # todo. Should the log be html also?
+            $logMessage = EscapeText $logMessage -keepEscapes
+            $logMessage | Out-File -FilePath $localLogFileNameFull –Append
+            
+            # Display message to user
+            if ($isError -or $isWarning) {
+                if ($isError) {
+                    if ($global:UsePsTrace -and $ErrorPSItem) { 
+                        LogError $logMessage `
+                            -isError `
+                            -ErrorPSItem $ErrorPSItem `
+                            -localLogFileNameFull $localLogFileNameFull
+                    }
+                    else {
+                        Write-Error -Message $logMessage
+                    }
+                }
+                elseif ($isWarning) { 
+                    if ($global:UsePsTrace -and $global:UsePsTraceWarning -and $ErrorPSItem) { 
+                        LogError $logMessage `
+                            -isWarning `
+                            -ErrorPSItem $ErrorPSItem `
+                            -localLogFileNameFull $localLogFileNameFull
+                    }
+                    else {
+                        Write-Warning -Message $logMessage
+                    }
+                }
+            }
+            else { 
+                if (-not $foregroundColor) { $foregroundColor = $global:messageForegroundColor }
+                if (-not $backgroundColor) { $backgroundColor = $global:messageBackgroundColor }
+                Write-Host $logMessage `
+                    -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+            }
+
+        }
     }
+}
+function LogError {
+    [CmdletBinding()]
+    param (
+        [Parameter(ValueFromPipeline = $True, ValueFromPipelineByPropertyName = $True, Mandatory = $true)]
+        $logMessages,
+        [Parameter(Mandatory = $true)]
+        $ErrorPSItem,
+        [switch]$isError,
+        [switch]$isWarning,
+        $localLogFileNameFull = "",
+        $foregroundColor,
+        $backgroundColor
+    )
+    process {
+        if ($isError) { $errorType = "Error in " }
+        elseif ($isWarning) { $errorType = "Warning in " }
+        else { $errorType = "" }
+
+        if (-not $foregroundColor) {
+            if ($isError) { $foregroundColor = $opt.ErrorForegroundColor }
+            elseif ($isWarning) { $foregroundColor = $opt.WarningForegroundColor }
+            else { $foregroundColor = $global:messageForegroundColor }
+        }
+        if (-not $backgroundColor) {
+            if ($isError) { $backgroundColor = $opt.ErrorBackgroundColor }
+            elseif ($isWarning) { $backgroundColor = $opt.WarningBackgroundColor }
+            else { $backgroundColor = $global:messageBackgroundColor }
+        }
+        $scriptNameFull = $ErrorPSItem.InvocationInfo.ScriptName
+        $scriptName = Split-Path $scriptNameFull -leaf
+        $line = $ErrorPSItem.InvocationInfo.ScriptLineNumber
+        $column = $ErrorPSItem.InvocationInfo.OffsetInLine
+        Write-Host "=============================================" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+        Write-Host "$($errorType)Script: $scriptName, line $line, column $column" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+        Write-Host "$($ErrorPSItem.CategoryInfo)" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+        Write-Host "$($ErrorPSItem.Exception.Message)" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+        Write-Host "Stack trace:" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+        Write-Host "$($ErrorPSItem.ScriptStackTrace)" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+        if ($ErrorPSItem.ErrorDetails) { 
+            Write-Host "$($ErrorPSItem.ErrorDetails)" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+        }
+        Write-Host "=============================================" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+    }
+    # Set-PSDebug
+    # [-Trace <Int32>]
+    # [-Step]
+    # [-Strict]
+    # [<CommonParameters>]
+    # [-Off]
+    # 0: Turn script tracing off.
+    # 1: Trace script lines as they run.
+    # 2: Trace script lines, variable assignments, function calls, and scripts.
+    # Set-PSDebug -Trace 1
+}
+function Get-LogFileName {
+    [CmdletBinding()]
+    param (
+        $localLogFileNameFull = "",
+        [switch]$LogOneFile
+    )
+    if ($localLogFileNameFull) { 
+        $logFilePath = Split-Path -Path $localLogFileNameFull
+        $logFileName = Split-Path $localLogFileNameFull -leaf
+    }
+    else {
+        $logFilePath = $global:logFilePath
+        $logFileName = $global:logFileName
+        $LogOneFile = $global:LogOneFile
+    }
+    # Log folder
+    if (-not $logFilePath) { $logFilePath = "$((get-item $PSScriptRoot ).FullName)\Log" }
+    $logFilePath = Convert-Path $logFilePath
+    # Check if folder not exists, and create it
+    if (-not(Test-Path $logFilePath -PathType Container)) {
+        New-Item -path $logFilePath -ItemType Directory
+    }
+    
+    # Construct the full log file name
+    if (-not $logFileName) { $logFileName = "Mdm_Installation_Log" }
+    # $logFileNameFull = Join-Path -Path $logFilePath -ChildPath $logFileName
+    $logFileNameFull = "$logFilePath\$logFileName"
+    if (-not $LogOneFile) { $logFileNameFull = "$($logFileNameFull)_$global:timeStarted" }
+    $logFileNameFull = "$logFileNameFull.txt"
+        
+    # Check if file exists, and create it
+    if (-not(Test-Path $logFileNameFull -PathType Leaf)) {
+        New-Item -path $logFileNameFull -ItemType File
+    }
+    # Write-Host "Returning: $logFileNameFull"
+    # POWERSHELL ERROR. This cannot be return as a string.
+    # Weird bug. It becomes duplicated in an array [0] [1]
+    # Fix:
+    $global:logFileNameFull = $logFileNameFull
+    # return $logFileNameFull
 }
 # ShowData.psm1**
 #############################
@@ -589,21 +679,18 @@ function Test-HtmlData {
     process { 
         # G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Module_Test
         if ($FileName.Length = = 0) {
-            $scriptPath = (get-item $PSScriptRoot ).Parent.Parent.Parent.FullName 
+            $global:scriptPath = (get-item $PSScriptRoot ).Parent.Parent.Parent.FullName 
         }
         # # G:\Script\Powershell\Mdm_Powershell_Modules
-        $FileName = "$scriptPath\test\testShowData.txt"
+        $FileName = "$global:scriptPath\test\testShowData.txt"
         # # G:\Script\Powershell\Mdm_Powershell_Modules\test\testShowData.txt
         Get-TestHtmlData | Write-HtlmData -file $Filename 
     }
     end { }
 }
-# Export the functions to be used by other modules or scripts
-# Export-ModuleMember -Function Write-HtlmData
+# Search
 # ###############################
-
-# ``` Script functions
-function Search-Dir {
+function Search-Directory {
     <#
     .SYNOPSIS
         Search a folder for files or (todo) something else.
@@ -622,7 +709,7 @@ function Search-Dir {
     .OUTPUTS
         Export-Csv '.\output.csv'.
     .EXAMPLE
-        Search-Dir "G:\Script\Powershell\".
+        Search-Directory "G:\Script\Powershell\".
 #>
 
     [CmdletBinding()]

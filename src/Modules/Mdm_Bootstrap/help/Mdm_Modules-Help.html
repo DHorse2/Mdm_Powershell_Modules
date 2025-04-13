@@ -100,25 +100,6 @@
         </div>
     </div>
     <h1>Mdm_Modules</h1>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Setup (bootstrap) Windows for the Development Environment.</p>
-<p><strong>Detailed Description:</strong> Text: This is the first step of bootstrapping the Development Environment.
-This updates the Windows Environment variables.
-It installs these powershell modules to the system&apos;s directories.
-Set registry, Path and load PowerShell modules.
-$source = &quot;$scriptPath\&quot;
-$destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Initialize-Dev_Env_Win; parameter=System.Management.Automation.PSObject[]}</p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>UpdatePath</strong>: Text: Switch: A switch to indicate the path should be checked/updated.</p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=todo.}}</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Initialize-Dev_Env_Win -SilentMode -UpdatePath      Remarks:    </pre>
 <h2>Build-ModuleExports</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> The scans a module folder with a view to automatically load/import it.</p>
@@ -153,7 +134,7 @@ $destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Gets the Module property.</p>
 <p><strong>Detailed Description:</strong> Text: Retrieves the value of the Module property.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Get-ModuleProperty; parameter=@{name=InputObject; description=System.Management.Automation.PSObject[]; parameterValue=Object; required=true; globbing=false; pipelineInput=true (ByValue); position=1}}</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Get-ModuleProperty; parameter=@{parameterValue=Object; name=InputObject; description=System.Management.Automation.PSObject[]; required=true; globbing=false; pipelineInput=true (ByValue); position=1}}</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>InputObject</strong>: Text: The input object to retrieve the property from.</p>
@@ -167,7 +148,7 @@ $destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Updates the Module configuration.</p>
 <p><strong>Detailed Description:</strong> Text: Sets the Module configuration settings.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Set-ModuleConfig; parameter=@{name=Config; description=System.Management.Automation.PSObject[]; parameterValue=Hashtable; required=true; globbing=false; pipelineInput=false; position=1}}</p>
+<p><strong>Syntax:</strong> syntaxItem: @{name=Set-ModuleConfig; parameter=@{parameterValue=Hashtable; name=Config; description=System.Management.Automation.PSObject[]; required=true; globbing=false; pipelineInput=false; position=1}}</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Config</strong>: Text: The new configuration values.</p>

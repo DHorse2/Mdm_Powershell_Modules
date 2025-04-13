@@ -48,7 +48,6 @@ Function Build-ModuleExports {
             . $import.fullname
 
             # Export Public and Root functions
-            # Export-ModuleMember -Function $import.fullname
             if ($import.fullname.IndexOf("Private") -lt 0) {
                 Export-ModuleMember $import.fullname
                 Write-Host -Message "Public Component: $($import.fullname)"
@@ -61,11 +60,4 @@ Function Build-ModuleExports {
             Write-Error -Message "Failed to import component $($import.fullname): $_"
         }
     }
-    # Read in or create an initial config file and variable
-    # Export Public functions ($Public.BaseName) for WIP modules
-    # Set variables visible to the module and its functions only
-    # Export-ModuleMember -Function $Public.Basename
-    # Export-ModuleMember -Function * -Alias * -Cmdlet *
-    Write-Host "Auto-export Ready."
 }
-# Export-ModuleMember -Function Build-ModuleExports

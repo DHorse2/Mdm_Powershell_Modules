@@ -1,32 +1,45 @@
 <#
+TOPIC
+Development Environment Bootstrapping
+
+SHORT DESCRIPTION
     .SYNOPSIS
         Bootstrap the (MDM) Development Environment on a Windows 10/11 platform.
+
+LONG DESCRIPTION
     .DESCRIPTION
+        Mdm_Bootstrap
+        Set registry, Path and load PowerShell modules
         This is the first step of setting up the Development Environment.
         The Initialize-Dev_Env_Win function is the main function.
         This updates the Windows Environment variables.
         It installs these powershell modules to the system's directories.
         It sets registry, Path and load PowerShell modules.
         It can elevate its own persmissions if needed.
+
     .OUTPUTS
         The Mdm Bootstrap Module functions.
+
+EXAMPLES        
     .EXAMPLE
         Import-module Mdm_Bootstrap
+
     .NOTES
         none.
 #>
 
-# Mdm_Bootstrap
-# Set registry, Path and load PowerShell modules
 
 # Imports
-# Normal Import-Module
-#     Import-Module Mdm_Std_Library
 # This works with uninstalled Modules (both)
-$importName = "Mdm_Std_Library"
-$scriptPath = (get-item $PSScriptRoot ).parent.FullName
-Import-Module -Name "$scriptPath\$importName\$importName" -Force -ErrorAction Inquire
 $now = Get-Date -UFormat '%Y%m%d%R%z'
+$importName = "Mdm_Std_Library"
+if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName }
+Import-Module -Name "$global:scriptPath\$importName\$importName" -Force -ErrorAction Inquire
+
+. "$global:scriptPath\Mdm_Bootstrap\Dev_Env_Install_Modules_Win.ps1"
+Export-ModuleMember -Function Dev_Env_Install_Modules_Win
+. "$global:scriptPath\Mdm_Bootstrap\Dev_Env_LanguageMode.ps1"
+Export-ModuleMember -Function Dev_Env_LanguageMode
 
 # MAIN
 function Initialize-Dev_Env_Win {
@@ -38,7 +51,7 @@ function Initialize-Dev_Env_Win {
         This updates the Windows Environment variables.
         It installs these powershell modules to the system's directories.
         Set registry, Path and load PowerShell modules.
-        $source = "$scriptPath\"
+        $source = "$global:scriptPath\"
         $destination = "$Env:ProgramFiles\WindowsPowerShell\Modules"
     .PARAMETER UpdatePath
         Switch: A switch to indicate the path should be checked/updated.
@@ -57,12 +70,11 @@ function Initialize-Dev_Env_Win {
         NOTE on script location: 
         This script is found and run in the "Mdm_Bootstrap" module of "Modules"
         So the parent directory is the Root Root of this Project's Modules
-        $scriptPath = Split-Path -Path "$PSScriptRoot" -Parent
         .\src\Mdm_Modules\Mdm_Bootstrap
-        $scriptPath = (get-item $PSScriptRoot ).parent.FullName
+        $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName
         
         Source:
-        $source = "$scriptPath\"
+        $source = "$global:scriptPath\"
         $destination = "$Env:ProgramFiles\WindowsPowerShell\Modules"
         Destination:
         This user (CurrentUser);
@@ -108,12 +120,12 @@ function Initialize-Dev_Env_Win {
     Set-ScriptSecElevated
     
     # CONTINUE
-    $scriptPath = (get-item $PSScriptRoot ).parent.FullName
-    $scriptDrive = Split-Path -Path "$scriptPath" -Qualifier
+    if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName }
+    $scriptDrive = Split-Path -Path "$global:scriptPath" -Qualifier
     Set-Location $scriptDrive
-    Set-Location -Path "$scriptPath"
+    Set-Location -Path "$global:scriptPath"
     # Source:
-    $source = "$scriptPath\"
+    $source = "$global:scriptPath\"
     $destination = "$Env:ProgramFiles\WindowsPowerShell\Modules"
 
     # #####################
@@ -121,7 +133,7 @@ function Initialize-Dev_Env_Win {
     if ($DoVerbose) { 
         Write-Verbose "######################"
         Write-Verbose  "Copying PowerShell modules to ProgramFiles PowerShell modules directory..."
-        Write-Verbose  "$scriptPath Install to the module library."
+        Write-Verbose  "$global:scriptPath Install to the module library."
         Write-Verbose " "
         Write-Verbose -NoNewLine "Press any key to continue..."
         $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")        
@@ -173,13 +185,8 @@ function Initialize-Dev_Env_Win {
     Write-Verbose "Done "
     # }
 }
-# Export-ModuleMember -Function Initialize-Dev_Env_Win
-# Initialize-Dev_Env_Win
 
 # Components:
-# # Export-ModuleMember -Function LocalBuildModuleExports
-# LocalBuildModuleExports
-#
 #############################
 # Add-RegistryPath
 #
@@ -230,7 +237,7 @@ function Add-RegistryPath {
         Write-Verbose $oldPath
     }
     # Check if already updated
-    $positionOfPath = $oldPath.IndexOf("$scriptPath")
+    $positionOfPath = $oldPath.IndexOf("$global:scriptPath")
     Write-Verbose " $positionOfPath" # -1 if missing
     
     # Back path up
@@ -254,14 +261,14 @@ function Add-RegistryPath {
             
     # Update Environment Path
     if ($positionOfPath -lt 0) {
-        Write-Verbose "Updating path: $scriptPath"
-        $newpath = "$scriptPath;$oldPath"
+        Write-Verbose "Updating path: $global:scriptPath"
+        $newpath = "$global:scriptPath;$oldPath"
         Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name "$envPathToUpdate" -Value $newpath
         # Write-Host -NoNewLine "Press any key to continue..."
         # $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
     }
     else {
-        Write-Verbose "Found path: $scriptPath"
+        Write-Verbose "Found path: $global:scriptPath"
     }
     # end {}
     # clean {}

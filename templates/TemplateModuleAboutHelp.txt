@@ -1,0 +1,39 @@
+
+# Conceptual ("About") Help. 
+# You can use a conceptual ("about") Help topic to describe the module
+#     and its members and to explain how the members can be used together
+#     to perform tasks. 
+# Conceptual Help topics are text files with Unicode (UTF-8) encoding.
+# The filename must use the about_<name>.help.txt
+# 
+# Structure and naming conventions:
+# <ModulePath>
+#     \SampleModule
+#         \<en-US>
+#             \about_SampleModule.help.txt
+#             \SampleModule.dll-help.xml
+#             \SampleNestedModule.dll-help.xml
+#         \<fr-FR>
+#             \about_SampleModule.help.txt
+#             \SampleModule.dll-help.xml
+#             \SampleNestedModule.dll-help.xml
+# </ModulePath>
+```text
+TOPIC
+    about_<subject or module name>
+
+SHORT DESCRIPTION
+    A short, one-line description of the topic contents.
+
+LONG DESCRIPTION
+    A detailed, full description of the subject or purpose of the module.
+
+EXAMPLES
+    Examples of how to use the module or how the subject feature works in practice.
+
+KEYWORDS
+    Terms or titles on which you might expect your users to search for the information in this topic.
+
+SEE ALSO
+    Text-only references for further reading. Hyperlinks can't work in the PowerShell console.
+```

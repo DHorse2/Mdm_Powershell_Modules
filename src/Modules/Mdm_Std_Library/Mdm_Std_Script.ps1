@@ -166,8 +166,9 @@ function Script_DisplayStdGlobals {
         Write-Host "Y,Q or N prompt: $global:msgYorN"
     }
 }
-function Verb-Noun {
+function Script_ShellPwsh {
     <# 
+    .DESCRIPTION
 Note: Place [CmdletBinding()] above param(...) to make
        the script an *advanced* one, which then prevents passing
        extra arguments that don't bind to declared parameters.
@@ -317,12 +318,13 @@ function Script_DoStart {
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
     # Import-Module Mdm_Std_Library -Force
     Script_ResetStdGlobals  `
-        -DoPause:$DoPause `
-        -DoVerbose:$DoVerbose `
-        -DoDebug:$DoDebug `
-        -Verbose:$DoVerbose ` # todo is this correct?
-    -Debug:$DoDebug
-    Initialize_Std -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Verbose:$DoVerbose -Debug:$DoDebug
+        -DoPause $DoPause `
+        -DoVerbose $DoVerbose `
+        -DoDebug $DoDebug
+    Initialize_Std `
+        -DoPause $DoPause `
+        -DoVerbose $DoVerbose `
+        -DoDebug $DoDebug
     if ($global:DoVerbose) { Write-Host "Script Started." }
 }
 # Script_DoStart
@@ -389,16 +391,16 @@ function My_Command_InvocationName {
     param()
     return $MyInvocation.InvocationName
 }
-function My_Command_Orgin {
+function My_Command_Origin {
     <#
     .SYNOPSIS
-        My_Command_Orgin
+        My_Command_Origin
     .DESCRIPTION
-        My_Command_Orgin
+        My_Command_Origin
     .OUTPUTS
         $MyInvocation.My_Command_.CommandOrigin 
     .EXAMPLE
-        My_Command_Orgin
+        My_Command_Origin
 #>
     [CmdletBinding()]
     param()

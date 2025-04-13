@@ -1,0 +1,45 @@
+TOPIC
+    Development Environment Installation Module
+
+SHORT DESCRIPTION
+    The Development Environment Installation Module install or updates it.
+
+SYNOPSIS
+    The Development Environment Installation Module install or updates it.
+
+LONG DESCRIPTION
+    A detailed, full description of the subject or purpose of the module.
+
+DESCRIPTION
+    The development environment consists of a number of components.
+
+    It also includes a few global settings.
+    These are currently set at the top of the Mdm_Std_Library.psm1 file after the help and imports (approx. line 70).
+
+    PARAMETER DoPause
+        Switch to pause at each step/page.
+    PARAMETER DoVerbose
+        Provide detailed information.
+    PARAMETER DoDebug
+        Debug this script.
+
+EXAMPLES
+    Examples of how to use the module or how the subject feature works in practice.
+
+EXAMPLE
+    Get-Dev_Env_Versions -DoVerbose
+
+EXAMPLE
+    Get-Dev_Env_Versions
+
+NOTES
+    needs work.
+
+OUTPUTS
+    Should output a file and display.
+
+KEYWORDS
+    Install Installation Development Environment IDE 
+
+SEE ALSO
+    The help for each component and the html folder found in the Mdm_Bootstrap module.

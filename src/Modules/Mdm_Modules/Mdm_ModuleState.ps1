@@ -1,7 +1,4 @@
 
-# XXX
-# ###############################
-# ```powershell
 function Get-ModuleProperty {
 <#
     .SYNOPSIS
@@ -49,12 +46,6 @@ function Set-ModuleProperty {
 
     $InputObject | ForEach-Object { $_.Module = $Value }
 }
-# Export the functions to be used by other modules or scripts
-# Export-ModuleMember -Function Get-ModuleProperty, Set-ModuleProperty
-# ```
-# **ModuleConfig.psm1**
-# ###############################
-# ```powershell
 function Get-ModuleConfig {
 <#
     .SYNOPSIS
@@ -111,13 +102,9 @@ function Set-ModuleConfig {
         Set-Item -Path ("Module.Config.$key") -Value $config[$key]
     }
 }
-# Export the functions to be used by other modules or scripts
-# Export-ModuleMember -Function Get-ModuleConfig, Set-ModuleConfig
-# ```
 
 # **ModuleStatus.psm1**
 # ###############################
-# ```powershell
 function Get-ModuleStatus {
 <#
     .SYNOPSIS
@@ -163,6 +150,3 @@ function Set-ModuleStatus {
 
     Set-Item -Path "Module.Status" -Value $Status
 }
-# Export the functions to be used by other modules or scripts
-# Export-ModuleMember -Function Get-ModuleConfig, Set-ModuleConfig
-# ```

@@ -9,6 +9,7 @@
     FunctionsToExport    = 
     # Mdm_Std_Library
     # Script:
+    "Get-AllCommands",
     "Initialize_Std",
     "Script_DoStart",
     "Script_ResetStdGlobals",
@@ -20,7 +21,7 @@
     "My_PSCommandPath",
     "Script_Name",
     "My_Command_InvocationName",
-    "My_Command_Orgin",
+    "My_Command_Origin",
     "My_Command_Name",
     "My_Command_Definition",
     "My_InvocationMy_PSCommandPath",
@@ -35,6 +36,7 @@
     "Set-DirectoryToScriptRoot",
     "Save-DirectoryName",
     "Get-DirectoryNameFromSaved",
+    "Search-Directory",
 
     "Set-LocationToPath",
     "Set-LocationToScriptRoot",
@@ -48,14 +50,19 @@
     "PackTextArray",
     "EscapeText",
     "TrimText",
+    # Etl Log
     "LogText",
+    "LogError",
+    "Get-LogFileName",
+    # Etl Html
     "Write-HtlmData",
-    "Search-Dir",
 
     # Help
     "Write-Mdm_Help",
     "Get-Mdm_Help",
     "Get-HelpHtml",
+    "Get-HtmlTemplate",
+    "ApplyHtmoTemplate",
     "Export-Help"
     # )    
     # Cmdlets to export from this module.

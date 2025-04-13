@@ -1,19 +1,24 @@
 <#
 .SYNOPSIS
     Bootstrap, Standard Library, Development Environment Install modules.
+    
 .DESCRIPTION
     Imports:
         Mdm_Bootstrap
         Mdm_Std_Library
         Mdm_Dev_Env_Install
     This imports the Mdm_Modules so that all functions are available.
+
 .OUTPUTS
     Exported functions from Bootstrap, Standard Library, Development Environment Install modules.
+
 .EXAMPLE
     Import-module Mdm_Modules.
+
 .NOTES
     none.
 #>
+
 
 # Mdm_Modules
 # Bootstrap, Standard Library, Development Environment Install
@@ -30,23 +35,19 @@ Write-Verbose "Loading..."
 # . $PSScriptRoot\Mdm_ModuleState.ps1
 
 # This works with uninstalled Modules (both)
-$scriptPath = (get-item $PSScriptRoot ).parent.FullName
-$importName = "Mdm_Bootstrap"
-Import-Module -Name "$scriptPath\$importName\$importName" -Force -ErrorAction Stop
+if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName }
 $importName = "Mdm_Std_Library"
-Import-Module -Name "$scriptPath\$importName\$importName" -Force -ErrorAction Stop
+Import-Module -Name "$global:scriptPath\$importName\$importName" -Force -ErrorAction Stop
+$importName = "Mdm_Bootstrap"
+Import-Module -Name "$global:scriptPath\$importName\$importName" -Force -ErrorAction Stop
 $importName = "Mdm_Dev_Env_Install"
-Import-Module -Name "$scriptPath\$importName\$importName" -Force -ErrorAction Stop
+Import-Module -Name "$global:scriptPath\$importName\$importName" -Force -ErrorAction Stop
 
-. "$scriptPath\Mdm_Modules\Mdm_ModuleState.ps1"
+. "$global:scriptPath\Mdm_Modules\Mdm_ModuleState.ps1"
 Export-ModuleMember -Function `
     Get-ModuleProperty, Set-ModuleProperty, `
     Get-ModuleConfig, Set-ModuleConfig, `
     Get-ModuleConfig, Set-ModuleConfig
 
-. "$scriptPath\Mdm_Modules\Build-ModuleExports.ps1"
+. "$global:scriptPath\Mdm_Modules\Build-ModuleExports.ps1"
 Export-ModuleMember -Function Build-ModuleExports
-
-#
-# Export-ModuleMember -Function * -Alias * -Cmdlet *
-Write-Verbose "Ready."

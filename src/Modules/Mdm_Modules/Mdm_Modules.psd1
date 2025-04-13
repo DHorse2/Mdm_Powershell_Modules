@@ -8,79 +8,80 @@
     # GUID = ""
     # Exports
     # FunctionsToExport    = @("")
-    FunctionsToExport    = 
+    FunctionsToExport    = @(
     # Mdm_Modules
     "Get-ModuleProperty", "Set-ModuleProperty",
     "Get-ModuleConfig", "Set-ModuleConfig",
     "Get-ModuleStatus", "Set-ModuleStatus",
-    "Build-ModuleExports",
+    "Build-ModuleExports"
 
-    # Mdm_Bootstrap
-    "Initialize-Dev_Env_Win", 
-    "Add-RegistryPath", 
-    "Assert-RegistryValue",
+    # # Mdm_Bootstrap
+    # "Initialize-Dev_Env_Win", 
+    # "Add-RegistryPath", 
+    # "Assert-RegistryValue",
     
-    # Mdm_Dev_Env_Install
-    "Get-Dev_Env_Versions",
-    "Install-Dev_Env_Win",
-    "Install-Dev_Env_IDE_Win", 
-    "Install-Dev_Env_LLM_Win",
-    "Install-Dev_Env_OS_Win",
-    "Install-Dev_Env_Whisper_Win",
-    "Install-Dev_Env_Modules",
+    # # Mdm_Dev_Env_Install
+    # "Get-Dev_Env_Versions",
+    # "Install-Dev_Env_Win",
+    # "Install-Dev_Env_IDE_Win", 
+    # "Install-Dev_Env_LLM_Win",
+    # "Install-Dev_Env_OS_Win",
+    # "Install-Dev_Env_Whisper_Win",
+    # "Install-Dev_Env_Modules",
 
-    # Mdm_Std_Library
-    # Script:
-    "Initialize_Std",
-    "Script_DoStart",
-    "Script_ResetStdGlobals",
-    "Script_DisplayStdGlobals",
-    "Set-DisplayColors",
-    "Assert-ScriptSecElevated",
-    "Set-ScriptSecElevated",
-    "Assert-Verbose",
-    # This script:
-    "My_PSCommandPath",
-    "Script_Name",
-    "My_Command_InvocationName",
-    "My_Command_Orgin",
-    "My_Command_Name",
-    "My_Command_Definition",
-    "My_InvocationMy_PSCommandPath",
-    "Script_List_Positional_Parameters",
-    "Script_Last_Error",
-    "Script_Write_Error",
+    # # Mdm_Std_Library
+    # # Script:
+    # "Get-AllCommands",
+    # "Initialize_Std",
+    # "Script_DoStart",
+    # "Script_ResetStdGlobals",
+    # "Script_DisplayStdGlobals",
+    # "Set-DisplayColors",
+    # "Assert-ScriptSecElevated",
+    # "Set-ScriptSecElevated",
+    # "Assert-Verbose",
+    # # This script:
+    # "My_PSCommandPath",
+    # "Script_Name",
+    # "My_Command_InvocationName",
+    # "My_Command_Origin",
+    # "My_Command_Name",
+    # "My_Command_Definition",
+    # "My_InvocationMy_PSCommandPath",
+    # "Script_List_Positional_Parameters",
+    # "Script_Last_Error",
+    # "Script_Write_Error",
 
-    # Path and directory
-    "Get-FileNamesFromPath",
-    "Set-LocationToPath",
-    "Set-LocationToScriptRoot",
-    "Save-DirectoryName",
-    "Get-DirectoryNameFromSaved",
+    # # Path and directory
+    # "Get-FileNamesFromPath",
+    # "Set-LocationToPath",
+    # "Set-LocationToScriptRoot",
+    # "Save-DirectoryName",
+    # "Get-DirectoryNameFromSaved",
 
-    "Set-LocationToPath",
-    "Set-LocationToScriptRoot",
-    "Set-DirectoryToScriptRoot",
-    # Waiting & pausing
-    "Wait-AnyKey",
-    "Wait-CheckDoPause",
-    "Wait-YorNorQ",
+    # "Set-LocationToPath",
+    # "Set-LocationToScriptRoot",
+    # "Set-DirectoryToScriptRoot",
+    # # Waiting & pausing
+    # "Wait-AnyKey",
+    # "Wait-CheckDoPause",
+    # "Wait-YorNorQ",
 
-    # Etl
-    "ExtractText",
-    "PackTextArray",
-    "EscapeText",
-    "TrimText",
-    "LogText",
-    "Write-HtlmData",
-    "Search-Dir",
+    # # Etl
+    # "ExtractText",
+    # "PackTextArray",
+    # "EscapeText",
+    # "TrimText",
+    # "LogText",
+    # "Write-HtlmData",
+    # "Search-Directory",
 
-    # Help
-    "Write-Mdm_Help",
-    "Get-Mdm_Help",
-    "Get-HelpHtml",
-    "Export-Help"
-    # )
+    # # Help
+    # "Write-Mdm_Help",
+    # "Get-Mdm_Help",
+    # "Get-HelpHtml",
+    # "Export-Help"
+    )
 
     # Cmdlets to export from this module.
     CmdletsToExport      = @()

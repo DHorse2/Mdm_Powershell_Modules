@@ -5,20 +5,27 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "PowerShell Launch Script",
+            "name": "PowerShell Launch Script (current)",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": " . .\\${fileBasenameNoExtension}",
+            "args": [],
+            "cwd": "${file}"
+        },
+        {
+            "name": "PowerShell Launch Function (current file)",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${fileBasenameNoExtension}",
+            "args": [],
+            "cwd": "${file}"
+        },
+        {
+            "name": "PowerShell Launch Script prompt",
             "type": "PowerShell",
             "request": "launch",
             "script": "Enter path or command to execute, for example, ${workspaceFolder}/src/foo.ps1 or Invoke-Pester",
             "cwd": "${cwd}"
-        },
-        
-        {
-            "type": "PowerShell",
-            "request": "launch",
-            "name": "PowerShell Launch (current file)",
-            "script": "${file}",
-            "args": [],
-            "cwd": "${file}"
         },
         {
             "type": "PowerShell",

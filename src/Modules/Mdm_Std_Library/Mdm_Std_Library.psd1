@@ -10,24 +10,24 @@
     # Mdm_Std_Library
     # Script:
     "Get-AllCommands",
-    "Initialize_Std",
+    "Initialize-Std",
     "Script_DoStart",
-    "Script_ResetStdGlobals",
-    "Script_DisplayStdGlobals",
+    "Initialize-StdGlobalsReset",
+    "Show-StdGlobals",
     "Set-DisplayColors",
-    "Assert-ScriptSecElevated",
+    "Assert-SecElevated",
     "Assert-Verbose",
     # This script:
-    "My_PSCommandPath",
+    "Get-PSCommandPath",
     "Script_Name",
-    "My_Command_InvocationName",
-    "My_Command_Origin",
-    "My_Command_Name",
-    "My_Command_Definition",
-    "My_InvocationMy_PSCommandPath",
-    "Script_List_Positional_Parameters",
-    "Script_Last_Error",
-    "Script_Write_Error",
+    "Get-Command_InvocationName",
+    "Get-Command_Origin",
+    "Get-Command_Name",
+    "Get-Command_Definition",
+    "Get-Invocation_PSCommandPath",
+    "Get-ScriptPositionalParameters",
+    "Get-LastError",
+    "Get-NewError",
 
     # Path and directory
     "Get-FileNamesFromPath",
@@ -38,21 +38,19 @@
     "Get-DirectoryNameFromSaved",
     "Search-Directory",
 
-    "Set-LocationToPath",
-    "Set-LocationToScriptRoot",
     # Waiting & pausing
     "Wait-AnyKey",
     "Wait-CheckDoPause",
     "Wait-YorNorQ",
 
     # Etl
-    "ExtractText",
-    "PackTextArray",
-    "EscapeText",
-    "TrimText",
+    "ConvertTo-Text",
+    "ConvertTo-ObjectArray",
+    "ConvertTo-EscapedText",
+    "ConvertTo-TrimedText",
     # Etl Log
-    "LogText",
-    "LogError",
+    "Add-LogText",
+    "Add-LogError",
     "Get-LogFileName",
     # Etl Html
     "Write-HtlmData",
@@ -60,9 +58,11 @@
     # Help
     "Write-Mdm_Help",
     "Get-Mdm_Help",
+    # "Write-Mdm_Help",
+    "ConvertFrom-HtmlTemplate",
     "Get-HelpHtml",
     "Get-HtmlTemplate",
-    "ApplyHtmoTemplate",
+    "ConvertFrom-HtmlTemplate",
     "Export-Help"
     # )    
     # Cmdlets to export from this module.

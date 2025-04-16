@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PowerShell Help - MacroDM - Mdm_Bootstrap</title>
+    <title>PowerShell Help -  - Mdm_Bootstrap</title>
     <style>
         html,
         body {
@@ -100,73 +100,241 @@
         </div>
     </div>
     <h1>Mdm_Bootstrap</h1>
+<p><strong>Name:</strong> Initialize-Dev_Env_Win about_Mdm_Dev_Env_Install</p>
 <p><strong>Type:</strong> Function HelpFile</p>
-<p><strong>Synopsis:</strong> Length: 58 Length: 70</p>
-<p><strong>Detailed Description:</strong> Text: This is the first step of bootstrapping the Development Environment.
+<p><strong>Synopsis:</strong> Setup (bootstrap) Windows for the Development Environment.</p>
+<p><strong>Detailed Description:</strong> This is the first step of bootstrapping the Development Environment.
 This updates the Windows Environment variables.
 It installs these powershell modules to the system&apos;s directories.
 Set registry, Path and load PowerShell modules.
-$source = &quot;$scriptPath\&quot;
+$source = &quot;$global:scriptPath\&quot;
 $destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Initialize-Dev_Env_Win; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Syntax:</strong> Initialize-Dev_Env_Win
+ UpdatePath
+ description: Switch: A switch to indicate the path should be checked/updated.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>UpdatePath</strong>: Text: Switch: A switch to indicate the path should be checked/updated.</p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
+<p>  - <strong>UpdatePath</strong>: Switch: A switch to indicate the path should be checked/updated.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=todo.}}</p>
+<p><strong>Return: </strong> todo.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Initialize-Dev_Env_Win -SilentMode -UpdatePath      Remarks:    </pre>
+<pre>TOPIC
+    Development Environment Installation Module
+
+SHORT DESCRIPTION
+    The Development Environment Installation Module install or updates it.
+
+SYNOPSIS
+    The Development Environment Installation Module install or updates it.
+
+LONG DESCRIPTION
+    A detailed, full description of the subject or purpose of the module.
+
+DESCRIPTION
+    The development environment consists of a number of components.
+
+    It also includes a few global settings.
+    These are currently set at the top of the Mdm_Std_Library.psm1 file after the help and imports (approx. line 70).
+
+    PARAMETER DoPause
+        Switch to pause at each step/page.
+    PARAMETER DoVerbose
+        Provide detailed information.
+    PARAMETER DoDebug
+        Debug this script.
+
+EXAMPLES
+    Examples of how to use the module or how the subject feature works in practice.
+
+EXAMPLE
+    Get-Dev_Env_Versions -DoVerbose
+
+EXAMPLE
+    Get-Dev_Env_Versions
+
+NOTES
+    needs work.
+
+OUTPUTS
+    Should output a file and display.
+
+KEYWORDS
+    Install Installation Development Environment IDE 
+
+SEE ALSO
+    The help for each component and the html folder found in the Mdm_Bootstrap module.
+</pre>
 <h2>Add-RegistryPath</h2>
+<p><strong>Name:</strong> Add-RegistryPath</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Add to HKLM Environtment Path</p>
-<p><strong>Detailed Description:</strong> Text: This loads the specifiect Path key (PATH by default) and adds the new path to it.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Add-RegistryPath; parameter=@{parameterValue=String; description=System.Management.Automation.PSObject[]; name=envPathToUpdate; required=false; globbing=false; pipelineInput=false; position=1}}</p>
+<p><strong>Detailed Description:</strong> This loads the specifiect Path key (PATH by default) and adds the new path to it.</p>
+<p><strong>Syntax:</strong> Add-RegistryPath
+ envPathToUpdate
+ description: The Path key to use.
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>envPathToUpdate</strong>: Text: The Path key to use.</p>
+<p>  - <strong>envPathToUpdate</strong>: The Path key to use.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
+<p><strong>Return: </strong> none.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Add-RegistryPath "PATH" "c:\SOMEWHERER"      Remarks:    </pre>
 <p></p>
 <h2>Assert-RegistryValue</h2>
+<p><strong>Name:</strong> Assert-RegistryValue</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Return true if Registry Value exists.</p>
-<p><strong>Detailed Description:</strong> Text: Check the registry path &amp; value. Asserts it exists.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Assert-RegistryValue; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Detailed Description:</strong> Check the registry path &amp; value. Asserts it exists.</p>
+<p><strong>Syntax:</strong> Assert-RegistryValue
+ Path
+ description: The Registry Path to check.
+
+ parameterValue: String, required: true, globbing: false, pipelineInput: true (ByValue, ByPropertyName), position: 1 Name
+ description: The Registry Key name (Value) to access.
+
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2 PassThru
+ description: If true this outputs an ItemProperty otherwise true/false
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>Path</strong>: Text: The Registry Path to check.</p>
-<p>  - <strong>Name</strong>: Text: The Registry Key name (Value) to access.</p>
-<p>  - <strong>PassThru</strong>: Text: If true this outputs an ItemProperty otherwise true/false</p>
+<p>  - <strong>Path</strong>: The Registry Path to check.</p>
+<p>  - <strong>Name</strong>: The Registry Key name (Value) to access.</p>
+<p>  - <strong>PassThru</strong>: If true this outputs an ItemProperty otherwise true/false</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=True/Fale if the key exists.
-null/ItemProperty if PassThur switch is present.}}</p>
+<p><strong>Return: </strong> True/Fale if the key exists.
+null/ItemProperty if PassThur switch is present.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Assert-RegistryValue "PATH"      Remarks:    </pre>
 <p></p>
+<h2>Dev_Env_Install_Modules_Win</h2>
+<p><strong>Name:</strong> Dev_Env_Install_Modules_Win</p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install or update Mdm Modules.</p>
+<p><strong>Detailed Description:</strong> This installs the libraries to the live system using Robocopy.</p>
+<p><strong>Syntax:</strong> Dev_Env_Install_Modules_Win
+ DoVerbose
+ description: Provide detailed information.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoPause
+ description: Switch to pause at each step/page.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named source
+ description: default: "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules"
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 destination
+ description: default: "$env:PROGRAMFILES\\WindowsPowerShell\Modules"
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 logFilePath
+ description: default: "G:\Script\Powershell\Mdm_Powershell_Modules\log\"
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 logFileName
+ description: default: "Mdm_Installation_Log.txt"
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 4 LogOneFile
+ description: Switch to not create separate file with the date in the file name.
+
+ required: false, globbing: false, pipelineInput: false, position: named nameFilter
+ description: Default is "Mmd_*". IE. These modules.
+You could override it if you had other local modules to install
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 SkipHelp
+ required: false, globbing: false, pipelineInput: false, position: named SkipRegistry
+ required: false, globbing: false, pipelineInput: false, position: named DoNewWindow
+ description: Switch to execute copy commands in a separate shell window.
+
+ required: false, globbing: false, pipelineInput: false, position: named companyName
+ description: MacroDM currently. It's optional.
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 6 copyOptions
+ description: These are RoboCopy options.
+Currently: "/E /FP /nc /ns /np /TEE"
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 7</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoVerbose</strong>: Provide detailed information.</p>
+<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
+<p>  - <strong>DoDebug</strong>: Debug this script.</p>
+<p>  - <strong>source</strong>: default: &quot;G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules&quot;</p>
+<p>  - <strong>destination</strong>: default: &quot;$env:PROGRAMFILES\\WindowsPowerShell\Modules&quot;</p>
+<p>  - <strong>logFilePath</strong>: default: &quot;G:\Script\Powershell\Mdm_Powershell_Modules\log\&quot;</p>
+<p>  - <strong>logFileName</strong>: default: &quot;Mdm_Installation_Log.txt&quot;</p>
+<p>  - <strong>LogOneFile</strong>: Switch to not create separate file with the date in the file name.</p>
+<p>  - <strong>nameFilter</strong>: Default is &quot;Mmd_*&quot;. IE. These modules.
+You could override it if you had other local modules to install</p>
+<p>  - <strong>SkipHelp</strong>: N/A</p>
+<p>  - <strong>SkipRegistry</strong>: N/A</p>
+<p>  - <strong>DoNewWindow</strong>: Switch to execute copy commands in a separate shell window.</p>
+<p>  - <strong>companyName</strong>: MacroDM currently. It&apos;s optional.</p>
+<p>  - <strong>copyOptions</strong>: These are RoboCopy options.
+Currently: &quot;/E /FP /nc /ns /np /TEE&quot;</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Dev_Env_Install_Modules_Win      Remarks:    </pre>
+<p></p>
+<h2>Dev_Env_LanguageMode</h2>
+<p><strong>Name:</strong> Dev_Env_LanguageMode</p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Dev_Env_LanguageMode [-languageMode] &lt;Object&gt; [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> name: Dev_Env_LanguageMode
+CommonParameters: True
+parameter: @{name=languageMode; required=true; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>languageMode</strong>: N/A</p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
 <h2>Initialize-Dev_Env_Win</h2>
+<p><strong>Name:</strong> Initialize-Dev_Env_Win</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Setup (bootstrap) Windows for the Development Environment.</p>
-<p><strong>Detailed Description:</strong> Text: This is the first step of bootstrapping the Development Environment.
+<p><strong>Detailed Description:</strong> This is the first step of bootstrapping the Development Environment.
 This updates the Windows Environment variables.
 It installs these powershell modules to the system&apos;s directories.
 Set registry, Path and load PowerShell modules.
-$source = &quot;$scriptPath\&quot;
+$source = &quot;$global:scriptPath\&quot;
 $destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Initialize-Dev_Env_Win; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Syntax:</strong> Initialize-Dev_Env_Win
+ UpdatePath
+ description: Switch: A switch to indicate the path should be checked/updated.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>UpdatePath</strong>: Text: Switch: A switch to indicate the path should be checked/updated.</p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
+<p>  - <strong>UpdatePath</strong>: Switch: A switch to indicate the path should be checked/updated.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=todo.}}</p>
+<p><strong>Return: </strong> todo.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Initialize-Dev_Env_Win -SilentMode -UpdatePath      Remarks:    </pre>

@@ -1,7 +1,7 @@
 
 # Script functions
 # ###############################
-function Assert-ScriptSecElevated() {
+function Assert-SecElevated() {
     <#
     .SYNOPSIS
         Elevate script to Administrator.
@@ -14,7 +14,7 @@ function Assert-ScriptSecElevated() {
     .PARAMETER message
         Message to display when elevating.
     .EXAMPLE
-        Set-ScriptSecElevated "Elevating myself."
+        Set-SecElevated "Elevating myself."
     .NOTES
         This works but I think there are problems depending on the shell type.
         ISE for example.
@@ -25,7 +25,7 @@ function Assert-ScriptSecElevated() {
     param (
         # [switch]$DoPause,
         # [switch]$DoVerbose
-    )    # Assert-ScriptSecElevated
+    )    # Assert-SecElevated
     # Self-elevate the script if required
     if (-Not ([Security.Principal.WindowsPrincipal] `
                 [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole( `
@@ -33,15 +33,15 @@ function Assert-ScriptSecElevated() {
         )) {
         return $false
         # if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
-        #     $CommandLine = "-File `"" + $MyInvocation.My_Command_.Path + "`" " + $MyInvocation.UnboundArguments
+        #     $CommandLine = "-File `"" + $MyInvocation.Get-Command_.Path + "`" " + $MyInvocation.UnboundArguments
         #     Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
         #     Exit
         # }
     }
     else { return $true }
 }
-# Set-ScriptSecElevated
-function Set-ScriptSecElevated ($message) {
+# Set-SecElevated
+function Set-SecElevated ($message) {
     <#
     .SYNOPSIS
         Elevate script to Administrator.
@@ -54,14 +54,14 @@ function Set-ScriptSecElevated ($message) {
     .PARAMETER message
         Message to display when elevating.
     .EXAMPLE
-        Set-ScriptSecElevated "Elevating myself."
+        Set-SecElevated "Elevating myself."
     .NOTES
         This works but I think there are problems depending on the shell type.
         ISE for example.
     .OUTPUTS
         None. Returns or Executes current script in an elevated process.
 #>
-    # Set-ScriptSecElevated
+    # Set-SecElevated
     # Get the ID and security principal of the current user account
     $myWindowsID = [System.Security.Principal.WindowsIdentity]::GetCurrent()
     $myWindowsPrincipal = new-object System.Security.Principal.WindowsPrincipal($myWindowsID)
@@ -72,7 +72,7 @@ function Set-ScriptSecElevated ($message) {
     # Check to see if we are currently running "as Administrator"
     if ($myWindowsPrincipal.IsInRole($adminRole)) {
         Write-Verbose "We are running ""as Administrator""."
-        # $Host.UI.RawUI.WindowTitle = $myInvocation.My_Command_.Definition + "(Elevated)"
+        # $Host.UI.RawUI.WindowTitle = $myInvocation.Get-Command_.Definition + "(Elevated)"
         $Host.UI.RawUI.WindowTitle = $Host.UI.RawUI.WindowTitle + " (Elevated)"
         # $Host.UI.RawUI.BackgroundColor = "DarkGray"
         # clear-host
@@ -88,7 +88,7 @@ function Set-ScriptSecElevated ($message) {
         $newProcess = new-object System.Diagnostics.ProcessStartInfo "PowerShell";
             
         # Specify the current script path and name as a parameter
-        $newProcess.Arguments = $myInvocation.My_Command_.Definition;
+        $newProcess.Arguments = $myInvocation.Get-Command_.Definition;
             
         # Indicate that the process should be elevated
         $newProcess.Verb = "runas";
@@ -104,7 +104,7 @@ function Set-ScriptSecElevated ($message) {
     # Write-Verbose -NoNewLine "Press any key to continue..."
     # $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 }
-function Script_ResetStdGlobals {
+function Initialize-StdGlobalsReset {
     <#
     .SYNOPSIS
         Resets the global state.
@@ -129,7 +129,7 @@ function Script_ResetStdGlobals {
     .OUTPUTS
         none.
     .EXAMPLE
-        Script_ResetStdGlobals
+        Initialize-StdGlobalsReset
 #>
     [CmdletBinding()]
     param (
@@ -145,20 +145,20 @@ function Script_ResetStdGlobals {
     $global:DoDebug = $DoDebug
     $global:msgAnykey = $msgAnykey
     $global:msgYorN = $msgYorN
-    $global:initDone = $initDone
+    $global:InitStdDone = $initDone
 }
-function Script_DisplayStdGlobals {
+function Show-StdGlobals {
     <#
     .SYNOPSIS
         Display global state.
     .DESCRIPTION
         Display global and automatic state variables.
     .EXAMPLE
-        Script_DisplayStdGlobals
+        Show-StdGlobals
 #>
     [CmdletBinding()]
     param ()
-    Write-Host "Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug Init: $global:initDone"
+    Write-Host "Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug Init: $global:InitStdDone"
     if ($global:msgAnykey.Lenth -gt 0) {
         Write-Host "Anykey prompt: $global:msgAnykey"
     }
@@ -166,7 +166,7 @@ function Script_DisplayStdGlobals {
         Write-Host "Y,Q or N prompt: $global:msgYorN"
     }
 }
-function Script_ShellPwsh {
+function Push-ShellPwsh {
     <# 
     .DESCRIPTION
 Note: Place [CmdletBinding()] above param(...) to make
@@ -237,7 +237,7 @@ function Script_Name {
     return $MyInvocation.Script_Name 
 }
 
-function Script_Write_Error {
+function Get-NewError {
     <#
 .SYNOPSIS
     Creates a powershell error object.
@@ -279,21 +279,21 @@ Switch: Debug this script.
         -ArgumentList $arguments
     $PSCmdlet.WriteError($ErrorRecord)
 }
-function Script_Last_Error {
+function Get-LastError {
     <#
     .SYNOPSIS
-        Script_Last_Error.
+        Get-LastError.
     .DESCRIPTION
-        Script_Last_Error does Get-Error.
+        Get-LastError does Get-Error.
     .OUTPUTS
         The last error to occur.
     .EXAMPLE
-        Script_Last_Error
+        Get-LastError
 #>
     [CmdletBinding()]
     param ()
-    Get-Error | Write-Host
-    
+    # Get-Error | Write-Host
+    return Get-Error
 }
 function Script_DoStart {
     <#
@@ -317,23 +317,23 @@ function Script_DoStart {
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
     # Import-Module Mdm_Std_Library -Force
-    Script_ResetStdGlobals  `
+    Initialize-StdGlobalsReset  `
         -DoPause $DoPause `
         -DoVerbose $DoVerbose `
         -DoDebug $DoDebug
-    Initialize_Std `
+    Initialize-Std `
         -DoPause $DoPause `
         -DoVerbose $DoVerbose `
         -DoDebug $DoDebug
     if ($global:DoVerbose) { Write-Host "Script Started." }
 }
 # Script_DoStart
-function Script_List_Positional_Parameters {
+function Get-ScriptPositionalParameters {
     <#
     .SYNOPSIS
-        Script_List_Positional_Parameters.
+        Get-ScriptPositionalParameters.
     .DESCRIPTION
-        Script_List_Positional_Parameters.
+        Get-ScriptPositionalParameters.
     .PARAMETER functionName
         The function name to examine.
     .OUTPUTS
@@ -347,7 +347,7 @@ function Script_List_Positional_Parameters {
         Remember, if the output only shows "Named"" then the cmdlet does not accept positional parameters.
         Below, there are two positional parameters: Path and Filter.
     .EXAMPLE
-        Script_List_Positional_Parameters
+        Get-ScriptPositionalParameters
 #>
     [CmdletBinding()]
     param(
@@ -361,96 +361,96 @@ function Script_List_Positional_Parameters {
 # from stackoverflow
 # ###############################
 #
-function My_PSCommandPath { 
+function Get-PSCommandPath { 
     <#
     .SYNOPSIS
-        My_PSCommandPath.
+        Get-PSCommandPath.
     .DESCRIPTION
-        My_PSCommandPath.
+        Get-PSCommandPath.
     .OUTPUTS
-        $My_PSCommandPath
+        $Script_PSCommandPath
     .EXAMPLE
-        My_PSCommandPath
+        Get-PSCommandPath
 #>
     [CmdletBinding()]
     param()
-    return $My_PSCommandPath 
+    return $Script_PSCommandPath 
 }
-function My_Command_InvocationName {
+function Get-Command_InvocationName {
     <#
     .SYNOPSIS
-        My_Command_InvocationName.
+        Get-Command_InvocationName.
     .DESCRIPTION
-        My_Command_InvocationName.
+        Get-Command_InvocationName.
     .OUTPUTS
         $MyInvocation.InvocationName
     .EXAMPLE
-        My_Command_InvocationName
+        Get-Command_InvocationName
 #>
     [CmdletBinding()]
     param()
     return $MyInvocation.InvocationName
 }
-function My_Command_Origin {
+function Get-Command_Origin {
     <#
     .SYNOPSIS
-        My_Command_Origin
+        Get-Command_Origin
     .DESCRIPTION
-        My_Command_Origin
+        Get-Command_Origin
     .OUTPUTS
-        $MyInvocation.My_Command_.CommandOrigin 
+        $MyInvocation.Get-Command_.CommandOrigin 
     .EXAMPLE
-        My_Command_Origin
+        Get-Command_Origin
 #>
     [CmdletBinding()]
     param()
-    return $MyInvocation.My_Command_.CommandOrigin 
+    return $MyInvocation.Get-Command_.CommandOrigin 
 }
-function My_Command_Name {
+function Get-Command_Name {
     <#
     .SYNOPSIS
-        My_Command_Name.
+        Get-Command_Name.
     .DESCRIPTION
-        My_Command_Name.
+        Get-Command_Name.
     .OUTPUTS
-        $MyInvocation.My_Command_.Name 
+        $MyInvocation.Get-Command_.Name 
     .EXAMPLE
-        My_Command_Name
+        Get-Command_Name
 #>
     [CmdletBinding()]
     param()
-    return $MyInvocation.My_Command_.Name 
+    return $MyInvocation.Get-Command_.Name 
 }
-function My_Command_Definition {
+function Get-Command_Definition {
     <#
     .SYNOPSIS
-        My_Command_Definition.
+        Get-Command_Definition.
     .DESCRIPTION
-        My_Command_Definition.
+        Get-Command_Definition.
     .OUTPUTS
-        $MyInvocation.My_Command_.Definition
+        $MyInvocation.Get-Command_.Definition
     .EXAMPLE
-        My_Command_Definition
+        Get-Command_Definition
 #>
     [CmdletBinding()]
     param()
-    # Begin of My_Command_Definition()
+    # Begin of Get-Command_Definition()
     # Note: ouput of this script shows the contents of this function, not the execution result
-    return $MyInvocation.My_Command_.Definition
-    # End of My_Command_Definition()
+    return $MyInvocation.Get-Command_.Definition
+    # End of Get-Command_Definition()
 }
-function My_InvocationMy_PSCommandPath { 
+function Get-Invocation_PSCommandPath { 
     <#
     .SYNOPSIS
-        My_InvocationMy_PSCommandPath.
+        Get-Invocation_PSCommandPath.
     .DESCRIPTION
-        My_InvocationMy_PSCommandPath.
+        Get-Invocation_PSCommandPath.
     .OUTPUTS
-        $MyInvocation.My_PSCommandPath 
+        $MyInvocation.Get-PSCommandPath 
     .EXAMPLE
-        My_InvocationMy_PSCommandPath
+        Get-Invocation_PSCommandPath
 #>
     [CmdletBinding()]
     param()
-    return $MyInvocation.My_PSCommandPath 
+    return $MyInvocation.Get-PSCommandPath 
 }

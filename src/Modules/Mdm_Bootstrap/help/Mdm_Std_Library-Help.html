@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PowerShell Help - MacroDM - Mdm_Std_Library</title>
+    <title>PowerShell Help -  - </title>
     <style>
         html,
         body {
@@ -91,7 +91,7 @@
             document.documentElement.classList.toggle('dark-mode')
         })
     </script>
-    <h1>Help for Module: Mdm_Std_Library</h1>
+    <h1>Help for Module: </h1>
     <div class="wrapper">
         <div class="circle outer">
             <div class="circle inner">
@@ -100,9 +100,10 @@
         </div>
     </div>
     <h1>Mdm_Std_Library</h1>
+<p><strong>Name:</strong> Write-Mdm_Help about_Mdm_Dev_Env_Install</p>
 <p><strong>Type:</strong> Function HelpFile</p>
-<p><strong>Synopsis:</strong> Length: 54 Length: 70</p>
-<p><strong>Detailed Description:</strong> Text: This runs Get-Modules and Get-Command functions to create help files.
+<p><strong>Synopsis:</strong> Generates the extended help files for the Mdm Modules.</p>
+<p><strong>Detailed Description:</strong> This runs Get-Modules and Get-Command functions to create help files.
 The general intent is to have function lists.
 To correctly run this command (showing which module it belongs to) enter:
 ```powershell
@@ -110,548 +111,860 @@ Import-Module -name Mdm_Std_Library -force
 ```
 This function re-imports the other module in the correct order.
 Note: It should not need to be run unless changes were made to the Mdm Modules.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Write-Mdm_Help; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Syntax:</strong> Write-Mdm_Help
+ moduleRoot
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 localModuleNames
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>moduleRoot</strong>: N/A</p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
+<p>  - <strong>localModuleNames</strong>: N/A</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Import-Module -name Mdm_Std_Library -force
 Write-Mdm_Help -DoVerbose -DoPause      Remarks:    </pre>
+<pre>TOPIC
+    Development Environment Installation Module
+
+SHORT DESCRIPTION
+    The Development Environment Installation Module install or updates it.
+
+SYNOPSIS
+    The Development Environment Installation Module install or updates it.
+
+LONG DESCRIPTION
+    A detailed, full description of the subject or purpose of the module.
+
+DESCRIPTION
+    The development environment consists of a number of components.
+
+    It also includes a few global settings.
+    These are currently set at the top of the Mdm_Std_Library.psm1 file after the help and imports (approx. line 70).
+
+    PARAMETER DoPause
+        Switch to pause at each step/page.
+    PARAMETER DoVerbose
+        Provide detailed information.
+    PARAMETER DoDebug
+        Debug this script.
+
+EXAMPLES
+    Examples of how to use the module or how the subject feature works in practice.
+
+EXAMPLE
+    Get-Dev_Env_Versions -DoVerbose
+
+EXAMPLE
+    Get-Dev_Env_Versions
+
+NOTES
+    needs work.
+
+OUTPUTS
+    Should output a file and display.
+
+KEYWORDS
+    Install Installation Development Environment IDE 
+
+SEE ALSO
+    The help for each component and the html folder found in the Mdm_Bootstrap module.
+</pre>
+<h2>Add-LogText</h2>
+<p><strong>Name:</strong> Add-LogText</p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Add-LogText [-logMessages] &lt;Object&gt; [[-localLogFileNameFull] &lt;Object&gt;] [[-foregroundColor] &lt;Object&gt;] [[-backgroundColor] &lt;Object&gt;] [[-ErrorPSItem] &lt;Object&gt;] [-keepWhitespace] [-keepEscapes] [-isError] [-isWarning] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> name: Add-LogText
+CommonParameters: True
+parameter:</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>ErrorPSItem</strong>: N/A</p>
+<p>  - <strong>backgroundColor</strong>: N/A</p>
+<p>  - <strong>foregroundColor</strong>: N/A</p>
+<p>  - <strong>isError</strong>: N/A</p>
+<p>  - <strong>isWarning</strong>: N/A</p>
+<p>  - <strong>keepEscapes</strong>: N/A</p>
+<p>  - <strong>keepWhitespace</strong>: N/A</p>
+<p>  - <strong>localLogFileNameFull</strong>: N/A</p>
+<p>  - <strong>logMessages</strong>: N/A</p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
 <h2>Assert-ScriptSecElevated</h2>
+<p><strong>Name:</strong> Assert-ScriptSecElevated</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Elevate script to Administrator.</p>
-<p><strong>Detailed Description:</strong> Text: Get the security principal for the Administrator role.
+<p><strong>Detailed Description:</strong> Get the security principal for the Administrator role.
 Check to see if we are currently running &quot;as Administrator&quot;,
 Create a new process object that starts PowerShell,
 Indicate that the process should be elevated (&quot;runas&quot;),
 Start the new process.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Assert-ScriptSecElevated}</p>
+<p><strong>Syntax:</strong> Assert-ScriptSecElevated</p>
 <p></p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=None. Returns or Executes current script in an elevated process.}}</p>
+<p><strong>Return: </strong> None. Returns or Executes current script in an elevated process.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Set-ScriptSecElevated "Elevating myself."      Remarks:    </pre>
 <p></p>
 <h2>Assert-Verbose</h2>
+<p><strong>Name:</strong> Assert-Verbose</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Asserts verbose is on.</p>
-<p><strong>Detailed Description:</strong> Text: Should check state.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Assert-Verbose}</p>
+<p><strong>Detailed Description:</strong> Should check state.</p>
+<p><strong>Syntax:</strong> Assert-Verbose</p>
 <p></p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=True if verbose is on}}</p>
+<p><strong>Return: </strong> True if verbose is on</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: If (Assert-Verbose) { $null }      Remarks:    </pre>
 <p></p>
-<h2>EscapeText</h2>
-<p>There is no help for function: EscapeText. Cannot bind argument to parameter 'textIn' because it is null.</p>
-<p></p>
-<h2>ExecuteProcessWithTimeout</h2>
+<h2>ConvertFrom-HtmlTemplate</h2>
+<p><strong>Name:</strong> ConvertFrom-HtmlTemplate</p>
 <p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Execute a command.</p>
-<p><strong>Detailed Description:</strong> Text: This executes the supplied command with a timeout.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=ExecuteProcessWithTimeout; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Synopsis:</strong> 
+ConvertFrom-HtmlTemplate [-htmlContent] &lt;Object&gt; [-htmlDocTemplate] &lt;Object&gt; [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> name: ConvertFrom-HtmlTemplate
+CommonParameters: True
+parameter:</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>command</strong>: Text: Command to execute.</p>
-<p>  - <strong>timeout</strong>: Text: The timeout.</p>
+<p>  - <strong>htmlContent</strong>: N/A</p>
+<p>  - <strong>htmlDocTemplate</strong>: N/A</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=Performs the command.}}</p>
+<p><strong>Return: </strong> System.Object</p>
 <p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: ExecuteProcessWithTimeout "notepad.exe" 30      Remarks:    </pre>
+<p></p>
+<h2>EscapeText</h2>
+<p><strong>Name:</strong> EscapeText</p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+EscapeText [-textIn] &lt;Object&gt; [[-localLogFileNameFull] &lt;Object&gt;] [-keepWhitespace] [-keepEscapes] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> name: EscapeText
+CommonParameters: True
+parameter:</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>keepEscapes</strong>: N/A</p>
+<p>  - <strong>keepWhitespace</strong>: N/A</p>
+<p>  - <strong>localLogFileNameFull</strong>: N/A</p>
+<p>  - <strong>textIn</strong>: N/A</p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
 <p></p>
 <h2>Export-Help</h2>
-<p>There is no help for function: Export-Help. Cannot bind argument to parameter 'textIn' because it is null.</p>
+<p><strong>Name:</strong> Export-Help</p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Export-Help [[-moduleRoot] &lt;Object&gt;] [[-localLogFileNameFull] &lt;Object&gt;] [[-nameFilter] &lt;Object&gt;] [-DoPause] [-DoVerbose] [-DoDebug] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> name: Export-Help
+CommonParameters: True
+parameter:</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoDebug</strong>: N/A</p>
+<p>  - <strong>DoPause</strong>: N/A</p>
+<p>  - <strong>DoVerbose</strong>: N/A</p>
+<p>  - <strong>localLogFileNameFull</strong>: N/A</p>
+<p>  - <strong>moduleRoot</strong>: N/A</p>
+<p>  - <strong>nameFilter</strong>: N/A</p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
 <p></p>
 <h2>ExtractText</h2>
-<p>There is no help for function: ExtractText. Cannot bind argument to parameter 'textIn' because it is null.</p>
+<p><strong>Name:</strong> ExtractText</p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+ExtractText [-textIn] &lt;Object&gt; [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> name: ExtractText
+CommonParameters: True
+parameter: @{name=textIn; required=true; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>textIn</strong>: N/A</p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
 <p></p>
 <h2>Get-AllCommands</h2>
-<p>There is no help for function: Get-AllCommands. Cannot bind argument to parameter 'textIn' because it is null.</p>
+<p><strong>Name:</strong> Get-AllCommands</p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Get-AllCommands [[-moduleRoot] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> name: Get-AllCommands
+CommonParameters: True
+parameter: @{name=moduleRoot; required=false; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>moduleRoot</strong>: N/A</p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
 <p></p>
 <h2>Get-DirectoryNameFromSaved</h2>
+<p><strong>Name:</strong> Get-DirectoryNameFromSaved</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Get saved directory.</p>
-<p><strong>Detailed Description:</strong> Text: This allow you to store the directory where the command was issued
+<p><strong>Detailed Description:</strong> This allow you to store the directory where the command was issued
 and later restore that state.
 Don&apos;t alter the Saved Working Directory
 when setting to a passed Working Directory.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Get-DirectoryNameFromSaved; parameter=@{parameterValue=String; description=System.Management.Automation.PSObject[]; name=dirWdPassed; required=false; globbing=false; pipelineInput=false; position=1}}</p>
+<p><strong>Syntax:</strong> Get-DirectoryNameFromSaved
+ dirWdPassed
+ description: An optional directory to use.
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>dirWdPassed</strong>: Text: An optional directory to use.</p>
+<p>  - <strong>dirWdPassed</strong>: An optional directory to use.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=Does a Set-Location to this directory. Rhelpeturns it as a string.}}</p>
+<p><strong>Return: </strong> Does a Set-Location to this directory. Rhelpeturns it as a string.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Get-DirectoryNameFromSaved      Remarks:    </pre>
 <p></p>
 <h2>Get-FileNamesFromPath</h2>
+<p><strong>Name:</strong> Get-FileNamesFromPath</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Creates a list of files in a directory.</p>
-<p><strong>Detailed Description:</strong> Text: Creates a list of files in a directory.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Get-FileNamesFromPath; parameter=@{parameterValue=String; description=System.Management.Automation.PSObject[]; name=SourcePath; required=false; globbing=false; pipelineInput=false; position=1}}</p>
+<p><strong>Detailed Description:</strong> Creates a list of files in a directory.</p>
+<p><strong>Syntax:</strong> Get-FileNamesFromPath
+ SourcePath
+ description: The folder to list the files of.
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>SourcePath</strong>: Text: The folder to list the files of.</p>
+<p>  - <strong>SourcePath</strong>: The folder to list the files of.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=A list of files.}}</p>
+<p><strong>Return: </strong> A list of files.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Get-FileNamesFromPath "C:\Progams places"      Remarks:    </pre>
 <p></p>
 <h2>Get-HelpHtml</h2>
-<p>There is no help for function: Get-HelpHtml. Cannot bind argument to parameter 'textIn' because it is null.</p>
-<p></p>
-<h2>Get-Mdm_Help</h2>
+<p><strong>Name:</strong> Get-HelpHtml</p>
 <p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Displays the help files for the Mdm Modules.</p>
-<p><strong>Detailed Description:</strong> Text: You can display the help Using DoPause and DoVerbose for detailed help.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Get-Mdm_Help; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Synopsis:</strong> 
+Get-HelpHtml [-helpInfoObject] &lt;Object&gt; [[-htmlContentLocal] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> name: Get-HelpHtml
+CommonParameters: True
+parameter:</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
+<p>  - <strong>helpInfoObject</strong>: N/A</p>
+<p>  - <strong>htmlContentLocal</strong>: N/A</p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Get-HtmlTemplate</h2>
+<p><strong>Name:</strong> Get-HtmlTemplate</p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Get-HtmlTemplate [-templateNameFull] &lt;Object&gt; [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> name: Get-HtmlTemplate
+CommonParameters: True
+parameter: @{name=templateNameFull; required=true; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>templateNameFull</strong>: N/A</p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Get-LogFileName</h2>
+<p><strong>Name:</strong> Get-LogFileName</p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Get-LogFileName [[-localLogFileNameFull] &lt;Object&gt;] [-LogOneFile] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> name: Get-LogFileName
+CommonParameters: True
+parameter:</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>LogOneFile</strong>: N/A</p>
+<p>  - <strong>localLogFileNameFull</strong>: N/A</p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Get-Mdm_Help</h2>
+<p><strong>Name:</strong> Get-Mdm_Help</p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Displays the help files for the Mdm Modules.</p>
+<p><strong>Detailed Description:</strong> You can display the help Using DoPause and DoVerbose for detailed help.</p>
+<p><strong>Syntax:</strong> Get-Mdm_Help
+ DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Get-Mdm_Help -DoVerbose -DoPause      Remarks:    </pre>
 <p></p>
-<h2>Get-TestHtmlData</h2>
-<p>There is no help for function: Get-TestHtmlData. Cannot bind argument to parameter 'textIn' because it is null.</p>
-<p></p>
 <h2>Initialize_Std</h2>
+<p><strong>Name:</strong> Initialize_Std</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Initializes a script..</p>
-<p><strong>Detailed Description:</strong> Text: This processes switches, automatic variables, state.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Initialize_Std; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Detailed Description:</strong> This processes switches, automatic variables, state.</p>
+<p><strong>Syntax:</strong> Initialize_Std
+ DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=Global variables are set.}}</p>
+<p><strong>Return: </strong> Global variables are set.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- -------------------------- EXAMPLE 2 --------------------------        Label:   Introduction:         Syntax: Initialize_Std -DoPause $DoPause -DoVerbose $DoVerbose Script_ResetStdGlobals
 Initialize_Std -DoPause $DoPause -DoVerbose $DoVerbose      Remarks:         </pre>
 <p></p>
 <h2>LogError</h2>
-<p>There is no help for function: LogError. Cannot bind argument to parameter 'textIn' because it is null.</p>
+<p><strong>Name:</strong> LogError</p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+LogError [-logMessage] &lt;Object&gt; [-ErrorPSItem] &lt;Object&gt; [[-localLogFileNameFull] &lt;Object&gt;] [[-foregroundColor] &lt;Object&gt;] [[-backgroundColor] &lt;Object&gt;] [-isError] [-isWarning] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> name: LogError
+CommonParameters: True
+parameter:</p>
 <p></p>
-<h2>LogText</h2>
-<p>There is no help for function: LogText. Cannot bind argument to parameter 'textIn' because it is null.</p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>ErrorPSItem</strong>: N/A</p>
+<p>  - <strong>backgroundColor</strong>: N/A</p>
+<p>  - <strong>foregroundColor</strong>: N/A</p>
+<p>  - <strong>isError</strong>: N/A</p>
+<p>  - <strong>isWarning</strong>: N/A</p>
+<p>  - <strong>localLogFileNameFull</strong>: N/A</p>
+<p>  - <strong>logMessage</strong>: N/A</p>
 <p></p>
-<h2>LogTextOld</h2>
-<p>There is no help for function: LogTextOld. Cannot bind argument to parameter 'textIn' because it is null.</p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
 <p></p>
 <h2>My_Command_Definition</h2>
+<p><strong>Name:</strong> My_Command_Definition</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> My_Command_Definition.</p>
-<p><strong>Detailed Description:</strong> Text: My_Command_Definition.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=My_Command_Definition}</p>
+<p><strong>Detailed Description:</strong> My_Command_Definition.</p>
+<p><strong>Syntax:</strong> My_Command_Definition</p>
 <p></p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=$MyInvocation.My_Command_.Definition}}</p>
+<p><strong>Return: </strong> $MyInvocation.My_Command_.Definition</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: My_Command_Definition      Remarks:    </pre>
 <p></p>
 <h2>My_Command_InvocationName</h2>
+<p><strong>Name:</strong> My_Command_InvocationName</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> My_Command_InvocationName.</p>
-<p><strong>Detailed Description:</strong> Text: My_Command_InvocationName.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=My_Command_InvocationName}</p>
+<p><strong>Detailed Description:</strong> My_Command_InvocationName.</p>
+<p><strong>Syntax:</strong> My_Command_InvocationName</p>
 <p></p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=$MyInvocation.InvocationName}}</p>
+<p><strong>Return: </strong> $MyInvocation.InvocationName</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: My_Command_InvocationName      Remarks:    </pre>
 <p></p>
 <h2>My_Command_Name</h2>
+<p><strong>Name:</strong> My_Command_Name</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> My_Command_Name.</p>
-<p><strong>Detailed Description:</strong> Text: My_Command_Name.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=My_Command_Name}</p>
+<p><strong>Detailed Description:</strong> My_Command_Name.</p>
+<p><strong>Syntax:</strong> My_Command_Name</p>
 <p></p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=$MyInvocation.My_Command_.Name}}</p>
+<p><strong>Return: </strong> $MyInvocation.My_Command_.Name</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: My_Command_Name      Remarks:    </pre>
 <p></p>
 <h2>My_Command_Origin</h2>
+<p><strong>Name:</strong> My_Command_Origin</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> My_Command_Origin</p>
-<p><strong>Detailed Description:</strong> Text: My_Command_Origin</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=My_Command_Origin}</p>
+<p><strong>Detailed Description:</strong> My_Command_Origin</p>
+<p><strong>Syntax:</strong> My_Command_Origin</p>
 <p></p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=$MyInvocation.My_Command_.CommandOrigin}}</p>
+<p><strong>Return: </strong> $MyInvocation.My_Command_.CommandOrigin</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: My_Command_Origin      Remarks:    </pre>
 <p></p>
 <h2>My_InvocationMy_PSCommandPath</h2>
+<p><strong>Name:</strong> My_InvocationMy_PSCommandPath</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> My_InvocationMy_PSCommandPath.</p>
-<p><strong>Detailed Description:</strong> Text: My_InvocationMy_PSCommandPath.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=My_InvocationMy_PSCommandPath}</p>
+<p><strong>Detailed Description:</strong> My_InvocationMy_PSCommandPath.</p>
+<p><strong>Syntax:</strong> My_InvocationMy_PSCommandPath</p>
 <p></p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=$MyInvocation.My_PSCommandPath}}</p>
+<p><strong>Return: </strong> $MyInvocation.My_PSCommandPath</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: My_InvocationMy_PSCommandPath      Remarks:    </pre>
 <p></p>
 <h2>My_PSCommandPath</h2>
+<p><strong>Name:</strong> My_PSCommandPath</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> My_PSCommandPath.</p>
-<p><strong>Detailed Description:</strong> Text: My_PSCommandPath.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=My_PSCommandPath}</p>
+<p><strong>Detailed Description:</strong> My_PSCommandPath.</p>
+<p><strong>Syntax:</strong> My_PSCommandPath</p>
 <p></p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=$My_PSCommandPath}}</p>
+<p><strong>Return: </strong> $My_PSCommandPath</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: My_PSCommandPath      Remarks:    </pre>
 <p></p>
 <h2>PackTextArray</h2>
-<p>There is no help for function: PackTextArray. Cannot bind argument to parameter 'textIn' because it is null.</p>
-<p></p>
-<h2>Save-DirectoryName</h2>
+<p><strong>Name:</strong> PackTextArray</p>
 <p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Save working directory.</p>
-<p><strong>Detailed Description:</strong> Text: Save working directory with a view to restoring it later.
-The default is to save the current directoy.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Save-DirectoryName; parameter=@{parameterValue=String; description=System.Management.Automation.PSObject[]; name=dirWdPassed; required=false; globbing=false; pipelineInput=false; position=1}}</p>
+<p><strong>Synopsis:</strong> 
+PackTextArray [[-InputObjects] &lt;Object[]&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> name: PackTextArray
+CommonParameters: True
+parameter: @{name=InputObjects; required=false; pipelineInput=true (ByValue, ByPropertyName); isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object[]; type=; position=0; aliases=None}</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>dirWdPassed</strong>: Text: The Working Directory Name.</p>
+<p>  - <strong>InputObjects</strong>: N/A</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Save-DirectoryName</h2>
+<p><strong>Name:</strong> Save-DirectoryName</p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Save working directory.</p>
+<p><strong>Detailed Description:</strong> Save working directory with a view to restoring it later.
+The default is to save the current directoy.</p>
+<p><strong>Syntax:</strong> Save-DirectoryName
+ dirWdPassed
+ description: The Working Directory Name.
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>dirWdPassed</strong>: The Working Directory Name.</p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Save-DirectoryName "C:\PathToSave"      Remarks:    </pre>
 <p></p>
 <h2>Script_DisplayStdGlobals</h2>
+<p><strong>Name:</strong> Script_DisplayStdGlobals</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Display global state.</p>
-<p><strong>Detailed Description:</strong> Text: Display global and automatic state variables.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Script_DisplayStdGlobals}</p>
-<p></p>
+<p><strong>Detailed Description:</strong> Display global and automatic state variables.</p>
+<p><strong>Syntax:</strong> Script_DisplayStdGlobals</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Script_DisplayStdGlobals      Remarks:    </pre>
 <p></p>
 <h2>Script_DoStart</h2>
+<p><strong>Name:</strong> Script_DoStart</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Reset and initialize.</p>
-<p><strong>Detailed Description:</strong> Text: This resets the global values and call the initializations.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Script_DoStart; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Detailed Description:</strong> This resets the global values and call the initializations.</p>
+<p><strong>Syntax:</strong> Script_DoStart
+ DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
+<p><strong>Return: </strong> none.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Script_DoStart -DoVerbose      Remarks:    </pre>
 <p></p>
 <h2>Script_Last_Error</h2>
+<p><strong>Name:</strong> Script_Last_Error</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Script_Last_Error.</p>
-<p><strong>Detailed Description:</strong> Text: Script_Last_Error does Get-Error.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Script_Last_Error}</p>
+<p><strong>Detailed Description:</strong> Script_Last_Error does Get-Error.</p>
+<p><strong>Syntax:</strong> Script_Last_Error</p>
 <p></p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=The last error to occur.}}</p>
+<p><strong>Return: </strong> The last error to occur.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Script_Last_Error      Remarks:    </pre>
 <p></p>
 <h2>Script_List_Positional_Parameters</h2>
+<p><strong>Name:</strong> Script_List_Positional_Parameters</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Script_List_Positional_Parameters.</p>
-<p><strong>Detailed Description:</strong> Text: Script_List_Positional_Parameters.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Script_List_Positional_Parameters; parameter=@{parameterValue=String; description=System.Management.Automation.PSObject[]; name=functionName; required=true; globbing=false; pipelineInput=false; position=1}}</p>
+<p><strong>Detailed Description:</strong> Script_List_Positional_Parameters.</p>
+<p><strong>Syntax:</strong> Script_List_Positional_Parameters
+ functionName
+ description: The function name to examine.
+
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>functionName</strong>: Text: The function name to examine.</p>
+<p>  - <strong>functionName</strong>: The function name to examine.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=A list pof positional paramaters for that function.}}</p>
+<p><strong>Return: </strong> A list pof positional paramaters for that function.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Script_List_Positional_Parameters      Remarks:    </pre>
 <p></p>
 <h2>Script_Name</h2>
+<p><strong>Name:</strong> Script_Name</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Get Script Name.</p>
-<p><strong>Detailed Description:</strong> Text: Get $MyInvocation.Script_Name.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Script_Name}</p>
+<p><strong>Detailed Description:</strong> Get $MyInvocation.Script_Name.</p>
+<p><strong>Syntax:</strong> Script_Name</p>
 <p></p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=$MyInvocation.Script_Name}}</p>
+<p><strong>Return: </strong> $MyInvocation.Script_Name</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Script_Name      Remarks:    </pre>
 <p></p>
 <h2>Script_ResetStdGlobals</h2>
+<p><strong>Name:</strong> Script_ResetStdGlobals</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Resets the global state.</p>
-<p><strong>Detailed Description:</strong> Text: This equates to, and uses, 
+<p><strong>Detailed Description:</strong> This equates to, and uses, 
     automatic variables, 
     $PS variables, 
     module metadata and
     state.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Script_ResetStdGlobals; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Syntax:</strong> Script_ResetStdGlobals
+ DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named msgAnykey
+ description: The prompt for "Enter any key".
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 msgYorN
+ description: The prompt for "Enter Y, N, or Q to quit".
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 initDone
+ description: Switch: indicates initialization is done.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
-<p>  - <strong>msgAnykey</strong>: Text: The prompt for &quot;Enter any key&quot;.</p>
-<p>  - <strong>msgYorN</strong>: Text: The prompt for &quot;Enter Y, N, or Q to quit&quot;.</p>
-<p>  - <strong>initDone</strong>: Text: Switch: indicates initialization is done.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p>  - <strong>msgAnykey</strong>: The prompt for &quot;Enter any key&quot;.</p>
+<p>  - <strong>msgYorN</strong>: The prompt for &quot;Enter Y, N, or Q to quit&quot;.</p>
+<p>  - <strong>initDone</strong>: Switch: indicates initialization is done.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
+<p><strong>Return: </strong> none.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Script_ResetStdGlobals      Remarks:    </pre>
 <p></p>
-<h2>Script_ShellPwsh</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> No detailed description available.</p>
-<p><strong>Detailed Description:</strong> Text: Note: Place [CmdletBinding()] above param(...) to make
-       the script an *advanced* one, which then prevents passing
-       extra arguments that don&apos;t bind to declared parameters.
-Issue: Example:
-@powershell -ExecutionPolicy Bypass -File &quot;test.ps1&quot; -stringParam &quot;testing&quot; -switchParam `
-    &gt; &quot;output.txt&quot; 2&gt;&amp;1
-The script I am calling requires PowerShell 7+, 
-    so I need to restart the script by calling pwsh 
-    with the current parameters. 
-I planned to accomplish this via the following:
-Invoke-Command { &amp; pwsh -Command $MyInvocation.Line } -NoNewScope
-Unfortunately, $MyInvocation.Line does not return the correct result
-     when a PowerShell script is called from a batch file.
-     What alternatives exist that would work in this scenario?</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Script_ShellPwsh; parameter=System.Management.Automation.PSObject[]}</p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>stringParam</strong>: N/A</p>
-<p>  - <strong>switchParam</strong>: N/A</p>
-<p></p>
-<p></p>
 <h2>Script_Write_Error</h2>
+<p><strong>Name:</strong> Script_Write_Error</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Creates a powershell error object.</p>
-<p><strong>Detailed Description:</strong> Text: Uses $PSCmdlet.WriteError to create a powershell error.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Script_Write_Error; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Detailed Description:</strong> Uses $PSCmdlet.WriteError to create a powershell error.</p>
+<p><strong>Syntax:</strong> Script_Write_Error
+ Message
+ description: The error message.
+
+ parameterValue: Exception, required: false, globbing: false, pipelineInput: false, position: 1 ErrorCategory
+ description: The error type.
+
+ parameterValueGroup: @{parameterValue=System.Management.Automation.PSObject[]}, required: false, globbing: false, pipelineInput: false, position: 2 DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>Message</strong>: Text: The error message.</p>
-<p>  - <strong>ErrorCategory</strong>: Text: The error type.</p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
+<p>  - <strong>Message</strong>: The error message.</p>
+<p>  - <strong>ErrorCategory</strong>: The error type.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=An error object from what I can tell.}}</p>
+<p><strong>Return: </strong> An error object from what I can tell.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: todo PsError Example      Remarks:    </pre>
 <p></p>
-<h2>Search-Dir</h2>
+<h2>Search-Directory</h2>
+<p><strong>Name:</strong> Search-Directory</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Search a folder for files or (todo) something else.</p>
-<p><strong>Detailed Description:</strong> Text: Currently just outputs the folder list to a CSV file.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Search-Dir; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Detailed Description:</strong> Currently just outputs the folder list to a CSV file.</p>
+<p><strong>Syntax:</strong> Search-Directory
+ inputObjects
+ description: This is a ValueFromPipeline and can be used with one or more objects.
+
+ parameterValue: Object, required: false, globbing: false, pipelineInput: true (ByValue), position: 1 dir
+ description: This defaults to "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules".
+
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 folder
+ description: Defaults to (Get-Item $dir).Parent.
+
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 3 folderName
+ description: Defaults to folder.Name.
+
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 4 folderPath
+ description: Defaults to folder.FullName.
+
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 5</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>inputObjects</strong>: Text: This is a ValueFromPipeline and can be used with one or more objects.</p>
-<p>  - <strong>dir</strong>: Text: This defaults to &quot;G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules&quot;.</p>
-<p>  - <strong>folder</strong>: Text: Defaults to (Get-Item $dir).Parent.</p>
-<p>  - <strong>folderName</strong>: Text: Defaults to folder.Name.</p>
-<p>  - <strong>folderPath</strong>: Text: Defaults to folder.FullName.</p>
+<p>  - <strong>inputObjects</strong>: This is a ValueFromPipeline and can be used with one or more objects.</p>
+<p>  - <strong>dir</strong>: This defaults to &quot;G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules&quot;.</p>
+<p>  - <strong>folder</strong>: Defaults to (Get-Item $dir).Parent.</p>
+<p>  - <strong>folderName</strong>: Defaults to folder.Name.</p>
+<p>  - <strong>folderPath</strong>: Defaults to folder.FullName.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=Export-Csv &apos;.\output.csv&apos;.}}</p>
+<p><strong>Return: </strong> Export-Csv &apos;.\output.csv&apos;.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Search-Dir "G:\Script\Powershell\".      Remarks:    </pre>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Search-Directory "G:\Script\Powershell\".      Remarks:    </pre>
 <p></p>
 <h2>Set-DirectoryToScriptRoot</h2>
+<p><strong>Name:</strong> Set-DirectoryToScriptRoot</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Set directory to the script&apos;s root directory.</p>
-<p><strong>Detailed Description:</strong> Text: Set the working directory to the script&apos;s root directory..</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Set-DirectoryToScriptRoot; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Detailed Description:</strong> Set the working directory to the script&apos;s root directory..</p>
+<p><strong>Syntax:</strong> Set-DirectoryToScriptRoot
+ global:scriptPath
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 1 scriptDrive
+ description: Optional drive letter.
+
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>scriptPath</strong>: Text: Optional path to use.</p>
-<p>  - <strong>scriptDrive</strong>: Text: Optional drive letter.</p>
+<p>  - <strong>global:scriptPath</strong>: N/A</p>
+<p>  - <strong>scriptDrive</strong>: Optional drive letter.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
+<p><strong>Return: </strong> none.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Set-DirectoryToScriptRoot      Remarks:    </pre>
 <p></p>
 <h2>Set-DisplayColors</h2>
-<p>There is no help for function: Set-DisplayColors. Cannot bind argument to parameter 'textIn' because it is null.</p>
-<p></p>
-<h2>Set-LocationToPath</h2>
+<p><strong>Name:</strong> Set-DisplayColors</p>
 <p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Set the currrent directory.</p>
-<p><strong>Detailed Description:</strong> Text: Set the currrent working directory to the passed path.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Set-LocationToPath; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Synopsis:</strong> 
+Set-DisplayColors [[-WarningBackgroundColor] &lt;Object&gt;] [[-WarningForegroundColor] &lt;Object&gt;] [[-ErrorBackgroundColor] &lt;Object&gt;] [[-ErrorForegroundColor] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> name: Set-DisplayColors
+CommonParameters: True
+parameter:</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>workingDirectory</strong>: Text: The direcotry to set as the current working directory.</p>
-<p>  - <strong>saveDirectory</strong>: Text: Save the passed directory path.</p>
+<p>  - <strong>ErrorBackgroundColor</strong>: N/A</p>
+<p>  - <strong>ErrorForegroundColor</strong>: N/A</p>
+<p>  - <strong>WarningBackgroundColor</strong>: N/A</p>
+<p>  - <strong>WarningForegroundColor</strong>: N/A</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Set-LocationToPath</h2>
+<p><strong>Name:</strong> Set-LocationToPath</p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Set the currrent directory.</p>
+<p><strong>Detailed Description:</strong> Set the currrent working directory to the passed path.</p>
+<p><strong>Syntax:</strong> Set-LocationToPath
+ workingDirectory
+ description: The direcotry to set as the current working directory.
+
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 saveDirectory
+ description: Save the passed directory path.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>workingDirectory</strong>: The direcotry to set as the current working directory.</p>
+<p>  - <strong>saveDirectory</strong>: Save the passed directory path.</p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Set-LocationToPath "C:\temp"      Remarks:    </pre>
 <p></p>
 <h2>Set-LocationToScriptRoot</h2>
+<p><strong>Name:</strong> Set-LocationToScriptRoot</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Set location to script root.</p>
-<p><strong>Detailed Description:</strong> Text: Set location to script root.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Set-LocationToScriptRoot; parameter=@{description=System.Management.Automation.PSObject[]; name=saveDirectory; required=false; globbing=false; pipelineInput=false; position=named}}</p>
+<p><strong>Detailed Description:</strong> Set location to script root.</p>
+<p><strong>Syntax:</strong> Set-LocationToScriptRoot
+ saveDirectory
+ description: Switch: Save the current directory.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>saveDirectory</strong>: Text: Switch: Save the current directory.</p>
+<p>  - <strong>saveDirectory</strong>: Switch: Save the current directory.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
+<p><strong>Return: </strong> none.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Set-LocationToScriptRoot -saveDirectory      Remarks:    </pre>
 <p></p>
-<h2>Set-prompt</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Set command prompt.</p>
-<p><strong>Detailed Description:</strong> Text: Set command prompt to Module default.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Set-prompt; parameter=System.Management.Automation.PSObject[]}</p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>prefix</strong>: N/A</p>
-<p>  - <strong>body</strong>: N/A</p>
-<p>  - <strong>suffix</strong>: N/A</p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Set-prompt      Remarks:    </pre>
-<p></p>
-<h2>Set-ScriptSecElevated</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Elevate script to Administrator.</p>
-<p><strong>Detailed Description:</strong> Text: Get the security principal for the Administrator role.
-Check to see if we are currently running &quot;as Administrator&quot;,
-Create a new process object that starts PowerShell,
-Indicate that the process should be elevated (&quot;runas&quot;),
-Start the new process.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Set-ScriptSecElevated; parameter=@{parameterValue=Object; description=System.Management.Automation.PSObject[]; name=message; required=false; globbing=false; pipelineInput=false; position=1}}</p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>message</strong>: Text: Message to display when elevating.</p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=None. Returns or Executes current script in an elevated process.
-
-Set-ScriptSecElevated
-Get the ID and security principal of the current user account}}</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Set-ScriptSecElevated "Elevating myself."      Remarks:    </pre>
-<p></p>
-<h2>Test-Help</h2>
-<p>There is no help for function: Test-Help. Cannot bind argument to parameter 'textIn' because it is null.</p>
-<p></p>
-<h2>Test-HtmlData</h2>
-<p>There is no help for function: Test-HtmlData. Cannot bind argument to parameter 'textIn' because it is null.</p>
-<p></p>
 <h2>TrimText</h2>
-<p>There is no help for function: TrimText. Cannot bind argument to parameter 'textIn' because it is null.</p>
+<p><strong>Name:</strong> TrimText</p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+TrimText [-textIn] &lt;Object&gt; [[-localLogFileNameFull] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> name: TrimText
+CommonParameters: True
+parameter:</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>localLogFileNameFull</strong>: N/A</p>
+<p>  - <strong>textIn</strong>: N/A</p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
 <p></p>
 <h2>Wait-AnyKey</h2>
+<p><strong>Name:</strong> Wait-AnyKey</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Enter any key.</p>
-<p><strong>Detailed Description:</strong> Text: Prompts the user to enter any key to continue.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Wait-AnyKey; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Detailed Description:</strong> Prompts the user to enter any key to continue.</p>
+<p><strong>Syntax:</strong> Wait-AnyKey
+ message
+ description: The prompt message.
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 timeout
+ description: Number of seconds to wait (if present).
+
+ parameterValue: Int32, required: false, globbing: false, pipelineInput: false, position: 2 DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>message</strong>: Text: The prompt message.</p>
-<p>  - <strong>timeout</strong>: Text: Number of seconds to wait (if present).</p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
+<p>  - <strong>message</strong>: The prompt message.</p>
+<p>  - <strong>timeout</strong>: Number of seconds to wait (if present).</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
+<p><strong>Return: </strong> none.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Wait-AnyKey      Remarks:    </pre>
 <p></p>
 <h2>Wait-CheckDoPause</h2>
+<p><strong>Name:</strong> Wait-CheckDoPause</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Check DoPause switch.</p>
-<p><strong>Detailed Description:</strong> Text: Returns true when DoPause is set.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Wait-CheckDoPause}</p>
+<p><strong>Detailed Description:</strong> Returns true when DoPause is set.</p>
+<p><strong>Syntax:</strong> Wait-CheckDoPause</p>
 <p></p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=True is DoPause.}}</p>
+<p><strong>Return: </strong> True is DoPause.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Wait-CheckDoPause      Remarks:    </pre>
 <p></p>
-<h2>Wait-CheckGlobals</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Checks global variables and state.</p>
-<p><strong>Detailed Description:</strong> Text: This will set globals to the passed values without validation.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Wait-CheckGlobals; parameter=System.Management.Automation.PSObject[]}</p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>message</strong>: Text: The system message. Not used.</p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
-<p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Wait-CheckGlobals -DoPause -DoVerbose -DoDebug      Remarks:    </pre>
-<p></p>
 <h2>Wait-YorNorQ</h2>
+<p><strong>Name:</strong> Wait-YorNorQ</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Prompts for Y(es), N(o) or Q(uit).</p>
-<p><strong>Detailed Description:</strong> Text: Prompt the user for a Yes, No or Quit response.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Wait-YorNorQ; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Detailed Description:</strong> Prompt the user for a Yes, No or Quit response.</p>
+<p><strong>Syntax:</strong> Wait-YorNorQ
+ message
+ description: The prompt.
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>message</strong>: Text: The prompt.</p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
+<p>  - <strong>message</strong>: The prompt.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=The user response.}}</p>
+<p><strong>Return: </strong> The user response.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: $theResponse = Wait-YorNorQ "Wait?"      Remarks:    </pre>
 <p></p>
 <h2>Write-HtlmData</h2>
+<p><strong>Name:</strong> Write-HtlmData</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Write-HtlmData.</p>
-<p><strong>Detailed Description:</strong> Text: Sends pipeline object to file.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Write-HtlmData; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Detailed Description:</strong> Sends pipeline object to file.</p>
+<p><strong>Syntax:</strong> Write-HtlmData
+ InputObject
+ parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue), position: 1 FileName
+ parameterValue: Object, required: true, globbing: false, pipelineInput: false, position: 2 head
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 3 header
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 4 title
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 5</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>InputObject</strong>: N/A</p>
@@ -660,15 +973,16 @@ Get the ID and security principal of the current user account}}</p>
 <p>  - <strong>header</strong>: N/A</p>
 <p>  - <strong>title</strong>: N/A</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=Html file.}}</p>
+<p><strong>Return: </strong> Html file.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: $YourPipeline | Write-HtlmData "Filename.txt"      Remarks:    </pre>
 <p></p>
 <h2>Write-Mdm_Help</h2>
+<p><strong>Name:</strong> Write-Mdm_Help</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Generates the extended help files for the Mdm Modules.</p>
-<p><strong>Detailed Description:</strong> Text: This runs Get-Modules and Get-Command functions to create help files.
+<p><strong>Detailed Description:</strong> This runs Get-Modules and Get-Command functions to create help files.
 The general intent is to have function lists.
 To correctly run this command (showing which module it belongs to) enter:
 ```powershell
@@ -676,13 +990,26 @@ Import-Module -name Mdm_Std_Library -force
 ```
 This function re-imports the other module in the correct order.
 Note: It should not need to be run unless changes were made to the Mdm Modules.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Write-Mdm_Help; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Syntax:</strong> Write-Mdm_Help
+ moduleRoot
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 localModuleNames
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>moduleRoot</strong>: N/A</p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
+<p>  - <strong>localModuleNames</strong>: N/A</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Import-Module -name Mdm_Std_Library -force

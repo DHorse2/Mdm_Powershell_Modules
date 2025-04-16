@@ -1,0 +1,7 @@
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Function        Initialize-Dev_Env_Win                             1.0        Mdm_Bootstrap
+Function        Add-RegistryPath                                   1.0        Mdm_Bootstrap
+Function        Assert-RegistryValue                               1.0        Mdm_Bootstrap
+

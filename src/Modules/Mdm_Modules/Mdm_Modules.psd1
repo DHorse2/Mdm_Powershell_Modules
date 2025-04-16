@@ -8,12 +8,13 @@
     # GUID = ""
     # Exports
     # FunctionsToExport    = @("")
-    FunctionsToExport    = @(
-    # Mdm_Modules
-    "Get-ModuleProperty", "Set-ModuleProperty",
-    "Get-ModuleConfig", "Set-ModuleConfig",
-    "Get-ModuleStatus", "Set-ModuleStatus",
-    "Build-ModuleExports"
+    # FunctionsToExport    = @(
+    # # Mdm_Modules
+    # "Get-ModuleProperty", "Set-ModuleProperty",
+    # "Get-ModuleConfig", "Set-ModuleConfig",
+    # "Get-ModuleStatus", "Set-ModuleStatus",
+    # "Build-ModuleExports"
+    # )
 
     # # Mdm_Bootstrap
     # "Initialize-Dev_Env_Win", 
@@ -32,25 +33,25 @@
     # # Mdm_Std_Library
     # # Script:
     # "Get-AllCommands",
-    # "Initialize_Std",
+    # "Initialize-Std",
     # "Script_DoStart",
-    # "Script_ResetStdGlobals",
-    # "Script_DisplayStdGlobals",
+    # "Initialize-StdGlobalsReset",
+    # "Show-StdGlobals",
     # "Set-DisplayColors",
-    # "Assert-ScriptSecElevated",
-    # "Set-ScriptSecElevated",
+    # "Assert-SecElevated",
+    # "Set-SecElevated",
     # "Assert-Verbose",
     # # This script:
-    # "My_PSCommandPath",
+    # "Get-PSCommandPath",
     # "Script_Name",
-    # "My_Command_InvocationName",
-    # "My_Command_Origin",
-    # "My_Command_Name",
-    # "My_Command_Definition",
-    # "My_InvocationMy_PSCommandPath",
-    # "Script_List_Positional_Parameters",
-    # "Script_Last_Error",
-    # "Script_Write_Error",
+    # "Get-Command_InvocationName",
+    # "Get-Command_Origin",
+    # "Get-Command_Name",
+    # "Get-Command_Definition",
+    # "Get-Invocation_PSCommandPath",
+    # "Get-ScriptPositionalParameters",
+    # "Get-LastError",
+    # "Get-NewError",
 
     # # Path and directory
     # "Get-FileNamesFromPath",
@@ -68,11 +69,11 @@
     # "Wait-YorNorQ",
 
     # # Etl
-    # "ExtractText",
-    # "PackTextArray",
-    # "EscapeText",
-    # "TrimText",
-    # "LogText",
+    # "ConvertTo-Text",
+    # "ConvertTo-ObjectArray",
+    # "ConvertTo-EscapedText",
+    # "ConvertTo-TrimedText",
+    # "Add-LogText",
     # "Write-HtlmData",
     # "Search-Directory",
 
@@ -81,19 +82,19 @@
     # "Get-Mdm_Help",
     # "Get-HelpHtml",
     # "Export-Help"
-    )
+    # )
 
     # Cmdlets to export from this module.
-    CmdletsToExport      = @()
+    # CmdletsToExport      = @()
 
     # Variables to export from this module.
     # VariablesToExport = "*"
 
     # Aliases to export from this module.
-    AliasesToExport      = @()
+    # AliasesToExport      = @()
 
     # DSC resources to export from this module.
-    DscResourcesToExport = @()
+    # DscResourcesToExport = @()
 
     # List of all modules packaged with this module.
     # Specifies all the modules that are packaged with this module. 

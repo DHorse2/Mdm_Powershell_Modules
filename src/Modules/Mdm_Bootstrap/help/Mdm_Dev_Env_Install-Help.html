@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PowerShell Help - MacroDM - Mdm_Dev_Env_Install</title>
+    <title>PowerShell Help -  - </title>
     <style>
         html,
         body {
@@ -91,7 +91,7 @@
             document.documentElement.classList.toggle('dark-mode')
         })
     </script>
-    <h1>Help for Module: Mdm_Dev_Env_Install</h1>
+    <h1>Help for Module: </h1>
     <div class="wrapper">
         <div class="circle outer">
             <div class="circle inner">
@@ -100,109 +100,251 @@
         </div>
     </div>
     <h1>Mdm_Dev_Env_Install</h1>
+<p><strong>Name:</strong> about_Mdm_Dev_Env_Install</p>
+<p><strong>Type:</strong> HelpFile</p>
+<pre>TOPIC
+    Development Environment Installation Module
+
+SHORT DESCRIPTION
+    The Development Environment Installation Module install or updates it.
+
+SYNOPSIS
+    The Development Environment Installation Module install or updates it.
+
+LONG DESCRIPTION
+    A detailed, full description of the subject or purpose of the module.
+
+DESCRIPTION
+    The development environment consists of a number of components.
+
+    It also includes a few global settings.
+    These are currently set at the top of the Mdm_Std_Library.psm1 file after the help and imports (approx. line 70).
+
+    PARAMETER DoPause
+        Switch to pause at each step/page.
+    PARAMETER DoVerbose
+        Provide detailed information.
+    PARAMETER DoDebug
+        Debug this script.
+
+EXAMPLES
+    Examples of how to use the module or how the subject feature works in practice.
+
+EXAMPLE
+    Get-Dev_Env_Versions -DoVerbose
+
+EXAMPLE
+    Get-Dev_Env_Versions
+
+NOTES
+    needs work.
+
+OUTPUTS
+    Should output a file and display.
+
+KEYWORDS
+    Install Installation Development Environment IDE 
+
+SEE ALSO
+    The help for each component and the html folder found in the Mdm_Bootstrap module.
+</pre>
 <h2>Get-Vs</h2>
+<p><strong>Name:</strong> Get-Dev_Env_Versions</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> List current versions.</p>
-<p><strong>Detailed Description:</strong> Text: Cycles through components and display the current version.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Get-Dev_Env_Versions; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Detailed Description:</strong> Cycles through components and display the current version.</p>
+<p><strong>Syntax:</strong> Get-Dev_Env_Versions
+ DoPause
+ description: Switch to pause at each step/page.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Provide detailed information.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Text: Switch to pause at each step/page.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Provide detailed information.</p>
-<p>  - <strong>DoDebug</strong>: Text: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
+<p>  - <strong>DoVerbose</strong>: Provide detailed information.</p>
+<p>  - <strong>DoDebug</strong>: Debug this script.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=Should output a file and display.}}</p>
+<p><strong>Return: </strong> Should output a file and display.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Get-Dev_Env_Versions -DoVerbose      Remarks:    </pre>
 <p></p>
 <h2>Get-Dev_Env_Versions</h2>
+<p><strong>Name:</strong> Get-Dev_Env_Versions</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> List current versions.</p>
-<p><strong>Detailed Description:</strong> Text: Cycles through components and display the current version.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Get-Dev_Env_Versions; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Detailed Description:</strong> Cycles through components and display the current version.</p>
+<p><strong>Syntax:</strong> Get-Dev_Env_Versions
+ DoPause
+ description: Switch to pause at each step/page.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Provide detailed information.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Text: Switch to pause at each step/page.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Provide detailed information.</p>
-<p>  - <strong>DoDebug</strong>: Text: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
+<p>  - <strong>DoVerbose</strong>: Provide detailed information.</p>
+<p>  - <strong>DoDebug</strong>: Debug this script.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=Should output a file and display.}}</p>
+<p><strong>Return: </strong> Should output a file and display.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Get-Dev_Env_Versions -DoVerbose      Remarks:    </pre>
 <p></p>
+<h2>Install-Dev_Env_IDE_Win</h2>
+<p><strong>Name:</strong> Install-Dev_Env_IDE_Win</p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install the IDE (Intergrated development environment).</p>
+<p><strong>Detailed Description:</strong> This script sets up a Windows development environment for neural network projects.
+It installs Chocolatey (if not already installed), Python, Git, VSCode,
+creates a project directory and a Python virtual environment,
+and then installs TensorFlow, Keras, and PyTorch.</p>
+<p><strong>Syntax:</strong> Install-Dev_Env_IDE_Win
+ DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> A log (todo).</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Install-Dev_Env_IDE_Win -DoVerbose      Remarks:    </pre>
+<p></p>
 <h2>Install-Dev_Env_LLM_Win</h2>
+<p><strong>Name:</strong> Install-Dev_Env_LLM_Win</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Install the Large Language Model (LLM)</p>
-<p><strong>Detailed Description:</strong> Text: Install the LLM (NN or AI).
+<p><strong>Detailed Description:</strong> Install the LLM (NN or AI).
 Create Python virtual environment. Activates it.
 Upgrades pip and installs neural network libraries.
 Libraries: TensorFlow, Keras, PyTorch.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Install-Dev_Env_LLM_Win; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Syntax:</strong> Install-Dev_Env_LLM_Win
+ DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
+<p><strong>Return: </strong> none.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Install-Dev_Env_LLM_Win      Remarks:    </pre>
 <p></p>
 <h2>Install-Dev_Env_OS_Win</h2>
+<p><strong>Name:</strong> Install-Dev_Env_OS_Win</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Prepares windows and powershell to install tools.</p>
-<p><strong>Detailed Description:</strong> Text: This script sets up a Windows OS for the development environment.
+<p><strong>Detailed Description:</strong> This script sets up a Windows OS for the development environment.
 It installs Chocolatey (if not already installed).
 It will update PowerShell (from vs 5 to 7).
 todo: sed, win linux, other tools?</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Install-Dev_Env_OS_Win; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Syntax:</strong> Install-Dev_Env_OS_Win
+ DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
+<p><strong>Return: </strong> none.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Install-Dev_Env_OS_Win -DoPause      Remarks:    </pre>
 <p></p>
 <h2>Install-Dev_Env_Whisper_Win</h2>
+<p><strong>Name:</strong> Install-Dev_Env_Whisper_Win</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Install local voice recognition (Whisper).</p>
-<p><strong>Detailed Description:</strong> Text: Whisper is models designed to run voice recognition locally.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Install-Dev_Env_Whisper_Win; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Detailed Description:</strong> Whisper is models designed to run voice recognition locally.</p>
+<p><strong>Syntax:</strong> Install-Dev_Env_Whisper_Win
+ DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Text: Switch: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=none.}}</p>
+<p><strong>Return: </strong> none.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Install-Dev_Env_Whisper_Win      Remarks:    </pre>
 <p></p>
 <h2>Install-Dev_Env_Win</h2>
+<p><strong>Name:</strong> Install-Dev_Env_Win</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Install the Windows Development Environment.</p>
-<p><strong>Detailed Description:</strong> Text: Performs these installations:
+<p><strong>Detailed Description:</strong> Performs these installations:
     Install-Dev_Env_OS_Win 
     Install-Dev_Env_IDE_Win
     Install-Dev_Env_LLM_Win
     Install-Dev_Env_Whisper_Win
 When complete it displays current version for the environment.</p>
-<p><strong>Syntax:</strong> syntaxItem: @{name=Install-Dev_Env_Win; parameter=System.Management.Automation.PSObject[]}</p>
+<p><strong>Syntax:</strong> Install-Dev_Env_Win
+ DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Text: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Text: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
 <p>  - <strong>DoDebug</strong>: N/A</p>
 <p></p>
-<p><strong>Return: </strong> returnValue: @{type=@{name=todo Should create a log.}}</p>
+<p><strong>Return: </strong> todo Should create a log.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Install-Dev_Env_Win -DoPause -UpdatePath      Remarks:    </pre>

@@ -29,35 +29,49 @@ function Write-Mdm_Help {
 #>
     [CmdletBinding()]
     param (
-        [String]$moduleRoot = "",
+        [String]$moduleRoot,
+        $localModuleNames,
         [switch]$DoPause, 
         [switch]$DoVerbose, 
         [switch]$DoDebug
     )
     process {
         Write-Host "Write Mdm_Help help..."
-        # Check path (todo)
-        if (-not $moduleRoot -or $moduleRoot.Length -le 1) {
-            # $moduleRoot = (get-item $PSScriptRoot).parent.FullName
-            $moduleRoot = $global:scriptPath
-        }
-        foreach ($moduleName in $global:moduleNames) {
-
+        if (-not $moduleRoot) { $moduleRoot = $global:scriptPath }
+        if (-not $localModuleNames) { $localModuleNames = $global:moduleNames }
+        foreach ($moduleName in $localModuleNames) {
             # Standard Functions
             Write-Host "Write Mdm_Help: $moduleName"
-            Import-Module -name $moduleName `
-                -force `
-                -ErrorAction Continue
+            # Remove Module
+            try {
+                Remove-Module -Name $moduleName `
+                    -ErrorAction Stop
+            }
+            catch { 
+                $logMessage = "Failed to remove module: $moduleName."
+                Add-LogText -logMessages $logMessage -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_ -isWarning
+            }
+            # Import-Module -name $moduleName `
+            try {
+                Import-Module -Name "$moduleRoot\$moduleName\$moduleName" `
+                    -Force `
+                    -ErrorAction Stop
+            }
+            catch { 
+                $logMessage = "Failed to import module: $moduleName."
+                Add-LogText -logMessages $logMessage -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_ -isError
+                continue            
+            }
+            # Output list of powershell commands in the module
+            # Detailed
             Get-Module $moduleName -ListAvailable `
             | ForEach-Object { $_.ExportedCommands.Values } `
             | Out-File -FilePath "$moduleRoot\Mdm_Bootstrap\help\$($moduleName)_Commands.txt"
-        
+            # Raw List
             Get-Module $moduleName -ListAvailable `
             | ForEach-Object { $_.ExportedCommands.Values.Name } `
             | Out-File -FilePath "$moduleRoot\Mdm_Bootstrap\help\$($moduleName)_CommandList.txt"
-
         }
-        
         # Aggragation
         Get-Content "$moduleRoot\Mdm_Bootstrap\help\*_Commands.txt" `
         | Out-File "$moduleRoot\Mdm_Bootstrap\help\Commands.txt"
@@ -82,11 +96,11 @@ function Write-Module_Help {
             Write-Host "Write Mdm_Help: $moduleName"
             Import-Module -name $moduleName `
                 -force `
-                -ErrorAction Continue
+                -ErrorAction Stop
         }
         catch {
             $logMessage = "Failed to import module: $moduleName."
-            LogText $logMessage $global:logFileNameFull -isError
+            Add-LogText -logMessages $logMessage -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_ -isError
         }
         try {
             Get-Module $moduleName -ListAvailable `
@@ -99,7 +113,7 @@ function Write-Module_Help {
         }
         catch {
             $logMessage = "Failed to generate help for module: $moduleName."
-            LogText $logMessage $global:logFileNameFull -isError
+            Add-LogText -logMessages $logMessage -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_ -isError
         }
     }
 }
@@ -141,25 +155,21 @@ function Get-Mdm_Help {
             try {
                 Write-Host "Generate Help: $moduleName"
                 Remove-Module -Name $moduleName `
-                    -ErrorAction SilentlyContinue
+                    -ErrorAction Stop
             }
             catch { 
                 $logMessage = "Failed to remove module: $moduleName."
-                LogText -logMessage $logMessage `
-                    -localLogFileNameFull $global:logFileNameFull `
-                    -isWarning -ErrorPSItem $_
+                Add-LogText -logMessages $logMessage -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_ -isWarning
             }
             # Import
             try {
                 Import-Module -Name "$global:scriptPath\$moduleName\$moduleName" `
                     -Force `
-                    -ErrorAction Continue
+                    -ErrorAction Stop
             }
             catch { 
                 $logMessage = "Failed to import module: $moduleName."
-                LogText -logMessage $logMessage `
-                    -localLogFileNameFull $global:logFileNameFull `
-                    -isError -ErrorPSItem $_
+                Add-LogText -logMessages $logMessage -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_ -isError
                 continue            
             }
             # Command Report
@@ -175,9 +185,7 @@ function Get-Mdm_Help {
             catch {
                 # Write-Error $logMessage #  Error: $_"
                 $logMessage = "Mdm_Help Get-Command report failed for module: $moduleName."
-                LogText -logMessage $logMessage `
-                    -localLogFileNameFull $global:logFileNameFull `
-                    -isError -ErrorPSItem $_
+                Add-LogText -logMessages $logMessage -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_ -isError
                 continue            
             }
             # Command List
@@ -191,9 +199,7 @@ function Get-Mdm_Help {
             }
             catch {
                 $logMessage = "Mdm_Help Get-Command names failed for module: $moduleName."
-                LogText -logMessage $logMessage `
-                    -localLogFileNameFull $global:logFileNameFull `
-                    -isError -ErrorPSItem $_
+                Add-LogText -logMessages $logMessage -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_ -isError
                 continue            
             }
         }            
@@ -211,28 +217,28 @@ function Get-Mdm_Help {
 function Test-Help () {
     # Example hashtable
     $hashtableInput = @{ text = "This is a test." }
-    $outText = ExtractText $hashtableInput
-    LogText $outText
+    $outText = ConvertTo-Text $hashtableInput
+    Add-LogText $outText
     # Example array of PSObjects
     $arrayInput = @(
         [PSCustomObject]@{ text = "First item." },
         [PSCustomObject]@{ text = "Second item." }
     )
-    $outText = ExtractText $arrayInput
-    LogText $outText
+    $outText = ConvertTo-Text $arrayInput
+    Add-LogText $outText
 
     # Example string
     $stringInput = "Just a simple string."
-    $outText = ExtractText $stringInput
-    LogText $outText
+    $outText = ConvertTo-Text $stringInput
+    Add-LogText $outText
 
     # Example enumerable collection
     $collectionInput = @(
         [PSCustomObject]@{ Text = "Item 1" },
         [PSCustomObject]@{ Text = "Item 2" }
     )
-    $outText = ExtractText $collectionInput
-    LogText $outText
+    $outText = ConvertTo-Text $collectionInput
+    Add-LogText $outText
 }
 # Extracr-Help
 function Get-HelpHtml {
@@ -240,95 +246,113 @@ function Get-HelpHtml {
     param (
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        $helpInfo,
-        $htmlContentLocal = @()
+        $helpInfoObject,
+        $htmlContentLocal
     )
     process {
+        if (-not $htmlContentLocal) { $htmlContentLocal = @() }
         # $htmlContentLocal += "<p>Cmdlet: $($cmdlet.Name)</p>"
-        $htmlContentLocal += "<p><strong>Type:</strong> $($helpInfo.Category)</p>"
-
-        # Access the synopsis
-        $descriptionSynopsis = $helpInfo.Synopsis
-        $descriptionSynopsis = ExtractText $descriptionSynopsis
-        $descriptionSynopsis = EscapeText $descriptionSynopsis
-        $htmlContentLocal += "<p><strong>Synopsis:</strong> $descriptionSynopsis</p>"
-
-        # Access the detailed description
-        $descriptionDetails = $helpInfo.Description
-        $descriptionText = ExtractText $descriptionDetails
-        $descriptionText = EscapeText $descriptionText
-        $htmlContentLocal += "<p><strong>Detailed Description:</strong> $descriptionText</p>"
-
-        # Access the syntax
-        $descriptionSyntax = $helpInfo.syntax
-        $descriptionSyntax = ExtractText $descriptionSyntax
-        $descriptionSyntax = EscapeText $descriptionSyntax
-        $htmlContentLocal += "<p><strong>Syntax:</strong> $descriptionSyntax</p>"
-        $htmlContentLocal += "<p></p>"
-            
-        # Display parameters
-        $headingDone = $false
-        foreach ($param in $helpInfo.parameters) {
-            if ($param) {
-                $paramDetails = $param.parameter
-                if (-not $headingDone) {
-                    $htmlContentLocal += "<p><strong>Parameters:</strong></p>"
-                    $headingDone = $true
-                }
-                # $paramText = ExtractText $paramDetails
-                # Write-Debug $paramText
-                foreach ($paramItem in $paramDetails) {
-                    <# $paramItem is the current item #>
-
-                    # Access the properties from the nested hashtable
-                    $paramName = if ($paramItem.name) { $paramItem.name } else { "N/A" }
-                    $paramName = EscapeText $paramName
-
-                    $paramDescription = if ($paramItem.description) {
-                        $paramItem.description 
-                    } 
-                    else { "N/A" }
-                    $paramDescription = ExtractText $paramDescription
-                    $paramDescription = EscapeText $paramDescription
-                    # $paramDescription = if ($paramDetails.description -is [System.Management.Automation.PSObject[]]) {
-                    #     # If the description is an array, join it into a single string
-                    #     $paramDetails.description -join ", "
-                    # }
-                    # else {
-                    #     $paramDetails.description
-                    # }
-
-                    $htmlContentLocal += "<p>  - <strong>$paramName</strong>: $paramDescription</p>"
-                }
+        $htmlContentLocal += "<p><strong>Name:</strong> $($helpInfoObject.Name)</p>"
+        $htmlContentLocal += "<p><strong>Type:</strong> $($helpInfoObject.Category)</p>"
+        foreach ($helpInfo in $helpInfoObject) {
+            <# $helpInfo is the current item #>
+            $helpInfoType = $helpInfo.GetType().Name
+            if ($helpInfoType -eq "String") {
+                Write-Host "$helpInfoType - $helpInfo"
+                $htmlContentLocal += "<pre>$helpInfo</pre>"
             }
-        }
-        $htmlContentLocal += "<p></p>"
-        $returnedValue = $helpInfo.returnValues
-        if ($returnedValue) {
-            $returnedValue = ExtractText $returnedValue
-            $returnedValue = EscapeText $returnedValue
-            $htmlContentLocal += "<p><strong>Return: </strong> $returnedValue</p>"
-            $htmlContentLocal += "<p></p>"
-        }
-
-        # Display examples
-        $headingDone = $false
-        foreach ($exampleItem in $helpInfo.examples) {
-            $exampleItemDetails = $exampleItem.example
-            if ($exampleItemDetails) {
-                if (-not $headingDone) {
-                    $htmlContentLocal += "<p><strong>Examples</strong>:</p>"
-                    $headingDone = $true
+            else {
+                # Access the synopsis
+                $descriptionSynopsis = $helpInfo.Synopsis
+                if ($descriptionSynopsis) {
+                    $descriptionSynopsis = ConvertTo-Text $descriptionSynopsis
+                    $descriptionSynopsis = ConvertTo-EscapedText $descriptionSynopsis
+                    $htmlContentLocal += "<p><strong>Synopsis:</strong> $descriptionSynopsis</p>"
                 }
-                $exampleContent = @()
-                if ($exampleItemDetails.title.Length) { $exampleContent += "Example: $($exampleItemDetails.title)" }
-                if ($exampleItemDetails.label.Length) { $exampleContent += "       Label: $($exampleItemDetails.label)" }
-                if ($exampleItemDetails.introduction.Length) { $exampleContent += "Introduction: $($exampleItemDetails.introduction)" }
-                if ($exampleItemDetails.code.Length) { $exampleContent += "      Syntax: $($exampleItemDetails.code)" }
-                if ($exampleItemDetails.remarks.Length) { $exampleContent += "     Remarks:$($exampleItemDetails.remarks)" }
-                $exampleContent = EscapeText $exampleContent
-                $exampleContent = "<pre>$exampleContent</pre>"
-                $htmlContentLocal += $exampleContent
+                # Access the detailed description
+                $descriptionDetails = $helpInfo.Description
+                if ($descriptionDetails) {
+                    $descriptionText = ConvertTo-Text $descriptionDetails
+                    $descriptionText = ConvertTo-EscapedText $descriptionText
+                    $htmlContentLocal += "<p><strong>Detailed Description:</strong> $descriptionText</p>"
+                }
+                # Access the syntax
+                $descriptionSyntax = $helpInfo.syntax
+                if ($descriptionSyntax) {
+                    $descriptionSyntax = ConvertTo-Text $descriptionSyntax
+                    $descriptionSyntax = ConvertTo-EscapedText $descriptionSyntax
+                    $htmlContentLocal += "<p><strong>Syntax:</strong> $descriptionSyntax</p>"
+                    $htmlContentLocal += "<p></p>"
+                }
+                # Display parameters
+                if ($helpInfo.parameters) {
+                    $headingDone = $false
+                    foreach ($param in $helpInfo.parameters) {
+                        if ($param) {
+                            $paramDetails = $param.parameter
+                            if (-not $headingDone) {
+                                $htmlContentLocal += "<p><strong>Parameters:</strong></p>"
+                                $headingDone = $true
+                            }
+                            # $paramText = ConvertTo-Text $paramDetails
+                            # Write-Debug $paramText
+                            foreach ($paramItem in $paramDetails) {
+                                <# $paramItem is the current item #>
+
+                                # Access the properties from the nested hashtable
+                                $paramName = if ($paramItem.name) { $paramItem.name } else { "N/A" }
+                                $paramName = ConvertTo-EscapedText $paramName
+
+                                $paramDescription = if ($paramItem.description) {
+                                    $paramItem.description 
+                                } 
+                                else { "N/A" }
+                                $paramDescription = ConvertTo-Text $paramDescription
+                                $paramDescription = ConvertTo-EscapedText $paramDescription
+                                # $paramDescription = if ($paramDetails.description -is [System.Management.Automation.PSObject[]]) {
+                                #     # If the description is an array, join it into a single string
+                                #     $paramDetails.description -join ", "
+                                # }
+                                # else {
+                                #     $paramDetails.description
+                                # }
+
+                                $htmlContentLocal += "<p>  - <strong>$paramName</strong>: $paramDescription</p>"
+                            }
+                        }
+                    }
+                    $htmlContentLocal += "<p></p>"
+                }
+                $returnedValue = $helpInfo.returnValues
+                if ($returnedValue) {
+                    $returnedValue = ConvertTo-Text $returnedValue
+                    $returnedValue = ConvertTo-EscapedText $returnedValue
+                    $htmlContentLocal += "<p><strong>Return: </strong> $returnedValue</p>"
+                    $htmlContentLocal += "<p></p>"
+                }
+
+                # Display examples
+                if ($helpInfo.examples) {
+                    $headingDone = $false
+                    foreach ($exampleItem in $helpInfo.examples) {
+                        $exampleItemDetails = $exampleItem.example
+                        if ($exampleItemDetails) {
+                            if (-not $headingDone) {
+                                $htmlContentLocal += "<p><strong>Examples</strong>:</p>"
+                                $headingDone = $true
+                            }
+                            $exampleContent = @()
+                            if ($exampleItemDetails.title.Length) { $exampleContent += "Example: $($exampleItemDetails.title)" }
+                            if ($exampleItemDetails.label.Length) { $exampleContent += "       Label: $($exampleItemDetails.label)" }
+                            if ($exampleItemDetails.introduction.Length) { $exampleContent += "Introduction: $($exampleItemDetails.introduction)" }
+                            if ($exampleItemDetails.code.Length) { $exampleContent += "      Syntax: $($exampleItemDetails.code)" }
+                            if ($exampleItemDetails.remarks.Length) { $exampleContent += "     Remarks:$($exampleItemDetails.remarks)" }
+                            $exampleContent = ConvertTo-EscapedText $exampleContent
+                            $exampleContent = "<pre>$exampleContent</pre>"
+                            $htmlContentLocal += $exampleContent
+                        }
+                    }
+                }
             }
         }
         # return $htmlContentLocal -join "`n"
@@ -340,8 +364,9 @@ function Export-Help {
     [CmdletBinding()]
     param (
         # $moduleName,
-        $moduleRoot = "",
-        $localLogFileNameFull = "",
+        $moduleRoot,
+        $localLogFileNameFull,
+        $nameFilter,
         [switch]$DoPause, 
         [switch]$DoVerbose, 
         [switch]$DoDebug        
@@ -355,124 +380,194 @@ function Export-Help {
         # Get the last directory name. This is (should be) the module name.
         # $nextDirectory = Split-Path -Path $moduleFolder.FullName -Leaf
         if (-not $localLogFileNameFull) { $localLogFileNameFull = $global:logFileNameFull }
+        if (-not $nameFilter) { $nameFilter = "*" }
 
-        foreach ($moduleName in $global:moduleNames) {
-            # Validate the module folder
-            # Filter for YOUR company name. Default at top.
-            if ($moduleName -like $nameFilter) {
-                # Initialize an array to hold the HTML content
-                $htmlContent = @()
-                # Get the Module name
-                # $moduleName = $moduleFolder.BaseName
-                LogText "========================================================" $localLogFileNameFull `
-                    -ForegroundColor Red
-                LogText "Module: $moduleName"  $localLogFileNameFull
-                $htmlContent += "<h1>$($moduleName)</h1>"
-                # Import the Module
-                try {
-                    # $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName
-                    Remove-Module `
-                        -Name "$global:scriptPath\$moduleName\$moduleName" `
-                        -ErrorAction SilentlyContinue `
-                    | LogText $localLogFileNameFull
-                }
-                catch {
-                    $logMessage = "No need to remove module: $moduleName."
-                    LogText $logMessage $localLogFileNameFull -isWarning
-                    # continue, the functions will have help defined.
-                }
-                # Get all cmdlets in the Module
-                try {
-                    Import-Module -Name "$global:scriptPath\$moduleName\$moduleName" `
-                        -Force `
-                        -ErrorAction Continue `
-                    | LogText $localLogFileNameFull
-                }
-                catch {
-                    $logMessage = "Failed to import module: $($moduleFolder.FullName)."
-                    LogText -logMessage $logMessage `
-                        -localLogFileNameFull $localLogFileNameFull `
-                        -isError -ErrorPSItem $_
-                    continue      
-                }
-                # Get Module Help
-                try {
-                    # $helpInfo = Get-Help $moduleFolder.FullName -Full -ErrorAction Stop
-                    $helpInfo = Get-Help $moduleName `
-                        -Full `
-                        -ErrorAction Continue
-                    if ($helpInfo) { $htmlContent += Get-HelpHtml $helpInfo }
-                }
-                catch {
-                    $logMessage = "Failed to get help for module: $moduleName."
-                    LogText -logMessage $logMessage `
-                        -localLogFileNameFull $localLogFileNameFull `
-                        -isWarning -ErrorPSItem $_
-                    # continue, the functions will have help defined.
-                }
-                # Get all cmdlets in the Module
-                try {
-                    $cmdlets = Get-Command -Module $moduleName
-                }
-                catch {
-                    $logMessage = @( `
-                            "Failed to get cmdlets (functions & commands) for module: $($moduleFolder.FullName).", `
-                            "Error: $_"
-                    )
-                    LogText -logMessage $logMessage `
-                        -localLogFileNameFull $localLogFileNameFull `
-                        -isError -ErrorPSItem $_
-                    continue
-                }
-                # Loop through each cmdlet and get help information
-                foreach ($cmdlet in $cmdlets) {
+        try {
+            foreach ($moduleName in $global:moduleNames) {
+                # Validate the module folder
+                # Filter for YOUR company name. Default at top.
+                if ($moduleName -like $nameFilter) {
                     try {
-                        LogText $cmdlet.Name $localLogFileNameFull
-                        $htmlContent += "<h2>$($cmdlet.Name)</h2>"
-                        $helpInfo = Get-Help $cmdlet.Name -Full
-                        $htmlContent += Get-HelpHtml $helpInfo
+                        # Initialize an array to hold the HTML content
+                        $htmlContent = @()
+                        # Get the Module name
+                        # $moduleName = $moduleFolder.BaseName
+                        Add-LogText "========================================================" $localLogFileNameFull `
+                            -ForegroundColor Red
+                        Add-LogText "Module: $moduleName"  $localLogFileNameFull
+                        $htmlContent += "<h1>$($moduleName)</h1>"
+                        # Import the Module
+                        try {
+                            # $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName
+                            Remove-Module `
+                                -Name "$moduleRoot\$moduleName\$moduleName" `
+                                -ErrorAction Stop
+                            # -Verbose
+                            # | Add-LogText $localLogFileNameFull
+                        }
+                        catch {
+                            $logMessage = "Remove module skipped for: $moduleName."
+                            # Write-Host "$logMessage"
+                            # Add-LogText -logMessages $logMessage -localLogFileNameFull $localLogFileNameFull -ErrorPSItem $_ -isWarning
+                            Add-LogText -logMessages $logMessage -localLogFileNameFull $localLogFileNameFull -ErrorPSItem $_
+                            # continue, the functions will have help defined.
+                        }
+                        # Get all cmdlets in the Module
+                        try {
+                            Import-Module -Name "$moduleRoot\$moduleName\$moduleName" `
+                                -Force `
+                                -Verbose `
+                                -ErrorAction Stop
+                            # -Verbose
+                            # | Add-LogText -localLogFileNameFull $localLogFileNameFull
+                        }
+                        catch {
+                            $logMessage = "Failed to import module: $($moduleName)."
+                            # Write-Host "$logMessage"
+                            Add-LogText -logMessages $logMessage -localLogFileNameFull $localLogFileNameFull -ErrorPSItem $_ -isError
+                            continue      
+                        }
+                        # Get Module Help
+                        try {
+                            $helpInfo = Get-Help $moduleName `
+                                -Full `
+                                -ErrorAction Stop
+                            try {
+                                if ($helpInfo) { 
+                                    $htmlContent += Get-HelpHtml $helpInfo `
+                                        -ErrorAction Stop
+                                }
+                                else {
+                                    $logMessage = "Get-HelpHtml is empty for module: $moduleName."
+                                    # Write-Host "$logMessage"
+                                    Add-LogText -logMessages $logMessage -localLogFileNameFull $localLogFileNameFull -ErrorPSItem $_ -isError
+                                }
+                            }
+                            catch {
+                                $logMessage = "Get-HelpHtml failed for module: $moduleName."
+                                # Write-Host "$logMessage"
+                                Add-LogText -logMessages $logMessage -localLogFileNameFull $localLogFileNameFull -ErrorPSItem $_ -isWarning
+                                # continue, the functions will have help defined.
+                            }
                     }
                     catch {
-                        $logMessage = @( `
-                                "There is no help for function: $($cmdlet.Name).", `
-                                "$_"
-                        )
-                        LogText $logMessage $localLogFileNameFull -isWarning
-                        $htmlContent += "<p>$logMessage</p>"
-                        # continue      
+                        $logMessage = "Failed to get help for module: $moduleName."
+                        # Write-Host "$logMessage"
+                        Add-LogText -logMessages $logMessage -localLogFileNameFull $localLogFileNameFull -ErrorPSItem $_ -isWarning
+                        # continue, the functions will have help defined.
                     }
-                    $htmlContent += "<p></p>"
-                }
+                    # Get all cmdlets in the Module
+                    try {
+                        $cmdlets = Get-Command -Module $moduleName
+                        # Loop through each cmdlet and get help information
+                        foreach ($cmdlet in $cmdlets) {
+                            try {
+                                if ($cmdlet.Name -eq "Dev_Env_LanguageMode") {
+                                    $null
+                                }
+                                Add-LogText $cmdlet.Name $localLogFileNameFull
+                                $htmlContent += "<h2>$($cmdlet.Name)</h2>"
+                                $helpInfo = Get-Help $cmdlet.Name -Full `
+                                    -ErrorAction Stop
+                            }
+                            catch {
+                                $logMessage = "There is no help for function: $($cmdlet.Name)."
+                                # Write-Host "$logMessage $_"
+                                Add-LogText -logMessages $logMessage -localLogFileNameFull $localLogFileNameFull -ErrorPSItem $_ -isWarning
+                                $htmlContent += "<p>$logMessage</p>"
+                                continue      
+                            }
+                            try {
+                                $htmlContent += Get-HelpHtml $helpInfo `
+                                    -ErrorAction Stop
+                            }
+                            catch {
+                                $logMessage = "Get-HelpHtml failed for function: $($cmdlet.Name)."
+                                # Write-Host "$logMessage $_"
+                                Add-LogText -logMessages $logMessage -localLogFileNameFull $localLogFileNameFull -ErrorPSItem $_ -isWarning
+                                $htmlContent += "<p>$logMessage</p>"
+                                # continue      
+                            }
+                            $htmlContent += "<p></p>"
+                        }
+                    }
+                    catch {
+                        $logMessage - "Failed to get cmdlets (functions & commands) for module: $($moduleFolder.FullName)."
+                        # Write-Host "$logMessage $_"
+                        Add-LogText -logMessages $logMessage -localLogFileNameFull $localLogFileNameFull -ErrorPSItem $_ -isError
+                        # continue # (over)writing with an empty or module only help items might be ill-advised.
+                    }
+                    # Insert the html content into the html template
+                    try {
+                        $htmlDocTemplate = Get-HtmlTemplate `
+                            -templateNameFull "$moduleRoot\Mdm_Bootstrap\TemplateScriptHelpHtml.html"
+                    }
+                    catch {
+                        $logMessage = "Get-HtmlTemplate had an error."
+                        Write-Host "$logMessage $_"
+                        # Add-LogText -logMessages $logMessage -localLogFileNameFull $localLogFileNameFull -ErrorPSItem $_ -isError
+                    }
+                    try {
+                        $htmlDocFilled = ConvertFrom-HtmlTemplate `
+                            -htmlDocTemplate $htmlDocTemplate `
+                            -htmlContent $htmlContent
+                    }
+                    catch {
+                        $logMessage = "ConvertFrom-HtmlTemplate had an error."
+                        Write-Host "$logMessage $_"
+                        # Add-LogText -logMessages $logMessage -localLogFileNameFull $localLogFileNameFull -ErrorPSItem $_ -isError
+                    }
+                    try {
+                        # Write HTML documentation to file
+                        # Update the path
+                        # Define the output HTML file path
+                        $outputFilePath = "$moduleRoot\Mdm_Bootstrap\help"
+                        $outputFileName = "$moduleName-Help.html"  # Update the path
 
-                # Insert the html content into the html template
-                try {
-                    $htmlDocTemplate = Get-HtmlTemplate `
-                        -templateNameFull "$moduleRoot\Mdm_Bootstrap\TemplateScriptHelpHtml.html"
-                    $htmlDocFilled = ApplyHtmlTemplate `
-                        -htmlDocTemplate $htmlDocTemplate `
-                        -htmlContent $htmlContent
+                        # Save the HTML to a file
+                        if (-not(Test-Path $outputFilePath -PathType Container)) {
+                            New-Item -path $outputFilePath -ItemType Directory
+                        }            
+                        $htmlDocFilled | Out-File -FilePath "$outputFilePath\$outputFileName" -Encoding utf8
+
+                        # Output the path of the generated HTML file
+                        Add-LogText "Help documentation saved to: $outputFilePath" $localLogFileNameFull
+                    }
+                    catch {
+                        $logMessage = "Unable to save html document to disk."
+                        Write-Host "$logMessage $_"
+                        # Add-LogText -logMessages $logMessage -localLogFileNameFull $localLogFileNameFull -ErrorPSItem $_ -isError
+                    }
                 }
                 catch {
-                    <#Do this if a terminating exception happens#>
+                    $logMessage = "Unhandled exception processing help in Export-Help:"
+                    Write-Host "$logMessage $_"
+                    # Add-LogText -logMessages $logMessage -localLogFileNameFull $localLogFileNameFull -ErrorPSItem $_ -isError
                 }
-
-                # Write HTML documentation to file
-                # Update the path
-                # Define the output HTML file path
-                $outputFilePath = "$moduleRoot\Mdm_Bootstrap\help"
-                $outputFileName = "$moduleName-Help.html"  # Update the path
-
-                # Save the HTML to a file
-                if (-not(Test-Path $outputFilePath -PathType Container)) {
-                    New-Item -path $outputFilePath -ItemType Directory
-                }            
-                $htmlDocFilled | Out-File -FilePath "$outputFilePath\$outputFileName" -Encoding utf8
-
-                # Output the path of the generated HTML file
-                LogText "Help documentation saved to: $outputFilePath" $localLogFileNameFull
             }
         }
     }
+    catch {
+        $logMessage = "Unhandled exception in Export-Help loop:"
+        Write-Host "$logMessage $_"
+        Add-LogText -logMessages $logMessage -localLogFileNameFull $localLogFileNameFull -ErrorPSItem $_ -isError
+    }
+    try {
+        $moduleName = "Mdm_Std_Library"
+        # Import-Module -Name $moduleName `
+        Import-Module -Name "$moduleRoot\$moduleName\$moduleName" `
+            -Force `
+            -ErrorAction Stop
+        $logMessage = "Successful import module: $moduleRoot\$moduleName."
+        Add-LogText -logMessages $logMessage -localLogFileNameFull $localLogFileNameFull
+    }
+    catch {
+        $logMessage = "Failed import of module: $moduleRoot\$moduleName."
+        Write-Host "$logMessage $_"
+        # Add-LogText -logMessages $logMessage -localLogFileNameFull $localLogFileNameFull -ErrorPSItem $_ -isError
+        continue
+    }
+}
 }
 function Get-HtmlTemplate {
     [CmdletBinding()]
@@ -515,11 +610,11 @@ function Get-HtmlTemplate {
 </body>
 </html>
 "@
-            return $htmlDocTemplate
         }
+        return $htmlDocTemplate
     }
 }
-function ApplyHtmlTemplate {
+function ConvertFrom-HtmlTemplate {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]

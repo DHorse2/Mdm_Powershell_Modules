@@ -1,12 +1,7 @@
 <#
-TOPIC
-Development Environment Bootstrapping
-
-SHORT DESCRIPTION
     .SYNOPSIS
         Bootstrap the (MDM) Development Environment on a Windows 10/11 platform.
 
-LONG DESCRIPTION
     .DESCRIPTION
         Mdm_Bootstrap
         Set registry, Path and load PowerShell modules
@@ -15,12 +10,11 @@ LONG DESCRIPTION
         This updates the Windows Environment variables.
         It installs these powershell modules to the system's directories.
         It sets registry, Path and load PowerShell modules.
-        It can elevate its own persmissions if needed.
+        It can elevate its own permissions if needed.
 
     .OUTPUTS
         The Mdm Bootstrap Module functions.
 
-EXAMPLES        
     .EXAMPLE
         Import-module Mdm_Bootstrap
 
@@ -38,6 +32,7 @@ Import-Module -Name "$global:scriptPath\$importName\$importName" -Force -ErrorAc
 
 . "$global:scriptPath\Mdm_Bootstrap\Dev_Env_Install_Modules_Win.ps1"
 Export-ModuleMember -Function Dev_Env_Install_Modules_Win
+
 . "$global:scriptPath\Mdm_Bootstrap\Dev_Env_LanguageMode.ps1"
 Export-ModuleMember -Function Dev_Env_LanguageMode
 
@@ -117,7 +112,7 @@ function Initialize-Dev_Env_Win {
         Write-Verbose "Initialize-Dev_Env_Win"
         Write-Verbose "Script Security Check and Elevate" 
     }
-    Set-ScriptSecElevated
+    Set-SecElevated
     
     # CONTINUE
     if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName }

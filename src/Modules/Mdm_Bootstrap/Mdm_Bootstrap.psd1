@@ -21,13 +21,13 @@
     # Mdm_Bootstrap
     #     "Initialize-Dev_Env_Win",
         # "Add-RegistryPath",
-        # "Set-ScriptSecElevated",
+        # "Set-SecElevated",
     # )
     # Cmdlets to export from this module.
     # CmdletsToExport      = @()
         # "Initialize-Dev_Env_Win", 
         # "Add-RegistryPath", 
-        # "Set-ScriptSecElevated"
+        # "Set-SecElevated"
     # )
     # Variables to export from this module.
     # VariablesToExport = "*"

@@ -2,13 +2,13 @@
     .SYNOPSIS
         Development Environment Install Module does what it says.
     .DESCRIPTION
-        This modules separates the installation by component type:
         Get-Dev_Env_Versions (Get-Vs) will show current installed versions.
+            Install-Dev_Env_Win will install all components
+        This modules separates the installation by component type.
         Installation steps/tasks:
-            Install-Dev_Env_Win,
+            Install-Dev_Env_OS_Win,
             Install-Dev_Env_IDE_Win,
             Install-Dev_Env_LLM_Win,
-            Install-Dev_Env_OS_Win,
             Install-Dev_Env_Whisper_Win
     .OUTPUTS
         The Development Environment Install Module.
@@ -18,12 +18,8 @@
         todo.
 #>
 
-# Install-Mdm_Dev_Env
-# Imports
-$importName = "Mdm_Std_Library"
-if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName }
-Import-Module -Name "$global:scriptPath\$importName\$importName" -Force -ErrorAction Continue
 
+# Install-Mdm_Dev_Env
 # Components installed: 
 . "$global:scriptPath\Mdm_Dev_Env_Install\Install-Dev_Env_OS_Win.ps1"
 . "$global:scriptPath\Mdm_Dev_Env_Install\Install-Dev_Env_IDE_Win.ps1"
@@ -31,6 +27,11 @@ Import-Module -Name "$global:scriptPath\$importName\$importName" -Force -ErrorAc
 . "$global:scriptPath\Mdm_Dev_Env_Install\Install-Dev_Env_Whisper_Win.ps1"
 # MAIN function:
 . "$global:scriptPath\Mdm_Dev_Env_Install\Install-Dev_Env_Win.ps1"
+
+# Imports
+$importName = "Mdm_Std_Library"
+if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName }
+Import-Module -Name "$global:scriptPath\$importName\$importName" -Force -ErrorAction Continue
 
 # Variables: 
 #############################
@@ -57,11 +58,11 @@ Function Get-Dev_Env_Versions {
 #>
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
-    Script_ResetStdGlobals `
+    Initialize-StdGlobalsReset `
         -DoPause $DoPause `
         -DoVerbose $DoVerbose `
         -DoDebug $DoDebug
-    Initialize_Std `
+    Initialize-Std `
         -DoPause $DoPause `
         -DoVerbose $DoVerbose `
         -DoDebug $DoDebug

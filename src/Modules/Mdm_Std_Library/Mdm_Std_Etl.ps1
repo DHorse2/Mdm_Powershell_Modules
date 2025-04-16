@@ -201,19 +201,22 @@ function Set-DirectoryToScriptRoot {
 
 # Text extraction
 #############################
-function ExtractText {
+function ConvertTo-Text {
     param (
         [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
         $textIn
     )
     # Initialize description text
     $textOut = @()
     if ($textIn) {
         $textInType = $textIn.GetType().FullName
+        $properties = $textIn.PSObject.Properties
         # Output the structure of the detailed description for inspection
         # $textIn | Get-Member
         switch ( $textInType ) {
             "hashtable" {
+                Write-Verbose "hashtable"
                 # Access the description property
                 if ($textIn.ContainsKey('Text')) {
                     if ($textIn.text -is [System.Collections.IEnumerable] `
@@ -228,118 +231,92 @@ function ExtractText {
                 }
             }
             "System.Object[]" {
+                Write-Verbose "Object[]"
                 # Create the output string, including all properties and avoiding empty strings
-                $textOut += ($textIn | ForEach-Object {
-                        # Create a formatted string for each property
-                        $formattedProperties = @()
+                $formattedProperties = @()
+                $textIn | ForEach-Object {
+                    # Create a formatted string for each property
+                    $tmp = $_.PSObject
+                    Write-Verbose $tmp
+                    # $formattedProperties += $_
 
-                        # Loop through each property in the object
-                        foreach ($property in $_.PSObject.Properties) {
-                            if (-not [string]::IsNullOrWhiteSpace($property.Value)) {
+                    # Loop through each property in the object
+                    $properties = $_.PSObject.Properties
+                    if ($properties) {
+                        foreach ($property in $properties) {
+                            if ($property -eq "parameter") {}
+                            if (-not [string]::IsNullOrWhiteSpace($property.Name)) {
                                 $formattedProperties += "$($property.Name): $($property.Value)"
                             }
+                            elseif (-not [string]::IsNullOrWhiteSpace($property.Value)) {
+                                $formattedProperties += "$($property.Value)"
+                            }
+                            else {
+                                $formattedProperties += "$property"
+                            }
                         }
-
-                        # # Create a formatted string for each property
-                        # $formattedProperties = $_.GetEnumerator() | Where-Object { -not [string]::IsNullOrWhiteSpace($_.Value) } | 
-                        # ForEach-Object { "$($_.Key): $($_.Value)" }
-
-                        # Join the formatted properties with a comma and space
-                        $formattedString = $formattedProperties -join ", "
-
-                        # Return the formatted string
-                        $formattedString
                     }
-                ) # -join "`n"  # Join each object's output with a new line
+
+                    # # Create a formatted string for each property
+                    # $formattedProperties = $_.GetEnumerator() | Where-Object { -not [string]::IsNullOrWhiteSpace($_.Value) } | 
+                    # ForEach-Object { "$($_.Key): $($_.Value)" }
+
+                    # Join the formatted properties with a comma and space
+                    # $formattedString = $formattedProperties -join ", "
+
+                    # Return the formatted string
+                    # $formattedString
+                }
+                $textOut += $formattedProperties -join "`n"  # Join with new line for better readability            
             }            
             "System.Management.Automation.PSObject[]" {
+                Write-Verbose "PSObject[]"
                 # If it's an array of PSObjects, join their 'text' properties
                 # Create the output string, including all properties and avoiding empty strings
-                $textOut += ($textIn | ForEach-Object {
-                        # Create a formatted string for each property
-                        $formattedProperties = @()
-
-                        # Loop through each property in the object
-                        foreach ($property in $_.PSObject.Properties) {
-                            if (-not [string]::IsNullOrWhiteSpace($property.Value)) {
-                                $formattedProperties += "$($property.Name): $($property.Value)"
-                            }
-                        }
-
-                        # # Create a formatted string for each property
-                        # $formattedProperties = $_.GetEnumerator() | Where-Object { -not [string]::IsNullOrWhiteSpace($_.Value) } | 
-                        # ForEach-Object { "$($_.Key): $($_.Value)" }
-    
-                        # Join the formatted properties with a comma and space
-                        $formattedString = $formattedProperties -join ", "
-    
-                        # Return the formatted string
-                        $formattedString
-                    }
-                ) # -join "`n"  # Join each object's output with a new line
-
-                # $textIn | ForEach-Object { 
-                #     if (-not [string]::IsNullOrWhiteSpace($_)) {
-                #     $textOut += $_.Text + "`n"
-                #     }
-                # }
-
-                # $textOut = ($textIn | ForEach-Object { 
-                #     $_.name
-                # } | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }) -join "`n"
-                # $textOut = ($textIn | ForEach-Object { $textIn.text }) -join "`n"
-                # $textOut = ($textIn | ForEach-Object { $textIn.text }) -join ", "
-
+                $textIn | ForEach-Object {
+                    ConvertTo-Text $_
+                    # Create a formatted string for each property
+                    # $formattedProperties = @()
+                    # # Loop through each property in the object
+                    # foreach ($property in $_.PSObject.Properties) {
+                    #     if (-not [string]::IsNullOrWhiteSpace($property.Value)) {
+                    #         $formattedProperties += "$($property.Name): $($property.Value)"
+                    #     }
+                    # }
+                    # Join the formatted properties with a comma and space
+                }
+                # $textOut += $formattedProperties -join "`n"  # Join with new line for better readability            
             }
             "System.Management.Automation.PSObject" {
+                Write-Verbose "PSObject"
                 # Handle the case where $textIn is a single PSObject
                 $properties = $textIn.PSObject.Properties
                 $formattedProperties = @()
-
                 foreach ($property in $properties) {
                     $formattedProperties += "$($property.Name): $($property.Value)"
                 }
-
                 $textOut += $formattedProperties -join "`n"  # Join with new line for better readability            
             }
             "System.Collections.IEnumerable" {
+                Write-Verbose "IEnumerable"
                 # Access the Text property if it exists
                 $textOut += ($textIn | ForEach-Object {
                         if ($textIn.PSObject.Properties['Text']) { $textInType.Text } 
                     }) -join "`n"
-
             }
             "System.Management.Automation.PSCustomObject" {
+                Write-Verbose "PSCustomObject"
                 # Create a formatted string of properties
                 $properties = $textIn.PSObject.Properties
-                # $formattedProperties = @()
-
-                # foreach ($property in $properties) {
-                #     $formattedProperties += "$($property.Name): $($property.Value)"
-                # }
-                # $textOut = $formattedProperties -join "`n"  # Join with new line for better readability
-                $textOutExtra = @()
-                foreach ($property in $properties) {
-                    if ($property.Name -eq "Name") {
-                        $textOut += "$($property.Name): $($property.Value)`n"
-                    }
-                    elseif ($propery.Name -eq "Text") {
-                        $textOut += "$($property.Value)`n"
-                    }
-                    elseif ($propery.Name -eq "description") {
-                        $textOut += "$($property.Name): $($property.Value)`n"
-                    }
-                    else {
-                        $textOutExtra += "$($property.Name): $($property.Value)`n"
-                    }
-                }
-                $textOut += $textOutExtra
+                $textOut += ConvertFrom-HashValue -textIn $textIn -textOut $textOut
             }
             "System.String" { 
+                Write-Verbose "String"
                 # If it's a string, just use it directly
                 $textOut += $textIn            
             }
             default { 
+                Write-Verbose "default: $textInType"
                 # Unknow object
                 # todo throw warning
                 $textOut += $textIn            
@@ -348,12 +325,87 @@ function ExtractText {
     }
     else { 
         $textOut += "No detailed description available."
+        Write-Verbose $textOut
     }
     $textOutType = $textOut.GetType()
-    Write-Debug "Result: $textOut (type: $textOutType)"
+    Write-Verbose "Result: $textOut (type: $textOutType)"
     return $textOut
 }
-function PackTextArray {
+function ConvertFrom-HashValue {
+    [CmdletBinding()]
+    param (
+        $textIn,
+        $textOut = @(),
+        $textLineBreak = "`n"
+    )
+    process {
+        $textOutExtra = @()
+        # $textInType = $textIn.GetType()
+        # Write-Verbose " "
+        # Write-Verbose "TextIn Name: $($textIn.Name)"
+        # Write-Verbose "TextIn Type: $($textInType)"
+        # Write-Verbose "TextIn TypeNameOfValue: $($textIn.TypeNameOfValue)"
+        # Write-Verbose "TextIn Value: $($textIn.Value)"
+        foreach ($textItem in $textIn.PSObject.Properties) {
+            # $textItem = $textItem.Key
+            # Write-Verbose " "
+            # Write-Verbose "Object Key: $($textItem.Name)"
+            # Write-Verbose "Object Type: $($textItem.TypeNameOfValue)"
+            # Write-Verbose "Object Value: $($textItem.Value)"
+            if ($textItem.Name -eq "Name" -or $textItem.Name -eq "name") {
+                $textOut += "$($textItem.Value)$textLineBreak"
+            }
+            elseif ($textItem.Name -eq "Text" -or $textItem.Name -eq "text") {
+                $textOut += "$($textItem.Value)$textLineBreak"
+            }
+            elseif ($textItem.Name -eq "Description" -or $textItem.Name -eq "description") {
+                $textInType = $textItem.Value.GetType().FullName
+                if ($textInType -eq "System.String") { 
+                    Write-Verbose "String"
+                    # If it's a string, just use it directly
+                    $textOut += "$($textItem.Name): $($textItem.Value)$textLineBreak"
+                }
+                else {
+                    $textOut += "$($textItem.Name): $(ConvertTo-Text $textItem.Value)$textLineBreak"
+                }
+            }
+            elseif ($textItem.Name -eq "Type" -or $textItem.Name -eq "type") {
+                $textOut += ConvertTo-Text $textItem.Value
+            }
+            elseif ($textItem.Name -eq "syntaxItem") {
+                $textOut += ConvertTo-Text $textItem.Value
+            }
+            elseif ($textItem.Name -eq "returnValue") {
+                $textOut += ConvertTo-Text $textItem.Value
+            }
+            elseif ($textItem.Name -eq "parameter") {
+                $textOut += ConvertTo-Text $textItem.Value
+            }
+            elseif ($textItem.Name -eq "textItem") {
+                $textOut += ConvertTo-Text $textItem.Value
+            }
+            else {
+                $textOutExtra += "$($textItem.Name): $($textItem.Value)$textLineBreak"
+            }
+        }
+        # foreach ($textItem in $textOutExtra) {
+        #     Write-Host "Item: $textItem, Type: $($textItem.GetType().Name)"
+        # }
+        # Write-Host "Contents of textOutExtra:"
+        # $textOutExtra | ForEach-Object { Write-Host $_ }        
+        # $textOutString = $textOutExtra -join ", "
+        $textInType = $textOutExtra.GetType().Name
+        [string]$textOutString = ""
+        foreach ($textItem in $textOutExtra) {
+            $textInType = $textItem.GetType().Name
+            if ($textOutString.Length -ge 1) { $textOutString += ", " }
+            [string]$textOutString += $textItem.Trim()
+        }
+        if ($textOutString.Length -ge 1) { $textOut += $textOutString }
+        return $textOut
+    }
+}
+function ConvertTo-ObjectArray {
     [CmdletBinding()]
     Param(
         [Parameter(ValueFromPipeline = $True, ValueFromPipelineByPropertyName = $True)]
@@ -373,7 +425,7 @@ function PackTextArray {
     }
 }
 # escape text
-function EscapeText {
+function ConvertTo-EscapedText {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -403,7 +455,7 @@ function EscapeText {
                 # Recursive loop
                 foreach ($textRow in $textOut) {
                     <# $textRow is the current item #>
-                    $textRow = EscapeText $textRow $localLogFileNameFull `
+                    $textRow = ConvertTo-EscapedText $textRow $localLogFileNameFull `
                         -keepEscapes:$keepEscapes `
                         -keepWhitespace:$keepWhitespace
                 }
@@ -412,24 +464,24 @@ function EscapeText {
                 # Unknow object
                 # todo throw warning
                 $textOut += "Error. Cant handle type $textInType for $textIn"
-                LogText $textOut
+                Add-LogText $textOut
             }
         }       
     }
     return $textOut
 }
-function TrimText {
+function ConvertTo-TrimedText {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
         $textIn,
         $localLogFileNameFull = ""
     )
-    return EscapeText $textIn $localLogFileNameFull -keepEscapes
+    return ConvertTo-EscapedText $textIn $localLogFileNameFull -keepEscapes
 }
 # Logging
 #############################
-function LogText {
+function Add-LogText {
     # per https://stackoverflow.com/questions/24432190/generic-parameter-in-powershell
     # (todo: Inprogress. Implement pipelines)
     [CmdletBinding()]
@@ -447,10 +499,8 @@ function LogText {
     )
     process {
         # Log File
-        if (-not $localLogFileNameFull) {
-            # $localLogFileNameFull = Get-LogFileName
-            $localLogFileNameFull = $global:logFileNameFull
-        }
+        if (-not $localLogFileNameFull) { $localLogFileNameFull = $global:logFileNameFull }
+        if ($localLogFileNameFull.Length -le 0) { $localLogFileNameFull = $global:logFileNameFull }
         # Check if folder not exists, and create it
         $logFilePath = Split-Path -Path $localLogFileNameFull
         if (-not(Test-Path $logFilePath -PathType Container)) {
@@ -464,14 +514,14 @@ function LogText {
         foreach ($logMessage in $logMessages) {
             # pre-process message (for html)
             # todo. Should the log be html also?
-            $logMessage = EscapeText $logMessage -keepEscapes
-            $logMessage | Out-File -FilePath $localLogFileNameFull –Append
+            $logMessage = ConvertTo-EscapedText $logMessage -keepEscapes
+            # $logMessage | Out-File -FilePath $localLogFileNameFull –Append
             
             # Display message to user
             if ($isError -or $isWarning) {
                 if ($isError) {
                     if ($global:UsePsTrace -and $ErrorPSItem) { 
-                        LogError $logMessage `
+                        $logMessage = Add-LogError $logMessage `
                             -isError `
                             -ErrorPSItem $ErrorPSItem `
                             -localLogFileNameFull $localLogFileNameFull
@@ -482,7 +532,7 @@ function LogText {
                 }
                 elseif ($isWarning) { 
                     if ($global:UsePsTrace -and $global:UsePsTraceWarning -and $ErrorPSItem) { 
-                        LogError $logMessage `
+                        $logMessage = Add-LogError $logMessage `
                             -isWarning `
                             -ErrorPSItem $ErrorPSItem `
                             -localLogFileNameFull $localLogFileNameFull
@@ -494,19 +544,22 @@ function LogText {
             }
             else { 
                 if (-not $foregroundColor) { $foregroundColor = $global:messageForegroundColor }
+                if (-not $foregroundColor) { $foregroundColor = [System.ConsoleColor]::White }
                 if (-not $backgroundColor) { $backgroundColor = $global:messageBackgroundColor }
+                if (-not $backgroundColor) { $backgroundColor = [System.ConsoleColor]::Black }
                 Write-Host $logMessage `
                     -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
             }
-
+            # Write to storage
+            $logMessage | Out-File -FilePath $localLogFileNameFull –Append
         }
     }
 }
-function LogError {
+function Add-LogError {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline = $True, ValueFromPipelineByPropertyName = $True, Mandatory = $true)]
-        $logMessages,
+        $logMessage,
         [Parameter(Mandatory = $true)]
         $ErrorPSItem,
         [switch]$isError,
@@ -516,34 +569,87 @@ function LogError {
         $backgroundColor
     )
     process {
+        $global:lastError = $ErrorPSItem
+        # Category prefix
         if ($isError) { $errorType = "Error in " }
         elseif ($isWarning) { $errorType = "Warning in " }
         else { $errorType = "" }
-
+        # Colors
         if (-not $foregroundColor) {
-            if ($isError) { $foregroundColor = $opt.ErrorForegroundColor }
-            elseif ($isWarning) { $foregroundColor = $opt.WarningForegroundColor }
+            if ($isError) { $foregroundColor = $global:opt.ErrorForegroundColor }
+            elseif ($isWarning) { $foregroundColor = $global:opt.WarningForegroundColor }
             else { $foregroundColor = $global:messageForegroundColor }
         }
         if (-not $backgroundColor) {
-            if ($isError) { $backgroundColor = $opt.ErrorBackgroundColor }
-            elseif ($isWarning) { $backgroundColor = $opt.WarningBackgroundColor }
+            if ($isError) { $backgroundColor = $global:opt.ErrorBackgroundColor }
+            elseif ($isWarning) { $backgroundColor = $global:opt.WarningBackgroundColor }
             else { $backgroundColor = $global:messageBackgroundColor }
         }
+        if (-not $foregroundColor) { $foregroundColor = [System.ConsoleColor]::Yellow }
+        if (-not $backgroundColor) { $backgroundColor = [System.ConsoleColor]::DarkBlue }
+        # Location of error
         $scriptNameFull = $ErrorPSItem.InvocationInfo.ScriptName
         $scriptName = Split-Path $scriptNameFull -leaf
         $line = $ErrorPSItem.InvocationInfo.ScriptLineNumber
         $column = $ErrorPSItem.InvocationInfo.OffsetInLine
-        Write-Host "=============================================" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
-        Write-Host "$($errorType)Script: $scriptName, line $line, column $column" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
-        Write-Host "$($ErrorPSItem.CategoryInfo)" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
-        Write-Host "$($ErrorPSItem.Exception.Message)" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
-        Write-Host "Stack trace:" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
-        Write-Host "$($ErrorPSItem.ScriptStackTrace)" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
-        if ($ErrorPSItem.ErrorDetails) { 
-            Write-Host "$($ErrorPSItem.ErrorDetails)" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+        [string]$newMessage = ""
+        # Determine how much detail to output.
+        $traceDetails = $global:UsePsTraceDetails
+        if ($IsWindows -and -not $global:UsePsTraceWarningDetails) {
+            $traceDetails = $false
         }
-        Write-Host "=============================================" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+        # Output
+        if ($traceDetails) {        
+            $errorLine = "============================================="
+            Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+            $newMessage += $errorLine + "`n"
+        }
+        $errorLine = "$($errorType)Script: $scriptName, line $line, column $column"
+        Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+        # Newlines are required after this line
+        $newMessage += $errorLine
+
+        $errorLine = $logMessage
+        Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+        $newMessage += "`n" + $errorLine
+
+        if ($traceDetails) {        
+            $errorLine = "Details: "
+            Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+            $newMessage += "`n" + $errorLine
+
+            $errorLine = "$($ErrorPSItem.CategoryInfo)"
+            Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+            $newMessage += "`n" + $errorLine
+
+            $errorLine = "$($ErrorPSItem.Exception.Message)"
+            Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+            $newMessage += "`n" + $errorLine
+
+            if ($global:UsePsTraceStack) {
+                $errorLine = "Stack trace: "
+                Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                $newMessage += "`n" + $errorLine
+
+                $errorLine = "$($ErrorPSItem.ScriptStackTrace)"
+                Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                $newMessage += "`n" + $errorLine
+            }
+            if ($traceDetails) { 
+                $errorLine = "Additional details: "
+                Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                $newMessage += "`n" + $errorLine
+
+                $errorLine = "$($ErrorPSItem.ErrorDetails)"
+                Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                $newMessage += "`n" + $errorLine
+            }
+            $errorLine = "============================================="
+            Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+            $newMessage += "`n" + $errorLine
+        }
+        # $logMessage += $newMessage
+        return $newMessage
     }
     # Set-PSDebug
     # [-Trace <Int32>]

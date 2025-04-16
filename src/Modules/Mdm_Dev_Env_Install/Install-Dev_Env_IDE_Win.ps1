@@ -33,14 +33,14 @@ function Install-Dev_Env_IDE_Win {
 #>
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
-    Initialize_Std -$DoPause -$DoVerbose
+    Initialize-Std -$DoPause -$DoVerbose
 
     Wait-AnyKey
 
     Write-Verbose "######################"
     Write-Verbose  "Copying PowerShell modules to System32 PowerShell modules directory..."
     Write-Verbose "Script Security Check and Elevate"
-    Set-ScriptSecElevated
+    Set-SecElevated
 
     # Ensure the script is running as administrator
     if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {

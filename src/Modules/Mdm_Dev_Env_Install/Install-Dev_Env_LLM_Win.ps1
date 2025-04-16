@@ -27,7 +27,7 @@ function Install-Dev_Env_LLM_Win {
     Write-Verbose "######################"
     Write-Verbose  "Copying PowerShell modules to System32 PowerShell modules directory..."
     Write-Verbose "Script Security Check and Elevate"
-    Set-ScriptSecElevated
+    Set-SecElevated
 
     # Ensure the script is running as administrator
     if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {

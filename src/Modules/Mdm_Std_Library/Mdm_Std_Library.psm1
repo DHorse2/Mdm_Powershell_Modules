@@ -22,7 +22,7 @@
         I was (PREVIOUSLY) unable to make this work in the psm1 file:
         It is the "dot sourcing" issue found online.
         ```powershell
-            . "$PSScriptRoot\Assert-ScriptSecElevated.ps1"
+            . "$PSScriptRoot\Assert-SecElevated.ps1"
             . "$PSScriptRoot\Build-ModuleExports.ps1"
             . "$PSScriptRoot\Get-DirectoryNameFromSaved.ps1"
             . "$PSScriptRoot\Get-FilesNamesFromSaved.ps1"
@@ -53,9 +53,6 @@
 #>
 
 
-if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName }
-# Imports
-# Mdm_Std_Library
 # Import-Module Mdm_Std_Library
 . $global:scriptPath\Mdm_Std_Library\Mdm_Std_Etl.ps1
 . $global:scriptPath\Mdm_Std_Library\Mdm_Std_Help.ps1
@@ -63,44 +60,52 @@ if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).pa
 . $global:scriptPath\Mdm_Std_Library\Get-AllCommands.ps1
 
 
-# Init
-# $ExecutionContext.SessionState.LanguageMode = “FullLanguage”
-#
-#  Options:
-[bool]$global:UsePsTrace = $true;
-[bool]$global:UsePsTraceWarning = $true;
-
 # Globals:
 Write-Verbose "Loading globals..."
-[switch]$global:DoVerbose = $false
-[switch]$global:DoPause = $false
-[switch]$global:DoDebug = $false
-[string]$global:msgAnykey = ""
-[string]$global:msgYorN = ""
-[switch]$global:initDone = $false
-
-[string]$global:logFileName = "Mdm_Installation_Log"
-[string]$global:logFilePath = "G:\Script\Powershell\Mdm_Powershell_Modules\log"
-[string]$global:logFileNameFull = ""
-[bool]$global:LogOneFile = $false
-# [string]$global:scriptPath = (get-item $PSScriptRoot ).parent.FullName
-[string]$global:scriptPath = ""
-$global:moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_Dev_Env_Install", "Mdm_Modules")
+if (-not $global:InitDone) { 
+    # This indicates that the modules have not been previously imported. 
+    [switch]$global:InitDone = $true
+    [switch]$global:InitStdDone = $false
+    # Modules array
+    $global:moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_Dev_Env_Install", "Mdm_Modules")
+    # Error display handling options:
+    [bool]$global:UsePsTrace = $true;
+    [bool]$global:UsePsTraceWarning = $true;
+    [bool]$global:UsePsTraceWarningDetails = $false;
+    [bool]$global:UsePsTraceDetails = $true;
+    [bool]$global:UsePsTraceStack = $true;
+    # Avoid hammering these if they were set later
+    [switch]$global:DoVerbose = $false
+    [switch]$global:DoPause = $false
+    [switch]$global:DoDebug = $false
+    [string]$global:msgAnykey = ""
+    [string]$global:msgYorN = ""
+    # Change the color of error and warning text
+    $global:opt = (Get-Host).PrivateData
+    $global:messageBackgroundColor = [System.ConsoleColor]::Black
+    $global:messageForegroundColor = [System.ConsoleColor]::White
+    $global:opt.WarningBackgroundColor = [System.ConsoleColor]::Black
+    $global:opt.WarningForegroundColor = [System.ConsoleColor]::DarkYellow
+    # $global:opt.WarningForegroundColor = [System.ConsoleColor]::White
+    $global:opt.ErrorBackgroundColor = [System.ConsoleColor]::Black
+    $global:opt.ErrorForegroundColor = [System.ConsoleColor]::Red
+}
+# Log
+if (-not $global:logFileNameFull) {
+    [string]$global:logFileName = "Mdm_Installation_Log"
+    [string]$global:logFilePath = "G:\Script\Powershell\Mdm_Powershell_Modules\log"
+    [string]$global:logFileNameFull = ""
+    [bool]$global:LogOneFile = $false
+}
+# Script Path
+if (-not $global:scriptPath) { 
+    $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName
+}
 
 $global:timeStarted = "{0:yyyymmdd_hhmmss}" -f (get-date)
 $global:timeCompleted = $global:timeStarted
+$global:lastError = $null
 
-# Change the color of error and warning text
-#
-# $Host.PrivateData.ErrorForegroundColor = 'red'
-$opt = (Get-Host).PrivateData
-$global:messageBackgroundColor = [System.ConsoleColor]::Black
-$global:messageForegroundColor = [System.ConsoleColor]::White
-$opt.WarningBackgroundColor = [System.ConsoleColor]::Black
-$opt.WarningForegroundColor = [System.ConsoleColor]::DarkCyan
-# $opt.WarningForegroundColor = [System.ConsoleColor]::White
-$opt.ErrorBackgroundColor = [System.ConsoleColor]::Black
-$opt.ErrorForegroundColor = [System.ConsoleColor]::Red
 # ###############################
 function Assert-Verbose {
     <#
@@ -114,7 +119,7 @@ function Assert-Verbose {
         If (Assert-Verbose) { $null }
     .NOTES
         I had to experiment to get automatic settings to work.
-        Do to platform inconsistencies many admin maintain their own state.
+        Due to platform inconsistencies many admin maintain their own state.
 #>
     [CmdletBinding()]
     param ()
@@ -254,7 +259,7 @@ function Wait-AnyKey {
 # } -Scope Global
 # Todo wait timeout /t 5
 # Timeout preparation
-function ExecuteProcessWithTimeout {
+function Invoke-ProcessWithTimeout {
     <#
     .SYNOPSIS
         Execute a command.
@@ -273,7 +278,7 @@ function ExecuteProcessWithTimeout {
     .OUTPUTS
         Performs the command.
     .EXAMPLE
-        ExecuteProcessWithTimeout "notepad.exe" 30
+        Invoke-ProcessWithTimeout "notepad.exe" 30
 #>
     [CmdletBinding()]
     param(
@@ -381,7 +386,7 @@ function Wait-YorNorQ {
     return $response
 }
 # ###############################
-function Initialize_Std {
+function Initialize-Std {
     <#
     .SYNOPSIS
         Initializes a script..
@@ -396,10 +401,10 @@ function Initialize_Std {
     .OUTPUTS
         Global variables are set.
     .EXAMPLE
-        Initialize_Std -DoPause $DoPause -DoVerbose $DoVerbose
+        Initialize-Std -DoPause $DoPause -DoVerbose $DoVerbose
     .EXAMPLE
-        Script_ResetStdGlobals
-        Initialize_Std -DoPause $DoPause -DoVerbose $DoVerbose
+        Initialize-StdGlobalsReset
+        Initialize-Std -DoPause $DoPause -DoVerbose $DoVerbose
     .NOTES
         none.
 #>
@@ -410,12 +415,12 @@ function Initialize_Std {
         [switch]$DoDebug
     )
     # Write-Verbose "Init Local Pause: $local:DoPause, Verbose: $local:DoVerbose, Debug: $local:DoDebug"
-    # Script_DisplayStdGlobals
-    Write-Verbose "Initialize_Std"
-    if (-not $global:initDone) {
+    # Show-StdGlobals
+    Write-Verbose "Initialize-Std"
+    if (-not $global:InitStdDone) {
         Write-Verbose " initializing..."
         # $global:DoPause = $local:DoPause; $global:DoVerbose = $local:DoVerbose
-        $global:initDone = $true
+        $global:InitStdDone = $true
         # Validation
         # Default messages
         if ($global:msgAnykey.Length -le 0) { 
@@ -448,13 +453,13 @@ function Initialize_Std {
         if ($local:DoVerbose) { $global:DoVerbose = $true } else { $global:DoVerbose = $false }
         # Check automatice parameters 
         # Write-Host "PSBoundParameters: $PSBoundParameters" (ToDo: Issue 1: doesn't work)
-        # Write-Host "PSBoundParameters Verbose: $($PSCmdlet.My_Invocation.BoundParameters['Verbose'])" (ToDo: Issue 1: doesn't work)
+        # Write-Host "PSBoundParameters Verbose: $($PSCmdlet.Get-Invocation.BoundParameters['Verbose'])" (ToDo: Issue 1: doesn't work)
         # Write-Host "VerbosePreference: $VerbosePreference" # (ToDo: Issue 1: doesn't work)
 
         # PowerShell setting
         # return [bool]$VerbosePreference -ne [System.Management.Automation.ActionPreference]::SilentlyContinue    
         if ($PSBoundParameters.ContainsKey('Verbose')) { 
-            # $PSCmdlet.My_Invocation.BoundParameters["Verbose"]
+            # $PSCmdlet.Get-Invocation.BoundParameters["Verbose"]
             # VerbosePreference
             # Command line specifies -Verbose
             $b = $PsBoundParameters.Get_Item('Verbose')
@@ -482,7 +487,7 @@ function Initialize_Std {
     if ($global:DoVerbose) {
         Write-Host ""
         Write-Host "Init end  Local Pause: $local:DoPause, Verbose: $local:DoVerbose, Debug: $local:DoDebug"
-        Write-Host "Init end Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug Init: $global:initDone"
+        Write-Host "Init end Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug Init: $global:InitStdDone"
     }
 }
 function Set-DisplayColors {
@@ -496,10 +501,10 @@ function Set-DisplayColors {
     process {
         # Change the color of error and warning text
         # https://sqljana.wordpress.com/2017/03/01/powershell-hate-the-error-text-and-warning-text-colors-change-it/
-        $opt = (Get-Host).PrivateData
-        $opt.WarningBackgroundColor = $WarningBackgroundColor
-        $opt.WarningForegroundColor = $WarningForegroundColor
-        $opt.ErrorBackgroundColor = $ErrorBackgroundColor
-        $opt.ErrorForegroundColor = $ErrorForegroundColor
+        $global:opt = (Get-Host).PrivateData
+        $global:opt.WarningBackgroundColor = $WarningBackgroundColor
+        $global:opt.WarningForegroundColor = $WarningForegroundColor
+        $global:opt.ErrorBackgroundColor = $ErrorBackgroundColor
+        $global:opt.ErrorForegroundColor = $ErrorForegroundColor
     }
 }

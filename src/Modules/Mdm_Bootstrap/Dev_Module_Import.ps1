@@ -11,14 +11,14 @@ Write-Host "clearing globals..."
 [switch]$global:DoDebug = $false
 [string]$global:msgAnykey = ""
 [string]$global:msgYorN = ""
-[switch]$global:initDone = $false
+[switch]$global:InitStdDone = $false
 
 [string]$global:logFileName = ""
 [string]$global:logFilePath = ""
 [string]$global:logFileNameFull = ""
 [bool]$global:LogOneFile = $false
 
-[string]$global:scriptPath = ""
+# [string]$global:scriptPath = $null
 [string]$source = "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules"
 # $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName
 $global:scriptPath = $source
@@ -30,6 +30,7 @@ $global:timeCompleted = $global:timeStarted
 $importName = "Mdm_Bootstrap"
 Write-Host "Import $importName"
 Write-Host "$global:scriptPath\$importName\$importName"
-Import-Module -Name "$global:scriptPath\$importName\$importName" -Force -ErrorAction Stop
+Import-Module -Name "$global:scriptPath\$importName\$importName" -Force
 
 # Import-Module -name "Mdm_Bootstrap" -force -verbose
+Set-LocationToPath "$source\$importName"

@@ -1,25 +1,7 @@
-<#
-.SYNOPSIS
-    Bootstrap, Standard Library, Development Environment Install modules.
-#>
-
 
 Write-Verbose "Loading..."
 # Mdm_Modules
-# Bootstrap, Standard Library, Development Environment Install
-#
-# DESCRIPTION
-#     Imports:
-#         Mdm_Bootstrap
-#         Mdm_Std_Library
-#         Mdm_Dev_Env_Install
-#     This imports the Mdm_Modules so that all functions are available.
-# EXAMPLE
-#     Import-module Mdm_Modules
-# NOTES
-#     none.
-# OUTPUTS
-# Exported functions from Bootstrap, Standard Library, Development Environment Install modules.
+# Imports Bootstrap, Standard Library, Development Environment Install
 
 . "$global:scriptPath\Mdm_Modules\Mdm_ModuleState.ps1"
 Export-ModuleMember -Function `

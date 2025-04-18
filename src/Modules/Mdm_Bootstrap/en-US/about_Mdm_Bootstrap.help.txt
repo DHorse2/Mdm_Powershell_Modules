@@ -1,0 +1,53 @@
+NAME
+Mdm Bootstrap
+
+SYNOPSIS
+    Bootstrap the (MDM) Development Environment on a Windows 10/11 platform.
+
+DESCRIPTION
+    Set registry, Path and load PowerShell modules
+    This is the first step of setting up the Development Environment.
+    The Initialize-Dev_Env_Win function is the main function.
+    This updates the Windows Environment variables.
+    It installs these powershell modules to the system's directories.
+    It sets registry, Path and load PowerShell modules.
+    It can elevate its own permissions if needed.
+
+OUTPUTS
+    The Mdm Bootstrap Module functions.
+
+EXAMPLE
+    Import-module Mdm_Bootstrap
+
+NOTES
+    I was (PREVIOUSLY) unable to make this work in the psm1 file:
+    It is the "dot sourcing" issue found online.
+    ```powershell
+        . "$PSScriptRoot\Assert-SecElevated.ps1"
+        . "$PSScriptRoot\Build-ModuleExports.ps1"
+        . "$PSScriptRoot\Get-DirectoryNameFromSaved.ps1"
+        . "$PSScriptRoot\Get-FilesNamesFromSaved.ps1"
+        . "$PSScriptRoot\Save-DirectoryName.ps1"
+        . "$PSScriptRoot\Set-LocationToPath"
+        . "$PSScriptRoot\Wait-AnyKey.ps1"
+        . "$PSScriptRoot\Wait-CheckDoPause.ps1"
+        . "$PSScriptRoot\Wait-YorNorQ.ps1"
+    ```
+    You have to dot source ". xxx" these in your .PSM1 file.
+    Also: See function Build-ModuleExports. 
+    This also failed for the same reasons.
+    
+    Regardless: This is powershell best practices,
+    and similar to modules in the wild.
+    Additionally, the PSM1 file get unwieldly large
+    while using the above technique isolates the functions
+    making them easier to find.
+
+    (It seems) the main difference is they typically use .net (C#).
+    That isn't a barrier beyond wanting to master (THIS) powershell syntax.
+
+    SOLUTION: This was caused by the registry's environment setting:
+        __PSLockDownPolicy
+    This is 4 (Constrained) and needs to be (8) Full Language Mode
+    Note: This reduces the security of the system. todo
+    The bootstrap modules contains solution to alter this setting.

@@ -1,0 +1,67 @@
+NAME
+Mdm Standard Library
+
+SYNOPSIS
+    Mdm Standard Functions Library addresses cross-cutting functionality.
+
+DESCRIPTION
+    The Mdm (dba MacroDM) Standard Library is used by the other modules.
+    It addresses cross-cutting functionality.
+    This includes managing state, permissions, exceptions, path and files.
+    Also other functions like pausing, prompting, displaying and searching.
+    Also, help functions to auto-generate help more concisely & verbose.
+    The universally available switches appear here.
+
+    Global Setting
+    These are initialized on the first import. 
+    1. You can set them permanently. They are found at the top of the psm1 file.
+    2. You can also set them after the std include for script specific requirements.
+    For example, altering the logFileName as needed. 
+
+PARAMETER DoPause
+    Switch: Pause between steps.
+
+PARAMETER DoVerbose
+    Switch: Verbose output and prompts.
+
+PARAMETER DoDebug
+    Switch: Debug this script.
+
+OUTPUTS
+    The Standard Functions Module
+    
+GLOBALS
+    # Logging
+    logFileName = "Mdm_Installation_Log"
+    logFilePath = "G:\Script\Powershell\Mdm_Powershell_Modules\log"
+    logFileNameFull = ""
+    # Use a single log file repeatedly appending to it.
+    LogOneFile = $false
+
+    # This indicates that the modules have not been previously imported. 
+    InitDone = $true
+    InitStdDone = $false
+
+    # Modules array
+    moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_Dev_Env_Install", "Mdm_Modules")
+
+    # Error display handling options:
+    UsePsTrace = $true;
+    UsePsTraceDetails = $true;
+    UsePsTraceStack = $true;
+        # include debug info with warnings
+        UsePsTraceWarning = $true;
+        # include full details with warnings
+        UsePsTraceWarningDetails = $false;
+        
+    # pause on this cmdlet/function name
+    DebugFunctionName = "Add-RegistryPath"
+
+    DoVerbose = $false
+    DoPause = $false
+    DoDebug = $false
+    msgAnykey = ""
+    msgYorN = ""
+
+EXAMPLE
+    import-module Mdm_Std_Library

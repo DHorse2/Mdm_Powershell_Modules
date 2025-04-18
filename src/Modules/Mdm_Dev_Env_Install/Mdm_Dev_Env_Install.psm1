@@ -1,23 +1,3 @@
-<#
-    .SYNOPSIS
-        Development Environment Install Module does what it says.
-    .DESCRIPTION
-        Get-Dev_Env_Versions (Get-Vs) will show current installed versions.
-            Install-Dev_Env_Win will install all components
-        This modules separates the installation by component type.
-        Installation steps/tasks:
-            Install-Dev_Env_OS_Win,
-            Install-Dev_Env_IDE_Win,
-            Install-Dev_Env_LLM_Win,
-            Install-Dev_Env_Whisper_Win
-    .OUTPUTS
-        The Development Environment Install Module.
-    .EXAMPLE
-        Import-module Install-Mdm_Dev_Env
-    .NOTES
-        todo.
-#>
-
 
 # Install-Mdm_Dev_Env
 # Components installed: 

@@ -1,57 +1,3 @@
-<#
-    .SYNOPSIS
-        Mdm Standard Functions Library addresses cross-cutting functionality.
-    .DESCRIPTION
-        The Mdm (dba MacroDM) Standard Library is used by the other modules.
-        It addresses cross-cutting functionality.
-        This includes managing state, permissions, exceptions, path and files.
-        Also other functions like pausing, prompting, displaying and searching.
-        Also, help functions to auto-generate help more concisely & verbose.
-        The universally available switches appear here.
-    .PARAMETER DoPause
-        Switch: Pause between steps.
-    .PARAMETER DoVerbose
-        Switch: Verbose output and prompts.
-    .PARAMETER DoDebug
-        Switch: Debug this script.
-    .OUTPUTS
-        The Standard Functions Module.
-    .EXAMPLE
-        import-module Mdm_Std_Library
-    .NOTES
-        I was (PREVIOUSLY) unable to make this work in the psm1 file:
-        It is the "dot sourcing" issue found online.
-        ```powershell
-            . "$PSScriptRoot\Assert-SecElevated.ps1"
-            . "$PSScriptRoot\Build-ModuleExports.ps1"
-            . "$PSScriptRoot\Get-DirectoryNameFromSaved.ps1"
-            . "$PSScriptRoot\Get-FilesNamesFromSaved.ps1"
-            . "$PSScriptRoot\Save-DirectoryName.ps1"
-            . "$PSScriptRoot\Set-LocationToPath"
-            . "$PSScriptRoot\Wait-AnyKey.ps1"
-            . "$PSScriptRoot\Wait-CheckDoPause.ps1"
-            . "$PSScriptRoot\Wait-YorNorQ.ps1"
-        ```
-        You have to dot source ". xxxx" these in your .PSM1 file.
-        Also: See function Build-ModuleExports. 
-        This also failed for the same reasons.
-        
-        Regarless: This is powershell best practices,
-        and similar to modules in the wild.
-        Additionally, the PSM1 file get unwieldly large
-        while using the above technique isolates the functions
-        making them easier to find.
-
-        (It seems) the main difference is they typically use .net (C#).
-        That isn't a barrier beyond wanting to master (THIS) powershell syntax.
-
-        SOLUTION: This was caused by the registry's envronment setting:
-            __PSLockDownPolicy
-        This is 4 (Constrainted) and needs to be (8) Full Language Mode
-        Note: This reduces the secutiy of the system. todo
-        The bootstrap modules contains solution to alter this setting.
-#>
-
 
 # Import-Module Mdm_Std_Library
 . $global:scriptPath\Mdm_Std_Library\Mdm_Std_Etl.ps1
@@ -62,22 +8,41 @@
 
 # Globals:
 Write-Verbose "Loading globals..."
+# Log
+if (-not $global:logFileNameFull) {
+    # The date and time will be appended to the name
+    # when LogOneFile is false.
+    [string]$global:logFileName = "Mdm_Installation_Log"
+    [string]$global:logFilePath = "G:\Script\Powershell\Mdm_Powershell_Modules\log"
+    [string]$global:logFileNameFull = ""
+    # Use a single log file repeatedly appending to it.
+    [bool]$global:LogOneFile = $false
+}
+# Global settings
 if (-not $global:InitDone) { 
     # This indicates that the modules have not been previously imported. 
-    [switch]$global:InitDone = $true
-    [switch]$global:InitStdDone = $false
+    [bool]$global:InitDone = $true
+    [bool]$global:InitStdDone = $false
     # Modules array
     $global:moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_Dev_Env_Install", "Mdm_Modules")
     # Error display handling options:
     [bool]$global:UsePsTrace = $true;
-    [bool]$global:UsePsTraceWarning = $true;
-    [bool]$global:UsePsTraceWarningDetails = $false;
     [bool]$global:UsePsTraceDetails = $true;
     [bool]$global:UsePsTraceStack = $true;
-    # Avoid hammering these if they were set later
-    [switch]$global:DoVerbose = $false
-    [switch]$global:DoPause = $false
-    [switch]$global:DoDebug = $false
+    # include debug info with warnings
+    [bool]$global:UsePsTraceWarning = $true;
+    # include full details with warnings
+    [bool]$global:UsePsTraceWarningDetails = $false;
+    # pause on this cmdlet/function name
+    [string]$global:DebugFunctionName = "Add-RegistryPath"
+    # Built in Powershell based Method:
+    # 1. Clean up any existing breakpoints
+    # CHECK IF THIS CLEARS THE DEV"S BREAKPOINTS TODO
+    Get-PSBreakpoint | Remove-PSBreakpoint;
+    Set-PSBreakPoint -Command Script_Debugger -Action { break; }
+    [bool]$global:DoVerbose = $false
+    [bool]$global:DoPause = $false
+    [bool]$global:DoDebug = $false
     [string]$global:msgAnykey = ""
     [string]$global:msgYorN = ""
     # Change the color of error and warning text
@@ -89,13 +54,6 @@ if (-not $global:InitDone) {
     # $global:opt.WarningForegroundColor = [System.ConsoleColor]::White
     $global:opt.ErrorBackgroundColor = [System.ConsoleColor]::Black
     $global:opt.ErrorForegroundColor = [System.ConsoleColor]::Red
-}
-# Log
-if (-not $global:logFileNameFull) {
-    [string]$global:logFileName = "Mdm_Installation_Log"
-    [string]$global:logFilePath = "G:\Script\Powershell\Mdm_Powershell_Modules\log"
-    [string]$global:logFileNameFull = ""
-    [bool]$global:LogOneFile = $false
 }
 # Script Path
 if (-not $global:scriptPath) { 

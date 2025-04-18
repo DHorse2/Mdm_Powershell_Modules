@@ -18,22 +18,46 @@
 #             \SampleModule.dll-help.xml
 #             \SampleNestedModule.dll-help.xml
 # </ModulePath>
+# 
+# Here is a complete list: 
 ```text
-TOPIC
-    about_<subject or module name>
+NAME
+The name of the cmdlet, function, or module.
 
-SHORT DESCRIPTION
-    A short, one-line description of the topic contents.
+SYNOPSIS
+A brief description of what the cmdlet or function does.
 
-LONG DESCRIPTION
-    A detailed, full description of the subject or purpose of the module.
+DESCRIPTION
+A more detailed explanation of the cmdlet or function, including its purpose and usage.
+
+PARAMETERS
+A list of parameters that the cmdlet or function accepts, along with descriptions of each parameter.
+
+    PARAMETER DETAILS
+    A more detailed breakdown of parameters, sometimes included as a subsection under PARAMETERS.
+
+INPUTS
+Information about the types of input that the cmdlet or function can accept.
+
+OUTPUTS
+Information about the types of output that the cmdlet or function produces.
 
 EXAMPLES
-    Examples of how to use the module or how the subject feature works in practice.
+Examples of how to use the cmdlet or function, often including sample commands and expected results.
 
-KEYWORDS
-    Terms or titles on which you might expect your users to search for the information in this topic.
+RELATED LINKS
+Links to related cmdlets, functions, or documentation for further reading.
+
+REMARKS
+Additional remarks or comments about the cmdlet or function, which may include usage tips or caveats.
 
 SEE ALSO
-    Text-only references for further reading. Hyperlinks can't work in the PowerShell console.
+Similar to RELATED LINKS, this section may provide references to other cmdlets or resources that are relevant.
+
+VERSION
+Information about the version of the cmdlet or module, if applicable.
+
+NOTES
+Additional information that may be relevant to the cmdlet or function, such as version information or special considerations.
+
 ```

@@ -258,7 +258,7 @@ function Get-HelpHtml {
             <# $helpInfo is the current item #>
             $helpInfoType = $helpInfo.GetType().Name
             if ($helpInfoType -eq "String") {
-                Write-Host "$helpInfoType - $helpInfo"
+                # Write-Host "$helpInfoType - $helpInfo"
                 $htmlContentLocal += "<pre>$helpInfo</pre>"
             }
             else {
@@ -416,7 +416,6 @@ function Export-Help {
                         try {
                             Import-Module -Name "$moduleRoot\$moduleName\$moduleName" `
                                 -Force `
-                                -Verbose `
                                 -ErrorAction Stop
                             # -Verbose
                             # | Add-LogText -localLogFileNameFull $localLogFileNameFull
@@ -462,8 +461,8 @@ function Export-Help {
                         # Loop through each cmdlet and get help information
                         foreach ($cmdlet in $cmdlets) {
                             try {
-                                if ($cmdlet.Name -eq "Dev_Env_LanguageMode") {
-                                    $null
+                                if ($cmdlet.Name -like $global:DebugFunctionName) {
+                                    Script_Debugger -functionName $global:DebugFunctionName -Break -Trace
                                 }
                                 Add-LogText $cmdlet.Name $localLogFileNameFull
                                 $htmlContent += "<h2>$($cmdlet.Name)</h2>"

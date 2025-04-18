@@ -33,7 +33,7 @@ function Assert-SecElevated() {
         )) {
         return $false
         # if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
-        #     $CommandLine = "-File `"" + $MyInvocation.Get-Command_.Path + "`" " + $MyInvocation.UnboundArguments
+        #     $CommandLine = "-File `"" + $MyInvocation.MyCommand_.Path + "`" " + $MyInvocation.UnboundArguments
         #     Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
         #     Exit
         # }
@@ -72,7 +72,7 @@ function Set-SecElevated ($message) {
     # Check to see if we are currently running "as Administrator"
     if ($myWindowsPrincipal.IsInRole($adminRole)) {
         Write-Verbose "We are running ""as Administrator""."
-        # $Host.UI.RawUI.WindowTitle = $myInvocation.Get-Command_.Definition + "(Elevated)"
+        # $Host.UI.RawUI.WindowTitle = $myInvocation.MyCommand_.Definition + "(Elevated)"
         $Host.UI.RawUI.WindowTitle = $Host.UI.RawUI.WindowTitle + " (Elevated)"
         # $Host.UI.RawUI.BackgroundColor = "DarkGray"
         # clear-host
@@ -88,7 +88,7 @@ function Set-SecElevated ($message) {
         $newProcess = new-object System.Diagnostics.ProcessStartInfo "PowerShell";
             
         # Specify the current script path and name as a parameter
-        $newProcess.Arguments = $myInvocation.Get-Command_.Definition;
+        $newProcess.Arguments = $myInvocation.MyCommand.Definition;
             
         # Indicate that the process should be elevated
         $newProcess.Verb = "runas";
@@ -327,6 +327,36 @@ function Script_DoStart {
         -DoDebug $DoDebug
     if ($global:DoVerbose) { Write-Host "Script Started." }
 }
+function Script_Debugger {
+    param (
+        $functionName = "",
+        $commandLine = "",
+        [switch]$Break,
+        [switch]$Trace
+    )
+    $logMessage = "Script Debugger"
+    if ($functionName.Length -ge 1) {
+        $logMessage += " for function: $functionName"
+    }
+    Add-LogText -logMessages $logMessage -localLogFileNameFull $global:logFileNameFull -isWarning
+    # if ($Break) { break; }
+    # else { 
+    #     $logMessage = "Break is OFF! Use the -Break switch to break."
+    #     Add-LogText -logMessages $logMessage -localLogFileNameFull $global:logFileNameFull -isWarning
+    # }
+    if ($Trace) {
+        $commandNext = "Set-PSDebug -Trace"
+        # Add-LogText -logMessages $commandLine -localLogFileNameFull $global:logFileNameFull -isWarning
+        Add-LogText -logMessages $commandNext -localLogFileNameFull $global:logFileNameFull -isWarning
+        Invoke-Expression $commandNext 
+    }
+    # if (-not $commandLine) { $commandLine = $commandLineDefault }
+    # if ($commandLine -eq "" ) { $commandLine = $commandLineDefault }
+    if ($commandLine.Length -ge 1) {
+        Add-LogText -logMessages $commandLine -localLogFileNameFull $global:logFileNameFull -isWarning
+        Invoke-Expression $commandLine 
+    }
+}
 # Script_DoStart
 function Get-ScriptPositionalParameters {
     <#
@@ -376,68 +406,68 @@ function Get-PSCommandPath {
     param()
     return $Script_PSCommandPath 
 }
-function Get-Command_InvocationName {
+function Get-MyCommand_InvocationName {
     <#
     .SYNOPSIS
-        Get-Command_InvocationName.
+        Get-MyCommand_InvocationName.
     .DESCRIPTION
-        Get-Command_InvocationName.
+        Get-MyCommand_InvocationName.
     .OUTPUTS
         $MyInvocation.InvocationName
     .EXAMPLE
-        Get-Command_InvocationName
+        Get-MyCommand_InvocationName
 #>
     [CmdletBinding()]
     param()
     return $MyInvocation.InvocationName
 }
-function Get-Command_Origin {
+function Get-MyCommand_Origin {
     <#
     .SYNOPSIS
-        Get-Command_Origin
+        Get-MyCommand_Origin
     .DESCRIPTION
-        Get-Command_Origin
+        Get-MyCommand_Origin
     .OUTPUTS
-        $MyInvocation.Get-Command_.CommandOrigin 
+        $MyInvocation.Get-MyCommand_.CommandOrigin 
     .EXAMPLE
-        Get-Command_Origin
+        Get-MyCommand_Origin
 #>
     [CmdletBinding()]
     param()
-    return $MyInvocation.Get-Command_.CommandOrigin 
+    return $MyInvocation.MyCommand_.CommandOrigin 
 }
-function Get-Command_Name {
+function Get-MyCommand_Name {
     <#
     .SYNOPSIS
-        Get-Command_Name.
+        Get-MyCommand_Name.
     .DESCRIPTION
-        Get-Command_Name.
+        Get-MyCommand_Name.
     .OUTPUTS
-        $MyInvocation.Get-Command_.Name 
+        $MyInvocation.Get-MyCommand_.Name 
     .EXAMPLE
-        Get-Command_Name
+        Get-MyCommand_Name
 #>
     [CmdletBinding()]
     param()
-    return $MyInvocation.Get-Command_.Name 
+    return $MyInvocation.MyCommand_.Name 
 }
-function Get-Command_Definition {
+function Get-MyCommand_Definition {
     <#
     .SYNOPSIS
-        Get-Command_Definition.
+        Get-MyCommand_Definition.
     .DESCRIPTION
-        Get-Command_Definition.
+        Get-MyCommand_Definition.
     .OUTPUTS
-        $MyInvocation.Get-Command_.Definition
+        $MyInvocation.Get-MyCommand_.Definition
     .EXAMPLE
-        Get-Command_Definition
+        Get-MyCommand_Definition
 #>
     [CmdletBinding()]
     param()
-    # Begin of Get-Command_Definition()
+    # Begin of Get-MyCommand_Definition()
     # Note: ouput of this script shows the contents of this function, not the execution result
-    return $MyInvocation.Get-Command_.Definition
-    # End of Get-Command_Definition()
+    return $MyInvocation.MyCommand_.Definition
+    # End of Get-MyCommand_Definition()
 }
 function Get-Invocation_PSCommandPath { 
     <#
@@ -452,5 +482,5 @@ function Get-Invocation_PSCommandPath {
 #>
     [CmdletBinding()]
     param()
-    return $MyInvocation.Get-PSCommandPath 
+    return $MyInvocation.PSCommandPath
 }

@@ -102,68 +102,63 @@
     <h1>Mdm_Dev_Env_Install</h1>
 <p><strong>Name:</strong> about_Mdm_Dev_Env_Install</p>
 <p><strong>Type:</strong> HelpFile</p>
-<pre>TOPIC
+<pre>NAME
     Development Environment Installation Module
-
-SHORT DESCRIPTION
-    The Development Environment Installation Module install or updates it.
 
 SYNOPSIS
     The Development Environment Installation Module install or updates it.
 
-LONG DESCRIPTION
-    A detailed, full description of the subject or purpose of the module.
-
 DESCRIPTION
     The development environment consists of a number of components.
-
+        Get-Dev_Env_Versions (Get-Vs) will show current installed versions.
+            Install-Dev_Env_Win will install all components
+        This modules separates the installation by component type.
+        Installation steps/tasks:
+            Install-Dev_Env_OS_Win,
+            Install-Dev_Env_IDE_Win,
+            Install-Dev_Env_LLM_Win,
+            Install-Dev_Env_Whisper_Win
     It also includes a few global settings.
     These are currently set at the top of the Mdm_Std_Library.psm1 file after the help and imports (approx. line 70).
 
-    PARAMETER DoPause
-        Switch to pause at each step/page.
-    PARAMETER DoVerbose
-        Provide detailed information.
-    PARAMETER DoDebug
-        Debug this script.
-
-EXAMPLES
-    Examples of how to use the module or how the subject feature works in practice.
+PARAMETER DoPause
+    Switch to pause at each step/page.
+PARAMETER DoVerbose
+    Provide detailed information.
+PARAMETER DoDebug
+    Debug this script.
 
 EXAMPLE
-    Get-Dev_Env_Versions -DoVerbose
-
-EXAMPLE
-    Get-Dev_Env_Versions
-
-NOTES
-    needs work.
+    Import-module Install-Mdm_Dev_Env
 
 OUTPUTS
-    Should output a file and display.
+    Installed development modules
 
 KEYWORDS
     Install Installation Development Environment IDE 
 
 SEE ALSO
     The help for each component and the html folder found in the Mdm_Bootstrap module.
+
+NOTES
+    needs work.
 </pre>
 <h2>Get-Vs</h2>
 <p><strong>Name:</strong> Get-Dev_Env_Versions</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> List current versions.</p>
 <p><strong>Detailed Description:</strong> Cycles through components and display the current version.</p>
-<p><strong>Syntax:</strong> Get-Dev_Env_Versions
+<p><strong>Syntax:</strong> description: Switch to pause at each step/page.
+
  DoPause
- description: Switch to pause at each step/page.
+ required: false, globbing: false, pipelineInput: false, position: named description: Provide detailed information.
 
- required: false, globbing: false, pipelineInput: false, position: named DoVerbose
- description: Provide detailed information.
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Debug this script.
 
- required: false, globbing: false, pipelineInput: false, position: named DoDebug
- description: Debug this script.
-
- required: false, globbing: false, pipelineInput: false, position: named</p>
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Get-Dev_Env_Versions
+</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
@@ -180,17 +175,17 @@ SEE ALSO
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> List current versions.</p>
 <p><strong>Detailed Description:</strong> Cycles through components and display the current version.</p>
-<p><strong>Syntax:</strong> Get-Dev_Env_Versions
+<p><strong>Syntax:</strong> description: Switch to pause at each step/page.
+
  DoPause
- description: Switch to pause at each step/page.
+ required: false, globbing: false, pipelineInput: false, position: named description: Provide detailed information.
 
- required: false, globbing: false, pipelineInput: false, position: named DoVerbose
- description: Provide detailed information.
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Debug this script.
 
- required: false, globbing: false, pipelineInput: false, position: named DoDebug
- description: Debug this script.
-
- required: false, globbing: false, pipelineInput: false, position: named</p>
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Get-Dev_Env_Versions
+</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
@@ -210,17 +205,17 @@ SEE ALSO
 It installs Chocolatey (if not already installed), Python, Git, VSCode,
 creates a project directory and a Python virtual environment,
 and then installs TensorFlow, Keras, and PyTorch.</p>
-<p><strong>Syntax:</strong> Install-Dev_Env_IDE_Win
+<p><strong>Syntax:</strong> description: Switch: Pause between steps.
+
  DoPause
- description: Switch: Pause between steps.
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
 
- required: false, globbing: false, pipelineInput: false, position: named DoVerbose
- description: Switch: Verbose output and prompts.
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
 
- required: false, globbing: false, pipelineInput: false, position: named DoDebug
- description: Switch: Debug this script.
-
- required: false, globbing: false, pipelineInput: false, position: named</p>
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Install-Dev_Env_IDE_Win
+</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
@@ -240,17 +235,17 @@ and then installs TensorFlow, Keras, and PyTorch.</p>
 Create Python virtual environment. Activates it.
 Upgrades pip and installs neural network libraries.
 Libraries: TensorFlow, Keras, PyTorch.</p>
-<p><strong>Syntax:</strong> Install-Dev_Env_LLM_Win
+<p><strong>Syntax:</strong> description: Switch: Pause between steps.
+
  DoPause
- description: Switch: Pause between steps.
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
 
- required: false, globbing: false, pipelineInput: false, position: named DoVerbose
- description: Switch: Verbose output and prompts.
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
 
- required: false, globbing: false, pipelineInput: false, position: named DoDebug
- description: Switch: Debug this script.
-
- required: false, globbing: false, pipelineInput: false, position: named</p>
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Install-Dev_Env_LLM_Win
+</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
@@ -270,17 +265,17 @@ Libraries: TensorFlow, Keras, PyTorch.</p>
 It installs Chocolatey (if not already installed).
 It will update PowerShell (from vs 5 to 7).
 todo: sed, win linux, other tools?</p>
-<p><strong>Syntax:</strong> Install-Dev_Env_OS_Win
+<p><strong>Syntax:</strong> description: Switch: Pause between steps.
+
  DoPause
- description: Switch: Pause between steps.
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
 
- required: false, globbing: false, pipelineInput: false, position: named DoVerbose
- description: Switch: Verbose output and prompts.
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
 
- required: false, globbing: false, pipelineInput: false, position: named DoDebug
- description: Switch: Debug this script.
-
- required: false, globbing: false, pipelineInput: false, position: named</p>
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Install-Dev_Env_OS_Win
+</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
@@ -297,17 +292,17 @@ todo: sed, win linux, other tools?</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Install local voice recognition (Whisper).</p>
 <p><strong>Detailed Description:</strong> Whisper is models designed to run voice recognition locally.</p>
-<p><strong>Syntax:</strong> Install-Dev_Env_Whisper_Win
+<p><strong>Syntax:</strong> description: Switch: Pause between steps.
+
  DoPause
- description: Switch: Pause between steps.
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
 
- required: false, globbing: false, pipelineInput: false, position: named DoVerbose
- description: Switch: Verbose output and prompts.
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
 
- required: false, globbing: false, pipelineInput: false, position: named DoDebug
- description: Switch: Debug this script.
-
- required: false, globbing: false, pipelineInput: false, position: named</p>
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Install-Dev_Env_Whisper_Win
+</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
@@ -329,15 +324,15 @@ todo: sed, win linux, other tools?</p>
     Install-Dev_Env_LLM_Win
     Install-Dev_Env_Whisper_Win
 When complete it displays current version for the environment.</p>
-<p><strong>Syntax:</strong> Install-Dev_Env_Win
+<p><strong>Syntax:</strong> description: Switch: Pause between steps.
+
  DoPause
- description: Switch: Pause between steps.
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
 
- required: false, globbing: false, pipelineInput: false, position: named DoVerbose
- description: Switch: Verbose output and prompts.
-
+ DoVerbose
  required: false, globbing: false, pipelineInput: false, position: named DoDebug
- required: false, globbing: false, pipelineInput: false, position: named</p>
+ required: false, globbing: false, pipelineInput: false, position: named Install-Dev_Env_Win
+</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>

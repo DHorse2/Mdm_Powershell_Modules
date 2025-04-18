@@ -100,50 +100,44 @@
         </div>
     </div>
     <h1>Mdm_Modules</h1>
-<p><strong>Name:</strong> Initialize-Dev_Env_Win</p>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Setup (bootstrap) Windows for the Development Environment.</p>
-<p><strong>Detailed Description:</strong> This is the first step of bootstrapping the Development Environment.
-This updates the Windows Environment variables.
-It installs these powershell modules to the system&apos;s directories.
-Set registry, Path and load PowerShell modules.
-$source = &quot;$global:scriptPath\&quot;
-$destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
-<p><strong>Syntax:</strong> Initialize-Dev_Env_Win
- UpdatePath
- description: Switch: A switch to indicate the path should be checked/updated.
+<p><strong>Name:</strong> about_Mdm_Modulesl</p>
+<p><strong>Type:</strong> HelpFile</p>
+<pre>NAME
+    Mdm Modules
 
- required: false, globbing: false, pipelineInput: false, position: named DoPause
- description: Switch: Pause between steps.
+SYNOPSIS
+    Bootstrap, Standard Library, Development Environment Install modules.
 
- required: false, globbing: false, pipelineInput: false, position: named DoVerbose
- description: Switch: Verbose output and prompts.
+DESCRIPTION
+    Imports:
+        Mdm_Bootstrap
+        Mdm_Std_Library
+        Mdm_Dev_Env_Install
+    This imports the Mdm_Modules so that all functions are available.
 
- required: false, globbing: false, pipelineInput: false, position: named</p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>UpdatePath</strong>: Switch: A switch to indicate the path should be checked/updated.</p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
-<p></p>
-<p><strong>Return: </strong> todo.</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Initialize-Dev_Env_Win -SilentMode -UpdatePath      Remarks:    </pre>
+EXAMPLE
+    Import-module Mdm_Modules
+
+NOTES
+    none.
+
+OUTPUTS
+Exported functions from Bootstrap, Standard Library, Development Environment Install modules.
+</pre>
 <h2>Build-ModuleExports</h2>
 <p><strong>Name:</strong> Build-ModuleExports</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> The scans a module folder with a view to automatically load/import it.</p>
 <p><strong>Detailed Description:</strong> It didn&apos;t work. The problem isn&apos;t clear.</p>
-<p><strong>Syntax:</strong> Build-ModuleExports
- moduleRoot
+<p><strong>Syntax:</strong> moduleRoot
  parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 modulePublic
  description: Path for Public cmdlets to export.
 
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 modulePrivate
  description: Path for Private functions.
 
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3</p>
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 Build-ModuleExports
+</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>moduleRoot</strong>: N/A</p>
@@ -160,9 +154,9 @@ $destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Retrieves the Module configuration.</p>
 <p><strong>Detailed Description:</strong> Gets the Module configuration settings.</p>
-<p><strong>Syntax:</strong> Get-ModuleConfig
- Filter
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1</p>
+<p><strong>Syntax:</strong> Filter
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 Get-ModuleConfig
+</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Filter</strong>: N/A</p>
@@ -177,11 +171,11 @@ $destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Gets the Module property.</p>
 <p><strong>Detailed Description:</strong> Retrieves the value of the Module property.</p>
-<p><strong>Syntax:</strong> Get-ModuleProperty
- InputObject
+<p><strong>Syntax:</strong> InputObject
  description: The input object to retrieve the property from.
 
- parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue), position: 1</p>
+ parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue), position: 1 Get-ModuleProperty
+</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>InputObject</strong>: The input object to retrieve the property from.</p>
@@ -196,11 +190,11 @@ $destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Updates the Module configuration.</p>
 <p><strong>Detailed Description:</strong> Sets the Module configuration settings.</p>
-<p><strong>Syntax:</strong> Set-ModuleConfig
- Config
+<p><strong>Syntax:</strong> Config
  description: The new configuration values.
 
- parameterValue: Hashtable, required: true, globbing: false, pipelineInput: false, position: 1</p>
+ parameterValue: Hashtable, required: true, globbing: false, pipelineInput: false, position: 1 Set-ModuleConfig
+</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Config</strong>: The new configuration values.</p>
@@ -218,14 +212,14 @@ $destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Sets the Module property.</p>
 <p><strong>Detailed Description:</strong> Updates the value of the Module property.</p>
-<p><strong>Syntax:</strong> Set-ModuleProperty
- InputObject
+<p><strong>Syntax:</strong> InputObject
  description: The input object to update the property on.
 
  parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue), position: 1 Value
  description: The new value for the Module property.
 
- parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2</p>
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2 Set-ModuleProperty
+</p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>InputObject</strong>: The input object to update the property on.</p>

@@ -390,8 +390,8 @@ function Dev_Env_Install_Modules_Win {
         # Import-Module -name $moduleName `
         Remove-Module -Name "$moduleRoot\$moduleName\$moduleName" `
             -Force `
-            -Verbose `
             -ErrorAction Stop
+        # -Verbose `
         # Import-Module -name Mdm_Modules -Force >> $global:logFileNameFull
     }
     catch {
@@ -403,8 +403,8 @@ function Dev_Env_Install_Modules_Win {
         # Import-Module -name $moduleName `
         Import-Module -Name "$moduleRoot\$moduleName\$moduleName" `
             -Force `
-            -Verbose `
             -ErrorAction Stop
+        # -Verbose `
         # Import-Module -name Mdm_Modules -Force >> $global:logFileNameFull
     }
     catch {
@@ -450,15 +450,33 @@ function Dev_Env_Install_Modules_Win {
     Add-LogText $logMessage $global:logFileNameFull
     if ($DoVerbose) { Add-LogText " " $global:logFileNameFull }
 
+}
+function Copy-Item-ProgressDisplay {
+    param (
+        $source,
+        $destination
+    )
     # ================================= Copy with progress %
-    # $source=ls c:\temp *.*
-    # $i=1
-    # $source| %{
-    #     [int]$percent = $i / $source.count * 100
-    #     Write-Progress -Activity "Copying ... ($percent %)" -status $_  -PercentComplete $percent -verbose
-    #     copy $_.fullName -Destination c:\test 
-    #     $i++
-    # }
+    if (-not $source) { $source = Get-ChildItem c:\temp *.* }
+    if (-not $destination) { $destination = "c:\temp" }
+    $itemCount = 1
+    $displayInterval = 99
+    $copyTime = [System.Diagnostics.Stopwatch]::StartNew()
+    $copyTimeLast = $copyTimeElapsed.Seconds
+    $source | ForEach-Object {
+        $displayInterval++
+        if ($displayInterval -ge 10 -or ($copyTime.Seconds - $copyTimeLast) -ge 5) {
+            $displayInterval = 0
+            $copyTimeLast = $copyTime.Seconds
+            [int]$percent = $itemCount / $source.count * 100
+            Write-Progress `
+                -Activity "Copying ... ($percent %) ($($copyTime.Elapsed) secs.)" `
+                -status $_  -PercentComplete $percent -verbose
+        }
+        Copy-Item $_.fullName -Destination $destination 
+        $itemCount++
+    }
+    <# 
     #
     # 2025/03/26 09:11:03 ERROR 5 (0x00000005) Accessing Destination Directory C:\Program Files\WindowsPowerShell\Modules\
     # Access is denied.
@@ -489,4 +507,5 @@ function Dev_Env_Install_Modules_Win {
     # 
     # /LOG:file :: output status to LOG file (overwrite existing log).
     # /LOG+:file :: output status to LOG file (append to existing log).
+    #>
 }

@@ -1,5 +1,9 @@
 # Mdm System Management Modules
 
+## Settings
+G:\Script\Powershell\Mdm_Powershell_Modules
+"C:\Users\david\AppData\Roaming\VSCodium\User\globalStorage\storage.json"
+
 ## Order of script execution for a new system.
 
 First, from the root directory (here) you can run:

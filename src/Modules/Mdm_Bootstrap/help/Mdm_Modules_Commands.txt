@@ -1,0 +1,9 @@
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Function        Get-ModuleProperty                                 1.0        Mdm_Modules
+Function        Set-ModuleConfig                                   1.0        Mdm_Modules
+Function        Build-ModuleExports                                1.0        Mdm_Modules
+Function        Set-ModuleProperty                                 1.0        Mdm_Modules
+Function        Get-ModuleConfig                                   1.0        Mdm_Modules
+

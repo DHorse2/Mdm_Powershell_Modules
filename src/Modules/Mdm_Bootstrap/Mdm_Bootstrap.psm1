@@ -1,27 +1,3 @@
-<#
-    .SYNOPSIS
-        Bootstrap the (MDM) Development Environment on a Windows 10/11 platform.
-
-    .DESCRIPTION
-        Mdm_Bootstrap
-        Set registry, Path and load PowerShell modules
-        This is the first step of setting up the Development Environment.
-        The Initialize-Dev_Env_Win function is the main function.
-        This updates the Windows Environment variables.
-        It installs these powershell modules to the system's directories.
-        It sets registry, Path and load PowerShell modules.
-        It can elevate its own permissions if needed.
-
-    .OUTPUTS
-        The Mdm Bootstrap Module functions.
-
-    .EXAMPLE
-        Import-module Mdm_Bootstrap
-
-    .NOTES
-        none.
-#>
-
 
 # Imports
 # This works with uninstalled Modules (both)

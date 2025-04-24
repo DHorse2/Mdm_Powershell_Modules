@@ -1,0 +1,558 @@
+<!-- $fullHtml = @" -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Help by  for PowerShell</title>
+    <style>
+        html,
+        body {
+            background-color: white;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 3px;
+            padding: 18px;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        pre {
+            white-space: pre-wrap;
+        }
+
+        .wrapper {
+            /* float on right edge */
+            float: left;
+            vertical-align: top;
+            margin-right: 10px;
+
+            /* Allows the wrapper to sit next to the heading */
+            /* display: inline-block; */
+            /* margin-left: 10px; */
+            /* vertical-align: middle; */
+        }
+
+        .circle {
+            width: 40px;
+            /* Set the size of the circle */
+            height: 40px;
+            /* Set the size of the circle */
+            border-radius: 50%;
+            /* Makes it round */
+            background-color: #ccc;
+            /* Background color for the outer circle */
+            display: flex;
+            /* Centers the button inside the circle */
+            justify-content: center;
+            /* Centers the button horizontally */
+            align-items: center;
+            /* Centers the button vertically */
+        }
+
+        .btn {
+            background-color: transparent;
+            /* Button background */
+            border: none;
+            /* No border */
+            cursor: pointer;
+            /* Pointer cursor on hover */
+        }
+
+        .outer {
+            width: 35px;
+            height: 35px;
+            background-color: #3c249c;
+        }
+
+        .inner {
+            width: 25px;
+            height: 25px;
+            background-color: #6754b0;
+        }
+
+        .dark-mode {
+            filter: invert(100%)
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function toggleDarkMode(element) {
+            if (element == null) { var element = document.body; }
+            element.classList.toggle("dark-mode");
+        }
+
+        function myClassClick(className, toggleName) {
+            let ClassItem = document.querySelector(className)
+            ClassItem.addEventListener('click', () => {
+                document.documentElement.classList.toggle(toggleName)
+            })
+        }
+    </script>
+    <div>
+        <div class="wrapper">
+            <div class="circle outer">
+                <div class="circle inner">
+                    <button class="darkModeButton" type="button" onclick="toggleDarkMode()">dark mode</button>
+                </div>
+            </div>
+        </div>
+        <h1>Help for Module: </h1>
+    </div>
+    <h1>Mdm_DevEnv_Install</h1>
+<pre>NAME
+    Mdm Modules
+
+SYNOPSIS
+    Bootstrap, Standard Library, Development Environment Install modules.
+
+DESCRIPTION
+    Imports:
+        Mdm_Bootstrap
+        Mdm_Std_Library
+        Mdm_DevEnv_Install
+    This imports the Mdm_Modules so that all functions are available.
+
+EXAMPLE
+    Import-module Mdm_Modules
+
+NOTES
+    none.
+
+OUTPUTS
+Exported functions from Bootstrap, Standard Library, Development Environment Install modules.
+</pre>
+<pre>NAME
+Mdm Standard Library
+
+SYNOPSIS
+    Mdm Standard Functions Library addresses cross-cutting functionality.
+
+DESCRIPTION
+    The Mdm (dba MacroDM) Standard Library is used by the other modules.
+    It addresses cross-cutting functionality.
+    This includes managing state, permissions, exceptions, path and files.
+    Also other functions like pausing, prompting, displaying and searching.
+    Also, help functions to auto-generate help more concisely & verbose.
+    The universally available switches appear here.
+
+    Global Setting
+    These are initialized on the first import. 
+    1. You can set them permanently. They are found at the top of the psm1 file.
+    2. You can also set them after the std include for script specific requirements.
+    For example, altering the logFileName as needed. 
+
+PARAMETER DoPause
+    Switch: Pause between steps.
+
+PARAMETER DoVerbose
+    Switch: Verbose output and prompts.
+
+PARAMETER DoDebug
+    Switch: Debug this script.
+
+OUTPUTS
+    The Standard Functions Module
+    
+GLOBALS
+    # Logging
+    logFileName = "Mdm_Installation_Log"
+    logFilePath = "G:\Script\Powershell\Mdm_Powershell_Modules\log"
+    logFileNameFull = ""
+    # Use a single log file repeatedly appending to it.
+    LogOneFile = $false
+
+    # This indicates that the modules have not been previously imported. 
+    InitDone = $true
+    InitStdDone = $false
+
+    # Modules array
+    moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install", "Mdm_Modules")
+
+    # Error display handling options:
+    UseTrace = $true;
+    UseTraceDetails = $true;
+    UseTraceStack = $true;
+        # include debug info with warnings
+        UseTraceWarning = $true;
+        # include full details with warnings
+        UseTraceWarningDetails = $false;
+        
+    # pause on this cmdlet/function name
+    DebugFunctionNames = "Add-RegistryPath"
+
+    DoVerbose = $false
+    DoPause = $false
+    DoDebug = $false
+    msgAnykey = ""
+    msgYorN = ""
+
+EXAMPLE
+    import-module Mdm_Std_Library
+</pre>
+<h2>Get-Vs</h2>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> List current versions.</p>
+<p><strong>Detailed Description:</strong> Cycles through components and display the current version.</p>
+<p><strong>Syntax:</strong> <pre>description: Switch to pause at each step/page.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Provide detailed information.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Get-DevEnvVersions
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
+<p>  - <strong>DoVerbose</strong>: Provide detailed information.</p>
+<p>  - <strong>DoDebug</strong>: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> Should output a file and display.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Get-DevEnvVersions -DoVerbose      Remarks:    </pre>
+<p></p>
+<h2>Get-DevEnvVersions</h2>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> List current versions.</p>
+<p><strong>Detailed Description:</strong> Cycles through components and display the current version.</p>
+<p><strong>Syntax:</strong> <pre>description: Switch to pause at each step/page.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Provide detailed information.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Get-DevEnvVersions
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
+<p>  - <strong>DoVerbose</strong>: Provide detailed information.</p>
+<p>  - <strong>DoDebug</strong>: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> Should output a file and display.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Get-DevEnvVersions -DoVerbose      Remarks:    </pre>
+<p></p>
+<h2>Install-DevEnvIdeWin</h2>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install the IDE (Intergrated development environment).</p>
+<p><strong>Detailed Description:</strong> This script sets up a Windows development environment for neural network projects.
+It installs Chocolatey (if not already installed), Python, Git, VSCode,
+creates a project directory and a Python virtual environment,
+and then installs TensorFlow, Keras, and PyTorch.</p>
+<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvIdeWin
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> A log (todo).</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Install-DevEnvIdeWin -DoVerbose      Remarks:    </pre>
+<p></p>
+<h2>Install-DevEnvLlmWin</h2>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install the Large Language Model (LLM)</p>
+<p><strong>Detailed Description:</strong> Install the LLM (NN or AI).
+Create Python virtual environment. Activates it.
+Upgrades pip and installs neural network libraries.
+Libraries: TensorFlow, Keras, PyTorch.</p>
+<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvLlmWin
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Install-DevEnvLlmWin      Remarks:    </pre>
+<p></p>
+<h2>Install-DevEnvModules</h2>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install these modules on the local system.</p>
+<p><strong>Detailed Description:</strong> NOT IN USE. Performs an .Add(<!-- $fullHtml = @" -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Help by  for PowerShell</title>
+    <style>
+        html,
+        body {
+            background-color: white;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 3px;
+            padding: 18px;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        pre {
+            white-space: pre-wrap;
+        }
+
+        .wrapper {
+            /* float on right edge */
+            float: left;
+            vertical-align: top;
+            margin-right: 10px;
+
+            /* Allows the wrapper to sit next to the heading */
+            /* display: inline-block; */
+            /* margin-left: 10px; */
+            /* vertical-align: middle; */
+        }
+
+        .circle {
+            width: 40px;
+            /* Set the size of the circle */
+            height: 40px;
+            /* Set the size of the circle */
+            border-radius: 50%;
+            /* Makes it round */
+            background-color: #ccc;
+            /* Background color for the outer circle */
+            display: flex;
+            /* Centers the button inside the circle */
+            justify-content: center;
+            /* Centers the button horizontally */
+            align-items: center;
+            /* Centers the button vertically */
+        }
+
+        .btn {
+            background-color: transparent;
+            /* Button background */
+            border: none;
+            /* No border */
+            cursor: pointer;
+            /* Pointer cursor on hover */
+        }
+
+        .outer {
+            width: 35px;
+            height: 35px;
+            background-color: #3c249c;
+        }
+
+        .inner {
+            width: 25px;
+            height: 25px;
+            background-color: #6754b0;
+        }
+
+        .dark-mode {
+            filter: invert(100%)
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function toggleDarkMode(element) {
+            if (element == null) { var element = document.body; }
+            element.classList.toggle("dark-mode");
+        }
+
+        function myClassClick(className, toggleName) {
+            let ClassItem = document.querySelector(className)
+            ClassItem.addEventListener('click', () => {
+                document.documentElement.classList.toggle(toggleName)
+            })
+        }
+    </script>
+    <div>
+        <div class="wrapper">
+            <div class="circle outer">
+                <div class="circle inner">
+                    <button class="darkModeButton" type="button" onclick="toggleDarkMode()">dark mode</button>
+                </div>
+            </div>
+        </div>
+        <h1>Help for Module: </h1>
+    </div>
+    {{HtmlContent}}
+</body>
+
+</html>) for each object</p>
+<p><strong>Syntax:</strong> <pre>inputObjects
+ description: .
+
+ parameterValue: Object, required: false, globbing: false, pipelineInput: true (ByValue), position: 1 Install-DevEnvModules
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>inputObjects</strong>: .</p>
+<p></p>
+<p><strong>Return: </strong> .</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Install-DevEnvModules      Remarks:    </pre>
+<p></p>
+<h2>Install-DevEnvOsWin</h2>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Prepares windows and powershell to install tools.</p>
+<p><strong>Detailed Description:</strong> This script sets up a Windows OS for the development environment.
+It installs Chocolatey (if not already installed).
+It will update PowerShell (from vs 5 to 7).
+todo: sed, win linux, other tools?</p>
+<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvOsWin
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Install-DevEnvOsWin -DoPause      Remarks:    </pre>
+<p></p>
+<h2>Install-DevEnvWhisperWin</h2>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install local voice recognition (Whisper).</p>
+<p><strong>Detailed Description:</strong> Whisper is models designed to run voice recognition locally.</p>
+<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvWhisperWin
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Install-DevEnvWhisperWin      Remarks:    </pre>
+<p></p>
+<h2>Install-DevEnvWin</h2>
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install the Windows Development Environment.</p>
+<p><strong>Detailed Description:</strong> Performs these installations:
+    Install-DevEnvOsWin 
+    Install-DevEnvIdeWin
+    Install-DevEnvLlmWin
+    Install-DevEnvWhisperWin
+When complete it displays current version for the environment.</p>
+<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvWin
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong></p>
+<p></p>
+<p><strong>Return: </strong> todo Should create a log.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Install-DevEnvWin -DoPause -UpdatePath      Remarks:    </pre>
+<p></p>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+NAME
+    Development Environment Installation Module
+
+SYNOPSIS
+    The Development Environment Installation Module install or updates it.
+
+DESCRIPTION
+    The development environment consists of a number of components.
+        Get-DevEnvVersions (Get-Vs) will show current installed versions.
+            Install-DevEnvWin will install all components
+        This modules separates the installation by component type.
+        Installation steps/tasks:
+            Install-DevEnvOsWin,
+            Install-DevEnvIdeWin,
+            Install-DevEnvLlmWin,
+            Install-DevEnvWhisperWin
+    It also includes a few global settings.
+    These are currently set at the top of the Mdm_Std_Library.psm1 file after the help and imports (approx. line 70).
+
+PARAMETER DoPause
+    Switch to pause at each step/page.
+PARAMETER DoVerbose
+    Provide detailed information.
+PARAMETER DoDebug
+    Debug this script.
+
+EXAMPLE
+    Import-module Install-Mdm_Dev_Env
+
+OUTPUTS
+    Installed development modules
+
+KEYWORDS
+    Install Installation Development Environment IDE 
+
+SEE ALSO
+    The help for each component and the html folder found in the Mdm_Bootstrap module.
+
+NOTES
+    needs work.

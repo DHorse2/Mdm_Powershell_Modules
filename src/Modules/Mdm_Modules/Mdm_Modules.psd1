@@ -6,31 +6,47 @@
     Copyright            = "(c) David G Horsman. All rights reserved."
     Description          = "MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary."
     # GUID = ""
-    # Exports
-    # FunctionsToExport    = @("")
-    # FunctionsToExport    = @(
-    # # Mdm_Modules
-    # "Get-ModuleProperty", "Set-ModuleProperty",
-    # "Get-ModuleConfig", "Set-ModuleConfig",
-    # "Get-ModuleStatus", "Set-ModuleStatus",
-    # "Build-ModuleExports"
-    # )
+    PrivateData = @{
+        PSData = @{
+            # Tags applied to this module. These help with module discovery in online galleries.
+            Tags = @('Development Environment', 'Development', 'Intialize', 'Powershell', 'Install')
 
+            # A URL to the license for this module.
+            LicenseUri = 'https://github.com/___/license'
+
+            # A URL to the main website for this project.
+            ProjectUri = 'https://github.com/___/'
+
+            # A URL to an icon representing this module.
+            IconUri = 'https://github.com/___/icon.png'
+
+            # ReleaseNotes of this module - our ReleaseNotes are in
+            # the file ReleaseNotes.md
+            ReleaseNotes = '
     # # Mdm_Bootstrap
+
     # "Initialize-Dev_Env_Win", 
     # "Add-RegistryPath", 
     # "Assert-RegistryValue",
     
-    # # Mdm_Dev_Env_Install
-    # "Get-Dev_Env_Versions",
-    # "Install-Dev_Env_Win",
-    # "Install-Dev_Env_IDE_Win", 
-    # "Install-Dev_Env_LLM_Win",
-    # "Install-Dev_Env_OS_Win",
-    # "Install-Dev_Env_Whisper_Win",
-    # "Install-Dev_Env_Modules",
+    # # Mdm_DevEnv_Install
+
+    # "Get-DevEnvVersions",
+    # "Install-DevEnvWin",
+    # "Install-DevEnvIdeWin", 
+    # "Install-DevEnvLlmWin",
+    # "Install-DevEnvOsWin",
+    # "Install-DevEnvWhisperWin",
+    # "Install-DevEnvModules",
 
     # # Mdm_Std_Library
+
+    # # Mdm_Modules
+    # "Get-ModuleProperty", "Set-ModuleProperty",
+    # "Get-ModuleConfig", "Set-ModuleConfig",
+    # "Get-ModuleStatus", "Set-ModuleStatus",
+    # "Export-ModuleMemberScan", "Import-These"
+
     # # Script:
     # "Get-AllCommands",
     # "Initialize-Std",
@@ -41,9 +57,10 @@
     # "Assert-SecElevated",
     # "Set-SecElevated",
     # "Assert-Verbose",
+
     # # This script:
     # "Get-PSCommandPath",
-    # "Script_Name",
+    # "Get-ScriptName",
     # "Get-MyCommand_InvocationName",
     # "Get-MyCommand_Origin",
     # "Get-MyCommand_Name",
@@ -57,12 +74,14 @@
     # "Get-FileNamesFromPath",
     # "Set-LocationToPath",
     # "Set-LocationToScriptRoot",
-    # "Save-DirectoryName",
+    # "Set-SavedToDirectoryName",
     # "Get-DirectoryNameFromSaved",
+    # "Copy-ItemWithProgressDisplay",
 
     # "Set-LocationToPath",
     # "Set-LocationToScriptRoot",
     # "Set-DirectoryToScriptRoot",
+
     # # Waiting & pausing
     # "Wait-AnyKey",
     # "Wait-CheckDoPause",
@@ -82,28 +101,44 @@
     # "Get-Mdm_Help",
     # "Get-HelpHtml",
     # "Export-Help"
+
+    # Exceptions Handling
+    # "Get-LastError",
+    # "Get-NewError",
+    # "Set-ErrorBreakOnLine",
+    # "Set-ErrorBreakOnFunction",
+    # "Set-ErrorBreakOnVariable",
+    # "Script_Debugger"
     # )
+            
+'
 
+        }
+
+    }
+
+    # Functions to export
+    # FunctionsToExport    = @(*)
     # Cmdlets to export from this module.
-    # CmdletsToExport      = @()
-
+    # CmdletsToExport      = @(*)
     # Variables to export from this module.
     # VariablesToExport = "*"
-
     # Aliases to export from this module.
-    # AliasesToExport      = @()
-
+    # AliasesToExport      = @(*)
     # DSC resources to export from this module.
     # DscResourcesToExport = @()
 
+    # Check this (dll)
+    # ModuleToProcess = ""
+
     # List of all modules packaged with this module.
     # Specifies all the modules that are packaged with this module. 
-    # ModuleList           = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_Dev_Env_Install")
-    # Modules to import as nested modules of the module specified in ModuleToProcess
+    # ModuleList           = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install")
 
-    # NestedModules        = @("Install-Dev_Env_Win.ps1","Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_Dev_Env_Install")
-    # NestedModules        = "Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_Dev_Env_Install"
+    # Modules to import as nested modules of the module specified in ModuleToProcess
+    # NestedModules        = @("Install-DevEnvWin.ps1","Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install")
+    # NestedModules        = "Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install"
 
     # Modules that must be imported into the Global environment prior to importing this module
-    # RequiredModules      = "Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_Dev_Env_Install"
+    # RequiredModules      = "Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install"
 }

@@ -1,6 +1,4 @@
 
-# Script functions
-# ###############################
 function Assert-SecElevated() {
     <#
     .SYNOPSIS
@@ -25,22 +23,24 @@ function Assert-SecElevated() {
     param (
         # [switch]$DoPause,
         # [switch]$DoVerbose
-    )    # Assert-SecElevated
-    # Self-elevate the script if required
-    if (-Not ([Security.Principal.WindowsPrincipal] `
-                [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole( `
-                [Security.Principal.WindowsBuiltInRole] 'Administrator' `
-        )) {
-        return $false
-        # if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
-        #     $CommandLine = "-File `"" + $MyInvocation.MyCommand_.Path + "`" " + $MyInvocation.UnboundArguments
-        #     Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
-        #     Exit
-        # }
+    )
+    process {
+        # Assert-SecElevated
+        # Self-elevate the script if required
+        if (-Not ([Security.Principal.WindowsPrincipal] `
+                    [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole( `
+                    [Security.Principal.WindowsBuiltInRole] 'Administrator' `
+            )) {
+            return $false
+            # if ([int](Get-CimInstance -Class Win32_OperatingSystem | Select-Object -ExpandProperty BuildNumber) -ge 6000) {
+            #     $CommandLine = "-File `"" + $MyInvocation.MyCommand_.Path + "`" " + $MyInvocation.UnboundArguments
+            #     Start-Process -FilePath PowerShell.exe -Verb Runas -ArgumentList $CommandLine
+            #     Exit
+            # }
+        }
+        else { return $true }
     }
-    else { return $true }
 }
-# Set-SecElevated
 function Set-SecElevated ($message) {
     <#
     .SYNOPSIS
@@ -83,87 +83,84 @@ function Set-SecElevated ($message) {
             Write-Host -NoNewLine "Press any key to continue..." -NoNewline
             $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown") 
         }
-            
-        # Create a new process object that starts PowerShell
-        $newProcess = new-object System.Diagnostics.ProcessStartInfo "PowerShell";
-            
-        # Specify the current script path and name as a parameter
-        $newProcess.Arguments = $myInvocation.MyCommand.Definition;
-            
-        # Indicate that the process should be elevated
-        $newProcess.Verb = "runas";
-            
-        # Start the new process
-        [System.Diagnostics.Process]::Start($newProcess);
-            
-        # Exit from the current, unelevated, process
-        exit
+        Invoke-ProcessWithExit -RunAs -DoExit    
     }
             
     # Run your code that needs to be elevated here
     # Write-Verbose -NoNewLine "Press any key to continue..."
     # $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 }
-function Initialize-StdGlobalsReset {
+function Invoke-ProcessWithExit {
+    [CmdletBinding()]
+    param (
+        $newProcess,
+        $newArguments,
+        [switch]$RunAs,
+        [switch]$DoExit
+    )
+    process {
+        if (-not $newProcess) {
+            # Create a new process object that starts PowerShell
+            $newProcess = new-object System.Diagnostics.ProcessStartInfo "PowerShell"
+        }
+        if (-not $newArguments) {
+            # Specify the current script path and name as a parameter
+            $newProcess.Arguments = $myInvocation.MyCommand.Definition
+            # $newProcess.Arguments = "& '" + $MyInvocation.MyCommand.Name + "'"            
+        }
+        else {
+            $newProcess.Arguments = $newArguments
+        }
+            
+        # Indicate that the process should be elevated
+        if ($RunAs) { $newProcess.Verb = "runas" }
+            
+        # Start the new process
+        [System.Diagnostics.Process]::Start($newProcess)
+            
+        # Exit from the current, unelevated, process
+        if ($DoExit) { exit }
+    }
+}
+function Invoke-ProcessWithTimeout {
     <#
     .SYNOPSIS
-        Resets the global state.
+        Execute a command.
     .DESCRIPTION
-        This equates to, and uses, 
-            automatic variables, 
-            $PS variables, 
-            module metadata and
-            state.
-    .PARAMETER msgAnykey
-        The prompt for "Enter any key".
-    .PARAMETER msgYorN
-        The prompt for "Enter Y, N, or Q to quit".
+        This executes the supplied command with a timeout.
+    .PARAMETER command
+        Command to execute.
+    .PARAMETER timeout
+        The timeout.
     .PARAMETER DoPause
         Switch: Pause between steps.
     .PARAMETER DoVerbose
         Switch: Verbose output and prompts.
     .PARAMETER DoDebug
         Switch: Debug this script.
-    .PARAMETER initDone
-        Switch: indicates initialization is done.
     .OUTPUTS
-        none.
+        Performs the command.
     .EXAMPLE
-        Initialize-StdGlobalsReset
+        Invoke-ProcessWithTimeout "notepad.exe" 30
 #>
     [CmdletBinding()]
-    param (
-        [switch]$DoVerbose,
-        [switch]$DoPause,
-        [switch]$DoDebug,
-        [string]$msgAnykey = "",
-        [string]$msgYorN = "",
-        [switch]$initDone
+    param(
+        [Parameter(mandatory = $false)]
+        [string]$command = "",
+        [Parameter(mandatory = $false)]
+        [int]$timeout = 10
     )
-    $global:DoVerbose = $DoVerbose
-    $global:DoPause = $DoPause
-    $global:DoDebug = $DoDebug
-    $global:msgAnykey = $msgAnykey
-    $global:msgYorN = $msgYorN
-    $global:InitStdDone = $initDone
-}
-function Show-StdGlobals {
-    <#
-    .SYNOPSIS
-        Display global state.
-    .DESCRIPTION
-        Display global and automatic state variables.
-    .EXAMPLE
-        Show-StdGlobals
-#>
-    [CmdletBinding()]
-    param ()
-    Write-Host "Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug Init: $global:InitStdDone"
-    if ($global:msgAnykey.Lenth -gt 0) {
-        Write-Host "Anykey prompt: $global:msgAnykey"
-    }
-    if ($global:msgYorN.Lenth -gt 0) {
-        Write-Host "Y,Q or N prompt: $global:msgYorN"
+    process {
+        $process = Start-Process `
+            -FilePath "$command" `
+            -PassThru
+        if ($process.WaitForExit($timeout)) {
+            Write-Host "Process completed within timeout."
+        }
+        else {
+            Write-Host "Process timed out and will be terminated."
+            $process.Kill()
+        }
     }
 }
 function Push-ShellPwsh {
@@ -220,80 +217,193 @@ Unfortunately, $MyInvocation.Line does not return the correct result
         exit 0
     }
 }
-# Script Info
-function Script_Name { 
+# ###############################
+function Initialize-Std {
     <#
     .SYNOPSIS
-        Get Script Name.
+        Initializes a script..
     .DESCRIPTION
-        Get $MyInvocation.Script_Name.
+        This processes switches, automatic variables, state.
+    .PARAMETER DoPause
+        Switch: Pause between steps.
+    .PARAMETER DoVerbose
+        Switch: Verbose output and prompts.
+    .PARAMETER DoDebug
+        Switch: Debug this script.
     .OUTPUTS
-        $MyInvocation.Script_Name 
+        Global variables are set.
     .EXAMPLE
-        Script_Name
+        Initialize-Std -DoPause:$DoPause -DoVerbose:$DoVerbose
+    .EXAMPLE
+        Initialize-StdGlobalsReset
+        Initialize-Std -DoPause:$DoPause -DoVerbose:$DoVerbose
+    .NOTES
+        none.
 #>
     [CmdletBinding()]
-    param()
-    return $MyInvocation.Script_Name 
-}
-
-function Get-NewError {
-    <#
-.SYNOPSIS
-    Creates a powershell error object.
-.DESCRIPTION
-     Uses $PSCmdlet.WriteError to create a powershell error.
-.PARAMETER Message
-    The error message.
-.PARAMETER ErrorCategory
-    The error type.
-.PARAMETER DoPause
-Switch: Pause between steps.
-.PARAMETER DoVerbose
-Switch: Verbose output and prompts.
-.PARAMETER DoDebug
-Switch: Debug this script.
-.EXAMPLE
-    todo PsError Example
-.NOTES
-    I haven't tested or used this code yet.
-.OUTPUTS
-    An error object from what I can tell.
-#>
-    [cmdletbinding()]
-    Param
-    (
-        [Exception]$Message,
-        [Management.Automation.ErrorCategory]$ErrorCategory = "NotSpecified",
-        [switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug
+    param (
+        [switch]$DoPause, 
+        [switch]$DoVerbose, 
+        [switch]$DoDebug
     )
-    $arguments = @(
-        $Message
-        $null #errorid
-        [Management.Automation.ErrorCategory]::$ErrorCategory
-        $null
+    process {
+        # Write-Verbose "Init Local Pause: $local:DoPause, Verbose: $local:DoVerbose, Debug: $local:DoDebug"
+        # Show-StdGlobals
+        Write-Verbose "Initialize-Std"
+        if (-not $global:InitStdDone) {
+            Write-Verbose " initializing..."
+            # $global:DoPause = $local:DoPause; $global:DoVerbose = $local:DoVerbose
+            $global:InitStdDone = $true
+            # Validation
+            # Default messages
+            if ($global:msgAnykey.Length -le 0) { 
+                $global:msgAnykey = "Press any key to continue" 
+                Write-Debug "Anykey: $global:msgAnykey"
+            }
+            if ($global:msgYorN.Length -le 0) { 
+                $global:msgYorN = "Enter Y to continue, Q to quit or N to exit" 
+                Write-Debug "YorN: $global:msgYorN"
+            }
 
-    )
-    $ErrorRecord = New-Object `
-        -TypeName "Management.Automation.ErrorRecord" `
-        -ArgumentList $arguments
-    $PSCmdlet.WriteError($ErrorRecord)
+            # Pause
+            if ($local:DoPause) { $global:DoPause = $true } else { $global:DoPause = $false }
+            Write-Debug "Global pause: $global:DoPause"
+
+            # Debug
+            if ($local:DoDebug) { $global:DoDebug = $true } else { $global:DoDebug = $false }
+            # PowerShell setting for -Debug (ToDo: Issue 2: doesn't work)
+            if ($DebugPreference -ne 'SilentlyContinue') { $global:DoDebug = $true } else {
+                if ($local:DoDebug) {
+                    $global:DoDebug = $true
+                    $DebugPreference = 'Continue'
+                    if ($global:DoPause) { $DebugPreference = 'Inquire' }
+                }
+                else { $global:DoDebug = $false }
+            }
+            if ($global:DoDebug) { Write-Host "Debugging." } else { Write-Verbose "Debug off." }
+
+            # Verbosity
+            if ($local:DoVerbose) { $global:DoVerbose = $true } else { $global:DoVerbose = $false }
+            # Check automatice parameters 
+            # Write-Host "PSBoundParameters: $PSBoundParameters" (ToDo: Issue 1: doesn't work)
+            # Write-Host "PSBoundParameters Verbose: $($PSCmdlet.Get-Invocation.BoundParameters['Verbose'])" (ToDo: Issue 1: doesn't work)
+            # Write-Host "VerbosePreference: $VerbosePreference" # (ToDo: Issue 1: doesn't work)
+
+            # PowerShell setting
+            # return [bool]$VerbosePreference -ne [System.Management.Automation.ActionPreference]::SilentlyContinue    
+            if ($PSBoundParameters.ContainsKey('Verbose')) { 
+                # $PSCmdlet.Get-Invocation.BoundParameters["Verbose"]
+                # VerbosePreference
+                # Command line specifies -Verbose
+                $b = $PsBoundParameters.Get_Item('Verbose')
+                $global:DoVerbose = $b
+                Write-Debug "Bound Param Verbose $b"
+                # $global:DoVerbose = $false
+                if ($null -eq $b) { $global:DoVerbose = $false }
+                Write-Debug "Verbose from Bound Param: $global:DoVerbose"
+            }
+            else { 
+                Write-Host "Verbose key not present."
+            }
+            # Verbosity via -verbose produces output.
+            $output = ""
+            Write-Verbose "Verbose" > $output
+            if ($output.Length -gt 0) { $global:DoVerbose = $true }
+            if ($global:DoVerbose) {
+                Write-Verbose "Verbose."
+            }
+            else { Write-Verbose "Shhhhh....." }
+
+            # ??? Maybe
+            # Set-prompt
+        }
+        if ($global:DoVerbose) {
+            Write-Host ""
+            Write-Host "Init end  Local Pause: $local:DoPause, Verbose: $local:DoVerbose, Debug: $local:DoDebug"
+            Write-Host "Init end Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug Init: $global:InitStdDone"
+        }
+    }
 }
-function Get-LastError {
+function Initialize-StdGlobalsReset {
     <#
     .SYNOPSIS
-        Get-LastError.
+        Resets the global state.
     .DESCRIPTION
-        Get-LastError does Get-Error.
+        This equates to, and uses, 
+            automatic variables, 
+            $PS variables, 
+            module metadata and
+            state.
+    .PARAMETER msgAnykey
+        The prompt for "Enter any key".
+    .PARAMETER msgYorN
+        The prompt for "Enter Y, N, or Q to quit".
+    .PARAMETER DoPause
+        Switch: Pause between steps.
+    .PARAMETER DoVerbose
+        Switch: Verbose output and prompts.
+    .PARAMETER DoDebug
+        Switch: Debug this script.
+    .PARAMETER initDone
+        Switch: indicates initialization is done.
     .OUTPUTS
-        The last error to occur.
+        none.
     .EXAMPLE
-        Get-LastError
+        Initialize-StdGlobalsReset
+#>
+    [CmdletBinding()]
+    param (
+        [switch]$DoVerbose,
+        [switch]$DoPause,
+        [switch]$DoDebug,
+        [string]$msgAnykey = "",
+        [string]$msgYorN = "",
+        [switch]$initDone
+    )
+    process {
+        $global:DoVerbose = $DoVerbose
+        $global:DoPause = $DoPause
+        $global:DoDebug = $DoDebug
+        $global:msgAnykey = $msgAnykey
+        $global:msgYorN = $msgYorN
+        $global:InitStdDone = $initDone
+    }
+}
+function Show-StdGlobals {
+    <#
+    .SYNOPSIS
+        Display global state.
+    .DESCRIPTION
+        Display global and automatic state variables.
+    .EXAMPLE
+        Show-StdGlobals
 #>
     [CmdletBinding()]
     param ()
-    # Get-Error | Write-Host
-    return Get-Error
+    process {
+        Write-Host "Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug Init: $global:InitStdDone"
+        if ($global:msgAnykey.Lenth -gt 0) {
+            Write-Host "Anykey prompt: $global:msgAnykey"
+        }
+        if ($global:msgYorN.Lenth -gt 0) {
+            Write-Host "Y,Q or N prompt: $global:msgYorN"
+        }
+    }
+}
+function Get-ScriptName { 
+    <#
+    .SYNOPSIS
+        Get the Script Name.
+    .DESCRIPTION
+        Get $MyInvocation.Script_Name.
+    .OUTPUTS
+        $MyInvocation.Script_Name
+    .EXAMPLE
+        Get-ScriptName
+#>
+    [CmdletBinding()]
+    param()
+    process { return $MyInvocation.Script_Name }
 }
 function Script_DoStart {
     <#
@@ -316,48 +426,19 @@ function Script_DoStart {
 #>
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
-    # Import-Module Mdm_Std_Library -Force
-    Initialize-StdGlobalsReset  `
-        -DoPause $DoPause `
-        -DoVerbose $DoVerbose `
-        -DoDebug $DoDebug
-    Initialize-Std `
-        -DoPause $DoPause `
-        -DoVerbose $DoVerbose `
-        -DoDebug $DoDebug
-    if ($global:DoVerbose) { Write-Host "Script Started." }
-}
-function Script_Debugger {
-    param (
-        $functionName = "",
-        $commandLine = "",
-        [switch]$Break,
-        [switch]$Trace
-    )
-    $logMessage = "Script Debugger"
-    if ($functionName.Length -ge 1) {
-        $logMessage += " for function: $functionName"
-    }
-    Add-LogText -logMessages $logMessage -localLogFileNameFull $global:logFileNameFull -isWarning
-    # if ($Break) { break; }
-    # else { 
-    #     $logMessage = "Break is OFF! Use the -Break switch to break."
-    #     Add-LogText -logMessages $logMessage -localLogFileNameFull $global:logFileNameFull -isWarning
-    # }
-    if ($Trace) {
-        $commandNext = "Set-PSDebug -Trace"
-        # Add-LogText -logMessages $commandLine -localLogFileNameFull $global:logFileNameFull -isWarning
-        Add-LogText -logMessages $commandNext -localLogFileNameFull $global:logFileNameFull -isWarning
-        Invoke-Expression $commandNext 
-    }
-    # if (-not $commandLine) { $commandLine = $commandLineDefault }
-    # if ($commandLine -eq "" ) { $commandLine = $commandLineDefault }
-    if ($commandLine.Length -ge 1) {
-        Add-LogText -logMessages $commandLine -localLogFileNameFull $global:logFileNameFull -isWarning
-        Invoke-Expression $commandLine 
+    process {
+        # Import-Module Mdm_Std_Library -Force
+        Initialize-StdGlobalsReset  `
+            -DoPause:$DoPause `
+            -DoVerbose:$DoVerbose `
+            -DoDebug:$DoDebug
+        Initialize-Std `
+            -DoPause:$DoPause `
+            -DoVerbose:$DoVerbose `
+            -DoDebug:$DoDebug
+        if ($global:DoVerbose) { Write-Host "Script Started." }
     }
 }
-# Script_DoStart
 function Get-ScriptPositionalParameters {
     <#
     .SYNOPSIS
@@ -384,19 +465,20 @@ function Get-ScriptPositionalParameters {
         [Parameter(Mandatory = $true)]
         [string]$functionName
     )
-    Get-Help -Name $functionName -Parameter * | 
-    Sort-Object -Property position | 
-    Select-Object -Property name, position | Write-Host
+    process {
+        Get-Help -Name $functionName -Parameter * | 
+            Sort-Object -Property position | 
+                Select-Object -Property name, position | Write-Host
+    }
 }
-# from stackoverflow
 # ###############################
-#
 function Get-PSCommandPath { 
     <#
     .SYNOPSIS
         Get-PSCommandPath.
     .DESCRIPTION
         Get-PSCommandPath.
+        from stackoverflow
     .OUTPUTS
         $Script_PSCommandPath
     .EXAMPLE
@@ -404,7 +486,7 @@ function Get-PSCommandPath {
 #>
     [CmdletBinding()]
     param()
-    return $Script_PSCommandPath 
+    process { return $Script_PSCommandPath }
 }
 function Get-MyCommand_InvocationName {
     <#
@@ -419,7 +501,7 @@ function Get-MyCommand_InvocationName {
 #>
     [CmdletBinding()]
     param()
-    return $MyInvocation.InvocationName
+    process { return $MyInvocation.InvocationName }
 }
 function Get-MyCommand_Origin {
     <#
@@ -434,7 +516,9 @@ function Get-MyCommand_Origin {
 #>
     [CmdletBinding()]
     param()
-    return $MyInvocation.MyCommand_.CommandOrigin 
+    process {
+        return $MyInvocation.MyCommand_.CommandOrigin 
+    }
 }
 function Get-MyCommand_Name {
     <#
@@ -449,7 +533,7 @@ function Get-MyCommand_Name {
 #>
     [CmdletBinding()]
     param()
-    return $MyInvocation.MyCommand_.Name 
+    process { return $MyInvocation.MyCommand_.Name }
 }
 function Get-MyCommand_Definition {
     <#
@@ -464,10 +548,9 @@ function Get-MyCommand_Definition {
 #>
     [CmdletBinding()]
     param()
-    # Begin of Get-MyCommand_Definition()
-    # Note: ouput of this script shows the contents of this function, not the execution result
-    return $MyInvocation.MyCommand_.Definition
-    # End of Get-MyCommand_Definition()
+        # Begin of Get-MyCommand_Definition()
+        # Note: ouput of this script shows the contents of this function, not the execution result
+        process { return $MyInvocation.MyCommand_.Definition }
 }
 function Get-Invocation_PSCommandPath { 
     <#
@@ -482,5 +565,5 @@ function Get-Invocation_PSCommandPath {
 #>
     [CmdletBinding()]
     param()
-    return $MyInvocation.PSCommandPath
+    process { return $MyInvocation.PSCommandPath }
 }

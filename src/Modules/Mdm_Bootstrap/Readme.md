@@ -16,14 +16,14 @@ The folder includes two registry import files:
     regEnvLanguageModeFull.reg
 If you have permissions you can import "regEnvLanguageModeFull" to the registry.
 
-Dev_Env_LanguageMode "Full" will also set it.
-Dev_Env_LanguageMode ? will display options and documentation on the topic.
+DevEnv_LanguageMode "Full" will also set it.
+DevEnv_LanguageMode ? will display options and documentation on the topic.
 
 ## Bootstrapping the Mdm Modules
 
 The bootstrap command will install all the modules:
 ```powershell
-Dev_Env_Install_Modules_Win
+DevEnv_Install_Modules_Win
 ```
 
 ## It has numerous options and switches:

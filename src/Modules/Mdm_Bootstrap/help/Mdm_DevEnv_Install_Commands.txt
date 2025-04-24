@@ -1,0 +1,12 @@
+
+CommandType     Name                                               Version    Source
+-----------     ----                                               -------    ------
+Function        Get-DevEnvVersions                                 1.0        Mdm_DevEnv_Install
+Function        Install-DevEnvModules                              1.0        Mdm_DevEnv_Install
+Function        Install-DevEnvWin                                  1.0        Mdm_DevEnv_Install
+Function        Install-DevEnvIdeWin                               1.0        Mdm_DevEnv_Install
+Function        Install-DevEnvLlmWin                               1.0        Mdm_DevEnv_Install
+Function        Install-DevEnvOsWin                                1.0        Mdm_DevEnv_Install
+Function        Install-DevEnvWhisperWin                           1.0        Mdm_DevEnv_Install
+Alias           Get-Vs                                             1.0        Mdm_DevEnv_Install
+

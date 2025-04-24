@@ -1,4 +1,49 @@
 
+
+
+
+## Settings
+G:\Script\Powershell\Mdm_Powershell_Modules
+
+"C:\Users\{user}}\AppData\Roaming\VSCodium\User\globalStorage\storage.json"
+
+C:\Users\{user}}\.vscode-oss\extensions\ms-vscode.powershell-2025.0.0-universal\modules\
+
+
+# xml
+To export all functions in PowerShell to a PSD (PowerShell Data) file, you can use the Export-Clixml cmdlet, which allows you to export objects to an XML file that can be imported later. However, if you specifically want to export functions, you can retrieve them and then export them.
+
+Here's a step-by-step guide on how to do this:
+
+    Get All Functions: Use the Get-Command cmdlet to retrieve all functions.
+
+    Export to PSD: Use Export-Clixml to export the functions to a file.
+
+Here’s a sample script that accomplishes this:
+
+```powershell
+
+# Get all functions
+$functions = Get-Command -CommandType Function
+
+# Export functions to a PSD file
+$functions | Export-Clixml -Path "C:\Path\To\Your\Functions.psd"
+
+Importing the Functions Back
+
+To import the functions back from the PSD file, you can use the Import-Clixml cmdlet:
+
+powershell
+
+# Import functions from the PSD file
+$importedFunctions = Import-Clixml -Path "C:\Path\To\Your\Functions.psd"
+
+# Define the functions in the current session
+foreach ($function in $importedFunctions) {
+    $function | Out-Null
+}
+```
+
 # Search
 file to exclude:
 help*,log*,.inactive*,doc*

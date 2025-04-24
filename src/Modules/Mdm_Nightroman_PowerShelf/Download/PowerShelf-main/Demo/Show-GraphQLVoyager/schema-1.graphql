@@ -1,0 +1,13 @@
+﻿type Query {
+  "Par '*italic*'.\n\nPar \"**strong**\".\n\nPar `${script}`."
+  test1: String!
+
+  """
+  Para '*italic*'.
+
+  Para \"**strong**\".
+
+  Para `${script}`.
+  """
+  test2: String!
+}

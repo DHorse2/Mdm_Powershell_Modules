@@ -1,9 +1,5 @@
 # Mdm System Management Modules
 
-## Settings
-G:\Script\Powershell\Mdm_Powershell_Modules
-"C:\Users\david\AppData\Roaming\VSCodium\User\globalStorage\storage.json"
-
 ## Order of script execution for a new system.
 
 First, from the root directory (here) you can run:
@@ -16,19 +12,19 @@ You need to be in the Bootstrap Module Directory.
 
 If the Powershell Language Mode is not Full this can set it:
 ```powershell
-Dev_Env_LanguageMode
+DevEnv_LanguageMode
 ```
 
 Then to install these modules:  
 ```powershell
-Dev_Env_Install_Modules_Win
+DevEnv_Install_Modules_Win
 ```
 
 If you encounter any conflicts,
 for example with local vs previously installed modules,
 you can reset the environment with this command:
 ```powershell
-. .\Dev_Module_Import
+. .\DevEnv_Module_Reset
 ```
 You then run the module install again if it failed. It shouldn't.
 
@@ -39,7 +35,7 @@ Initialize-Dev_Env_Win
 
 Finally you can install all components:
 ```powershell
-Install-Dev_Env_Win
+Install-DevEnvWin
 ```
 
 ## Modules
@@ -48,12 +44,12 @@ Install-Dev_Env_Win
 ```text
 CommandType     Name                         Version    Source
 -----------     ----                         -------    ------
-Function        Install-Dev_Env_Win          1.0        Mdm_Dev_Env_Install
-Function        Install-Dev_Env_IDE_Win      1.0        Mdm_Dev_Env_Install
-Function        Install-Dev_Env_LLM_Win      1.0        Mdm_Dev_Env_Install
-Function        Install-Dev_Env_Whisper_Win  1.0        Mdm_Dev_Env_Install
-Function        Get-Dev_Env_Versions         1.0        Mdm_Dev_Env_Install
-Function        Install-Dev_Env_OS_Win       1.0        Mdm_Dev_Env_Install
+Function        Install-DevEnvWin          1.0        Mdm_DevEnv_Install
+Function        Install-DevEnvIdeWin      1.0        Mdm_DevEnv_Install
+Function        Install-DevEnvLlmWin      1.0        Mdm_DevEnv_Install
+Function        Install-DevEnvWhisperWin  1.0        Mdm_DevEnv_Install
+Function        Get-DevEnvVersions         1.0        Mdm_DevEnv_Install
+Function        Install-DevEnvOsWin       1.0        Mdm_DevEnv_Install
 ```
 
 ### Standard Functions
@@ -62,8 +58,8 @@ Function        Install-Dev_Env_OS_Win       1.0        Mdm_Dev_Env_Install
 CommandType     Name                         Version    Source
 -----------     ----                         -------    ------
 Function        Assert-SecElevated     1.0        Mdm_Std_Library
-Function        Build-ModuleExports          1.0        Mdm_Std_Library
-Function        Save-DirectoryName           1.0        Mdm_Std_Library
+Function        Export-ModuleMemberScan          1.0        Mdm_Std_Library
+Function        Set-SavedToDirectoryName           1.0        Mdm_Std_Library
 Function        Get-DirectoryNameFromSaved   1.0        Mdm_Std_Library
 Function        Set-LocationToPath           1.0        Mdm_Std_Library
 Function        Set-LocationToScriptRoot     1.0        Mdm_Std_Library
@@ -82,7 +78,7 @@ CommandType     Name                         Version    Source
 Function        Add-RegistryPath             1.0        Mdm_Bootstrap
 Function        Set-SecElevated        1.0        Mdm_Bootstrap
 Function        Initialize-Dev_Env_Win       1.0        Mdm_Bootstrap
-Function        Build-ModuleExports          1.0        Mdm_Bootstrap
+Function        Export-ModuleMemberScan          1.0        Mdm_Bootstrap
 Function        Set-DirectoryToScriptRoot    1.0        Mdm_Bootstrap
 ```
 

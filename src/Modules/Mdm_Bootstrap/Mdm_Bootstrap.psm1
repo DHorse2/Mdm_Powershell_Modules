@@ -6,12 +6,26 @@ $importName = "Mdm_Std_Library"
 if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName }
 Import-Module -Name "$global:scriptPath\$importName\$importName" -Force -ErrorAction Inquire
 
-. "$global:scriptPath\Mdm_Bootstrap\Dev_Env_Install_Modules_Win.ps1"
-Export-ModuleMember -Function Dev_Env_Install_Modules_Win
+. "$global:scriptPath\Mdm_Bootstrap\DevEnv_Install_Modules_Win.ps1"
+Export-ModuleMember -Function DevEnv_Install_Modules_Win
 
-. "$global:scriptPath\Mdm_Bootstrap\Dev_Env_LanguageMode.ps1"
-Export-ModuleMember -Function Dev_Env_LanguageMode
-
+# function DevEnv_LanguageMode {
+#     [CmdletBinding()]
+#     param ()
+#     process {
+. "$global:scriptPath\Mdm_Bootstrap\DevEnv_LanguageMode.ps1"
+#     }
+# }
+Export-ModuleMember -Function DevEnv_LanguageMode
+# !!! todo !!! this executes DevEnv_Module_Reset
+function DevEnv_Module_Reset {
+    [CmdletBinding()]
+    param ()
+    process {
+        . "$global:scriptPath\Mdm_Bootstrap\DevEnv_Module_Reset.ps1"
+    }
+}
+Export-ModuleMember -Function DevEnv_Module_Reset
 # MAIN
 function Initialize-Dev_Env_Win {
     <#
@@ -79,98 +93,56 @@ function Initialize-Dev_Env_Win {
         [switch]$DoPause,
         [switch]$DoVerbose
     )
-    # begin {}
-    # process {
+    begin {
+        # INIT
+        # Set-ExecutionPolicy Unrestricted
+        if ($DoVerbose) {
+            Write-Verbose "Initialize-Dev_Env_Win"
+            Write-Verbose "Script Security Check and Elevate" 
+        }
+        Set-SecElevated
     
-    # INIT
-    # Set-ExecutionPolicy Unrestricted
-    if ($DoVerbose) {
-        Write-Verbose "Initialize-Dev_Env_Win"
-        Write-Verbose "Script Security Check and Elevate" 
-    }
-    Set-SecElevated
-    
-    # CONTINUE
-    if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName }
-    $scriptDrive = Split-Path -Path "$global:scriptPath" -Qualifier
-    Set-Location $scriptDrive
-    Set-Location -Path "$global:scriptPath"
-    # Source:
-    $source = "$global:scriptPath\"
-    $destination = "$Env:ProgramFiles\WindowsPowerShell\Modules"
+        # CONTINUE
+        if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName }
+        $scriptDrive = Split-Path -Path "$global:scriptPath" -Qualifier
+        Set-Location $scriptDrive
+        Set-Location -Path "$global:scriptPath"
+        # Source:
+        $source = "$global:scriptPath\"
+        $destination = "$Env:ProgramFiles\WindowsPowerShell\Modules"
 
-    # #####################
-    $VerbosePreference -ne [System.Management.Automation.ActionPreference]::SilentlyContinue
-    if ($DoVerbose) { 
-        Write-Verbose "######################"
-        Write-Verbose  "Copying PowerShell modules to ProgramFiles PowerShell modules directory..."
-        Write-Verbose  "$global:scriptPath Install to the module library."
-        Write-Verbose " "
-        Write-Verbose -NoNewLine "Press any key to continue..."
-        $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")        
-    }
-    # 
-    $envPathToUpdate = "PSModulePath"
-    if ($UpdatePath) { 
+        # #####################
+        $VerbosePreference -ne [System.Management.Automation.ActionPreference]::SilentlyContinue
         if ($DoVerbose) { 
             Write-Verbose "######################"
-            Write-Verbose "Updating registry environment path $envPathToUpdate..."
+            Write-Verbose  "Copying PowerShell modules to ProgramFiles PowerShell modules directory..."
+            Write-Verbose  "$global:scriptPath Install to the module library."
+            Write-Verbose " "
+            Write-Verbose -NoNewLine "Press any key to continue..."
+            $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")        
         }
-        Add-RegistryPath ($envPathToUpdate) 
+        # 
+        $envPathToUpdate = "PSModulePath"
+        if ($UpdatePath) { 
+            if ($DoVerbose) { 
+                Write-Verbose "######################"
+                Write-Verbose "Updating registry environment path $envPathToUpdate..."
+            }
+            Add-RegistryPath ($envPathToUpdate) 
+        } else { if ($DoVerbose) { Write-Verbose "Registry skipped." } }
+    
+        if ($DoVerbose) {
+            Write-Verbose "######################" 
+            Write-Verbose "Installing Development PowerShell Library..."
+            Write-Verbose "To: $destination"
+        }
+        
     }
-    else { if ($DoVerbose) { Write-Verbose "Registry skipped." } }
-    
-    if ($DoVerbose) {
-        Write-Verbose "######################" 
-        Write-Verbose "Installing Development PowerShell Library..."
-        Write-Verbose "To: $destination"
-    }
-    
-    Copy-Item -Path $source -Destination $destination -Force -Recurse -PassThru | if ($DoVerbose) { ForEach-Object { Write-Verbose $_.FullName } }
-    
-    # if ($DoVerbose) { 
-    #     Write-Verbose " "
-    #     Write-Verbose -NoNewLine "Press any key to continue..."
-    #     $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-            
-    
-    #     Write-Verbose "######################"
-    #     Write-Verbose "Results:"
-    #     Write-Verbose "User Profile:"
-    # Get-ChildItem -Path "$env:USERPROFILE\Documents\PowerShell\Modules" 
-    # $env:userprofile
-    # Write-Verbose " "
-    # Write-Verbose -NoNewLine "Press any key to continue..."
-    # $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-    
-    # Write-Verbose "######################"
-    # Write-Verbose "PowerShell Modules:"
-    # # $moduleList = Get-ChildItem -Path "$PSHOME\Modules"
-    # $moduleList = Get-ChildItem -Path $destination
-    # $moduleList | Format-Wide -Column 3
-    # foreach ($file in $moduleList) {
-    #     Write-Verbose $file.Name -NoNewline
-    #     Write-Verbose "        " -NoNewline
-    # }
-    # Write-Verbose " "
-    Write-Verbose "Done "
-    # }
+    process { Copy-Item -Path $source -Destination $destination -Force -Recurse -PassThru | if ($DoVerbose) { ForEach-Object { Write-Verbose $_.FullName } } }
+    end { Write-Verbose "Done " }
 }
-
 # Components:
 #############################
-# Add-RegistryPath
-#
-# Environment variables
-# Write-Verbose  "Check path for Library module:" -NoNewline
-# Notes: There are two options
-# The PSModulePath is what powershell uses and should work.
-# Default:
-#   %ProgramFiles%\WindowsPowerShell\Modules;
-#   %SystemRoot%\system32\WindowsPowerShell\v1.0\Modules
-# Alternatively you could use the system path (but indicates a problem)
-# $envPathToUpdate = "PSModulePath"
-# function Add-RegistryPath ([string]$envPathToUpdate) {
 function Add-RegistryPath {
     <#
     .SYNOPSIS
@@ -184,65 +156,73 @@ function Add-RegistryPath {
     .EXAMPLE
         Add-RegistryPath "PATH" "c:\SOMEWHERER"
     .NOTES
-        none. todo not finished.
+        Environment variables
+        Write-Verbose  "Check path for Library module:" -NoNewline
+        Notes: There are two options
+        The PSModulePath is what powershell uses and should work.
+        Default:
+        %ProgramFiles%\WindowsPowerShell\Modules;
+        %SystemRoot%\system32\WindowsPowerShell\v1.0\Modules
+        Alternatively you could use the system path (but indicates a problem)
+        $envPathToUpdate = "PSModulePath"
     .OUTPUTS
         none.
 #>
     [CmdletBinding()]
     param ([string]$envPathToUpdate)
-    # begin {}
-    # process {
-    Write-Verbose  "Check path for Library module:" -NoNewline
-    if ($null -eq $envPathToUpdate) { 
-        $envPathToUpdate = "PATH" 
+    begin {
+        Write-Verbose  "Check path for Library module:" -NoNewline
+        if ($null -eq $envPathToUpdate) { 
+            $envPathToUpdate = "PATH" 
+        }
+        [string] $oldPath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name "$envPathToUpdate").path
+        if ($null -eq $oldPath) {
+            # Using the system PATH isn't best practices for powershell:
+            # Default:
+            Write-Host "Path $envPathToUpdate is null in the system Environment... Enter a key:" -NoNewline
+            $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+            $envPathToUpdate = "PATH"
+            Write-Warning "Using $envPathToUpdate instead..."
+            $oldPath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name "$envPathToUpdate").path
+            Write-Verbose $oldPath
+        }
     }
-    [string] $oldPath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name "$envPathToUpdate").path
-    if ($null -eq $oldPath) {
-        # Using the system PATH isn't best practices for powershell:
-        # Default:
-        Write-Host "Path $envPathToUpdate is null in the system Environment... Enter a key:" -NoNewline
-        $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-        $envPathToUpdate = "PATH"
-        Write-Warning "Using $envPathToUpdate instead..."
-        $oldPath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name "$envPathToUpdate").path
-        Write-Verbose $oldPath
-    }
-    # Check if already updated
-    $positionOfPath = $oldPath.IndexOf("$global:scriptPath")
-    Write-Verbose " $positionOfPath" # -1 if missing
+    process {
+        # Check if already updated
+        $positionOfPath = $oldPath.IndexOf("$global:scriptPath")
+        Write-Verbose " $positionOfPath" # -1 if missing
     
-    # Back path up
-    # $oldPath | Out-File -FilePath ".\$envPathToUpdate_$(Get-Date -Format 'yyyymmdd HH:mm K').bak"
-    # $oldPath | Out-File -FilePath ".\$envPathToUpdate_$(Get-Date -UFormat '%Y%m%d%R%z').bak"
-    # $oldPath | Out-File -FilePath ".\$envPathToUpdate_$(Get-Date).bak"
-    # Set-Content -Path ".\$envPathToUpdate $(Get-Date).bak" -Value $oldPath
-    # $oldPath | Out-File -FilePath ".\$envPathToUpdate $(Get-Date).bak"
-    # $oldPath > ".\$envPathToUpdate $(Get-Date).bak"
-    # $now = Get-Date -UFormat '%Y%m%d%R%z'
-    # $oldPath > ".\$envPathToUpdate $now.bak"
-    # Set-Content -Path ".\$envPathToUpdate $now.bak" -Value $oldPath
-    Out-File -FilePath "$PSScriptRoot\$envPathToUpdate $now.bak" -InputObject $oldPath
+        # Back path up
+        # $oldPath | Out-File -FilePath ".\$envPathToUpdate_$(Get-Date -Format 'yyyymmdd HH:mm K').bak"
+        # $oldPath | Out-File -FilePath ".\$envPathToUpdate_$(Get-Date -UFormat '%Y%m%d%R%z').bak"
+        # $oldPath | Out-File -FilePath ".\$envPathToUpdate_$(Get-Date).bak"
+        # Set-Content -Path ".\$envPathToUpdate $(Get-Date).bak" -Value $oldPath
+        # $oldPath | Out-File -FilePath ".\$envPathToUpdate $(Get-Date).bak"
+        # $oldPath > ".\$envPathToUpdate $(Get-Date).bak"
+        # $now = Get-Date -UFormat '%Y%m%d%R%z'
+        # $oldPath > ".\$envPathToUpdate $now.bak"
+        # Set-Content -Path ".\$envPathToUpdate $now.bak" -Value $oldPath
+        Out-File -FilePath "$PSScriptRoot\$envPathToUpdate $now.bak" -InputObject $oldPath
             
-    # $oldPath
-    $oldPathItems = $oldPath.replace(' ;', ';').replace('; ', ';').split(';')
-    $oldPathItems = $oldPath -split ";"
-    foreach ($oldPathItem in $oldPathItems) {
-        Write-Verbose $oldPathItem
+        # $oldPath
+        $oldPathItems = $oldPath.replace(' ;', ';').replace('; ', ';').split(';')
+        $oldPathItems = $oldPath -split ";"
+        foreach ($oldPathItem in $oldPathItems) {
+            Write-Verbose $oldPathItem
+        }
+        # Update Environment Path
+        if ($positionOfPath -lt 0) {
+            Write-Verbose "Updating path: $global:scriptPath"
+            $newpath = "$global:scriptPath;$oldPath"
+            Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name "$envPathToUpdate" -Value $newpath
+            # Write-Host -NoNewLine "Press any key to continue..."
+            # $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
+        } else {
+            Write-Verbose "Found path: $global:scriptPath"
+        }
     }
-            
-    # Update Environment Path
-    if ($positionOfPath -lt 0) {
-        Write-Verbose "Updating path: $global:scriptPath"
-        $newpath = "$global:scriptPath;$oldPath"
-        Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name "$envPathToUpdate" -Value $newpath
-        # Write-Host -NoNewLine "Press any key to continue..."
-        # $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
-    }
-    else {
-        Write-Verbose "Found path: $global:scriptPath"
-    }
-    # end {}
-    # clean {}
+    end {}
+    clean {}
 }
 # Source: https://stackoverflow.com/questions/5648931/test-if-registry-value-exists
 Function Assert-RegistryValue {
@@ -267,31 +247,30 @@ Function Assert-RegistryValue {
 #>    [CmdletBinding()]
     param(
         [Alias("PSPathTest")]
-        [Parameter(Position = 0, Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Parameter(Position = 0, Mandatory = $true)]
         [String]$Path,
         [Parameter(Position = 1, Mandatory = $true)]
         [String]$Name,
         [Switch]$PassThru
     ) 
+    begin {}
     process {
         if (Test-Path $Path) {
             $Key = Get-Item -LiteralPath $Path
             if ($null -ne $Key.GetValue($Name, $null)) {
                 if ($PassThru) {
                     Get-ItemProperty $Path $Name
-                }
-                else {
+                } else {
                     $true
                 }
-            }
-            else {
+            } else {
                 $false
             }
-        }
-        else {
+        } else {
             $false
         }
     }
+    end {}
 }
 #
 #############################
@@ -308,4 +287,5 @@ Function Assert-RegistryValue {
 Export-ModuleMember -Function `
     Initialize-Dev_Env_Win, `
     Assert-RegistryValue, `
-    Add-RegistryPath
+    Add-RegistryPath,
+DevEnv_Module_Reset

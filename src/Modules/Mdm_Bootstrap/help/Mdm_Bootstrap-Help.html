@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PowerShell Help -  - Mdm_Bootstrap</title>
+    <title>Mdm_Bootstrap Help by  for PowerShell</title>
     <style>
         html,
         body {
@@ -14,7 +14,8 @@
 
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 3px;
+            padding: 18px;
         }
 
         h2 {
@@ -32,12 +33,15 @@
         }
 
         .wrapper {
-            display: inline-block;
+            /* float on right edge */
+            float: left;
+            vertical-align: top;
+            margin-right: 10px;
+
             /* Allows the wrapper to sit next to the heading */
-            vertical-align: middle;
-            /* Aligns the button vertically with the heading */
-            margin-left: 10px;
-            /* Adds some space between the heading and the button */
+            /* display: inline-block; */
+            /* margin-left: 10px; */
+            /* vertical-align: middle; */
         }
 
         .circle {
@@ -86,22 +90,29 @@
 
 <body>
     <script>
-        let button = document.querySelector('.btn')
-        button.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark-mode')
-        })
+        function toggleDarkMode(element) {
+            if (element == null) { var element = document.body; }
+            element.classList.toggle("dark-mode");
+        }
+
+        function myClassClick(className, toggleName) {
+            let ClassItem = document.querySelector(className)
+            ClassItem.addEventListener('click', () => {
+                document.documentElement.classList.toggle(toggleName)
+            })
+        }
     </script>
-    <h1>Help for Module: Mdm_Bootstrap</h1>
-    <div class="wrapper">
-        <div class="circle outer">
-            <div class="circle inner">
-                <button class="btn" type="button">dark mode</button>
+    <div>
+        <div class="wrapper">
+            <div class="circle outer">
+                <div class="circle inner">
+                    <button class="darkModeButton" type="button" onclick="toggleDarkMode()">dark mode</button>
+                </div>
             </div>
         </div>
+        <h1>Help for Module: Mdm_Bootstrap</h1>
     </div>
     <h1>Mdm_Bootstrap</h1>
-<p><strong>Name:</strong> about_Mdm_Bootstrap</p>
-<p><strong>Type:</strong> HelpFile</p>
 <pre>NAME
 Mdm Bootstrap
 
@@ -124,21 +135,32 @@ EXAMPLE
     Import-module Mdm_Bootstrap
 
 NOTES
-    I was (PREVIOUSLY) unable to make this work in the psm1 file:
-    It is the "dot sourcing" issue found online.
+    I originally had each function a .ps1 file:
+    I had issues. It is the "dot sourcing" issue found online.
+    The solution needs Full Language Mode to run.
     ```powershell
         . "$PSScriptRoot\Assert-SecElevated.ps1"
-        . "$PSScriptRoot\Build-ModuleExports.ps1"
+        . "$PSScriptRoot\Export-ModuleMemberScan.ps1"
         . "$PSScriptRoot\Get-DirectoryNameFromSaved.ps1"
         . "$PSScriptRoot\Get-FilesNamesFromSaved.ps1"
-        . "$PSScriptRoot\Save-DirectoryName.ps1"
+        . "$PSScriptRoot\Set-SavedToDirectoryName.ps1"
         . "$PSScriptRoot\Set-LocationToPath"
         . "$PSScriptRoot\Wait-AnyKey.ps1"
         . "$PSScriptRoot\Wait-CheckDoPause.ps1"
         . "$PSScriptRoot\Wait-YorNorQ.ps1"
     ```
+    I now have a module .psm1 file but the .ps1 file are components or classes:
+    ```powershell
+        . "$PSScriptRoot\Mdm_Std_Library.psm1"
+        . "$PSScriptRoot\Mdm_Std_Help.ps1"
+        . "$PSScriptRoot\Mdm_Std_Etl.ps1"
+        . "$PSScriptRoot\Mdm_Std_Script.ps1"
+        . "$PSScriptRoot\Mdm_Std_Error.ps1"
+        . "$PSScriptRoot\Mdm_Std_Module.ps1"
+    ```
+
     You have to dot source ". xxx" these in your .PSM1 file.
-    Also: See function Build-ModuleExports. 
+    Also: See function Export-ModuleMember. 
     This also failed for the same reasons.
     
     Regardless: This is powershell best practices,
@@ -156,152 +178,6 @@ NOTES
     Note: This reduces the security of the system. todo
     The bootstrap modules contains solution to alter this setting.
 </pre>
-<p>There is no help for function: Add-RegistryPath.</p>
-<h2>Assert-RegistryValue</h2>
-<p><strong>Name:</strong> Assert-RegistryValue</p>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Return true if Registry Value exists.</p>
-<p><strong>Detailed Description:</strong> Check the registry path &amp; value. Asserts it exists.</p>
-<p><strong>Syntax:</strong> Path
- description: The Registry Path to check.
-
- parameterValue: String, required: true, globbing: false, pipelineInput: true (ByValue, ByPropertyName), position: 1 Name
- description: The Registry Key name (Value) to access.
-
- parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2 description: If true this outputs an ItemProperty otherwise true/false
-
- PassThru
- required: false, globbing: false, pipelineInput: false, position: named Assert-RegistryValue
-</p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>Path</strong>: The Registry Path to check.</p>
-<p>  - <strong>Name</strong>: The Registry Key name (Value) to access.</p>
-<p>  - <strong>PassThru</strong>: If true this outputs an ItemProperty otherwise true/false</p>
-<p></p>
-<p><strong>Return: </strong> True/Fale if the key exists.
-null/ItemProperty if PassThur switch is present.</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Assert-RegistryValue "PATH"      Remarks:    </pre>
-<p></p>
-<h2>Dev_Env_Install_Modules_Win</h2>
-<p><strong>Name:</strong> Dev_Env_Install_Modules_Win</p>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Install or update Mdm Modules.</p>
-<p><strong>Detailed Description:</strong> This installs the libraries to the live system using Robocopy.</p>
-<p><strong>Syntax:</strong> description: Provide detailed information.
-
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch to pause at each step/page.
-
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Debug this script.
-
- DoDebug
- required: false, globbing: false, pipelineInput: false, position: named source
- description: default: "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules"
-
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 destination
- description: default: "$env:PROGRAMFILES\\WindowsPowerShell\Modules"
-
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 logFilePath
- description: default: "G:\Script\Powershell\Mdm_Powershell_Modules\log\"
-
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 logFileName
- description: default: "Mdm_Installation_Log.txt"
-
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 4 description: Switch to not create separate file with the date in the file name.
-
- LogOneFile
- required: false, globbing: false, pipelineInput: false, position: named nameFilter
- description: Default is "Mmd_*". IE. These modules.
-You could override it if you had other local modules to install
-
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 SkipHelp
- required: false, globbing: false, pipelineInput: false, position: named SkipRegistry
- required: false, globbing: false, pipelineInput: false, position: named description: Switch to execute copy commands in a separate shell window.
-
- DoNewWindow
- required: false, globbing: false, pipelineInput: false, position: named companyName
- description: MacroDM currently. It's optional.
-
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 6 copyOptions
- description: These are RoboCopy options.
-Currently: "/E /FP /nc /ns /np /TEE"
-
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 7 Dev_Env_Install_Modules_Win
-</p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>DoVerbose</strong>: Provide detailed information.</p>
-<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
-<p>  - <strong>DoDebug</strong>: Debug this script.</p>
-<p>  - <strong>source</strong>: default: &quot;G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules&quot;</p>
-<p>  - <strong>destination</strong>: default: &quot;$env:PROGRAMFILES\\WindowsPowerShell\Modules&quot;</p>
-<p>  - <strong>logFilePath</strong>: default: &quot;G:\Script\Powershell\Mdm_Powershell_Modules\log\&quot;</p>
-<p>  - <strong>logFileName</strong>: default: &quot;Mdm_Installation_Log.txt&quot;</p>
-<p>  - <strong>LogOneFile</strong>: Switch to not create separate file with the date in the file name.</p>
-<p>  - <strong>nameFilter</strong>: Default is &quot;Mmd_*&quot;. IE. These modules.
-You could override it if you had other local modules to install</p>
-<p>  - <strong>SkipHelp</strong>: N/A</p>
-<p>  - <strong>SkipRegistry</strong>: N/A</p>
-<p>  - <strong>DoNewWindow</strong>: Switch to execute copy commands in a separate shell window.</p>
-<p>  - <strong>companyName</strong>: MacroDM currently. It&apos;s optional.</p>
-<p>  - <strong>copyOptions</strong>: These are RoboCopy options.
-Currently: &quot;/E /FP /nc /ns /np /TEE&quot;</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Dev_Env_Install_Modules_Win      Remarks:    </pre>
-<p></p>
-<h2>Dev_Env_LanguageMode</h2>
-<p><strong>Name:</strong> Dev_Env_LanguageMode</p>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> 
-Dev_Env_LanguageMode [-languageMode] &lt;Object&gt; [&lt;CommonParameters&gt;]</p>
-<p><strong>Syntax:</strong> name: Dev_Env_LanguageMode
-CommonParameters: True
-parameter: @{name=languageMode; required=true; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>languageMode</strong>: N/A</p>
-<p></p>
-<p><strong>Return: </strong> System.Object</p>
-<p></p>
-<p></p>
-<h2>Initialize-Dev_Env_Win</h2>
-<p><strong>Name:</strong> Initialize-Dev_Env_Win</p>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Setup (bootstrap) Windows for the Development Environment.</p>
-<p><strong>Detailed Description:</strong> This is the first step of bootstrapping the Development Environment.
-This updates the Windows Environment variables.
-It installs these powershell modules to the system&apos;s directories.
-Set registry, Path and load PowerShell modules.
-$source = &quot;$global:scriptPath\&quot;
-$destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
-<p><strong>Syntax:</strong> description: Switch: A switch to indicate the path should be checked/updated.
-
- UpdatePath
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Pause between steps.
-
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
-
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named Initialize-Dev_Env_Win
-</p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>UpdatePath</strong>: Switch: A switch to indicate the path should be checked/updated.</p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
-<p></p>
-<p><strong>Return: </strong> todo.</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Initialize-Dev_Env_Win -SilentMode -UpdatePath      Remarks:    </pre>
-<p></p>
 </body>
 
 </html>
-

@@ -8,7 +8,7 @@ DESCRIPTION
     Imports:
         Mdm_Bootstrap
         Mdm_Std_Library
-        Mdm_Dev_Env_Install
+        Mdm_DevEnv_Install
     This imports the Mdm_Modules so that all functions are available.
 
 EXAMPLE

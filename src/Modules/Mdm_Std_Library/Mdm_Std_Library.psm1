@@ -1,10 +1,98 @@
 
+# Mdm_Std_Library
+# Script Path
+if (-not $global:scriptPath) { 
+    $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName
+}
 # Import-Module Mdm_Std_Library
-. $global:scriptPath\Mdm_Std_Library\Mdm_Std_Etl.ps1
-. $global:scriptPath\Mdm_Std_Library\Mdm_Std_Help.ps1
+. $global:scriptPath\Mdm_Std_Library\Mdm_Std_Error.ps1
+Export-ModuleMember -Function @(
+    # Exceptions Handling
+    "Get-LastError",
+    "Get-NewError",
+    "Set-ErrorBreakOnLine",
+    "Set-ErrorBreakOnFunction",
+    "Set-ErrorBreakOnVariable",
+    "Get-CallStackFormated",
+    "Script_Debugger"
+)
+. $global:scriptPath\Mdm_Std_Library\Mdm_Std_Module.ps1
+Export-ModuleMember -Function @(
+    # Scan and feature (cmdlet) selection
+    "Export-ModuleMemberScan",
+    "Import-These",
+    # Module State
+    "Get-ModuleProperty",
+    "Set-ModuleProperty",
+    "Get-ModuleConfig",
+    "Set-ModuleConfig",
+    # Module Status
+    "Get-ModuleStatus",
+    "Set-ModuleStatus"
+)
 . $global:scriptPath\Mdm_Std_Library\Mdm_Std_Script.ps1
-. $global:scriptPath\Mdm_Std_Library\Get-AllCommands.ps1
+Export-ModuleMember -Function @(
+    # This script:
+    "Get-Invocation_PSCommandPath",
+    "Get-PSCommandPath",
+    "Get-MyCommand_Definition",
+    "Get-MyCommand_InvocationName",
+    "Get-MyCommand_Name",
+    "Get-MyCommand_Origin",
+    "Get-ScriptName",
+    "Get-ScriptPositionalParameters",
 
+    # Script:
+    "Script_DoStart",
+    "Initialize-Std",
+    "Initialize-StdGlobalsReset",
+    "Show-StdGlobals",
+    "Set-DisplayColors",
+    "Assert-SecElevated",
+    "Assert-Verbose",
+    "Push-ShellPwsh"
+)
+. $global:scriptPath\Mdm_Std_Library\Mdm_Std_Etl.ps1
+Export-ModuleMember -Function @(
+    # Etl
+    # Path and directory
+    "Get-DirectoryNameFromSaved",
+    "Get-FileNamesFromPath",
+    "Get-UriFromPath",
+    "Set-LocationToPath",
+    "Set-LocationToScriptRoot",
+    "Set-DirectoryToScriptRoot",
+    "Set-SavedToDirectoryName",
+    "Search-Directory",
+
+    "Copy-ItemWithProgressDisplay",
+
+    "ConvertFrom-HashValue",
+    "ConvertTo-Text",
+    "ConvertTo-ObjectArray",
+    "ConvertTo-EscapedText",
+    "ConvertTo-TrimedText",
+    # Etl Log
+    "Add-LogText",
+    "Add-LogError",
+    "Get-LogFileName",
+    # Etl Html
+    "Write-HtlmData"
+)
+. $global:scriptPath\Mdm_Std_Library\Mdm_Std_Help.ps1
+Export-ModuleMember -Function @(
+    # Help
+    "Write-Mdm_Help",
+    "Get-Mdm_Help",
+    # "Write-Mdm_Help",  # Duplicate entry, consider removing if not needed
+    "ConvertFrom-HtmlTemplate",
+    "Get-HelpHtml",
+    "Get-HtmlTemplate",
+    "ConvertFrom-HtmlTemplate",
+    "Export-Help"
+)
+. $global:scriptPath\Mdm_Std_Library\Get-AllCommands.ps1
+Export-ModuleMember -Function "Get-AllCommands"
 
 # Globals:
 Write-Verbose "Loading globals..."
@@ -24,28 +112,87 @@ if (-not $global:InitDone) {
     [bool]$global:InitDone = $true
     [bool]$global:InitStdDone = $false
     # Modules array
-    $global:moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_Dev_Env_Install", "Mdm_Modules")
+    [array]$global:moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install", "Mdm_Modules")
+    [array]$global:moduleAddons = @("Mdm_Nightroman_PowerShelf", "Mdm_Springcomp_MyBox", "DevEnv_LanguageMode")
+
     # Error display handling options:
-    [bool]$global:UsePsTrace = $true;
-    [bool]$global:UsePsTraceDetails = $true;
-    [bool]$global:UsePsTraceStack = $true;
+    [bool]$global:UseTrace = $true
+    [bool]$global:UseTraceDetails = $true
+    [bool]$global:UseTraceStack = $true
+    [bool]$global:DebugProgressFindName = $true
+    [int]$global:debugTraceStep = 0
+    [string]$global:debugSetting = ""
     # include debug info with warnings
-    [bool]$global:UsePsTraceWarning = $true;
+    [bool]$global:UseTraceWarning = $true
     # include full details with warnings
-    [bool]$global:UsePsTraceWarningDetails = $false;
-    # pause on this cmdlet/function name
-    [string]$global:DebugFunctionName = "Add-RegistryPath"
+    [bool]$global:UseTraceWarningDetails = $false
     # Built in Powershell based Method:
-    # 1. Clean up any existing breakpoints
-    # CHECK IF THIS CLEARS THE DEV"S BREAKPOINTS TODO
-    Get-PSBreakpoint | Remove-PSBreakpoint;
-    Set-PSBreakPoint -Command Script_Debugger -Action { break; }
+    [bool]$global:UsePsBreakpoint = $true
+
+    # Set-PSBreakpoint
+    # pause on this cmdlet/function name
+    [bool]$global:DebugProgressFindName = $false
+    # [array]$global:debugFunctionNames = @()
+    [array]$global:debugFunctionNames = @("Export-ModuleMemberScan")
+    [string]$global:debugFunctionName = ""
+    [int]$global:debugFunctioLineNumber = 0
+    [string]$global:debugWatchVariable = ""
+    [string]$global:debugMode = "Write"
+    
+    # Built in Powershell based Method:
+    if ($global:UsePsBreakpoint) {
+        try {
+            #PSDebug
+            if ($global:debugSetting.Length -ge 1) {
+                $commandNext = "Set-PSDebug -$global:debugSetting"
+            } else {
+                $commandNext = "Set-PSDebug -Off"
+            }
+            Invoke-Expression $commandNext
+            #PSBreakpoint
+            Get-PSBreakpoint | Remove-PSBreakpoint
+            Set-PSBreakPoint -Command "Script_Debugger" -Action { 
+                Write-Host "<*>" -ForegroundColor Red
+                # Script_Debugger -Break;
+            }
+            if ($global:debugFunctionName.Length -ge 1) {
+                Set-PSBreakPoint -Command $global:debugFunctionName -Action { Script_Debugger -Break; }
+                Write-Host "Break set up for $global:debugFunctionName" -ForegroundColor Green
+            }
+            foreach ($functionName in $global:debugFunctionNames) {
+                Set-PSBreakpoint -Command $functionName -Action { Script_Debugger -Break; }
+                Write-Host "Break set up for $functionName" -ForegroundColor Green
+            }
+        } catch {
+            Write-Error "$_"
+            Write-Host "Powershell debug features are unavailable in the Mdm Standard Library" `
+                -ForegroundColor Red
+        }
+        # This doesn't work:
+        # Source : https://stackoverflow.com/questions/20912371/is-there-a-way-to-enter-the-debugger-on-an-error/
+        # Get the current session using Get-PSSession
+        # $currentSession = New-PSSession
+        # $currentSession = Get-PSSession
+        # $currentSession = Get-PSSession | Where-Object { $_.Id -eq $session.Id }
+
+        # Extract relevant properties from the existing session
+        # $computerName = $currentSession.ComputerName
+        # $credential = $currentSession.Credential
+        # $newSession = New-PSSession -ComputerName $computerName -Credential $credential
+        # Invoke-Command -Session $currentSession -ScriptBlock {
+        # Set-PSBreakPoint -Command Script_Debugger -Action { break; }
+        # Break on LINE
+        # Set-PSBreakpoint -Script "C:\Path\To\YourScript.ps1" -Line 10
+        # }
+    }
+    # Control and defaults
     [bool]$global:DoVerbose = $false
     [bool]$global:DoPause = $false
     [bool]$global:DoDebug = $false
     [string]$global:msgAnykey = ""
     [string]$global:msgYorN = ""
-    # Change the color of error and warning text
+    
+    # Color of error and warning text
     $global:opt = (Get-Host).PrivateData
     $global:messageBackgroundColor = [System.ConsoleColor]::Black
     $global:messageForegroundColor = [System.ConsoleColor]::White
@@ -54,15 +201,11 @@ if (-not $global:InitDone) {
     # $global:opt.WarningForegroundColor = [System.ConsoleColor]::White
     $global:opt.ErrorBackgroundColor = [System.ConsoleColor]::Black
     $global:opt.ErrorForegroundColor = [System.ConsoleColor]::Red
-}
-# Script Path
-if (-not $global:scriptPath) { 
-    $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName
-}
 
-$global:timeStarted = "{0:yyyymmdd_hhmmss}" -f (get-date)
-$global:timeCompleted = $global:timeStarted
-$global:lastError = $null
+    $global:timeStarted = "{0:yyyymmdd_hhmmss}" -f (get-date)
+    $global:timeCompleted = $global:timeStarted
+    $global:lastError = $null
+}
 
 # ###############################
 function Assert-Verbose {
@@ -81,7 +224,7 @@ function Assert-Verbose {
 #>
     [CmdletBinding()]
     param ()
-    return $DoVerbose
+    return $global:DoVerbose
 }
 ## Customize the prompt
 function Set-prompt {
@@ -115,8 +258,26 @@ function Set-prompt {
     $suffix = $suffix -join ""
     "${prefix}${body}${suffix}"
 }
+function Set-DisplayColors {
+    [CmdletBinding()]
+    param (
+        $WarningBackgroundColor = "Orange",
+        $WarningForegroundColor = "white",
+        $ErrorBackgroundColor = "red",
+        $ErrorForegroundColor = "white"    
+    )
+    process {
+        # Change the color of error and warning text
+        # https://sqljana.wordpress.com/2017/03/01/powershell-hate-the-error-text-and-warning-text-colors-change-it/
+        $global:opt = (Get-Host).PrivateData
+        $global:opt.WarningBackgroundColor = $WarningBackgroundColor
+        $global:opt.WarningForegroundColor = $WarningForegroundColor
+        $global:opt.ErrorBackgroundColor = $ErrorBackgroundColor
+        $global:opt.ErrorForegroundColor = $ErrorForegroundColor
+    }
+}
 # ###############################
-function Wait-CheckGlobals {
+function Set-StdGlobals {
     <#
     .SYNOPSIS
         Checks global variables and state.
@@ -133,7 +294,7 @@ function Wait-CheckGlobals {
     .OUTPUTS
         none.
     .EXAMPLE
-        Wait-CheckGlobals -DoPause -DoVerbose -DoDebug
+        Set-StdGlobals -DoPause -DoVerbose -DoDebug
     .NOTES
         none.
 #>
@@ -143,13 +304,74 @@ function Wait-CheckGlobals {
         [string]$message = "",
         [switch]$DoPause, 
         [switch]$DoVerbose, 
-        [switch]$DoDebug
+        [switch]$DoDebug,
+        [switch]$SkipClear,
+        [switch]$Preserve
     )
-    if ($message.Length -gt 0) { $global:message = $message }
-    if ($local:DoPause) { $global:DoPause = $local:DoPause }
-    if ($local:DoVerbose) { $global:DoVerbose = $local:DoVerbose }
-    if ($local:DoDebug) { $global:DoDebug = $local:DoDebug }
+    if (-not $Preserve) {
+        $global:DoPause = $local:DoPause
+        $global:DoVerbose = $local:DoVerbose
+        $global:DoDebug = $local:DoDebug
+        $global:message = $local:message
+    } else {
+        # What this means is that 
+        # if they are on, they won't be turned off.
+        if (-not $SkipClear) {
+            $global:DoPause = $false
+            $global:DoVerbose = $false
+            $global:DoDebug = $false
+            $global:message = ""
+        }
+        # However they can be turned on.
+        if ($local:DoPause) { $global:DoPause = $local:DoPause }
+        if ($local:DoVerbose) { $global:DoVerbose = $local:DoVerbose }
+        if ($local:DoDebug) { $global:DoDebug = $local:DoDebug }
+        if ($local:message.Length -gt 0) { $global:message = $message }
+    }
 }
+function Get-StdGlobals {
+    <#
+    .SYNOPSIS
+        Gets global variables and state.
+    .DESCRIPTION
+        This will get globals to be returned without validation.
+    .PARAMETER message
+        The system message. Not used.
+    .PARAMETER DoPause
+        Switch: Pause between steps.
+    .PARAMETER DoVerbose
+        Switch: Verbose output and prompts.
+    .PARAMETER DoDebug
+        Switch: Debug this script.
+    .OUTPUTS
+        none.
+    .EXAMPLE
+        Set-StdGlobals -DoPause -DoVerbose -DoDebug
+    .NOTES
+        none.
+#>
+    [CmdletBinding()]
+    param(
+        [Parameter(mandatory = $false)]
+        [switch]$DoClear
+    )
+    if ($DoClear) {
+        $global:DoPause = $false
+        $global:DoVerbose = $false
+        $global:DoDebug = $false
+        $global:message = ""
+    }
+    return @($global:DoPause, $global:DoVerbose, $global:DoDebug, $global:message)
+}
+function IsDebugFunction {
+    param (
+        [Parameter(Mandatory = $true)]
+        $functionName
+    )
+    return ($global:debugFunctionNames -contains $functionName)
+}
+
+# ###############################
 function Wait-AnyKey {
     <#
     .SYNOPSIS
@@ -189,18 +411,17 @@ function Wait-AnyKey {
     if ([string]::IsNullOrEmpty($message)) {
         $message = 'Enter any key to continue: '
     }
-    Wait-CheckGlobals `
-        -DoPause $DoPause `
-        -DoVerbose $DoVerbose `
-        -DoDebug $DoDebug
+    Set-StdGlobals `
+        -DoPause:$DoPause `
+        -DoVerbose:$DoVerbose `
+        -DoDebug:$DoDebug
     # Write-Host "$message Pause: $global:DoPause"
     # if ($global:DoPause) {
     # Check if running PowerShell ISE
     if ($psISE) {
         Add-Type -AssemblyName System.Windows.Forms
         [System.Windows.Forms.MessageBox]::Show("$message")
-    }
-    else {
+    } else {
         Write-Host "$message " -ForegroundColor Yellow -NoNewline
         # $null = $host.ui.RawUI.ReadKey("NoEcho, IncludeKeyUp")
         $null = [Console]::ReadKey()
@@ -217,45 +438,6 @@ function Wait-AnyKey {
 # } -Scope Global
 # Todo wait timeout /t 5
 # Timeout preparation
-function Invoke-ProcessWithTimeout {
-    <#
-    .SYNOPSIS
-        Execute a command.
-    .DESCRIPTION
-        This executes the supplied command with a timeout.
-    .PARAMETER command
-        Command to execute.
-    .PARAMETER timeout
-        The timeout.
-    .PARAMETER DoPause
-        Switch: Pause between steps.
-    .PARAMETER DoVerbose
-        Switch: Verbose output and prompts.
-    .PARAMETER DoDebug
-        Switch: Debug this script.
-    .OUTPUTS
-        Performs the command.
-    .EXAMPLE
-        Invoke-ProcessWithTimeout "notepad.exe" 30
-#>
-    [CmdletBinding()]
-    param(
-        [Parameter(mandatory = $false)]
-        [string]$command = "",
-        [Parameter(mandatory = $false)]
-        [int]$timeout = 10
-    )
-    $process = Start-Process `
-        -FilePath "$command" `
-        -PassThru
-    if ($process.WaitForExit($timeout)) {
-        Write-Host "Process completed within timeout."
-    }
-    else {
-        Write-Host "Process timed out and will be terminated."
-        $process.Kill()
-    }
-}
 function Wait-CheckDoPause {
     <#
     .SYNOPSIS
@@ -301,16 +483,13 @@ function Wait-YorNorQ {
         [switch]$DoVerbose, 
         [switch]$DoDebug    
     )
-    Wait-CheckGlobals `
-        -DoPause $DoPause `
-        -DoVerbose $DoVerbose `
-        -DoDebug $DoDebug
+    ($local:DoPause, $local:DoVerbose, $local:DoDebug, $local:message ) = Get-StdGlobals
     # if ($global:DoPause) {
     if ([string]::IsNullOrEmpty($message)) {
         $message = $global:msgYorN
     }
     if ([string]::IsNullOrEmpty($message)) {
-        $message = 'Press Y for Yes, Q to Quit, or N to exit.'
+        $message = 'Press Y for Yes, Q to Quit, or N to exit'
     }
     if ([string]::IsNullOrEmpty($message)) {
         Write-Debug "The message is either null or empty."
@@ -343,126 +522,16 @@ function Wait-YorNorQ {
     # } else { return $null }
     return $response
 }
-# ###############################
-function Initialize-Std {
-    <#
-    .SYNOPSIS
-        Initializes a script..
-    .DESCRIPTION
-        This processes switches, automatic variables, state.
-    .PARAMETER DoPause
-        Switch: Pause between steps.
-    .PARAMETER DoVerbose
-        Switch: Verbose output and prompts.
-    .PARAMETER DoDebug
-        Switch: Debug this script.
-    .OUTPUTS
-        Global variables are set.
-    .EXAMPLE
-        Initialize-Std -DoPause $DoPause -DoVerbose $DoVerbose
-    .EXAMPLE
-        Initialize-StdGlobalsReset
-        Initialize-Std -DoPause $DoPause -DoVerbose $DoVerbose
-    .NOTES
-        none.
-#>
-    [CmdletBinding()]
-    param (
-        [switch]$DoPause, 
-        [switch]$DoVerbose, 
-        [switch]$DoDebug
-    )
-    # Write-Verbose "Init Local Pause: $local:DoPause, Verbose: $local:DoVerbose, Debug: $local:DoDebug"
-    # Show-StdGlobals
-    Write-Verbose "Initialize-Std"
-    if (-not $global:InitStdDone) {
-        Write-Verbose " initializing..."
-        # $global:DoPause = $local:DoPause; $global:DoVerbose = $local:DoVerbose
-        $global:InitStdDone = $true
-        # Validation
-        # Default messages
-        if ($global:msgAnykey.Length -le 0) { 
-            $global:msgAnykey = "Press any key to continue" 
-            Write-Debug "Anykey: $global:msgAnykey"
-        }
-        if ($global:msgYorN.Length -le 0) { 
-            $global:msgYorN = "Enter Y to continue, Q to quit or N to exit" 
-            Write-Debug "YorN: $global:msgYorN"
-        }
+# Exports from .psm1 (here) module
+Export-ModuleMember -Function @(
+    # Mdm_Std_Library
+    "Set-StdGlobals",
+    "Get-StdGlobals",
+    "IsDebugFunction",
 
-        # Pause
-        if ($local:DoPause) { $global:DoPause = $true } else { $global:DoPause = $false }
-        Write-Debug "Global pause: $global:DoPause"
-
-        # Debug
-        if ($local:DoDebug) { $global:DoDebug = $true } else { $global:DoDebug = $false }
-        # PowerShell setting for -Debug (ToDo: Issue 2: doesn't work)
-        if ($DebugPreference -ne 'SilentlyContinue') { $global:DoDebug = $true } else {
-            if ($local:DoDebug) {
-                $global:DoDebug = $true
-                $DebugPreference = 'Continue'
-                if ($global:DoPause) { $DebugPreference = 'Inquire' }
-            }
-            else { $global:DoDebug = $false }
-        }
-        if ($global:DoDebug) { Write-Host "Debugging." } else { Write-Verbose "Debug off." }
-
-        # Verbosity
-        if ($local:DoVerbose) { $global:DoVerbose = $true } else { $global:DoVerbose = $false }
-        # Check automatice parameters 
-        # Write-Host "PSBoundParameters: $PSBoundParameters" (ToDo: Issue 1: doesn't work)
-        # Write-Host "PSBoundParameters Verbose: $($PSCmdlet.Get-Invocation.BoundParameters['Verbose'])" (ToDo: Issue 1: doesn't work)
-        # Write-Host "VerbosePreference: $VerbosePreference" # (ToDo: Issue 1: doesn't work)
-
-        # PowerShell setting
-        # return [bool]$VerbosePreference -ne [System.Management.Automation.ActionPreference]::SilentlyContinue    
-        if ($PSBoundParameters.ContainsKey('Verbose')) { 
-            # $PSCmdlet.Get-Invocation.BoundParameters["Verbose"]
-            # VerbosePreference
-            # Command line specifies -Verbose
-            $b = $PsBoundParameters.Get_Item('Verbose')
-            $global:DoVerbose = $b
-            Write-Debug "Bound Param Verbose $b"
-            # $global:DoVerbose = $false
-            if ($null -eq $b) { $global:DoVerbose = $false }
-            Write-Debug "Verbose from Bound Param: $global:DoVerbose"
-        }
-        else { 
-            Write-Host "Verbose key not present."
-        }
-        # Verbosity via -verbose produces output.
-        $output = ""
-        Write-Verbose "Verbose" > $output
-        if ($output.Length -gt 0) { $global:DoVerbose = $true }
-        if ($global:DoVerbose) {
-            Write-Verbose "Verbose."
-        }
-        else { Write-Verbose "Shhhhh....." }
-
-        # ??? Maybe
-        # Set-prompt
-    }
-    if ($global:DoVerbose) {
-        Write-Host ""
-        Write-Host "Init end  Local Pause: $local:DoPause, Verbose: $local:DoVerbose, Debug: $local:DoDebug"
-        Write-Host "Init end Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug Init: $global:InitStdDone"
-    }
-}
-function Set-DisplayColors {
-    [CmdletBinding()]
-    param (
-        $WarningBackgroundColor = "Orange",
-        $WarningForegroundColor = "white",
-        $ErrorBackgroundColor = "red",
-        $ErrorForegroundColor = "white"    
-    )
-    process {
-        # Change the color of error and warning text
-        # https://sqljana.wordpress.com/2017/03/01/powershell-hate-the-error-text-and-warning-text-colors-change-it/
-        $global:opt = (Get-Host).PrivateData
-        $global:opt.WarningBackgroundColor = $WarningBackgroundColor
-        $global:opt.WarningForegroundColor = $WarningForegroundColor
-        $global:opt.ErrorBackgroundColor = $ErrorBackgroundColor
-        $global:opt.ErrorForegroundColor = $ErrorForegroundColor
-    }
-}
+    # Waiting & pausing
+    "Wait-AnyKey",
+    "Wait-CheckDoPause",
+    "Set-StdGlobals",
+    "Wait-YorNorQ"
+)

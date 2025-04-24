@@ -47,6 +47,39 @@ function Get-DirectoryNameFromSaved {
     }
     $dirWdTemp
 }
+function Set-SavedToDirectoryName {
+    <#
+    .SYNOPSIS
+        Save working directory.
+    .DESCRIPTION
+        Save working directory with a view to restoring it later.
+        The default is to save the current directoy.
+    .PARAMETER dirWdPassed
+        The Working Directory Name.
+    .OUTPUTS
+        none.
+    .EXAMPLE
+        Set-SavedToDirectoryName "C:\PathToSave"
+#>
+
+    [CmdletBinding()]
+    param (
+        # [switch]$DoPause,
+        # [switch]$DoVerbose,
+        [Parameter(Mandatory = $false)]
+        [string]$dirWdPassed
+    )    # Set-SavedToDirectoryName
+    if ($null -ne $dirWdPassed) { 
+        $global:dirWdSaved = $dirWdPassed 
+    }
+    else {
+        # The default is to save the current directoy.
+        if ($null -eq $global:dirWdSaved -or $global:dirWdSaved -ne $PWD.Path) {
+            $global:dirWdSaved = $PWD.Path
+        }
+    }
+    Write-Verbose "$global:dirWdSaved saved. "
+}
 function Get-FileNamesFromPath {
     <#
     .SYNOPSIS
@@ -64,7 +97,7 @@ function Get-FileNamesFromPath {
 #>
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $false)]
+        [Parameter(Mandatory = $true)]
         [string]$SourcePath
     )    
     $SourceFileNames = Get-ChildItem `
@@ -76,38 +109,14 @@ function Get-FileNamesFromPath {
     # }
     $SourceFileNames
 }
-function Save-DirectoryName {
-    <#
-    .SYNOPSIS
-        Save working directory.
-    .DESCRIPTION
-        Save working directory with a view to restoring it later.
-        The default is to save the current directoy.
-    .PARAMETER dirWdPassed
-        The Working Directory Name.
-    .OUTPUTS
-        none.
-    .EXAMPLE
-        Save-DirectoryName "C:\PathToSave"
-#>
-
-    [CmdletBinding()]
+function Get-UriFromPath {
     param (
-        # [switch]$DoPause,
-        # [switch]$DoVerbose,
-        [Parameter(Mandatory = $false)]
-        [string]$dirWdPassed
-    )    # Save-DirectoryName
-    if ($null -ne $dirWdPassed) { 
-        $global:dirWdSaved = $dirWdPassed 
-    }
-    else {
-        # The default is to save the current directoy.
-        if ($null -eq $global:dirWdSaved -or $global:dirWdSaved -ne $PWD.Path) {
-            $global:dirWdSaved = $PWD.Path
-        }
-    }
-    Write-Verbose "$global:dirWdSaved saved. "
+        [Parameter(Mandatory = $true)]
+        [string]$Path
+    )
+    # Replace backslashes with forward slashes
+    $convertedPath = $Path -replace '\\', '/'
+    return $convertedPath
 }
 function Set-LocationToPath {
     <#
@@ -136,7 +145,7 @@ function Set-LocationToPath {
     # Note: This shouldn't fail; if it did, it would indicate a
     # serious system-wide problem.
     if ($saveDirectory -and $global:dirWdSaved -ne $PWD.Path) {
-        Save-DirectoryName($PWD.Path)
+        Set-SavedToDirectoryName($PWD.Path)
     }
     if ($PWD -ne $workingDirectory) {
         Set-Location -ErrorAction Stop -LiteralPath $workingDirectory
@@ -198,9 +207,140 @@ function Set-DirectoryToScriptRoot {
     Set-Location -Path "$global:scriptPath"
     Get-Location    
 }
+function Copy-ItemWithProgressDisplay {
+    <# 
+    #
+    # 2025/03/26 09:11:03 ERROR 5 (0x00000005) Accessing Destination Directory C:\Program Files\WindowsPowerShell\Modules\
+    # Access is denied.
+    # Waiting 30 seconds... Retrying...
 
+    # ================================= Robocopy documentation:
+    # /V - verbose
+    # /MIRror = /E /PURGE (cleans out depreciated files (scripts))
+    # /MIRror folder contents
+    # /FP : Include Full Pathname of files in the output.
+    # /NS : No Size - don’t log file sizes.
+    #
+    # Other Robocopy options:
+    # /L :: List only - don't copy, timestamp or delete any files.
+    # /X :: report all eXtra files, not just those selected.
+    # /V :: produce Verbose output, showing skipped files.
+    # /TS :: include source file Time Stamps in the output.
+    # /FP :: include Full Pathname of files in the output.
+    # /BYTES :: Print sizes as bytes.
+    # 
+    # /NS :: No Size - don't log file sizes.
+    # /NC :: No Class - don't log file classes.
+    # /NFL :: No File List - don't log file names.
+    # /NDL :: No Directory List - don't log directory names.
+    # 
+    # /NP :: No Progress - don't display percentage copied.
+    # /ETA :: show Estimated Time of Arrival of copied files.
+    # 
+    # /LOG:file :: output status to LOG file (overwrite existing log).
+    # /LOG+:file :: output status to LOG file (append to existing log).
+    #>
+    param (
+        $source,
+        $destination
+    )
+    # ================================= Copy with progress %
+    if (-not $source) { $source = Get-ChildItem c:\temp *.* }
+    if (-not $destination) { $destination = "c:\temp" }
+    $itemCount = 1
+    $displayInterval = 99
+    $copyTime = [System.Diagnostics.Stopwatch]::StartNew()
+    $copyTimeLast = $copyTimeElapsed.Seconds
+    $source | ForEach-Object {
+        $displayInterval++
+        if ($displayInterval -ge 10 -or ($copyTime.Seconds - $copyTimeLast) -ge 5) {
+            $displayInterval = 0
+            $copyTimeLast = $copyTime.Seconds
+            [int]$percent = $itemCount / $source.count * 100
+            Write-Progress `
+                -Activity "Copying ... ($percent %) ($($copyTime.Elapsed) secs.)" `
+                -status $_  -PercentComplete $percent -verbose
+        }
+        Copy-Item $_.fullName -Destination $destination 
+        $itemCount++
+    }
+}
 # Text extraction
 #############################
+function ConvertFrom-HashValue {
+    [CmdletBinding()]
+    param (
+        $textIn,
+        $textOut = @(),
+        $textLineBreak = "`n"
+    )
+    process {
+        $textOutExtra = @()
+        # $textInType = $textIn.GetType()
+        # Write-Verbose " "
+        # Write-Verbose "TextIn Name: $($textIn.Name)"
+        # Write-Verbose "TextIn Type: $($textInType)"
+        # Write-Verbose "TextIn TypeNameOfValue: $($textIn.TypeNameOfValue)"
+        # Write-Verbose "TextIn Value: $($textIn.Value)"
+        foreach ($textItem in $textIn.PSObject.Properties) {
+            # $textItem = $textItem.Key
+            # Write-Verbose " "
+            # Write-Verbose "Object Key: $($textItem.Name)"
+            # Write-Verbose "Object Type: $($textItem.TypeNameOfValue)"
+            # Write-Verbose "Object Value: $($textItem.Value)"
+            if ($textItem.Name -eq "Name" -or $textItem.Name -eq "name") {
+                $textOut += "$($textItem.Value)$textLineBreak"
+            }
+            elseif ($textItem.Name -eq "Text" -or $textItem.Name -eq "text") {
+                $textOut += "$($textItem.Value)$textLineBreak"
+            }
+            elseif ($textItem.Name -eq "Description" -or $textItem.Name -eq "description") {
+                $textInType = $textItem.Value.GetType().FullName
+                if ($textInType -eq "System.String") { 
+                    Write-Verbose "String"
+                    # If it's a string, just use it directly
+                    $textOut += "$($textItem.Name): $($textItem.Value)$textLineBreak"
+                }
+                else {
+                    $textOut += "$($textItem.Name): $(ConvertTo-Text $textItem.Value)$textLineBreak"
+                }
+            }
+            elseif ($textItem.Name -eq "Type" -or $textItem.Name -eq "type") {
+                $textOut += ConvertTo-Text $textItem.Value
+            }
+            elseif ($textItem.Name -eq "syntaxItem") {
+                $textOut += ConvertTo-Text $textItem.Value
+            }
+            elseif ($textItem.Name -eq "returnValue") {
+                $textOut += ConvertTo-Text $textItem.Value
+            }
+            elseif ($textItem.Name -eq "parameter") {
+                $textOut += ConvertTo-Text $textItem.Value
+            }
+            elseif ($textItem.Name -eq "textItem") {
+                $textOut += ConvertTo-Text $textItem.Value
+            }
+            else {
+                $textOutExtra += "$($textItem.Name): $($textItem.Value)$textLineBreak"
+            }
+        }
+        # foreach ($textItem in $textOutExtra) {
+        #     Write-Host "Item: $textItem, Type: $($textItem.GetType().Name)"
+        # }
+        # Write-Host "Contents of textOutExtra:"
+        # $textOutExtra | ForEach-Object { Write-Host $_ }        
+        # $textOutString = $textOutExtra -join ", "
+        $textInType = $textOutExtra.GetType().Name
+        [string]$textOutString = ""
+        foreach ($textItem in $textOutExtra) {
+            $textInType = $textItem.GetType().Name
+            if ($textOutString.Length -ge 1) { $textOutString += ", " }
+            [string]$textOutString += $textItem.Trim()
+        }
+        if ($textOutString.Length -ge 1) { $textOut += $textOutString }
+        return $textOut
+    }
+}
 function ConvertTo-Text {
     param (
         [Parameter(Mandatory = $true)]
@@ -331,80 +471,6 @@ function ConvertTo-Text {
     Write-Verbose "Result: $textOut (type: $textOutType)"
     return $textOut
 }
-function ConvertFrom-HashValue {
-    [CmdletBinding()]
-    param (
-        $textIn,
-        $textOut = @(),
-        $textLineBreak = "`n"
-    )
-    process {
-        $textOutExtra = @()
-        # $textInType = $textIn.GetType()
-        # Write-Verbose " "
-        # Write-Verbose "TextIn Name: $($textIn.Name)"
-        # Write-Verbose "TextIn Type: $($textInType)"
-        # Write-Verbose "TextIn TypeNameOfValue: $($textIn.TypeNameOfValue)"
-        # Write-Verbose "TextIn Value: $($textIn.Value)"
-        foreach ($textItem in $textIn.PSObject.Properties) {
-            # $textItem = $textItem.Key
-            # Write-Verbose " "
-            # Write-Verbose "Object Key: $($textItem.Name)"
-            # Write-Verbose "Object Type: $($textItem.TypeNameOfValue)"
-            # Write-Verbose "Object Value: $($textItem.Value)"
-            if ($textItem.Name -eq "Name" -or $textItem.Name -eq "name") {
-                $textOut += "$($textItem.Value)$textLineBreak"
-            }
-            elseif ($textItem.Name -eq "Text" -or $textItem.Name -eq "text") {
-                $textOut += "$($textItem.Value)$textLineBreak"
-            }
-            elseif ($textItem.Name -eq "Description" -or $textItem.Name -eq "description") {
-                $textInType = $textItem.Value.GetType().FullName
-                if ($textInType -eq "System.String") { 
-                    Write-Verbose "String"
-                    # If it's a string, just use it directly
-                    $textOut += "$($textItem.Name): $($textItem.Value)$textLineBreak"
-                }
-                else {
-                    $textOut += "$($textItem.Name): $(ConvertTo-Text $textItem.Value)$textLineBreak"
-                }
-            }
-            elseif ($textItem.Name -eq "Type" -or $textItem.Name -eq "type") {
-                $textOut += ConvertTo-Text $textItem.Value
-            }
-            elseif ($textItem.Name -eq "syntaxItem") {
-                $textOut += ConvertTo-Text $textItem.Value
-            }
-            elseif ($textItem.Name -eq "returnValue") {
-                $textOut += ConvertTo-Text $textItem.Value
-            }
-            elseif ($textItem.Name -eq "parameter") {
-                $textOut += ConvertTo-Text $textItem.Value
-            }
-            elseif ($textItem.Name -eq "textItem") {
-                $textOut += ConvertTo-Text $textItem.Value
-            }
-            else {
-                $textOutExtra += "$($textItem.Name): $($textItem.Value)$textLineBreak"
-            }
-        }
-        # foreach ($textItem in $textOutExtra) {
-        #     Write-Host "Item: $textItem, Type: $($textItem.GetType().Name)"
-        # }
-        # Write-Host "Contents of textOutExtra:"
-        # $textOutExtra | ForEach-Object { Write-Host $_ }        
-        # $textOutString = $textOutExtra -join ", "
-        $textInType = $textOutExtra.GetType().Name
-        [string]$textOutString = ""
-        foreach ($textItem in $textOutExtra) {
-            $textInType = $textItem.GetType().Name
-            if ($textOutString.Length -ge 1) { $textOutString += ", " }
-            [string]$textOutString += $textItem.Trim()
-        }
-        if ($textOutString.Length -ge 1) { $textOut += $textOutString }
-        return $textOut
-    }
-}
 function ConvertTo-ObjectArray {
     [CmdletBinding()]
     Param(
@@ -412,13 +478,13 @@ function ConvertTo-ObjectArray {
         [object[]]$InputObjects
     )
     # asked Jun 26, 2014 at 13:43 nlowe's
-    BEGIN {
+    begin {
         $OutputObjects = New-Object System.Collections.ArrayList($null)
     }
-    PROCESS {
+    process {
         $OutputObjects.Add($_) | Out-Null
     }
-    END {
+    end {
         Write-Verbose "Passing off $($OutputObjects.Count) objects downstream" 
         # return ,$OutputObjects.ToArray()
         @(, $OutputObjects)
@@ -434,41 +500,45 @@ function ConvertTo-EscapedText {
         [switch]$keepWhitespace,
         [switch]$keepEscapes
     )
-    # Initialize description text
-    $textOut = $textIn
-    if ($textOut) {
-        $textInType = $textIn.GetType().FullName
-        switch ( $textInType ) {
-            # Create the output string, including all properties and avoiding empty strings
-            "System.String" { 
-                if (-not $keepWhitespace) { $textOut = $textOut.TrimEnd() }
-                if (-not $keepEscapes) {
-                    $textOut = $textOut `
-                        -replace '&', '&amp;' `
-                        -replace '<', '&lt;' `
-                        -replace '>', '&gt;' `
-                        -replace '"', '&quot;' `
-                        -replace "'", '&apos;'    
+    process {
+        # Initialize description text
+        $textOut = $textIn
+        if ($textOut) {
+            $textInType = $textIn.GetType().FullName
+            switch ( $textInType ) {
+                # Create the output string, including all properties and avoiding empty strings
+                "System.String" { 
+                    if (-not $keepWhitespace) { $textOut = $textOut.TrimEnd() }
+                    if (-not $keepEscapes) {
+                        $textOut = $textOut `
+                            -replace '&', '&amp;' `
+                            -replace '<', '&lt;' `
+                            -replace '>', '&gt;' `
+                            -replace '"', '&quot;' `
+                            -replace "'", '&apos;'    
+                    }
                 }
-            }
-            "System.Object[]" {
-                # Recursive loop
-                foreach ($textRow in $textOut) {
-                    <# $textRow is the current item #>
-                    $textRow = ConvertTo-EscapedText $textRow $localLogFileNameFull `
-                        -keepEscapes:$keepEscapes `
-                        -keepWhitespace:$keepWhitespace
+                "System.Object[]" {
+                    # Recursive loop
+                    foreach ($textRow in $textOut) {
+                        <# $textRow is the current item #>
+                        $textRow = ConvertTo-EscapedText $textRow $localLogFileNameFull `
+                            -keepEscapes:$keepEscapes `
+                            -keepWhitespace:$keepWhitespace
+                    }
+                }              
+                default { 
+                    # Unknow object
+                    # todo throw warning
+                    $textOut += "Error. Cant handle type $textInType for $textIn"
+                    Add-LogText $textOut
                 }
-            }              
-            default { 
-                # Unknow object
-                # todo throw warning
-                $textOut += "Error. Cant handle type $textInType for $textIn"
-                Add-LogText $textOut
-            }
-        }       
+            }       
+        }
     }
-    return $textOut
+    end {
+        return $textOut
+    }
 }
 function ConvertTo-TrimedText {
     [CmdletBinding()]
@@ -477,7 +547,7 @@ function ConvertTo-TrimedText {
         $textIn,
         $localLogFileNameFull = ""
     )
-    return ConvertTo-EscapedText $textIn $localLogFileNameFull -keepEscapes
+    process { return ConvertTo-EscapedText $textIn $localLogFileNameFull -keepEscapes }
 }
 # Logging
 #############################
@@ -493,6 +563,7 @@ function Add-LogText {
         [switch]$keepEscapes,
         [switch]$isError,
         [switch]$isWarning,
+        [switch]$SkipScriptLineDisplay,
         $foregroundColor,
         $backgroundColor,
         $ErrorPSItem
@@ -520,9 +591,10 @@ function Add-LogText {
             # Display message to user
             if ($isError -or $isWarning) {
                 if ($isError) {
-                    if ($global:UsePsTrace -and $ErrorPSItem) { 
+                    if ($global:UseTrace -and $ErrorPSItem) { 
                         $logMessage = Add-LogError $logMessage `
                             -isError `
+                            -SkipScriptLineDisplay:$SkipScriptLineDisplay `
                             -ErrorPSItem $ErrorPSItem `
                             -localLogFileNameFull $localLogFileNameFull
                     }
@@ -531,9 +603,10 @@ function Add-LogText {
                     }
                 }
                 elseif ($isWarning) { 
-                    if ($global:UsePsTrace -and $global:UsePsTraceWarning -and $ErrorPSItem) { 
+                    if ($global:UseTrace -and $global:UseTraceWarning -and $ErrorPSItem) { 
                         $logMessage = Add-LogError $logMessage `
                             -isWarning `
+                            -SkipScriptLineDisplay:$SkipScriptLineDisplay `
                             -ErrorPSItem $ErrorPSItem `
                             -localLogFileNameFull $localLogFileNameFull
                     }
@@ -564,12 +637,14 @@ function Add-LogError {
         $ErrorPSItem,
         [switch]$isError,
         [switch]$isWarning,
+        [switch]$SkipScriptLineDisplay, 
         $localLogFileNameFull = "",
         $foregroundColor,
         $backgroundColor
     )
+    begin { [string]$newMessage = "" }
     process {
-        $global:lastError = $ErrorPSItem
+        if ($ErrorPSItem) { $global:lastError = $ErrorPSItem }
         # Category prefix
         if ($isError) { $errorType = "Error in " }
         elseif ($isWarning) { $errorType = "Warning in " }
@@ -592,10 +667,9 @@ function Add-LogError {
         $scriptName = Split-Path $scriptNameFull -leaf
         $line = $ErrorPSItem.InvocationInfo.ScriptLineNumber
         $column = $ErrorPSItem.InvocationInfo.OffsetInLine
-        [string]$newMessage = ""
         # Determine how much detail to output.
-        $traceDetails = $global:UsePsTraceDetails
-        if ($IsWindows -and -not $global:UsePsTraceWarningDetails) {
+        $traceDetails = $global:UseTraceDetails
+        if ($isWarning -and -not $global:UseTraceWarningDetails) {
             $traceDetails = $false
         }
         # Output
@@ -605,20 +679,17 @@ function Add-LogError {
             $newMessage += $errorLine + "`n"
         }
         $errorLine = "$($errorType)Script: $scriptName, line $line, column $column"
-        Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+        if (-not $SkipScriptLineDisplay) {
+            Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+        }
         # Newlines are required after this line
         $newMessage += $errorLine
 
         $errorLine = $logMessage
         Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
         $newMessage += "`n" + $errorLine
-
         if ($traceDetails) {        
             $errorLine = "Details: "
-            Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
-            $newMessage += "`n" + $errorLine
-
-            $errorLine = "$($ErrorPSItem.CategoryInfo)"
             Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
             $newMessage += "`n" + $errorLine
 
@@ -626,15 +697,26 @@ function Add-LogError {
             Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
             $newMessage += "`n" + $errorLine
 
-            if ($global:UsePsTraceStack) {
+            $errorLine = "$($ErrorPSItem.CategoryInfo)"
+            Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+            $newMessage += "`n" + $errorLine
+
+            # Stack trace
+            if ($global:UseTraceStack) {
                 $errorLine = "Stack trace: "
                 Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
                 $newMessage += "`n" + $errorLine
 
-                $errorLine = "$($ErrorPSItem.ScriptStackTrace)"
+                $logMessageLine = Get-CallStackFormatted $ErrorPSItem.InvocationInfo "`n"
+                $errorLine = $logMessageLine.Trim()
                 Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
                 $newMessage += "`n" + $errorLine
+
+                # $errorLine = "$($ErrorPSItem.ScriptStackTrace)"
+                # Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                # $newMessage += "`n" + $errorLine
             }
+            # Additional details
             if ($traceDetails) { 
                 $errorLine = "Additional details: "
                 Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
@@ -648,19 +730,8 @@ function Add-LogError {
             Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
             $newMessage += "`n" + $errorLine
         }
-        # $logMessage += $newMessage
-        return $newMessage
     }
-    # Set-PSDebug
-    # [-Trace <Int32>]
-    # [-Step]
-    # [-Strict]
-    # [<CommonParameters>]
-    # [-Off]
-    # 0: Turn script tracing off.
-    # 1: Trace script lines as they run.
-    # 2: Trace script lines, variable assignments, function calls, and scripts.
-    # Set-PSDebug -Trace 1
+    end { return $newMessage }
 }
 function Get-LogFileName {
     [CmdletBinding()]
@@ -668,40 +739,44 @@ function Get-LogFileName {
         $localLogFileNameFull = "",
         [switch]$LogOneFile
     )
-    if ($localLogFileNameFull) { 
-        $logFilePath = Split-Path -Path $localLogFileNameFull
-        $logFileName = Split-Path $localLogFileNameFull -leaf
-    }
-    else {
-        $logFilePath = $global:logFilePath
-        $logFileName = $global:logFileName
-        $LogOneFile = $global:LogOneFile
-    }
-    # Log folder
-    if (-not $logFilePath) { $logFilePath = "$((get-item $PSScriptRoot ).FullName)\Log" }
-    $logFilePath = Convert-Path $logFilePath
-    # Check if folder not exists, and create it
-    if (-not(Test-Path $logFilePath -PathType Container)) {
-        New-Item -path $logFilePath -ItemType Directory
-    }
+    process {
+        if ($localLogFileNameFull) { 
+            $logFilePath = Split-Path -Path $localLogFileNameFull
+            $logFileName = Split-Path $localLogFileNameFull -leaf
+        }
+        else {
+            $logFilePath = $global:logFilePath
+            $logFileName = $global:logFileName
+            $LogOneFile = $global:LogOneFile
+        }
+        # Log folder
+        if (-not $logFilePath) { $logFilePath = "$((get-item $PSScriptRoot ).FullName)\Log" }
+        $logFilePath = Convert-Path $logFilePath
+        # Check if folder not exists, and create it
+        if (-not(Test-Path $logFilePath -PathType Container)) {
+            New-Item -path $logFilePath -ItemType Directory
+        }
     
-    # Construct the full log file name
-    if (-not $logFileName) { $logFileName = "Mdm_Installation_Log" }
-    # $logFileNameFull = Join-Path -Path $logFilePath -ChildPath $logFileName
-    $logFileNameFull = "$logFilePath\$logFileName"
-    if (-not $LogOneFile) { $logFileNameFull = "$($logFileNameFull)_$global:timeStarted" }
-    $logFileNameFull = "$logFileNameFull.txt"
+        # Construct the full log file name
+        if (-not $logFileName) { $logFileName = "Mdm_Installation_Log" }
+        # $logFileNameFull = Join-Path -Path $logFilePath -ChildPath $logFileName
+        $logFileNameFull = "$logFilePath\$logFileName"
+        if (-not $LogOneFile) { $logFileNameFull = "$($logFileNameFull)_$global:timeStarted" }
+        $logFileNameFull = "$logFileNameFull.txt"
         
-    # Check if file exists, and create it
-    if (-not(Test-Path $logFileNameFull -PathType Leaf)) {
-        New-Item -path $logFileNameFull -ItemType File
+        # Check if file exists, and create it
+        if (-not(Test-Path $logFileNameFull -PathType Leaf)) {
+            New-Item -path $logFileNameFull -ItemType File
+        }
     }
-    # Write-Host "Returning: $logFileNameFull"
-    # POWERSHELL ERROR. This cannot be return as a string.
-    # Weird bug. It becomes duplicated in an array [0] [1]
-    # Fix:
-    $global:logFileNameFull = $logFileNameFull
-    # return $logFileNameFull
+    end {
+        # Write-Host "Returning: $logFileNameFull"
+        # POWERSHELL ERROR. This cannot be return as a string.
+        # Weird bug. It becomes duplicated in an array [0] [1]
+        # Fix:
+        $global:logFileNameFull = $logFileNameFull
+        # return $logFileNameFull
+    }
 }
 # ShowData.psm1**
 #############################
@@ -817,7 +892,6 @@ function Search-Directory {
     .EXAMPLE
         Search-Directory "G:\Script\Powershell\".
 #>
-
     [CmdletBinding()]
     param(
         [parameter(ValueFromPipeline)]$inputObjects,
@@ -826,21 +900,17 @@ function Search-Directory {
         $folderName = $folder.Name,
         $folderPath = $folder.FullName    
     )
-
-    begin {
-        [Collections.ArrayList]$inputObjects = @()
-    }
-    process {
-        [void]$inputObjects.Add($_)
-    }
+    begin { [Collections.ArrayList]$inputObjects = @() }
+    process { [void]$inputObjects.Add($_) }
     end {
-        $inputObjects | ForEach-Object -Parallel {
-            Get-ChildItem $dir |
-            >>     Select-Object Name, FullName, +
-            >>         @{n = 'FolderName'; e = { $folderName } }, +
-            >>         @{n = 'Folder'; e = { $folderPath } } |
-            Export-Csv '.\output.csv' -Encoding UTF8 -NoType
-        }
+        $inputObjects | `
+                ForEach-Object -Parallel {
+                Get-ChildItem $dir | 
+                    >> Select-Object Name, FullName, +
+                    >>  @{n = 'FolderName'; e = { $folderName } }, +
+                    >>  @{n = 'Folder'; e = { $folderPath } } | 
+                        Export-Csv '.\output.csv' -Encoding UTF8 -NoType
+                    }
     }
 }
 

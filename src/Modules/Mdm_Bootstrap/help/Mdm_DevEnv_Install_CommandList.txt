@@ -1,0 +1,8 @@
+Get-DevEnvVersions
+Install-DevEnvModules
+Install-DevEnvWin
+Install-DevEnvIdeWin
+Install-DevEnvLlmWin
+Install-DevEnvOsWin
+Install-DevEnvWhisperWin
+Get-Vs

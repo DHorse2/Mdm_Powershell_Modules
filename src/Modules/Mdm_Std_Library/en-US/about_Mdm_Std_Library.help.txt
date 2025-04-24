@@ -43,19 +43,19 @@ GLOBALS
     InitStdDone = $false
 
     # Modules array
-    moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_Dev_Env_Install", "Mdm_Modules")
+    moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install", "Mdm_Modules")
 
     # Error display handling options:
-    UsePsTrace = $true;
-    UsePsTraceDetails = $true;
-    UsePsTraceStack = $true;
+    UseTrace = $true;
+    UseTraceDetails = $true;
+    UseTraceStack = $true;
         # include debug info with warnings
-        UsePsTraceWarning = $true;
+        UseTraceWarning = $true;
         # include full details with warnings
-        UsePsTraceWarningDetails = $false;
+        UseTraceWarningDetails = $false;
         
     # pause on this cmdlet/function name
-    DebugFunctionName = "Add-RegistryPath"
+    DebugFunctionNames = "Add-RegistryPath"
 
     DoVerbose = $false
     DoPause = $false

@@ -1,1 +1,1 @@
-$ExecutionContext.SessionState.LanguageMode = "ConstrainedLanguage"
+$ExecutionContext.SessionState.LanguageMode = "FullLanguage"

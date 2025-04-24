@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PowerShell Help - {{CompanyName}} - {{ModuleName}}</title>
+    <title>{{ModuleName}} Help by {{CompanyName}} for PowerShell</title>
     <style>
         html,
         body {
@@ -14,7 +14,8 @@
 
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 3px;
+            padding: 18px;
         }
 
         h2 {
@@ -32,12 +33,15 @@
         }
 
         .wrapper {
-            display: inline-block;
+            /* float on right edge */
+            float: left;
+            vertical-align: top;
+            margin-right: 10px;
+
             /* Allows the wrapper to sit next to the heading */
-            vertical-align: middle;
-            /* Aligns the button vertically with the heading */
-            margin-left: 10px;
-            /* Adds some space between the heading and the button */
+            /* display: inline-block; */
+            /* margin-left: 10px; */
+            /* vertical-align: middle; */
         }
 
         .circle {
@@ -86,18 +90,27 @@
 
 <body>
     <script>
-        let button = document.querySelector('.btn')
-        button.addEventListener('click', () => {
-            document.documentElement.classList.toggle('dark-mode')
-        })
+        function toggleDarkMode(element) {
+            if (element == null) { var element = document.body; }
+            element.classList.toggle("dark-mode");
+        }
+
+        function myClassClick(className, toggleName) {
+            let ClassItem = document.querySelector(className)
+            ClassItem.addEventListener('click', () => {
+                document.documentElement.classList.toggle(toggleName)
+            })
+        }
     </script>
-    <h1>Help for Module: {{ModuleName}}</h1>
-    <div class="wrapper">
-        <div class="circle outer">
-            <div class="circle inner">
-                <button class="btn" type="button">dark mode</button>
+    <div>
+        <div class="wrapper">
+            <div class="circle outer">
+                <div class="circle inner">
+                    <button class="darkModeButton" type="button" onclick="toggleDarkMode()">dark mode</button>
+                </div>
             </div>
         </div>
+        <h1>Help for Module: {{ModuleName}}</h1>
     </div>
     {{HtmlContent}}
 </body>

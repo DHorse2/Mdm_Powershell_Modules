@@ -4,4 +4,5 @@ CommandType     Name                                               Version    So
 Function        Initialize-Dev_Env_Win                             1.0        Mdm_Bootstrap
 Function        Add-RegistryPath                                   1.0        Mdm_Bootstrap
 Function        Assert-RegistryValue                               1.0        Mdm_Bootstrap
+Function        DevEnv_Module_Reset                                1.0        Mdm_Bootstrap
 

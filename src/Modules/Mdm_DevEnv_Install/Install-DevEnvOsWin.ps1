@@ -1,14 +1,14 @@
 
 # Install-DevEnvOsWin
 function Install-DevEnvOsWin {
-    <#
+<#
     .SYNOPSIS
         Prepares windows and powershell to install tools.
     .DESCRIPTION
         This script sets up a Windows OS for the development environment.
         It installs Chocolatey (if not already installed).
         It will update PowerShell (from vs 5 to 7).
-        todo: sed, win linux, other tools?
+        TODO: sed, win linux, other tools?
     .PARAMETER DoPause
         Switch: Pause between steps.
     .PARAMETER DoVerbose

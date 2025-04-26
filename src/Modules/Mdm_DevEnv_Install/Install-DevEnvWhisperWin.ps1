@@ -1,7 +1,7 @@
 
 # Install-DevEnvWhisperWin
 function Install-DevEnvWhisperWin {
-    <#
+<#
     .SYNOPSIS
         Install local voice recognition (Whisper).
     .DESCRIPTION

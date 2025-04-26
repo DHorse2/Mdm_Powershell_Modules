@@ -1,6 +1,6 @@
 
 function Assert-SecElevated() {
-    <#
+<#
     .SYNOPSIS
         Elevate script to Administrator.
     .DESCRIPTION
@@ -19,6 +19,8 @@ function Assert-SecElevated() {
     .OUTPUTS
         None. Returns or Executes current script in an elevated process.
 #>
+
+
     [CmdletBinding()]
     param (
         # [switch]$DoPause,
@@ -42,7 +44,7 @@ function Assert-SecElevated() {
     }
 }
 function Set-SecElevated ($message) {
-    <#
+<#
     .SYNOPSIS
         Elevate script to Administrator.
     .DESCRIPTION
@@ -61,6 +63,8 @@ function Set-SecElevated ($message) {
     .OUTPUTS
         None. Returns or Executes current script in an elevated process.
 #>
+
+
     # Set-SecElevated
     # Get the ID and security principal of the current user account
     $myWindowsID = [System.Security.Principal.WindowsIdentity]::GetCurrent()
@@ -123,7 +127,7 @@ function Invoke-ProcessWithExit {
     }
 }
 function Invoke-ProcessWithTimeout {
-    <#
+<#
     .SYNOPSIS
         Execute a command.
     .DESCRIPTION
@@ -143,6 +147,8 @@ function Invoke-ProcessWithTimeout {
     .EXAMPLE
         Invoke-ProcessWithTimeout "notepad.exe" 30
 #>
+
+
     [CmdletBinding()]
     param(
         [Parameter(mandatory = $false)]
@@ -164,23 +170,25 @@ function Invoke-ProcessWithTimeout {
     }
 }
 function Push-ShellPwsh {
-    <# 
+<# 
     .DESCRIPTION
-Note: Place [CmdletBinding()] above param(...) to make
-       the script an *advanced* one, which then prevents passing
-       extra arguments that don't bind to declared parameters.
-Issue: Example:
-@powershell -ExecutionPolicy Bypass -File "test.ps1" -stringParam "testing" -switchParam `
-    > "output.txt" 2>&1
-The script I am calling requires PowerShell 7+, 
-    so I need to restart the script by calling pwsh 
-    with the current parameters. 
-I planned to accomplish this via the following:
-Invoke-Command { & pwsh -Command $MyInvocation.Line } -NoNewScope
-Unfortunately, $MyInvocation.Line does not return the correct result
-     when a PowerShell script is called from a batch file.
-     What alternatives exist that would work in this scenario?
-#>    
+        Note: Place [CmdletBinding()] above param(...) to make
+            the script an *advanced* one, which then prevents passing
+            extra arguments that don't bind to declared parameters.
+        Issue: Example:
+        @powershell -ExecutionPolicy Bypass -File "test.ps1" -stringParam "testing" -switchParam `
+            > "output.txt" 2>&1
+        The script I am calling requires PowerShell 7+, 
+            so I need to restart the script by calling pwsh 
+            with the current parameters. 
+        I planned to accomplish this via the following:
+        Invoke-Command { & pwsh -Command $MyInvocation.Line } -NoNewScope
+        Unfortunately, $MyInvocation.Line does not return the correct result
+            when a PowerShell script is called from a batch file.
+            What alternatives exist that would work in this scenario?
+#>
+
+
     [CmdletBinding()]
     param (
         [string] $stringParam,
@@ -219,7 +227,7 @@ Unfortunately, $MyInvocation.Line does not return the correct result
 }
 # ###############################
 function Initialize-Std {
-    <#
+<#
     .SYNOPSIS
         Initializes a script..
     .DESCRIPTION
@@ -240,6 +248,8 @@ function Initialize-Std {
     .NOTES
         none.
 #>
+
+
     [CmdletBinding()]
     param (
         [switch]$DoPause, 
@@ -271,7 +281,7 @@ function Initialize-Std {
 
             # Debug
             if ($local:DoDebug) { $global:DoDebug = $true } else { $global:DoDebug = $false }
-            # PowerShell setting for -Debug (ToDo: Issue 2: doesn't work)
+            # PowerShell setting for -Debug (TODO: Issue 2: doesn't work)
             if ($DebugPreference -ne 'SilentlyContinue') { $global:DoDebug = $true } else {
                 if ($local:DoDebug) {
                     $global:DoDebug = $true
@@ -285,9 +295,9 @@ function Initialize-Std {
             # Verbosity
             if ($local:DoVerbose) { $global:DoVerbose = $true } else { $global:DoVerbose = $false }
             # Check automatice parameters 
-            # Write-Host "PSBoundParameters: $PSBoundParameters" (ToDo: Issue 1: doesn't work)
-            # Write-Host "PSBoundParameters Verbose: $($PSCmdlet.Get-Invocation.BoundParameters['Verbose'])" (ToDo: Issue 1: doesn't work)
-            # Write-Host "VerbosePreference: $VerbosePreference" # (ToDo: Issue 1: doesn't work)
+            # Write-Host "PSBoundParameters: $PSBoundParameters" (TODO: Issue 1: doesn't work)
+            # Write-Host "PSBoundParameters Verbose: $($PSCmdlet.Get-Invocation.BoundParameters['Verbose'])" (TODO: Issue 1: doesn't work)
+            # Write-Host "VerbosePreference: $VerbosePreference" # (TODO: Issue 1: doesn't work)
 
             # PowerShell setting
             # return [bool]$VerbosePreference -ne [System.Management.Automation.ActionPreference]::SilentlyContinue    
@@ -325,7 +335,7 @@ function Initialize-Std {
     }
 }
 function Initialize-StdGlobalsReset {
-    <#
+<#
     .SYNOPSIS
         Resets the global state.
     .DESCRIPTION
@@ -351,6 +361,8 @@ function Initialize-StdGlobalsReset {
     .EXAMPLE
         Initialize-StdGlobalsReset
 #>
+
+
     [CmdletBinding()]
     param (
         [switch]$DoVerbose,
@@ -370,7 +382,7 @@ function Initialize-StdGlobalsReset {
     }
 }
 function Show-StdGlobals {
-    <#
+<#
     .SYNOPSIS
         Display global state.
     .DESCRIPTION
@@ -378,6 +390,8 @@ function Show-StdGlobals {
     .EXAMPLE
         Show-StdGlobals
 #>
+
+
     [CmdletBinding()]
     param ()
     process {
@@ -391,7 +405,7 @@ function Show-StdGlobals {
     }
 }
 function Get-ScriptName { 
-    <#
+<#
     .SYNOPSIS
         Get the Script Name.
     .DESCRIPTION
@@ -401,12 +415,14 @@ function Get-ScriptName {
     .EXAMPLE
         Get-ScriptName
 #>
+
+
     [CmdletBinding()]
     param()
     process { return $MyInvocation.Script_Name }
 }
 function Script_DoStart {
-    <#
+<#
     .SYNOPSIS
         Reset and initialize.
     .DESCRIPTION
@@ -424,6 +440,8 @@ function Script_DoStart {
     .NOTES
         This serves little purpose.
 #>
+
+
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
     process {
@@ -440,7 +458,7 @@ function Script_DoStart {
     }
 }
 function Get-ScriptPositionalParameters {
-    <#
+<#
     .SYNOPSIS
         Get-ScriptPositionalParameters.
     .DESCRIPTION
@@ -460,6 +478,8 @@ function Get-ScriptPositionalParameters {
     .EXAMPLE
         Get-ScriptPositionalParameters
 #>
+
+
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -473,7 +493,7 @@ function Get-ScriptPositionalParameters {
 }
 # ###############################
 function Get-PSCommandPath { 
-    <#
+<#
     .SYNOPSIS
         Get-PSCommandPath.
     .DESCRIPTION
@@ -484,12 +504,14 @@ function Get-PSCommandPath {
     .EXAMPLE
         Get-PSCommandPath
 #>
+
+
     [CmdletBinding()]
     param()
     process { return $Script_PSCommandPath }
 }
 function Get-MyCommand_InvocationName {
-    <#
+<#
     .SYNOPSIS
         Get-MyCommand_InvocationName.
     .DESCRIPTION
@@ -499,12 +521,14 @@ function Get-MyCommand_InvocationName {
     .EXAMPLE
         Get-MyCommand_InvocationName
 #>
+
+
     [CmdletBinding()]
     param()
     process { return $MyInvocation.InvocationName }
 }
 function Get-MyCommand_Origin {
-    <#
+<#
     .SYNOPSIS
         Get-MyCommand_Origin
     .DESCRIPTION
@@ -514,6 +538,8 @@ function Get-MyCommand_Origin {
     .EXAMPLE
         Get-MyCommand_Origin
 #>
+
+
     [CmdletBinding()]
     param()
     process {
@@ -521,7 +547,7 @@ function Get-MyCommand_Origin {
     }
 }
 function Get-MyCommand_Name {
-    <#
+<#
     .SYNOPSIS
         Get-MyCommand_Name.
     .DESCRIPTION
@@ -531,12 +557,14 @@ function Get-MyCommand_Name {
     .EXAMPLE
         Get-MyCommand_Name
 #>
+
+
     [CmdletBinding()]
     param()
     process { return $MyInvocation.MyCommand_.Name }
 }
 function Get-MyCommand_Definition {
-    <#
+<#
     .SYNOPSIS
         Get-MyCommand_Definition.
     .DESCRIPTION
@@ -546,6 +574,8 @@ function Get-MyCommand_Definition {
     .EXAMPLE
         Get-MyCommand_Definition
 #>
+
+
     [CmdletBinding()]
     param()
         # Begin of Get-MyCommand_Definition()
@@ -553,7 +583,7 @@ function Get-MyCommand_Definition {
         process { return $MyInvocation.MyCommand_.Definition }
 }
 function Get-Invocation_PSCommandPath { 
-    <#
+<#
     .SYNOPSIS
         Get-Invocation_PSCommandPath.
     .DESCRIPTION
@@ -563,6 +593,8 @@ function Get-Invocation_PSCommandPath {
     .EXAMPLE
         Get-Invocation_PSCommandPath
 #>
+
+
     [CmdletBinding()]
     param()
     process { return $MyInvocation.PSCommandPath }

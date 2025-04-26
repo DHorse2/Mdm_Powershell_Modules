@@ -17,7 +17,7 @@ Export-ModuleMember -Function DevEnv_Install_Modules_Win
 #     }
 # }
 Export-ModuleMember -Function DevEnv_LanguageMode
-# !!! todo !!! this executes DevEnv_Module_Reset
+# !!! TODO !!! this executes DevEnv_Module_Reset
 function DevEnv_Module_Reset {
     [CmdletBinding()]
     param ()
@@ -28,7 +28,7 @@ function DevEnv_Module_Reset {
 Export-ModuleMember -Function DevEnv_Module_Reset
 # MAIN
 function Initialize-Dev_Env_Win {
-    <#
+<#
     .SYNOPSIS
         Setup (bootstrap) Windows for the Development Environment.
     .DESCRIPTION
@@ -84,12 +84,12 @@ function Initialize-Dev_Env_Win {
         There should be not requirement to update the path
         assuming you install to a powershell directory.
     .OUTPUTS
-        todo.
+        TODO.
 #>
     [CmdletBinding()]
     param (
         [switch]$UpdatePath,
-        # todo integrage stardard value (ie verbose)
+        # TODO integrage stardard value (ie verbose)
         [switch]$DoPause,
         [switch]$DoVerbose
     )
@@ -144,7 +144,7 @@ function Initialize-Dev_Env_Win {
 # Components:
 #############################
 function Add-RegistryPath {
-    <#
+<#
     .SYNOPSIS
         Add to HKLM Environtment Path
     .DESCRIPTION
@@ -226,7 +226,7 @@ function Add-RegistryPath {
 }
 # Source: https://stackoverflow.com/questions/5648931/test-if-registry-value-exists
 Function Assert-RegistryValue {
-    <#
+<#
     .SYNOPSIS
         Return true if Registry Value exists.
     .DESCRIPTION

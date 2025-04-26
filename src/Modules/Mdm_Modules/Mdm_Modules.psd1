@@ -97,9 +97,9 @@
     # "Search-Directory",
 
     # # Help
+    # "Export-Mdm_Help",
     # "Write-Mdm_Help",
-    # "Get-Mdm_Help",
-    # "Get-HelpHtml",
+    # "Build-HelpHtml",
     # "Export-Help"
 
     # Exceptions Handling

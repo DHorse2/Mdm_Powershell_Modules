@@ -1,7 +1,7 @@
 
 # Install-DevEnvIdeWin
 function Install-DevEnvIdeWin {
-    <#
+<#
     .SYNOPSIS
         Install the IDE (Intergrated development environment).
     .DESCRIPTION
@@ -23,13 +23,13 @@ function Install-DevEnvIdeWin {
             Python 3
             Git
             Visual Studio Code
-        todo incomplete. .
+        TODO incomplete. .
             Micrsoft toolchain
             VsCode
             VsCodium
             Rust toolchain
     .OUTPUTS
-        A log (todo).
+        A log (TODO).
 #>
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)

@@ -1,7 +1,7 @@
 
 # Install-DevEnvWin
 function Install-DevEnvWin {
-    <#
+<#
     .SYNOPSIS
       Install the Windows Development Environment.
     .DESCRIPTION
@@ -22,7 +22,7 @@ function Install-DevEnvWin {
     .NOTES
         Confirms each step.
     .OUTPUTS
-        todo Should create a log.
+        TODO Should create a log.
 #>
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)

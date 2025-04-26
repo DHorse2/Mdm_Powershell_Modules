@@ -1,4 +1,4 @@
 Initialize-Dev_Env_Win
-Add-RegistryPath
 Assert-RegistryValue
+Add-RegistryPath
 DevEnv_Module_Reset

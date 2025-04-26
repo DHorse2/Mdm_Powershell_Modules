@@ -1,9 +1,7 @@
 
 # Mdm_Std_Library
 # Script Path
-if (-not $global:scriptPath) { 
-    $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName
-}
+if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName }
 # Import-Module Mdm_Std_Library
 . $global:scriptPath\Mdm_Std_Library\Mdm_Std_Error.ps1
 Export-ModuleMember -Function @(
@@ -82,14 +80,15 @@ Export-ModuleMember -Function @(
 . $global:scriptPath\Mdm_Std_Library\Mdm_Std_Help.ps1
 Export-ModuleMember -Function @(
     # Help
+    "Export-Mdm_Help",
+    "Export-Help",
     "Write-Mdm_Help",
-    "Get-Mdm_Help",
-    # "Write-Mdm_Help",  # Duplicate entry, consider removing if not needed
-    "ConvertFrom-HtmlTemplate",
-    "Get-HelpHtml",
-    "Get-HtmlTemplate",
-    "ConvertFrom-HtmlTemplate",
-    "Export-Help"
+    "Write-Module_Help",
+    "Build-HelpHtml",
+    # Templates
+    "Initialize-TemplateData",
+    "Get-Template",
+    "ConvertFrom-Template"
 )
 . $global:scriptPath\Mdm_Std_Library\Get-AllCommands.ps1
 Export-ModuleMember -Function "Get-AllCommands"
@@ -111,6 +110,13 @@ if (-not $global:InitDone) {
     # This indicates that the modules have not been previously imported. 
     [bool]$global:InitDone = $true
     [bool]$global:InitStdDone = $false
+    #
+    [string]$global:companyName = "MacroDM"
+    [string]$global:author = "David G. Horsman"
+    [string]$global:copyright = $global:author
+    [string]$global:copyright = "&copy; $global:copyright. All rights reserved."
+    [string]$global:license = "MIT"
+    [string]$global:title = ""
     # Modules array
     [array]$global:moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install", "Mdm_Modules")
     [array]$global:moduleAddons = @("Mdm_Nightroman_PowerShelf", "Mdm_Springcomp_MyBox", "DevEnv_LanguageMode")
@@ -131,10 +137,12 @@ if (-not $global:InitDone) {
 
     # Set-PSBreakpoint
     # pause on this cmdlet/function name
-    [bool]$global:DebugProgressFindName = $false
-    # [array]$global:debugFunctionNames = @()
-    [array]$global:debugFunctionNames = @("Export-ModuleMemberScan")
+    [bool]$global:DebugProgressFindName = $true
+    [array]$global:debugFunctionNames = @()
+    # [array]$global:debugFunctionNames = @("Get-Vs", "Get-DevEnvVersions")
+    # [array]$global:debugFunctionNames = @("Get-Vs", "Get-DevEnvVersions", "Add-RegistryPath", "Assert-RegistryValue")
     [string]$global:debugFunctionName = ""
+    [bool]$global:DebugInScriptDebugger = $false
     [int]$global:debugFunctioLineNumber = 0
     [string]$global:debugWatchVariable = ""
     [string]$global:debugMode = "Write"
@@ -164,7 +172,8 @@ if (-not $global:InitDone) {
                 Write-Host "Break set up for $functionName" -ForegroundColor Green
             }
         } catch {
-            Write-Error "$_"
+            Write-Error -Message "PSBreakpoint (global:InitDone) errors in Mdm_Std_Library initialization!`n$_"
+            #  -ErrorRecord $_
             Write-Host "Powershell debug features are unavailable in the Mdm Standard Library" `
                 -ForegroundColor Red
         }
@@ -202,7 +211,8 @@ if (-not $global:InitDone) {
     $global:opt.ErrorBackgroundColor = [System.ConsoleColor]::Black
     $global:opt.ErrorForegroundColor = [System.ConsoleColor]::Red
 
-    $global:timeStarted = "{0:yyyymmdd_hhmmss}" -f (get-date)
+    $global:timeStarted = Get-Date
+    $global:timeStartedFormatted = "{0:yyyymmdd_hhmmss}" -f (Get-Date)
     $global:timeCompleted = $global:timeStarted
     $global:lastError = $null
 }
@@ -363,15 +373,80 @@ function Get-StdGlobals {
     }
     return @($global:DoPause, $global:DoVerbose, $global:DoDebug, $global:message)
 }
-function IsDebugFunction {
+function Assert-DebugFunction {
     param (
         [Parameter(Mandatory = $true)]
         $functionName
     )
     return ($global:debugFunctionNames -contains $functionName)
 }
+function Submit-DebugFunction {
+    param (
+        [Parameter(Mandatory = $true)]
+        $functionName,
+        $invocationFunctionName = ""
+    )
+    if (-not $global:DebugInScriptDebugger -and $global:DebugProgressFindName -and $(Assert-DebugFunction($functionName))) {
+        $logMessage = "Debug $invocationFunctionName for $($functionName)"
+        Add-LogText -logMessages $logMessage `
+            -IsWarning -DoTraceWarningDetails `
+            -localLogFileNameFull $global:logFileNameFull
+        Script_Debugger -DoPause 5 -functionName $functionName -localLogFileNameFull $localLogFileNameFull
+        return $true
+    }
+    return $false
+}
 
 # ###############################
+# Function to check for key press
+function Wait-ForKeyPress {
+    param (
+        $message = "",
+        $duration = 10,
+        $foregroundColor,
+        $backgroundColor
+    )
+    if (-not $foregroundColor) { $foregroundColor = $global:opt.WarningForegroundColor }
+    if (-not $backgroundColor) { $backgroundColor = $global:opt.WarningBackgroundColor }
+    Write-Host -NoNewline "" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+    [int]$startTime = $(Get-Date -UFormat "%s")
+    [int]$remainingTime = $duration
+    while ($remainingTime -gt 0) {
+        if ($host.UI.RawUI.KeyAvailable) {
+            $key = $host.UI.RawUI.ReadKey("NoEcho, IncludeKeyUp") # ,IncludeKeyDown
+            if ($key.Character -eq "Y") { return $true }
+        }
+        $percentComplete = [int][math]::Round(($remainingTime / $duration) * 100)
+        if ($message) {
+            # Display the countdown using Write-Progress
+            Write-Progress -Activity $message -Status "$remainingTime seconds remaining..." -PercentComplete $percentComplete
+        }
+        Start-Sleep -Milliseconds 500  # Sleep for a short time to avoid high CPU usage
+        $remainingTime = $startTime + $duration - (Get-Date -UFormat "%s" )
+    }
+    $foregroundColor = $global:messageForegroundColor
+    $backgroundColor = $global:messageBackgroundColor
+    Write-Host -NoNewline "" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+
+    # $keyPressed = $false
+    # $job = Start-Job -ScriptBlock {
+    #     [Console]::ReadKey($true) | Out-Null
+    #     return $true
+    # }
+    # # Sleep for a specified duration (in seconds)
+    # $duration = 10
+    # for ($i = 0; $i -lt $duration; $i++) {
+    #     Start-Sleep -Seconds 1
+    #     if ($job.HasExited) {
+    #         $keyPressed = $job.Receive()
+    #         break
+    #     }
+    # }
+    # # Clean up the job
+    # Stop-Job $job
+    # Remove-Job $job
+    return $keyPressed
+}
 function Wait-AnyKey {
     <#
     .SYNOPSIS
@@ -436,7 +511,7 @@ function Wait-AnyKey {
 #     $null = $host.ui.RawUI.ReadKey("NoEcho, IncludeKeyDown")
 # }
 # } -Scope Global
-# Todo wait timeout /t 5
+# TODO wait timeout /t 5
 # Timeout preparation
 function Wait-CheckDoPause {
     <#
@@ -483,7 +558,7 @@ function Wait-YorNorQ {
         [switch]$DoVerbose, 
         [switch]$DoDebug    
     )
-    ($local:DoPause, $local:DoVerbose, $local:DoDebug, $local:message ) = Get-StdGlobals
+    # ($local:DoPause, $local:DoVerbose, $local:DoDebug, $local:message ) = Get-StdGlobals
     # if ($global:DoPause) {
     if ([string]::IsNullOrEmpty($message)) {
         $message = $global:msgYorN
@@ -527,7 +602,8 @@ Export-ModuleMember -Function @(
     # Mdm_Std_Library
     "Set-StdGlobals",
     "Get-StdGlobals",
-    "IsDebugFunction",
+    "Assert-DebugFunction",
+    "Submit-DebugFunction",
 
     # Waiting & pausing
     "Wait-AnyKey",

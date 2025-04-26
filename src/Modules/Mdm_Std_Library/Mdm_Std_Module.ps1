@@ -1,7 +1,7 @@
 
 #region Module Import / Export
 Function Export-ModuleMemberScan {
-    <#
+<#
     .SYNOPSIS
         The scans a module folder with a view to automatically load/import it.
     .DESCRIPTION
@@ -23,6 +23,8 @@ Function Export-ModuleMemberScan {
     .EXAMPLE
         Export-ModuleMemberScan
 #>
+
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -85,7 +87,7 @@ function $scriptName {
     }
 }
 function Import-These {
-    <#
+<#
     .SYNOPSIS
         Imports specified functions from a module.
     .DESCRIPTION
@@ -98,7 +100,9 @@ function Import-These {
     .EXAMPLE
         Import-These -moduleRoot "C:\Path\To\Module" -functionNames "Function1", "Function2"
 Import-These -moduleRoot "C:\Path\To\Module" -functionNames "Function1", "Function2", "Function3"
-    #>
+#>
+
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -178,18 +182,20 @@ Import-These -moduleRoot "C:\Path\To\Module" -functionNames "Function1", "Functi
 #region Module State
 
 function Get-ModuleProperty {
-    <#
-        .SYNOPSIS
-            Gets the Module property.
-        .DESCRIPTION
-            Retrieves the value of the Module property.
-        .PARAMETER InputObject
-            The input object to retrieve the property from.
-        .EXAMPLE
-            Get-ModuleProperty -InputObject $obj
-        .Outputs
-            System.String
-    #>
+<#
+    .SYNOPSIS
+        Gets the Module property.
+    .DESCRIPTION
+        Retrieves the value of the Module property.
+    .PARAMETER InputObject
+        The input object to retrieve the property from.
+    .EXAMPLE
+        Get-ModuleProperty -InputObject $obj
+    .Outputs
+        System.String
+#>
+
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -200,20 +206,22 @@ function Get-ModuleProperty {
     }
 }
 function Set-ModuleProperty {
-    <#
-        .SYNOPSIS
-            Sets the Module property.
-        .DESCRIPTION
-            Updates the value of the Module property.
-        .PARAMETER InputObject
-            The input object to update the property on.
-        .PARAMETER Value
-            The new value for the Module property.
-        .EXAMPLE
-            Set-ModuleProperty -InputObject $obj -Value "new value"
-        .OUTPUTS
-            System.Void
-    #>
+<#
+    .SYNOPSIS
+        Sets the Module property.
+    .DESCRIPTION
+        Updates the value of the Module property.
+    .PARAMETER InputObject
+        The input object to update the property on.
+    .PARAMETER Value
+        The new value for the Module property.
+    .EXAMPLE
+        Set-ModuleProperty -InputObject $obj -Value "new value"
+    .OUTPUTS
+        System.Void
+#>
+
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
@@ -225,16 +233,18 @@ function Set-ModuleProperty {
     process { $InputObject | ForEach-Object { $_.Module = $Value } }
 }
 function Get-ModuleConfig {
-    <#
-        .SYNOPSIS
-            Retrieves the Module configuration.
-        .DESCRIPTION
-            Gets the Module configuration settings.
-        .EXAMPLE
-            Get-ModuleConfig
-        .OUTPUTS
-            System.Collections.Hashtable
-    #>
+<#
+    .SYNOPSIS
+        Retrieves the Module configuration.
+    .DESCRIPTION
+        Gets the Module configuration settings.
+    .EXAMPLE
+        Get-ModuleConfig
+    .OUTPUTS
+        System.Collections.Hashtable
+#>
+
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -256,21 +266,23 @@ function Get-ModuleConfig {
     }
 }
 function Set-ModuleConfig {
-    <#
-        .SYNOPSIS
-            Updates the Module configuration.
-        .DESCRIPTION
-            Sets the Module configuration settings.
-        .PARAMETER Config
-            The new configuration values.
-        .EXAMPLE
-            Set-ModuleConfig -Config @{
-                "Setting1" = "New Value"
-                "Setting2" = "New Value"
-            }
-        .OUTPUTS
-            System.Void
-    #>
+<#
+    .SYNOPSIS
+        Updates the Module configuration.
+    .DESCRIPTION
+        Sets the Module configuration settings.
+    .PARAMETER Config
+        The new configuration values.
+    .EXAMPLE
+        Set-ModuleConfig -Config @{
+            "Setting1" = "New Value"
+            "Setting2" = "New Value"
+        }
+    .OUTPUTS
+        System.Void
+#>
+
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -286,16 +298,18 @@ function Set-ModuleConfig {
 #endregion
 #region Module Status
 function Get-ModuleStatus {
-    <#
-        .SYNOPSIS
-            Retrieves the Module status.
-        .DESCRIPTION
-            Gets the current status of Module.
-        .EXAMPLE
-            Get-ModuleStatus
-        .OUTPUTS
-            System.String
-    #>
+<#
+    .SYNOPSIS
+        Retrieves the Module status.
+    .DESCRIPTION
+        Gets the current status of Module.
+    .EXAMPLE
+        Get-ModuleStatus
+    .OUTPUTS
+        System.String
+#>
+
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -310,18 +324,20 @@ function Get-ModuleStatus {
     }
 }
 function Set-ModuleStatus {
-    <#
-        .SYNOPSIS
-            Updates the Module status.
-        .DESCRIPTION
-            Sets the current status of Module.
-        .PARAMETER Status
-            The new status value.
-        .EXAMPLE
-            Set-ModuleStatus -Status "Offline"
-        .OUTPUTS
-            System.Void
-    #>
+<#
+    .SYNOPSIS
+        Updates the Module status.
+    .DESCRIPTION
+        Sets the current status of Module.
+    .PARAMETER Status
+        The new status value.
+    .EXAMPLE
+        Set-ModuleStatus -Status "Offline"
+    .OUTPUTS
+        System.Void
+#>
+
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]

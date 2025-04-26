@@ -5,7 +5,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Help by  for PowerShell</title>
+    <title>Mdm_Modules Help by MacroDM for PowerShell</title>
+    <meta name="author" content="David G. Horsman">
+    <meta name="date" content="04/26/2025 03:17:36">
+    <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
+    <meta name="license" content="MIT">
     <style>
         html,
         body {
@@ -110,7 +114,7 @@
                 </div>
             </div>
         </div>
-        <h1>Help for Module: </h1>
+        <h1>Help for Module: Mdm_Modules</h1>
     </div>
     <h1>Mdm_Modules</h1>
 <pre>NAME
@@ -139,6 +143,546 @@ Exported functions from Bootstrap, Standard Library, Development Environment Ins
 
 
 
+<p><strong>Type:</strong> Alias. Command: Get-DevEnvVersions  Type:Function</p>
+<p><strong>Synopsis:</strong> List current versions.</p>
+<p><strong>Detailed Description:</strong> Cycles through components and display the current version.</p>
+<p><strong>Syntax:</strong> <pre>description: Switch to pause at each step/page.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Provide detailed information.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Get-DevEnvVersions
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
+<p>  - <strong>DoVerbose</strong>: Provide detailed information.</p>
+<p>  - <strong>DoDebug</strong>: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> Should output a file and display.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-DevEnvVersions -DoVerbose
+     Remarks:</pre>
+<p></p>
+<h2>Add-LogError</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Add-LogError [-logMessage] &lt;Object&gt; [[-ErrorPSItem] &lt;ErrorRecord&gt;] [[-localLogFileNameFull] &lt;Object&gt;] [[-foregroundColor] &lt;Object&gt;] [[-backgroundColor] &lt;Object&gt;] [-IsError] [-IsWarning] [-SkipScriptLineDisplay] [-DoTraceWarningDetails] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Add-LogError
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoTraceWarningDetails</strong></p>
+<p>  - <strong>ErrorPSItem</strong></p>
+<p>  - <strong>IsError</strong></p>
+<p>  - <strong>IsWarning</strong></p>
+<p>  - <strong>SkipScriptLineDisplay</strong></p>
+<p>  - <strong>backgroundColor</strong></p>
+<p>  - <strong>foregroundColor</strong></p>
+<p>  - <strong>localLogFileNameFull</strong></p>
+<p>  - <strong>logMessage</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Add-LogText</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Add-LogText [-logMessages] &lt;Object&gt; [[-localLogFileNameFull] &lt;string&gt;] [[-foregroundColor] &lt;Object&gt;] [[-backgroundColor] &lt;Object&gt;] [[-ErrorPSItem] &lt;ErrorRecord&gt;] [-KeepWhitespace] [-KeepEscapes] [-IsError] [-IsWarning] [-DoTraceWarningDetails] [-SkipScriptLineDisplay] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Add-LogText
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoTraceWarningDetails</strong></p>
+<p>  - <strong>ErrorPSItem</strong></p>
+<p>  - <strong>IsError</strong></p>
+<p>  - <strong>IsWarning</strong></p>
+<p>  - <strong>KeepEscapes</strong></p>
+<p>  - <strong>KeepWhitespace</strong></p>
+<p>  - <strong>SkipScriptLineDisplay</strong></p>
+<p>  - <strong>backgroundColor</strong></p>
+<p>  - <strong>foregroundColor</strong></p>
+<p>  - <strong>localLogFileNameFull</strong></p>
+<p>  - <strong>logMessages</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Add-RegistryPath</h2>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Add to HKLM Environtment Path</p>
+<p><strong>Detailed Description:</strong> This loads the specifiect Path key (PATH by default) and adds the new path to it.</p>
+<p><strong>Syntax:</strong> <pre>envPathToUpdate
+ description: The Path key to use.
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 Add-RegistryPath
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>envPathToUpdate</strong>: The Path key to use.</p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Add-RegistryPath &quot;PATH&quot; &quot;c:\SOMEWHERER&quot;
+     Remarks:</pre>
+<p></p>
+<h2>Assert-DebugFunction</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Assert-DebugFunction [-functionName] &lt;Object&gt; [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Assert-DebugFunction
+CommonParameters: True
+parameter: @{name=functionName; required=true; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>functionName</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Assert-RegistryValue</h2>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Return true if Registry Value exists.</p>
+<p><strong>Detailed Description:</strong> Check the registry path &amp; value. Asserts it exists.</p>
+<p><strong>Syntax:</strong> <pre>Path
+ description: The Registry Path to check.
+
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 Name
+ description: The Registry Key name (Value) to access.
+
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2 description: If true this outputs an ItemProperty otherwise true/false
+
+ PassThru
+ required: false, globbing: false, pipelineInput: false, position: named Assert-RegistryValue
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Path</strong>: The Registry Path to check.</p>
+<p>  - <strong>Name</strong>: The Registry Key name (Value) to access.</p>
+<p>  - <strong>PassThru</strong>: If true this outputs an ItemProperty otherwise true/false</p>
+<p></p>
+<p><strong>Return: </strong> True/Fale if the key exists.
+null/ItemProperty if PassThur switch is present.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Assert-RegistryValue &quot;PATH&quot;
+     Remarks:</pre>
+<p></p>
+<h2>Assert-SecElevated</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Elevate script to Administrator.</p>
+<p><strong>Detailed Description:</strong> Get the security principal for the Administrator role.
+Check to see if we are currently running &quot;as Administrator&quot;,
+Create a new process object that starts PowerShell,
+Indicate that the process should be elevated (&quot;runas&quot;),
+Start the new process.</p>
+<p><strong>Syntax:</strong> <pre>Assert-SecElevated</pre></p>
+<p></p>
+<p><strong>Return: </strong> None. Returns or Executes current script in an elevated process.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Set-SecElevated &quot;Elevating myself.&quot;
+     Remarks:</pre>
+<p></p>
+<h2>Build-HelpHtml</h2>
+
+
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> A short one-line action-based description, e.g. &apos;Tests if a function is valid&apos;</p>
+<p><strong>Detailed Description:</strong> A longer description of the function, its purpose, common use cases, etc.</p>
+<p><strong>Syntax:</strong> <pre>helpInfoObject
+ description: [System.Management.Automation.HelpInfo]
+Used to pass the help information that will be formatted into HTML.
+
+ parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue, ByPropertyName), position: 1 moduleObject
+ description: [System.Management.Automation.PSModuleInfo]
+Accepts a cmdlet object. Used to generate help content specific to a module.
+
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 cmdletObject
+ description: Accepts a cmdlet object. Used to generate help content for a specific cmdlet.
+
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 3 htmlContentLocal
+ description: Used to hold the passed HTML content that will be appended to or modified within the function.
+
+ parameterValue: Object[], required: false, globbing: false, pipelineInput: false, position: 4 description: [switch] Don't output the Name line.
+
+ SkipName
+ required: false, globbing: false, pipelineInput: false, position: named description: [switch] Don't output the command (object) type line.
+
+ SkipType
+ required: false, globbing: false, pipelineInput: false, position: named Build-HelpHtml
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>helpInfoObject</strong>: [System.Management.Automation.HelpInfo]
+Used to pass the help information that will be formatted into HTML.</p>
+<p>  - <strong>moduleObject</strong>: [System.Management.Automation.PSModuleInfo]
+Accepts a cmdlet object. Used to generate help content specific to a module.</p>
+<p>  - <strong>cmdletObject</strong>: Accepts a cmdlet object. Used to generate help content for a specific cmdlet.</p>
+<p>  - <strong>htmlContentLocal</strong>: Used to hold the passed HTML content that will be appended to or modified within the function.</p>
+<p>  - <strong>SkipName</strong>: [switch] Don&apos;t output the Name line.</p>
+<p>  - <strong>SkipType</strong>: [switch] Don&apos;t output the command (object) type line.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: $htmlContent += Build-HelpHtml `
+    -helpInfoObject $helpInfo `
+    -moduleObject $moduleInfo `
+    -cmdletObject $cmdlet `
+    -SkipName `
+    -ErrorAction Stop
+     Remarks:</pre>
+<p></p>
+<h2>ConvertFrom-HashValue</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+ConvertFrom-HashValue [[-textIn] &lt;Object&gt;] [[-textOut] &lt;Object&gt;] [[-textLineBreak] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: ConvertFrom-HashValue
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>textIn</strong></p>
+<p>  - <strong>textLineBreak</strong></p>
+<p>  - <strong>textOut</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>ConvertFrom-Template</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+ConvertFrom-Template [-templateContent] &lt;Object&gt; [-templateDoc] &lt;Object&gt; [[-templateData] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: ConvertFrom-Template
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>templateContent</strong></p>
+<p>  - <strong>templateData</strong></p>
+<p>  - <strong>templateDoc</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>ConvertTo-EscapedText</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+ConvertTo-EscapedText [-textIn] &lt;Object&gt; [[-localLogFileNameFull] &lt;Object&gt;] [-KeepWhitespace] [-KeepEscapes] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: ConvertTo-EscapedText
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>KeepEscapes</strong></p>
+<p>  - <strong>KeepWhitespace</strong></p>
+<p>  - <strong>localLogFileNameFull</strong></p>
+<p>  - <strong>textIn</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>ConvertTo-ObjectArray</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+ConvertTo-ObjectArray [[-InputObjects] &lt;Object[]&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: ConvertTo-ObjectArray
+CommonParameters: True
+parameter: @{name=InputObjects; required=false; pipelineInput=true (ByValue, ByPropertyName); isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object[]; type=; position=0; aliases=None}</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>InputObjects</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>ConvertTo-Text</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+ConvertTo-Text [-textIn] &lt;Object&gt; [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: ConvertTo-Text
+CommonParameters: True
+parameter: @{name=textIn; required=true; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>textIn</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>ConvertTo-TrimedText</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+ConvertTo-TrimedText [-textIn] &lt;Object&gt; [[-localLogFileNameFull] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: ConvertTo-TrimedText
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>localLogFileNameFull</strong></p>
+<p>  - <strong>textIn</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Copy-ItemWithProgressDisplay</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Copy-ItemWithProgressDisplay [[-source] &lt;Object&gt;] [[-destination] &lt;Object&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Copy-ItemWithProgressDisplay
+CommonParameters: False
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>destination</strong></p>
+<p>  - <strong>source</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>DevEnv_Install_Modules_Win</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install or update Mdm Modules.</p>
+<p><strong>Detailed Description:</strong> This installs the libraries to the live system using Robocopy.</p>
+<p><strong>Syntax:</strong> <pre>description: Provide detailed information.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch to pause at each step/page.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named source
+ description: default: "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules"
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 destination
+ description: default: "$env:PROGRAMFILES\\WindowsPowerShell\Modules"
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 logFilePath
+ description: default: "G:\Script\Powershell\Mdm_Powershell_Modules\log\"
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 logFileName
+ description: default: "Mdm_Installation_Log.txt"
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 4 description: Switch to not create separate file with the date in the file name.
+
+ LogOneFile
+ required: false, globbing: false, pipelineInput: false, position: named nameFilter
+ description: Default is "Mmd_*". IE. These modules.
+You could override it if you had other local modules to install
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 SkipHelp
+ required: false, globbing: false, pipelineInput: false, position: named SkipRegistry
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch to execute copy commands in a separate shell window.
+
+ DoNewWindow
+ required: false, globbing: false, pipelineInput: false, position: named companyName
+ description: MacroDM currently. It's optional.
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 6 copyOptions
+ description: These are RoboCopy options.
+Currently: "/E /FP /nc /ns /np /TEE"
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 7 DevEnv_Install_Modules_Win
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoVerbose</strong>: Provide detailed information.</p>
+<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
+<p>  - <strong>DoDebug</strong>: Debug this script.</p>
+<p>  - <strong>source</strong>: default: &quot;G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules&quot;</p>
+<p>  - <strong>destination</strong>: default: &quot;$env:PROGRAMFILES\\WindowsPowerShell\Modules&quot;</p>
+<p>  - <strong>logFilePath</strong>: default: &quot;G:\Script\Powershell\Mdm_Powershell_Modules\log\&quot;</p>
+<p>  - <strong>logFileName</strong>: default: &quot;Mdm_Installation_Log.txt&quot;</p>
+<p>  - <strong>LogOneFile</strong>: Switch to not create separate file with the date in the file name.</p>
+<p>  - <strong>nameFilter</strong>: Default is &quot;Mmd_*&quot;. IE. These modules.
+You could override it if you had other local modules to install</p>
+<p>  - <strong>SkipHelp</strong></p>
+<p>  - <strong>SkipRegistry</strong></p>
+<p>  - <strong>DoNewWindow</strong>: Switch to execute copy commands in a separate shell window.</p>
+<p>  - <strong>companyName</strong>: MacroDM currently. It&apos;s optional.</p>
+<p>  - <strong>copyOptions</strong>: These are RoboCopy options.
+Currently: &quot;/E /FP /nc /ns /np /TEE&quot;</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: DevEnv_Install_Modules_Win
+     Remarks:</pre>
+<p></p>
+<h2>DevEnv_LanguageMode</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+DevEnv_LanguageMode [[-languageMode] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: DevEnv_LanguageMode
+CommonParameters: True
+parameter: @{name=languageMode; required=false; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>languageMode</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>DevEnv_Module_Reset</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+DevEnv_Module_Reset [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: DevEnv_Module_Reset
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Export-Help</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Export-Help [[-moduleRoot] &lt;Object&gt;] [[-localLogFileNameFull] &lt;Object&gt;] [[-nameFilter] &lt;Object&gt;] [-DoPause] [-DoVerbose] [-DoDebug] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Export-Help
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoVerbose</strong></p>
+<p>  - <strong>localLogFileNameFull</strong></p>
+<p>  - <strong>moduleRoot</strong></p>
+<p>  - <strong>nameFilter</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Export-Mdm_Help</h2>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Generates the extended help files for the Mdm Modules.</p>
+<p><strong>Detailed Description:</strong> This runs Get-Modules and Get-Command functions to create help files.
+The general intent is to have function lists.
+To correctly run this command (showing which module it belongs to) enter:
+```powershell
+Import-Module -name Mdm_Std_Library -force
+```
+This function re-imports the other module in the correct order.
+Note: It should not need to be run unless changes were made to the Mdm Modules.</p>
+<p><strong>Syntax:</strong> <pre>moduleRoot
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 localModuleNames
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Export-Mdm_Help
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>moduleRoot</strong></p>
+<p>  - <strong>localModuleNames</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Import-Module -name Mdm_Std_Library -force
+Export-Mdm_Help -DoVerbose -DoPause
+     Remarks:</pre>
+<p></p>
+<h2>Export-ModuleMemberScan</h2>
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> The scans a module folder with a view to automatically load/import it.</p>
+<p><strong>Detailed Description:</strong> It didn&apos;t work. The problem isn&apos;t clear.</p>
+<p><strong>Syntax:</strong> <pre>moduleRoot
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 modulePublic
+ description: Path for Public cmdlets to export.
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 modulePrivate
+ description: Path for Private functions.
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 Export-ModuleMemberScan
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>moduleRoot</strong></p>
+<p>  - <strong>modulePublic</strong>: Path for Public cmdlets to export.</p>
+<p>  - <strong>modulePrivate</strong>: Path for Private functions.</p>
+<p></p>
+<p><strong>Return: </strong> Imports modules.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Export-ModuleMemberScan
+     Remarks:</pre>
+<p></p>
+<h2>Get-AllCommands</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Get-AllCommands [[-moduleRoot] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Get-AllCommands
+CommonParameters: True
+parameter: @{name=moduleRoot; required=false; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>moduleRoot</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Get-DevEnvVersions</h2>
+
+
+
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> List current versions.</p>
 <p><strong>Detailed Description:</strong> Cycles through components and display the current version.</p>
@@ -162,52 +706,1408 @@ Exported functions from Bootstrap, Standard Library, Development Environment Ins
 <p><strong>Return: </strong> Should output a file and display.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 -------------------------- Introduction: @{Text=PS > }       Syntax: Get-DevEnvVersions -DoVerbose      Remarks:    </pre>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-DevEnvVersions -DoVerbose
+     Remarks:</pre>
 <p></p>
-<h2>Add-LogError</h2>
+<h2>Get-DirectoryNameFromSaved</h2>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Get saved directory.</p>
+<p><strong>Detailed Description:</strong> This allow you to store the directory where the command was issued
+and later restore that state.
+Don&apos;t alter the Saved Working Directory
+when setting to a passed Working Directory.</p>
+<p><strong>Syntax:</strong> <pre>dirWdPassed
+ description: An optional directory to use.
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 Get-DirectoryNameFromSaved
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>dirWdPassed</strong>: An optional directory to use.</p>
+<p></p>
+<p><strong>Return: </strong> Does a Set-Location to this directory. Rhelpeturns it as a string.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-DirectoryNameFromSaved
+     Remarks:</pre>
+<p></p>
+<h2>Get-FileNamesFromPath</h2>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Creates a list of files in a directory.</p>
+<p><strong>Detailed Description:</strong> Creates a list of files in a directory.</p>
+<p><strong>Syntax:</strong> <pre>SourcePath
+ description: The folder to list the files of.
+
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 Get-FileNamesFromPath
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>SourcePath</strong>: The folder to list the files of.</p>
+<p></p>
+<p><strong>Return: </strong> A list of files.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-FileNamesFromPath &quot;C:\Progams places&quot;
+     Remarks:</pre>
+<p></p>
+<h2>Get-Invocation_PSCommandPath</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Get-Invocation_PSCommandPath.</p>
+<p><strong>Detailed Description:</strong> Get-Invocation_PSCommandPath.</p>
+<p><strong>Syntax:</strong> <pre>Get-Invocation_PSCommandPath</pre></p>
+<p></p>
+<p><strong>Return: </strong> $MyInvocation.Get-PSCommandPath</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-Invocation_PSCommandPath
+     Remarks:</pre>
+<p></p>
+<h2>Get-LastError</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Get-LastError.</p>
+<p><strong>Detailed Description:</strong> Get-LastError does Get-Error.</p>
+<p><strong>Syntax:</strong> <pre>Get-LastError</pre></p>
+<p></p>
+<p><strong>Return: </strong> The last error to occur.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-LastError
+     Remarks:</pre>
+<p></p>
+<h2>Get-LogFileName</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Add-LogError [-logMessage] &lt;Object&gt; [-ErrorPSItem] &lt;Object&gt; [[-localLogFileNameFull] &lt;Object&gt;] [[-foregroundColor] &lt;Object&gt;] [[-backgroundColor] &lt;Object&gt;] [-isError] [-isWarning] [-SkipScriptLineDisplay] [&lt;CommonParameters&gt;]</p>
-<p><strong>Syntax:</strong> <pre>name: Add-LogError
+Get-LogFileName [[-localLogFileNameFull] &lt;Object&gt;] [-LogOneFile] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Get-LogFileName
 CommonParameters: True
 parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>LogOneFile</strong></p>
+<p>  - <strong>localLogFileNameFull</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Get-ModuleConfig</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Retrieves the Module configuration.</p>
+<p><strong>Detailed Description:</strong> Gets the Module configuration settings.</p>
+<p><strong>Syntax:</strong> <pre>Filter
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 Get-ModuleConfig
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Filter</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Collections.Hashtable</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-ModuleConfig
+     Remarks:</pre>
+<p></p>
+<h2>Get-ModuleProperty</h2>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Gets the Module property.</p>
+<p><strong>Detailed Description:</strong> Retrieves the value of the Module property.</p>
+<p><strong>Syntax:</strong> <pre>InputObject
+ description: The input object to retrieve the property from.
+
+ parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue), position: 1 Get-ModuleProperty
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>InputObject</strong>: The input object to retrieve the property from.</p>
+<p></p>
+<p><strong>Return: </strong> System.String</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-ModuleProperty -InputObject $obj
+     Remarks:</pre>
+<p></p>
+<h2>Get-ModuleStatus</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Retrieves the Module status.</p>
+<p><strong>Detailed Description:</strong> Gets the current status of Module.</p>
+<p><strong>Syntax:</strong> <pre>Format
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 Get-ModuleStatus
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Format</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.String</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-ModuleStatus
+     Remarks:</pre>
+<p></p>
+<h2>Get-MyCommand_Definition</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Get-MyCommand_Definition.</p>
+<p><strong>Detailed Description:</strong> Get-MyCommand_Definition.</p>
+<p><strong>Syntax:</strong> <pre>Get-MyCommand_Definition</pre></p>
+<p></p>
+<p><strong>Return: </strong> $MyInvocation.Get-MyCommand_.Definition</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-MyCommand_Definition
+     Remarks:</pre>
+<p></p>
+<h2>Get-MyCommand_InvocationName</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Get-MyCommand_InvocationName.</p>
+<p><strong>Detailed Description:</strong> Get-MyCommand_InvocationName.</p>
+<p><strong>Syntax:</strong> <pre>Get-MyCommand_InvocationName</pre></p>
+<p></p>
+<p><strong>Return: </strong> $MyInvocation.InvocationName</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-MyCommand_InvocationName
+     Remarks:</pre>
+<p></p>
+<h2>Get-MyCommand_Name</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Get-MyCommand_Name.</p>
+<p><strong>Detailed Description:</strong> Get-MyCommand_Name.</p>
+<p><strong>Syntax:</strong> <pre>Get-MyCommand_Name</pre></p>
+<p></p>
+<p><strong>Return: </strong> $MyInvocation.Get-MyCommand_.Name</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-MyCommand_Name
+     Remarks:</pre>
+<p></p>
+<h2>Get-MyCommand_Origin</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Get-MyCommand_Origin</p>
+<p><strong>Detailed Description:</strong> Get-MyCommand_Origin</p>
+<p><strong>Syntax:</strong> <pre>Get-MyCommand_Origin</pre></p>
+<p></p>
+<p><strong>Return: </strong> $MyInvocation.Get-MyCommand_.CommandOrigin</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-MyCommand_Origin
+     Remarks:</pre>
+<p></p>
+<h2>Get-NewError</h2>
+
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Creates a powershell error object.</p>
+<p><strong>Detailed Description:</strong> Uses $PSCmdlet.WriteError to create a powershell error.</p>
+<p><strong>Syntax:</strong> <pre>Message
+ description: The error message.
+
+ parameterValue: Exception, required: false, globbing: false, pipelineInput: false, position: 1 ErrorCategory
+ description: The error type.
+
+ parameterValueGroup: @{parameterValue=System.Management.Automation.PSObject[]}, required: false, globbing: false, pipelineInput: false, position: 2 description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Get-NewError
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Message</strong>: The error message.</p>
+<p>  - <strong>ErrorCategory</strong>: The error type.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> An error object from what I can tell.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: TODO PsError Example
+     Remarks:</pre>
+<p></p>
+<h2>Get-PSCommandPath</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Get-PSCommandPath.</p>
+<p><strong>Detailed Description:</strong> Get-PSCommandPath.
+from stackoverflow</p>
+<p><strong>Syntax:</strong> <pre>Get-PSCommandPath</pre></p>
+<p></p>
+<p><strong>Return: </strong> $Script_PSCommandPath</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-PSCommandPath
+     Remarks:</pre>
+<p></p>
+<h2>Get-ScriptName</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Get the Script Name.</p>
+<p><strong>Detailed Description:</strong> Get $MyInvocation.Script_Name.</p>
+<p><strong>Syntax:</strong> <pre>Get-ScriptName</pre></p>
+<p></p>
+<p><strong>Return: </strong> $MyInvocation.Script_Name</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-ScriptName
+     Remarks:</pre>
+<p></p>
+<h2>Get-ScriptPositionalParameters</h2>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Get-ScriptPositionalParameters.</p>
+<p><strong>Detailed Description:</strong> Get-ScriptPositionalParameters.</p>
+<p><strong>Syntax:</strong> <pre>functionName
+ description: The function name to examine.
+
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 Get-ScriptPositionalParameters
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>functionName</strong>: The function name to examine.</p>
+<p></p>
+<p><strong>Return: </strong> A list pof positional paramaters for that function.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-ScriptPositionalParameters
+     Remarks:</pre>
+<p></p>
+<h2>Get-StdGlobals</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Gets global variables and state.</p>
+<p><strong>Detailed Description:</strong> This will get globals to be returned without validation.</p>
+<p><strong>Syntax:</strong> <pre>DoClear
+ required: false, globbing: false, pipelineInput: false, position: named Get-StdGlobals
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoClear</strong></p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Set-StdGlobals -DoPause -DoVerbose -DoDebug
+     Remarks:</pre>
+<p></p>
+<h2>Get-Template</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Get-Template [-templateNameFull] &lt;Object&gt; [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Get-Template
+CommonParameters: True
+parameter: @{name=templateNameFull; required=true; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>templateNameFull</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Get-UriFromPath</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Get-UriFromPath [-Path] &lt;string&gt; [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Get-UriFromPath
+CommonParameters: True
+parameter: @{name=Path; required=true; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=string; type=; position=0; aliases=None}</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Path</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Import-These</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Imports specified functions from a module.</p>
+<p><strong>Detailed Description:</strong> This function imports specified functions from a PowerShell module or script file.
+If no function names are provided, the entire module is imported.</p>
+<p><strong>Syntax:</strong> <pre>moduleRoot
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 moduleComponent
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 functionNames
+ parameterValue: String[], required: false, globbing: false, pipelineInput: false, position: 3 Import-These
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>moduleRoot</strong></p>
+<p>  - <strong>moduleComponent</strong></p>
+<p>  - <strong>functionNames</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Import-These -moduleRoot &quot;C:\Path\To\Module&quot; -functionNames &quot;Function1&quot;, &quot;Function2&quot;
+Import-These -moduleRoot &quot;C:\Path\To\Module&quot; -functionNames &quot;Function1&quot;, &quot;Function2&quot;, &quot;Function3&quot;
+     Remarks:</pre>
+<p></p>
+<h2>Initialize-Dev_Env_Win</h2>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Setup (bootstrap) Windows for the Development Environment.</p>
+<p><strong>Detailed Description:</strong> This is the first step of bootstrapping the Development Environment.
+This updates the Windows Environment variables.
+It installs these powershell modules to the system&apos;s directories.
+Set registry, Path and load PowerShell modules.
+$source = &quot;$global:scriptPath\&quot;
+$destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
+<p><strong>Syntax:</strong> <pre>description: Switch: A switch to indicate the path should be checked/updated.
+
+ UpdatePath
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named Initialize-Dev_Env_Win
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>UpdatePath</strong>: Switch: A switch to indicate the path should be checked/updated.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p></p>
+<p><strong>Return: </strong> TODO.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Initialize-Dev_Env_Win -SilentMode -UpdatePath
+     Remarks:</pre>
+<p></p>
+<h2>Initialize-Std</h2>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Initializes a script..</p>
+<p><strong>Detailed Description:</strong> This processes switches, automatic variables, state.</p>
+<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Initialize-Std
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> Global variables are set.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- -------------------------- EXAMPLE 2 --------------------------
+       Label:  
+Introduction:  
+      Syntax: Initialize-Std -DoPause:$DoPause -DoVerbose:$DoVerbose Initialize-StdGlobalsReset
+Initialize-Std -DoPause:$DoPause -DoVerbose:$DoVerbose
+     Remarks:</pre>
+<p></p>
+<h2>Initialize-StdGlobalsReset</h2>
+
+
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Resets the global state.</p>
+<p><strong>Detailed Description:</strong> This equates to, and uses, 
+    automatic variables, 
+    $PS variables, 
+    module metadata and
+    state.</p>
+<p><strong>Syntax:</strong> <pre>description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named msgAnykey
+ description: The prompt for "Enter any key".
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 msgYorN
+ description: The prompt for "Enter Y, N, or Q to quit".
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 description: Switch: indicates initialization is done.
+
+ initDone
+ required: false, globbing: false, pipelineInput: false, position: named Initialize-StdGlobalsReset
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p>  - <strong>msgAnykey</strong>: The prompt for &quot;Enter any key&quot;.</p>
+<p>  - <strong>msgYorN</strong>: The prompt for &quot;Enter Y, N, or Q to quit&quot;.</p>
+<p>  - <strong>initDone</strong>: Switch: indicates initialization is done.</p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Initialize-StdGlobalsReset
+     Remarks:</pre>
+<p></p>
+<h2>Initialize-TemplateData</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Initialize-TemplateData [[-templateData] &lt;Object&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Initialize-TemplateData
+CommonParameters: False
+parameter: @{name=templateData; required=false; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>templateData</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Install-DevEnvIdeWin</h2>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install the IDE (Intergrated development environment).</p>
+<p><strong>Detailed Description:</strong> This script sets up a Windows development environment for neural network projects.
+It installs Chocolatey (if not already installed), Python, Git, VSCode,
+creates a project directory and a Python virtual environment,
+and then installs TensorFlow, Keras, and PyTorch.</p>
+<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvIdeWin
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> A log (TODO).</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Install-DevEnvIdeWin -DoVerbose
+     Remarks:</pre>
+<p></p>
+<h2>Install-DevEnvLlmWin</h2>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install the Large Language Model (LLM)</p>
+<p><strong>Detailed Description:</strong> Install the LLM (NN or AI).
+Create Python virtual environment. Activates it.
+Upgrades pip and installs neural network libraries.
+Libraries: TensorFlow, Keras, PyTorch.</p>
+<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvLlmWin
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Install-DevEnvLlmWin
+     Remarks:</pre>
+<p></p>
+<h2>Install-DevEnvModules</h2>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install these modules on the local system.</p>
+<p><strong>Detailed Description:</strong> NOT IN USE. Performs an .Add(<!-- $fullHtml = @" -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mdm_Modules Help by MacroDM for PowerShell</title>
+    <meta name="author" content="David G. Horsman">
+    <meta name="date" content="04/26/2025 03:17:36">
+    <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
+    <meta name="license" content="MIT">
+    <style>
+        html,
+        body {
+            background-color: white;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 3px;
+            padding: 18px;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        pre {
+            white-space: pre-wrap;
+        }
+
+        .wrapper {
+            /* float on right edge */
+            float: left;
+            vertical-align: top;
+            margin-right: 10px;
+
+            /* Allows the wrapper to sit next to the heading */
+            /* display: inline-block; */
+            /* margin-left: 10px; */
+            /* vertical-align: middle; */
+        }
+
+        .circle {
+            width: 40px;
+            /* Set the size of the circle */
+            height: 40px;
+            /* Set the size of the circle */
+            border-radius: 50%;
+            /* Makes it round */
+            background-color: #ccc;
+            /* Background color for the outer circle */
+            display: flex;
+            /* Centers the button inside the circle */
+            justify-content: center;
+            /* Centers the button horizontally */
+            align-items: center;
+            /* Centers the button vertically */
+        }
+
+        .btn {
+            background-color: transparent;
+            /* Button background */
+            border: none;
+            /* No border */
+            cursor: pointer;
+            /* Pointer cursor on hover */
+        }
+
+        .outer {
+            width: 35px;
+            height: 35px;
+            background-color: #3c249c;
+        }
+
+        .inner {
+            width: 25px;
+            height: 25px;
+            background-color: #6754b0;
+        }
+
+        .dark-mode {
+            filter: invert(100%)
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        function toggleDarkMode(element) {
+            if (element == null) { var element = document.body; }
+            element.classList.toggle("dark-mode");
+        }
+
+        function myClassClick(className, toggleName) {
+            let ClassItem = document.querySelector(className)
+            ClassItem.addEventListener('click', () => {
+                document.documentElement.classList.toggle(toggleName)
+            })
+        }
+    </script>
+    <div>
+        <div class="wrapper">
+            <div class="circle outer">
+                <div class="circle inner">
+                    <button class="darkModeButton" type="button" onclick="toggleDarkMode()">dark mode</button>
+                </div>
+            </div>
+        </div>
+        <h1>Help for Module: Mdm_Modules</h1>
+    </div>
+    {{TemplateContent}}
+    <!-- <footer><p>&copy; David G. Horsman. All rights reserved.</p></footer> -->
+</body>
+
+</html>) for each object</p>
+<p><strong>Syntax:</strong> <pre>inputObjects
+ description: .
+
+ parameterValue: Object, required: false, globbing: false, pipelineInput: true (ByValue), position: 1 Install-DevEnvModules
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>inputObjects</strong>: .</p>
+<p></p>
+<p><strong>Return: </strong> .</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Install-DevEnvModules
+     Remarks:</pre>
+<p></p>
+<h2>Install-DevEnvOsWin</h2>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Prepares windows and powershell to install tools.</p>
+<p><strong>Detailed Description:</strong> This script sets up a Windows OS for the development environment.
+It installs Chocolatey (if not already installed).
+It will update PowerShell (from vs 5 to 7).
+TODO: sed, win linux, other tools?</p>
+<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvOsWin
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Install-DevEnvOsWin -DoPause
+     Remarks:</pre>
+<p></p>
+<h2>Install-DevEnvWhisperWin</h2>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install local voice recognition (Whisper).</p>
+<p><strong>Detailed Description:</strong> Whisper is models designed to run voice recognition locally.</p>
+<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvWhisperWin
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Install-DevEnvWhisperWin
+     Remarks:</pre>
+<p></p>
+<h2>Install-DevEnvWin</h2>
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Install the Windows Development Environment.</p>
+<p><strong>Detailed Description:</strong> Performs these installations:
+    Install-DevEnvOsWin 
+    Install-DevEnvIdeWin
+    Install-DevEnvLlmWin
+    Install-DevEnvWhisperWin
+When complete it displays current version for the environment.</p>
+<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvWin
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong></p>
+<p></p>
+<p><strong>Return: </strong> TODO Should create a log.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Install-DevEnvWin -DoPause -UpdatePath
+     Remarks:</pre>
+<p></p>
+<h2>Push-ShellPwsh</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Detailed Description:</strong> Note: Place [CmdletBinding()] above param(...) to make
+    the script an *advanced* one, which then prevents passing
+    extra arguments that don&apos;t bind to declared parameters.
+Issue: Example:
+@powershell -ExecutionPolicy Bypass -File &quot;test.ps1&quot; -stringParam &quot;testing&quot; -switchParam `
+    &gt; &quot;output.txt&quot; 2&gt;&amp;1
+The script I am calling requires PowerShell 7+, 
+    so I need to restart the script by calling pwsh 
+    with the current parameters. 
+I planned to accomplish this via the following:
+Invoke-Command { &amp; pwsh -Command $MyInvocation.Line } -NoNewScope
+Unfortunately, $MyInvocation.Line does not return the correct result
+    when a PowerShell script is called from a batch file.
+    What alternatives exist that would work in this scenario?</p>
+<p><strong>Syntax:</strong> <pre>stringParam
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 switchParam
+ required: false, globbing: false, pipelineInput: false, position: named Push-ShellPwsh
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>stringParam</strong></p>
+<p>  - <strong>switchParam</strong></p>
+<p></p>
+<p></p>
+<h2>Script_Debugger</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Script_Debugger [[-functionName] &lt;Object&gt;] [[-commandLine] &lt;Object&gt;] [[-logMessage] &lt;Object&gt;] [[-DoPause] &lt;Object&gt;] [[-PsDebug] &lt;Object&gt;] [[-localLogFileNameFull] &lt;string&gt;] [[-ErrorPSItem] &lt;Object&gt;] [-Break] [-DoPrompt] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Script_Debugger
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Break</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoPrompt</strong></p>
 <p>  - <strong>ErrorPSItem</strong></p>
-<p>  - <strong>SkipScriptLineDisplay</strong></p>
-<p>  - <strong>backgroundColor</strong></p>
-<p>  - <strong>foregroundColor</strong></p>
-<p>  - <strong>isError</strong></p>
-<p>  - <strong>isWarning</strong></p>
+<p>  - <strong>PsDebug</strong></p>
+<p>  - <strong>commandLine</strong></p>
+<p>  - <strong>functionName</strong></p>
 <p>  - <strong>localLogFileNameFull</strong></p>
 <p>  - <strong>logMessage</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object</p>
 <p></p>
 <p></p>
-<h2>Add-LogText</h2>
+<h2>Script_DoStart</h2>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Reset and initialize.</p>
+<p><strong>Detailed Description:</strong> This resets the global values and call the initializations.</p>
+<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Script_DoStart
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Script_DoStart -DoVerbose
+     Remarks:</pre>
+<p></p>
+<h2>Search-Directory</h2>
+
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Search a folder for files or (TODO) something else.</p>
+<p><strong>Detailed Description:</strong> Currently just outputs the folder list to a CSV file.</p>
+<p><strong>Syntax:</strong> <pre>inputObjects
+ description: This is a ValueFromPipeline and can be used with one or more objects.
+
+ parameterValue: Object, required: false, globbing: false, pipelineInput: true (ByValue), position: 1 dir
+ description: This defaults to "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules".
+
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 folder
+ description: Defaults to (Get-Item $dir).Parent.
+
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 3 folderName
+ description: Defaults to folder.Name.
+
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 4 folderPath
+ description: Defaults to folder.FullName.
+
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 5 Search-Directory
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>inputObjects</strong>: This is a ValueFromPipeline and can be used with one or more objects.</p>
+<p>  - <strong>dir</strong>: This defaults to &quot;G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules&quot;.</p>
+<p>  - <strong>folder</strong>: Defaults to (Get-Item $dir).Parent.</p>
+<p>  - <strong>folderName</strong>: Defaults to folder.Name.</p>
+<p>  - <strong>folderPath</strong>: Defaults to folder.FullName.</p>
+<p></p>
+<p><strong>Return: </strong> Export-Csv &apos;.\output.csv&apos;.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Search-Directory &quot;G:\Script\Powershell\&quot;.
+     Remarks:</pre>
+<p></p>
+<h2>Set-DirectoryToScriptRoot</h2>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Set directory to the script&apos;s root directory.</p>
+<p><strong>Detailed Description:</strong> Set the working directory to the script&apos;s root directory..</p>
+<p><strong>Syntax:</strong> <pre>global:scriptPath
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 1 scriptDrive
+ description: Optional drive letter.
+
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 Set-DirectoryToScriptRoot
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>global:scriptPath</strong></p>
+<p>  - <strong>scriptDrive</strong>: Optional drive letter.</p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Set-DirectoryToScriptRoot
+     Remarks:</pre>
+<p></p>
+<h2>Set-ErrorBreakOnFunction</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Add-LogText [-logMessages] &lt;Object&gt; [[-localLogFileNameFull] &lt;Object&gt;] [[-foregroundColor] &lt;Object&gt;] [[-backgroundColor] &lt;Object&gt;] [[-ErrorPSItem] &lt;Object&gt;] [-keepWhitespace] [-keepEscapes] [-isError] [-isWarning] [-SkipScriptLineDisplay] [&lt;CommonParameters&gt;]</p>
-<p><strong>Syntax:</strong> <pre>name: Add-LogText
+Set-ErrorBreakOnFunction [[-functionName] &lt;Object&gt;] [[-LineNumber] &lt;int&gt;] [[-commandLine] &lt;string&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Set-ErrorBreakOnFunction
 CommonParameters: True
 parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>ErrorPSItem</strong></p>
-<p>  - <strong>SkipScriptLineDisplay</strong></p>
-<p>  - <strong>backgroundColor</strong></p>
-<p>  - <strong>foregroundColor</strong></p>
-<p>  - <strong>isError</strong></p>
-<p>  - <strong>isWarning</strong></p>
-<p>  - <strong>keepEscapes</strong></p>
-<p>  - <strong>keepWhitespace</strong></p>
-<p>  - <strong>localLogFileNameFull</strong></p>
-<p>  - <strong>logMessages</strong></p>
+<p>  - <strong>LineNumber</strong></p>
+<p>  - <strong>commandLine</strong></p>
+<p>  - <strong>functionName</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object</p>
 <p></p>
 <p></p>
+<h2>Set-ErrorBreakOnLine</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Set-ErrorBreakOnLine [-functionName] &lt;Object&gt; [[-LineNumber] &lt;int&gt;] [[-commandLine] &lt;string&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Set-ErrorBreakOnLine
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>LineNumber</strong></p>
+<p>  - <strong>commandLine</strong></p>
+<p>  - <strong>functionName</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Set-ErrorBreakOnVariable</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Set-ErrorBreakOnVariable [-watchVariable] &lt;Object&gt; [[-Write] &lt;int&gt;] [[-commandLine] &lt;string&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Set-ErrorBreakOnVariable
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Write</strong></p>
+<p>  - <strong>commandLine</strong></p>
+<p>  - <strong>watchVariable</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Set-LocationToPath</h2>
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Set the currrent directory.</p>
+<p><strong>Detailed Description:</strong> Set the currrent working directory to the passed path.</p>
+<p><strong>Syntax:</strong> <pre>workingDirectory
+ description: The direcotry to set as the current working directory.
+
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 description: Save the passed directory path.
+
+ saveDirectory
+ required: false, globbing: false, pipelineInput: false, position: named Set-LocationToPath
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>workingDirectory</strong>: The direcotry to set as the current working directory.</p>
+<p>  - <strong>saveDirectory</strong>: Save the passed directory path.</p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Set-LocationToPath &quot;C:\temp&quot;
+     Remarks:</pre>
+<p></p>
+<h2>Set-LocationToScriptRoot</h2>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Set location to script root.</p>
+<p><strong>Detailed Description:</strong> Set location to script root.</p>
+<p><strong>Syntax:</strong> <pre>description: Switch: Save the current directory.
+
+ saveDirectory
+ required: false, globbing: false, pipelineInput: false, position: named Set-LocationToScriptRoot
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>saveDirectory</strong>: Switch: Save the current directory.</p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Set-LocationToScriptRoot -saveDirectory
+     Remarks:</pre>
+<p></p>
+<h2>Set-ModuleConfig</h2>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Updates the Module configuration.</p>
+<p><strong>Detailed Description:</strong> Sets the Module configuration settings.</p>
+<p><strong>Syntax:</strong> <pre>Config
+ description: The new configuration values.
+
+ parameterValue: Hashtable, required: true, globbing: false, pipelineInput: false, position: 1 Set-ModuleConfig
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Config</strong>: The new configuration values.</p>
+<p></p>
+<p><strong>Return: </strong> System.Void</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Set-ModuleConfig -Config @{
+    &quot;Setting1&quot; = &quot;New Value&quot;
+    &quot;Setting2&quot; = &quot;New Value&quot;
+}
+     Remarks:</pre>
+<p></p>
+<h2>Set-ModuleProperty</h2>
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Sets the Module property.</p>
+<p><strong>Detailed Description:</strong> Updates the value of the Module property.</p>
+<p><strong>Syntax:</strong> <pre>InputObject
+ description: The input object to update the property on.
+
+ parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue), position: 1 Value
+ description: The new value for the Module property.
+
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2 Set-ModuleProperty
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>InputObject</strong>: The input object to update the property on.</p>
+<p>  - <strong>Value</strong>: The new value for the Module property.</p>
+<p></p>
+<p><strong>Return: </strong> System.Void</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Set-ModuleProperty -InputObject $obj -Value &quot;new value&quot;
+     Remarks:</pre>
+<p></p>
+<h2>Set-ModuleStatus</h2>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Updates the Module status.</p>
+<p><strong>Detailed Description:</strong> Sets the current status of Module.</p>
+<p><strong>Syntax:</strong> <pre>Status
+ description: The new status value.
+
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 Set-ModuleStatus
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Status</strong>: The new status value.</p>
+<p></p>
+<p><strong>Return: </strong> System.Void</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Set-ModuleStatus -Status &quot;Offline&quot;
+     Remarks:</pre>
+<p></p>
+<h2>Set-SavedToDirectoryName</h2>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Save working directory.</p>
+<p><strong>Detailed Description:</strong> Save working directory with a view to restoring it later.
+The default is to save the current directoy.</p>
+<p><strong>Syntax:</strong> <pre>dirWdPassed
+ description: The Working Directory Name.
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 Set-SavedToDirectoryName
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>dirWdPassed</strong>: The Working Directory Name.</p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Set-SavedToDirectoryName &quot;C:\PathToSave&quot;
+     Remarks:</pre>
+<p></p>
+<h2>Set-StdGlobals</h2>
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Checks global variables and state.</p>
+<p><strong>Detailed Description:</strong> This will set globals to the passed values without validation.</p>
+<p><strong>Syntax:</strong> <pre>message
+ description: The system message. Not used.
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named SkipClear
+ required: false, globbing: false, pipelineInput: false, position: named Preserve
+ required: false, globbing: false, pipelineInput: false, position: named Set-StdGlobals
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>message</strong>: The system message. Not used.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p>  - <strong>SkipClear</strong></p>
+<p>  - <strong>Preserve</strong></p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Set-StdGlobals -DoPause -DoVerbose -DoDebug
+     Remarks:</pre>
+<p></p>
+<h2>Show-StdGlobals</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Display global state.</p>
+<p><strong>Detailed Description:</strong> Display global and automatic state variables.</p>
+<p><strong>Syntax:</strong> <pre>Show-StdGlobals</pre></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Show-StdGlobals
+     Remarks:</pre>
+<p></p>
+<h2>Submit-DebugFunction</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Submit-DebugFunction [-functionName] &lt;Object&gt; [[-invocationFunctionName] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Submit-DebugFunction
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>functionName</strong></p>
+<p>  - <strong>invocationFunctionName</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Wait-AnyKey</h2>
+
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Enter any key.</p>
+<p><strong>Detailed Description:</strong> Prompts the user to enter any key to continue.</p>
+<p><strong>Syntax:</strong> <pre>message
+ description: The prompt message.
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 timeout
+ description: Number of seconds to wait (if present).
+
+ parameterValue: Int32, required: false, globbing: false, pipelineInput: false, position: 2 description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Wait-AnyKey
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>message</strong>: The prompt message.</p>
+<p>  - <strong>timeout</strong>: Number of seconds to wait (if present).</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Wait-AnyKey
+     Remarks:</pre>
+<p></p>
+<h2>Wait-CheckDoPause</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Check DoPause switch.</p>
+<p><strong>Detailed Description:</strong> Returns true when DoPause is set.</p>
+<p><strong>Syntax:</strong> <pre>Wait-CheckDoPause</pre></p>
+<p></p>
+<p><strong>Return: </strong> True is DoPause.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Wait-CheckDoPause
+     Remarks:</pre>
+<p></p>
+<h2>Wait-YorNorQ</h2>
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Prompts for Y(es), N(o) or Q(uit).</p>
+<p><strong>Detailed Description:</strong> Prompt the user for a Yes, No or Quit response.</p>
+<p><strong>Syntax:</strong> <pre>message
+ description: The prompt.
+
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Wait-YorNorQ
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>message</strong>: The prompt.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> The user response.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: $theResponse = Wait-YorNorQ &quot;Wait?&quot;
+     Remarks:</pre>
+<p></p>
+<h2>Write-HtlmData</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Write-HtlmData.</p>
+<p><strong>Detailed Description:</strong> Sends pipeline object to file.</p>
+<p><strong>Syntax:</strong> <pre>InputObject
+ parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue), position: 1 FileName
+ parameterValue: Object, required: true, globbing: false, pipelineInput: false, position: 2 head
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 3 header
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 4 title
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 5 Write-HtlmData
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>InputObject</strong></p>
+<p>  - <strong>FileName</strong></p>
+<p>  - <strong>head</strong></p>
+<p>  - <strong>header</strong></p>
+<p>  - <strong>title</strong></p>
+<p></p>
+<p><strong>Return: </strong> Html file.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: $YourPipeline | Write-HtlmData &quot;Filename.txt&quot;
+     Remarks:</pre>
+<p></p>
+<h2>Write-Mdm_Help</h2>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Displays the help files for the Mdm Modules.</p>
+<p><strong>Detailed Description:</strong> You can display the help Using DoPause and DoVerbose for detailed help.</p>
+<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named Write-Mdm_Help
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Write-Mdm_Help -DoVerbose -DoPause
+     Remarks:</pre>
+<p></p>
+<h2>Write-Module_Help</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Write-Module_Help [-moduleName] &lt;string&gt; [-DoPause] [-DoVerbose] [-DoDebug] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Write-Module_Help
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoVerbose</strong></p>
+<p>  - <strong>moduleName</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<footer><p>&copy; David G. Horsman. All rights reserved.</p></footer>
+    <!-- <footer><p>&copy; David G. Horsman. All rights reserved.</p></footer> -->
 </body>
 
 </html>

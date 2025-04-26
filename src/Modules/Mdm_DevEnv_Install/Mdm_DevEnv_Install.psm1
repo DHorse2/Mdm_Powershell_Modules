@@ -18,7 +18,7 @@ Import-Module -Name "$global:scriptPath\$importName\$importName" -Force -ErrorAc
 
 # Dev Env Tool Versions
 Function Get-DevEnvVersions {
-    <#
+<#
     .SYNOPSIS
         List current versions.
     .DESCRIPTION
@@ -151,7 +151,7 @@ Function Get-DevEnvVersions {
 }
 # Install-DevEnvWhisperWin
 function Install-DevEnvModules {
-    <#
+<#
     .SYNOPSIS
         Install these modules on the local system.
     .DESCRIPTION

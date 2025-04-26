@@ -1,101 +1,101 @@
 
 Count Name                      Group
 ----- ----                      -----
-   95                           {N:, PSConsoleHostReadLine, prompt, X:…}
-    6 AppBackgroundTask         {Enable-AppBackgroundTaskDiagnosticLog, Set-AppBackgroundTaskResourcePolicy, Start-AppBackgroundTask, Get-AppBackgroundTask…}
-   68 Appx                      {Remove-AppPackage, Remove-AppPackageAutoUpdateSettings, Get-AppxPackage, Remove-AppPackageVolume…}
-   14 BitLocker                 {Lock-BitLocker, Disable-BitLocker, Disable-BitLockerAutoUnlock, Remove-BitLockerKeyProtector…}
-    8 BitsTransfer              {Complete-BitsTransfer, Add-BitsFile, Start-BitsTransfer, Set-BitsTransfer…}
-   14 CimCmdlets                {Get-CimAssociatedInstance, Register-CimIndicationEvent, Invoke-CimMethod, Remove-CimSession…}
-   15 ConfigDefender            {Get-MpThreat, Remove-MpPreference, Get-MpBehavioralNetworkBlockingRules, Get-MpThreatCatalog…}
+   95                           {V:, L:, M:, mkdir…}
+    6 AppBackgroundTask         {Get-AppBackgroundTask, Disable-AppBackgroundTaskDiagnosticLog, Set-AppBackgroundTaskResourcePolicy, Start-AppBackgroundTask…}
+   68 Appx                      {Get-MsixDefaultVolume, Dismount-AppxVolume, Add-AppxPackage, Add-AppSharedPackageContainer…}
+   14 BitLocker                 {Unlock-BitLocker, BackupToAAD-BitLockerKeyProtector, Enable-BitLockerAutoUnlock, Remove-BitLockerKeyProtector…}
+    8 BitsTransfer              {Get-BitsTransfer, Remove-BitsTransfer, Resume-BitsTransfer, Suspend-BitsTransfer…}
+   14 CimCmdlets                {New-CimSessionOption, Set-CimInstance, Remove-CimInstance, Get-CimClass…}
+   15 ConfigDefender            {Get-MpThreat, Set-MpPreference, Update-MpSignature, Get-MpPreference…}
     2 ConfigDefenderPerformance {Get-MpPerformanceReport, New-MpPerformanceRecording}
-   13 Defender                  {Get-MpComputerStatus, Remove-MpPreference, Remove-MpThreat, Get-MpThreatDetection…}
+   13 Defender                  {Remove-MpThreat, Get-MpComputerStatus, Get-MpPreference, Set-MpPreference…}
     2 DefenderPerformance       {Get-MpPerformanceReport, New-MpPerformanceRecording}
-   18 DeliveryOptimization      {Get-DeliveryOptimizationLog, Disable-DeliveryOptimizationVerboseLogs, Get-DeliveryOptimizationLogAnalysis, Delete-DeliveryOptimizationCache…}
-   11 DirectAccessClientCompon… {Get-DAEntryPointTableItem, Reset-DAEntryPointTableItem, Reset-DAClientExperienceConfiguration, Disable-DAManualEntryPointSelection…}
-   72 Dism                      {Get-ProvisionedAppxPackage, New-WindowsImage, New-WindowsCustomImage, Add-AppProvisionedPackage…}
-   21 DnsClient                 {Remove-DnsClientNrptRule, Set-DnsClientServerAddress, Set-DnsClientNrptGlobal, Register-DnsClient…}
-   20 EventTracingManagement    {New-EtwTraceSession, Stop-EtwTraceSession, Start-AutologgerConfig, Start-EtwTraceSession…}
+   18 DeliveryOptimization      {Disable-DeliveryOptimizationVerboseLogs, Get-DeliveryOptimizationLog, Get-DeliveryOptimizationLogAnalysis, Delete-DeliveryOptimizationCache…}
+   11 DirectAccessClientCompon… {New-DAEntryPointTableItem, Set-DAClientExperienceConfiguration, Disable-DAManualEntryPointSelection, Get-DAEntryPointTableItem…}
+   72 Dism                      {Optimize-WindowsImage, New-WindowsImage, Get-WindowsCapability, Optimize-AppxProvisionedPackages…}
+   21 DnsClient                 {Resolve-DnsName, Set-DnsClientNrptGlobal, Set-DnsClientNrptRule, Get-DnsClientServerAddress…}
+   20 EventTracingManagement    {Get-AutologgerConfig, Remove-EtwTraceSession, Send-EtwTraceSession, Set-EtwTraceProvider…}
     1 Get-NetView               {Get-NetView}
-   11 HostNetworkingService     {Invoke-HnsRequest, Get-HnsNetwork, Get-HnsEndpointAddresses, Get-HnsPolicyList…}
-   19 International             {Get-WinHomeLocation, Get-WinUserLanguageList, New-WinUserLanguageList, Get-WinLanguageBarOption…}
-   13 iSCSI                     {Unregister-IscsiSession, Get-IscsiTargetPortal, Get-IscsiTarget, Get-IscsiSession…}
-    3 ISE                       {Get-IseSnippet, New-IseSnippet, Import-IseSnippet}
-    6 Kds                       {Test-KdsRootKey, Add-KdsRootKey, Clear-KdsCache, Set-KdsConfiguration…}
-   10 LanguagePackManagement    {Set-SystemLanguage, Get-Language, Set-PreferredLanguage, Uninstall-Language…}
-   12 LAPS                      {Invoke-LapsPolicyProcessing, Set-LapsADResetPasswordPermission, Update-LapsADSchema, Reset-LapsPassword…}
-    6 Mdm_Bootstrap             {DevEnv_Install_Modules_Win, DevEnv_Module_Reset, DevEnv_LanguageMode, Assert-RegistryValue…}
-    8 Mdm_DevEnv_Install        {Install-DevEnvLlmWin, Install-DevEnvWin, Get-Vs, Install-DevEnvModules…}
-   73 Mdm_Modules               {Add-RegistryPath, Add-LogText, IsDebugFunction, Show-StdGlobals…}
-   59 Mdm_Std_Library           {IsDebugFunction, Get-StdGlobals, Get-NewError, Add-LogText…}
+   11 HostNetworkingService     {Get-HnsNamespace, Get-HnsNetwork, Get-HnsPolicyList, Remove-HnsPolicyList…}
+   19 International             {Set-WinSystemLocale, Set-WinAcceptLanguageFromLanguageListOptOut, Set-WinCultureFromLanguageListOptOut, New-WinUserLanguageList…}
+   13 iSCSI                     {New-IscsiTargetPortal, Set-IscsiChapSecret, Update-IscsiTargetPortal, Unregister-IscsiSession…}
+    3 ISE                       {Get-IseSnippet, Import-IseSnippet, New-IseSnippet}
+    6 Kds                       {Test-KdsRootKey, Get-KdsRootKey, Get-KdsConfiguration, Clear-KdsCache…}
+   10 LanguagePackManagement    {Set-SystemPreferredUILanguage, Uninstall-Language, Get-SystemPreferredUILanguage, Get-InstalledLanguage…}
+   12 LAPS                      {Find-LapsADExtendedRights, Set-LapsADPasswordExpirationTime, Get-LapsAADPassword, Get-LapsADPassword…}
+    4 Mdm_Bootstrap             {Add-RegistryPath, DevEnv_Module_Reset, Assert-RegistryValue, Initialize-Dev_Env_Win}
+    8 Mdm_DevEnv_Install        {Install-DevEnvWhisperWin, Install-DevEnvWin, Install-DevEnvOsWin, Install-DevEnvModules…}
+   76 Mdm_Modules               {Get-StdGlobals, ConvertTo-TrimedText, Submit-DebugFunction, Get-MyCommand_Definition…}
+   73 Mdm_Std_Library           {Wait-AnyKey, ConvertTo-EscapedText, Get-Template, Get-NewError…}
     4 Microsoft.PowerShell.Arc… {Expand-Archive, Compress-Archive, Compress-Archive, Expand-Archive}
-    5 Microsoft.PowerShell.Dia… {Import-Counter, New-WinEvent, Get-WinEvent, Export-Counter…}
-    2 Microsoft.PowerShell.Host {Stop-Transcript, Start-Transcript}
-   15 Microsoft.PowerShell.Loc… {Remove-LocalUser, Get-LocalUser, Rename-LocalUser, Remove-LocalGroup…}
-   61 Microsoft.PowerShell.Man… {Move-Item, Move-ItemProperty, Split-Path, Get-HotFix…}
+    5 Microsoft.PowerShell.Dia… {New-WinEvent, Import-Counter, Get-Counter, Export-Counter…}
+    2 Microsoft.PowerShell.Host {Start-Transcript, Stop-Transcript}
+   15 Microsoft.PowerShell.Loc… {Add-LocalGroupMember, Set-LocalGroup, Remove-LocalUser, Enable-LocalUser…}
+   61 Microsoft.PowerShell.Man… {Get-Service, Push-Location, Get-PSProvider, Get-PSDrive…}
     1 Microsoft.PowerShell.ODa… {Export-ODataEndpointProxy}
     2 Microsoft.PowerShell.Ope… {Invoke-OperationValidation, Get-OperationValidation}
-   19 Microsoft.PowerShell.PSR… {Get-InstalledPSResource, Unregister-PSResourceRepository, New-PSScriptFileInfo, Save-PSResource…}
-   15 Microsoft.PowerShell.Sec… {Get-ExecutionPolicy, Get-PfxCertificate, Protect-CmsMessage, Test-FileCatalog…}
-  118 Microsoft.PowerShell.Uti… {Select-Object, Export-PSSession, Out-File, New-Object…}
-   13 Microsoft.ReFsDedup.Comm… {Disable-ReFSDedup, Set-ReFSDedupScrubSchedule, Resume-ReFSDedupSchedule, Set-ReFSDedupSchedule…}
-   31 Microsoft.Windows.Bcd.Cm… {Remove-BcdElement, Get-BcdEntry, Set-BcdBootDisplayOrder, Enable-BcdElementBootDebug…}
-   24 Microsoft.WinGet.Client   {Export-WinGetPackage, Enable-WinGetSetting, Get-WinGetSettings, Get-WinGetUserSettings…}
-   13 Microsoft.WSMan.Manageme… {Disable-WSManCredSSP, Invoke-WSManAction, Set-WSManQuickConfig, Set-WSManInstance…}
-    5 MMAgent                   {Enable-MMAgent, Debug-MMAppPrelaunch, Get-MMAgent, Disable-MMAgent…}
-   41 MsDtc                     {Complete-DtcDiagnosticTransaction, Reset-DtcLog, Get-DtcClusterDefault, Remove-DtcClusterTMMapping…}
-   78 NetAdapter                {Enable-NetAdapterVmq, Enable-NetAdapterUso, Enable-NetAdapterEncapsulatedPacketTaskOffload, Enable-NetAdapterUro…}
-    2 NetConnection             {Get-NetConnectionProfile, Set-NetConnectionProfile}
-   35 NetEventPacketCapture     {Set-NetEventWFPCaptureProvider, Set-NetEventPacketCaptureProvider, Set-NetEventProvider, Set-NetEventSession…}
-   13 NetLbfo                   {Set-NetLbfoTeam, Get-NetLbfoTeamMember, Get-NetLbfoTeamNic, Remove-NetLbfoTeam…}
-   13 NetNat                    {Set-NetNat, Set-NetNatGlobal, Add-NetNatExternalAddress, Get-NetNatExternalAddress…}
-    4 NetQos                    {Set-NetQosPolicy, Get-NetQosPolicy, Remove-NetQosPolicy, New-NetQosPolicy}
-  106 NetSecurity               {Get-NetFirewallProfile, Get-NetFirewallRule, Get-NetFirewallSecurityFilter, Get-NetFirewallServiceFilter…}
-    7 NetSwitchTeam             {Get-NetSwitchTeamMember, Get-NetSwitchTeam, Add-NetSwitchTeamMember, Remove-NetSwitchTeamMember…}
-   34 NetTCPIP                  {Set-NetUDPSetting, Get-NetIPv6Protocol, New-NetNeighbor, Get-NetIPv4Protocol…}
-    4 NetworkConnectivityStatus {Get-NCSIPolicyConfiguration, Reset-NCSIPolicyConfiguration, Get-DAConnectionStatus, Set-NCSIPolicyConfiguration}
-   19 NetworkSwitchManager      {Save-NetworkSwitchConfiguration, Disable-NetworkSwitchVlan, Disable-NetworkSwitchFeature, Restore-NetworkSwitchConfiguration…}
-   34 NetworkTransition         {Remove-NetIPHttpsCertBinding, Set-NetTeredoConfiguration, Enable-NetNatTransitionConfiguration, Remove-NetIPHttpsConfiguration…}
-    8 OsConfiguration           {Get-OsConfigurationDocument, Remove-OsConfigurationDocument, Set-OsConfigurationDocument, Get-OsConfigurationDocumentResult…}
-   13 PackageManagement         {Get-PackageProvider, Install-Package, Get-Package, Save-Package…}
-    9 PcsvDevice                {Restart-PcsvDevice, Clear-PcsvDeviceLog, Get-PcsvDeviceLog, Set-PcsvDeviceUserPassword…}
-    9 PersistentMemory          {Get-PmemUnusedRegion, Get-PmemPhysicalDevice, Remove-PmemDedicatedMemory, New-PmemDedicatedMemory…}
-   23 Pester                    {Get-MockDynamicParameters, Invoke-Pester, It, InModuleScope…}
-   17 PKI                       {New-SelfSignedCertificate, Get-PfxData, Set-CertificateAutoEnrollmentPolicy, Get-Certificate…}
-    4 PnpDevice                 {Enable-PnpDevice, Get-PnpDevice, Get-PnpDeviceProperty, Disable-PnpDevice}
+   19 Microsoft.PowerShell.PSR… {Get-PSResource, Save-PSResource, Publish-PSResource, Test-PSScriptFileInfo…}
+   15 Microsoft.PowerShell.Sec… {Set-ExecutionPolicy, Set-AuthenticodeSignature, Set-Acl, Get-PfxCertificate…}
+  118 Microsoft.PowerShell.Uti… {Wait-Event, Wait-Debugger, Write-Information, Write-Output…}
+   13 Microsoft.ReFsDedup.Comm… {Get-ReFSDedupStatus, Get-ReFSDedupScrubSchedule, Resume-ReFSDedupSchedule, Disable-ReFSDedup…}
+   31 Microsoft.Windows.Bcd.Cm… {Enable-BcdElementBootEms, Enable-BcdElementBootDebug, Enable-BcdElementDebug, Enable-BcdElementEms…}
+   24 Microsoft.WinGet.Client   {Get-WinGetSource, Get-WinGetUserSetting, Get-WinGetSetting, Test-WinGetUserSettings…}
+   13 Microsoft.WSMan.Manageme… {Set-WSManInstance, Test-WSMan, Remove-WSManInstance, Invoke-WSManAction…}
+    5 MMAgent                   {Debug-MMAppPrelaunch, Enable-MMAgent, Disable-MMAgent, Get-MMAgent…}
+   41 MsDtc                     {Set-DtcTransactionsTraceSetting, Start-DtcDiagnosticResourceManager, Set-DtcTransaction, Complete-DtcDiagnosticTransaction…}
+   78 NetAdapter                {Enable-NetAdapterQos, Enable-NetAdapterRdma, Enable-NetAdapterRsc, Enable-NetAdapterRss…}
+    2 NetConnection             {Set-NetConnectionProfile, Get-NetConnectionProfile}
+   35 NetEventPacketCapture     {Set-NetEventWFPCaptureProvider, Remove-NetEventSession, Remove-NetEventProvider, Remove-NetEventVFPProvider…}
+   13 NetLbfo                   {Rename-NetLbfoTeam, Set-NetLbfoTeamNic, Set-NetLbfoTeamMember, Set-NetLbfoTeam…}
+   13 NetNat                    {Get-NetNatSession, Remove-NetNatExternalAddress, Remove-NetNat, Get-NetNatStaticMapping…}
+    4 NetQos                    {Get-NetQosPolicy, Remove-NetQosPolicy, New-NetQosPolicy, Set-NetQosPolicy}
+  106 NetSecurity               {New-NetFirewallHyperVRule, New-NetFirewallHyperVVMSetting, New-NetFirewallRule, Copy-NetIPsecRule…}
+    7 NetSwitchTeam             {Get-NetSwitchTeamMember, Remove-NetSwitchTeam, New-NetSwitchTeam, Remove-NetSwitchTeamMember…}
+   34 NetTCPIP                  {Set-NetIPAddress, Get-NetIPv4Protocol, Remove-NetRoute, New-NetTransportFilter…}
+    4 NetworkConnectivityStatus {Get-DAConnectionStatus, Reset-NCSIPolicyConfiguration, Get-NCSIPolicyConfiguration, Set-NCSIPolicyConfiguration}
+   19 NetworkSwitchManager      {Disable-NetworkSwitchVlan, Remove-NetworkSwitchEthernetPortIPAddress, Disable-NetworkSwitchEthernetPort, Set-NetworkSwitchPortProperty…}
+   34 NetworkTransition         {Get-NetDnsTransitionConfiguration, New-NetIPHttpsConfiguration, Reset-NetTeredoConfiguration, Reset-NetIPHttpsConfiguration…}
+    8 OsConfiguration           {Remove-OsConfigurationDocument, Set-OsConfigurationDocument, Get-OSConfiguration, Get-OsConfigurationDocument…}
+   13 PackageManagement         {Install-PackageProvider, Uninstall-Package, Get-Package, Get-PackageSource…}
+    9 PcsvDevice                {Get-PcsvDeviceLog, Clear-PcsvDeviceLog, Get-PcsvDevice, Set-PcsvDeviceBootConfiguration…}
+    9 PersistentMemory          {Get-PmemDedicatedMemory, Remove-PmemDedicatedMemory, Get-PmemDisk, Remove-PmemDisk…}
+   23 Pester                    {Setup, InModuleScope, Get-MockDynamicParameters, Describe…}
+   17 PKI                       {Get-Certificate, Get-PfxData, Import-PfxCertificate, Switch-Certificate…}
+    4 PnpDevice                 {Disable-PnpDevice, Get-PnpDevice, Get-PnpDeviceProperty, Enable-PnpDevice}
     1 PowerShellEditorServices  {Start-EditorServices}
-   14 PowerShellEditorServices… {ConvertTo-ScriptExtent, Test-ScriptExtent, New-EditorFile, Clear-Host…}
-   51 PowerShellGet             {Find-RoleCapability, Find-Script, Find-Script, Find-Command…}
-   22 PrintManagement           {Get-PrinterDriver, Get-Printer, Get-PrintConfiguration, Write-PrinterNfcTag…}
-    3 ProcessMitigations        {Get-ProcessMitigation, Set-ProcessMitigation, ConvertTo-ProcessMitigationPolicy}
-   14 Provisioning              {Resume-ProvisioningSession, Install-TrustedProvisioningCertificate, New-ProvisioningRepro, Add-ProvisioningPackage…}
-   17 PSDesiredStateConfigurat… {Get-DscResource, Enable-DscDebug, Get-DscConfigurationStatus, Get-DscConfiguration…}
-   20 PSDiagnostics             {Enable-WSManTrace, Enable-WSManTrace, Stop-Trace, Stop-Trace…}
-    6 PSReadLine                {Set-PSReadLineKeyHandler, Set-PSReadLineOption, Remove-PSReadLineKeyHandler, PSConsoleHostReadLine…}
-   16 PSScheduledJob            {New-ScheduledJobOption, Add-JobTrigger, Get-JobTrigger, Set-ScheduledJob…}
+   14 PowerShellEditorServices… {Import-EditorCommand, ConvertFrom-ScriptExtent, ConvertTo-ScriptExtent, Set-ScriptExtent…}
+   51 PowerShellGet             {Test-ScriptFileInfo, Save-Module, Uninstall-Module, Publish-Module…}
+   22 PrintManagement           {Add-PrinterDriver, Restart-PrintJob, Remove-PrinterDriver, Set-Printer…}
+    3 ProcessMitigations        {ConvertTo-ProcessMitigationPolicy, Get-ProcessMitigation, Set-ProcessMitigation}
+   14 Provisioning              {Add-TrustedProvisioningCertificate, Install-ProvisioningPackage, Resume-ProvisioningSession, Add-ProvisioningPackage…}
+   17 PSDesiredStateConfigurat… {Enable-DscDebug, Remove-DscConfigurationDocument, Get-DscConfiguration, Get-DscConfigurationStatus…}
+   20 PSDiagnostics             {Start-Trace, Start-Trace, Stop-Trace, Disable-PSWSManCombinedTrace…}
+    6 PSReadLine                {Set-PSReadLineOption, Get-PSReadLineOption, Get-PSReadLineKeyHandler, Set-PSReadLineKeyHandler…}
+   16 PSScheduledJob            {Enable-ScheduledJob, Register-ScheduledJob, Set-JobTrigger, New-JobTrigger…}
     3 PSScriptAnalyzer          {Invoke-ScriptAnalyzer, Invoke-Formatter, Get-ScriptAnalyzerRule}
-    2 PSWorkflow                {New-PSWorkflowSession, New-PSWorkflowExecutionOption}
+    2 PSWorkflow                {New-PSWorkflowExecutionOption, New-PSWorkflowSession}
     1 PSWorkflowUtility         {Invoke-AsWorkflow}
-   19 ScheduledTasks            {Unregister-ScheduledTask, Unregister-ClusteredScheduledTask, New-ScheduledTaskPrincipal, Set-ScheduledTask…}
-    5 SecureBoot                {Format-SecureBootUEFI, Set-SecureBootUEFI, Get-SecureBootPolicy, Get-SecureBootUEFI…}
-   59 SmbShare                  {New-SmbMapping, New-SmbClientCertificateMapping, Update-SmbMultichannelConnection, Get-SmbDelegation…}
-    3 SmbWitness                {Get-SmbWitnessClient, Move-SmbClient, Move-SmbWitnessClient}
-    4 StartLayout               {Import-StartLayout, Export-StartLayout, Export-StartLayoutEdgeAssets, Get-StartApps}
-  171 Storage                   {Convert-PhysicalDisk, Disable-StorageMaintenanceMode, Disable-StorageHighAvailability, Get-PhysicalDiskSNV…}
-   21 StorageBusCache           {Set-StorageBusProfile, Resume-StorageBusDisk, Remove-StorageBusBinding, New-StorageBusCacheStore…}
+   19 ScheduledTasks            {New-ScheduledTask, Export-ScheduledTask, Unregister-ScheduledTask, Unregister-ClusteredScheduledTask…}
+    5 SecureBoot                {Confirm-SecureBootUEFI, Format-SecureBootUEFI, Set-SecureBootUEFI, Get-SecureBootPolicy…}
+   59 SmbShare                  {Set-SmbServerAlternativePort, Block-SmbShareAccess, Block-SmbClientAccessToServer, Enable-SmbDelegation…}
+    3 SmbWitness                {Move-SmbWitnessClient, Move-SmbClient, Get-SmbWitnessClient}
+    4 StartLayout               {Import-StartLayout, Get-StartApps, Export-StartLayout, Export-StartLayoutEdgeAssets}
+  171 Storage                   {Add-PartitionAccessPath, Disconnect-VirtualDisk, Disable-StorageDiagnosticLog, Clear-FileStorageTier…}
+   21 StorageBusCache           {Disable-StorageBusCache, Set-StorageBusProfile, Enable-StorageBusDisk, Enable-StorageBusCache…}
     1 ThreadJob                 {Start-ThreadJob}
-   10 TLS                       {Disable-TlsSessionTicketKey, New-TlsSessionTicketKey, Disable-TlsCipherSuite, Disable-TlsEccCurve…}
+   10 TLS                       {Get-TlsCipherSuite, Get-TlsEccCurve, Disable-TlsSessionTicketKey, Export-TlsSessionTicketKey…}
     2 TroubleshootingPack       {Get-TroubleshootingPack, Invoke-TroubleshootingPack}
-   11 TrustedPlatformModule     {Disable-TpmAutoProvisioning, Get-TpmEndorsementKeyInfo, ConvertTo-TpmOwnerAuth, Import-TpmOwnerAuth…}
-   13 VMDirectStorage           {Remove-VMDirectVirtualDisk, Write-FileSystemCache, Initialize-Volume, Add-VMDirectVirtualDisk…}
-   19 VpnClient                 {Set-VpnConnectionTriggerTrustedNetwork, Remove-VpnConnectionRoute, Set-VpnConnectionTriggerDnsConfiguration, New-EapConfiguration…}
-   12 Wdac                      {Disable-OdbcPerfCounter, Remove-OdbcDsn, Enable-OdbcPerfCounter, Set-OdbcDsn…}
+   11 TrustedPlatformModule     {Unblock-Tpm, Import-TpmOwnerAuth, ConvertTo-TpmOwnerAuth, Initialize-Tpm…}
+   13 VMDirectStorage           {Add-VMDirectVirtualDisk, Get-StorageEnclosureSNV, Remove-VMDirectVirtualDisk, Get-DiskSNV…}
+   19 VpnClient                 {Remove-VpnConnectionRoute, Remove-VpnConnectionTriggerApplication, Remove-VpnConnection, Add-VpnConnectionTriggerDnsConfiguration…}
+   12 Wdac                      {Add-OdbcDsn, Disable-WdacBidTrace, Get-OdbcPerfCounter, Set-OdbcDriver…}
     2 Whea                      {Set-WheaMemoryPolicy, Get-WheaMemoryPolicy}
-    3 WindowsDeveloperLicense   {Unregister-WindowsDeveloperLicense, Show-WindowsDeveloperLicenseRegistration, Get-WindowsDeveloperLicense}
-    3 WindowsErrorReporting     {Get-WindowsErrorReporting, Enable-WindowsErrorReporting, Disable-WindowsErrorReporting}
-    2 WindowsSearch             {Get-WindowsSearchSetting, Set-WindowsSearchSetting}
+    3 WindowsDeveloperLicense   {Show-WindowsDeveloperLicenseRegistration, Unregister-WindowsDeveloperLicense, Get-WindowsDeveloperLicense}
+    3 WindowsErrorReporting     {Enable-WindowsErrorReporting, Get-WindowsErrorReporting, Disable-WindowsErrorReporting}
+    2 WindowsSearch             {Set-WindowsSearchSetting, Get-WindowsSearchSetting}
     1 WindowsUpdate             {Get-WindowsUpdateLog}
-    5 WinHttpProxy              {Get-WinhttpProxy, Reset-WinhttpProxy, Set-WinhttpProxy, Export-WinhttpProxy…}
+    5 WinHttpProxy              {Export-WinhttpProxy, Set-WinhttpProxy, Get-WinhttpProxy, Reset-WinhttpProxy…}
 
 
 Name
@@ -165,11 +165,14 @@ Add-WindowsPackage
 Add-WinGetSource
 AfterAll
 AfterEach
+Assert-DebugFunction
+Assert-DebugFunction
 Assert-MockCalled
 Assert-RegistryValue
 Assert-RegistryValue
 Assert-SecElevated
 Assert-SecElevated
+Assert-Verbose
 Assert-VerifiableMocks
 Assert-WinGetPackageManager
 B:
@@ -180,6 +183,8 @@ BeforeEach
 Block-FileShareAccess
 Block-SmbClientAccessToServer
 Block-SmbShareAccess
+Build-HelpHtml
+Build-HelpHtml
 C:
 cd..
 cd\
@@ -224,14 +229,14 @@ ConvertFrom-CliXml
 ConvertFrom-Csv
 ConvertFrom-HashValue
 ConvertFrom-HashValue
-ConvertFrom-HtmlTemplate
-ConvertFrom-HtmlTemplate
 ConvertFrom-Json
 ConvertFrom-Markdown
 ConvertFrom-ScriptExtent
 ConvertFrom-SddlString
 ConvertFrom-SecureString
 ConvertFrom-StringData
+ConvertFrom-Template
+ConvertFrom-Template
 ConvertTo-CliXml
 ConvertTo-Csv
 ConvertTo-EscapedText
@@ -273,8 +278,6 @@ Debug-Volume
 Delete-DeliveryOptimizationCache
 Describe
 DevEnv_Install_Modules_Win
-DevEnv_Install_Modules_Win
-DevEnv_LanguageMode
 DevEnv_LanguageMode
 DevEnv_Module_Reset
 DevEnv_Module_Reset
@@ -455,6 +458,8 @@ Export-Csv
 Export-FormatData
 Export-Help
 Export-Help
+Export-Mdm_Help
+Export-Mdm_Help
 Export-ModuleMember
 Export-ModuleMemberScan
 Export-ModuleMemberScan
@@ -477,8 +482,8 @@ F:
 Find-Ast
 Find-Command
 Find-Command
-Find-DSCResource
 Find-DscResource
+Find-DSCResource
 Find-LapsADExtendedRights
 Find-Module
 Find-Module
@@ -525,6 +530,7 @@ Get-BcdEntryHypervisorSettings
 Get-BcdStore
 Get-BitLockerVolume
 Get-BitsTransfer
+Get-CallStackFormatted
 Get-Certificate
 Get-CertificateAutoEnrollmentPolicy
 Get-CertificateEnrollmentPolicyServer
@@ -606,8 +612,6 @@ Get-FileShareAccessControlEntry
 Get-FileStorageTier
 Get-FormatData
 Get-Help
-Get-HelpHtml
-Get-HelpHtml
 Get-History
 Get-HnsEndpoint
 Get-HnsEndpointAddresses
@@ -617,8 +621,6 @@ Get-HnsNetwork
 Get-HnsPolicyList
 Get-Host
 Get-HotFix
-Get-HtmlTemplate
-Get-HtmlTemplate
 Get-InitiatorId
 Get-InitiatorPort
 Get-InstalledLanguage
@@ -656,8 +658,6 @@ Get-LogProperties
 Get-LogProperties
 Get-MarkdownOption
 Get-MaskingSet
-Get-Mdm_Help
-Get-Mdm_Help
 Get-Member
 Get-MMAgent
 Get-MockDynamicParameters
@@ -930,7 +930,10 @@ Get-SupportedFileSystems
 Get-SystemPreferredUILanguage
 Get-TargetPort
 Get-TargetPortal
+Get-Template
+Get-Template
 Get-TestDriveItem
+Get-TestHtmlData
 Get-TimeZone
 Get-TlsCipherSuite
 Get-TlsEccCurve
@@ -1027,6 +1030,8 @@ Initialize-Std
 Initialize-Std
 Initialize-StdGlobalsReset
 Initialize-StdGlobalsReset
+Initialize-TemplateData
+Initialize-TemplateData
 Initialize-Tpm
 InModuleScope
 Install-DevEnvIdeWin
@@ -1067,13 +1072,13 @@ Invoke-LapsPolicyProcessing
 Invoke-Mock
 Invoke-OperationValidation
 Invoke-Pester
+Invoke-ProcessWithExit
+Invoke-ProcessWithTimeout
 Invoke-RestMethod
 Invoke-ScriptAnalyzer
 Invoke-TroubleshootingPack
 Invoke-WebRequest
 Invoke-WSManAction
-IsDebugFunction
-IsDebugFunction
 It
 J:
 Join-DtcDiagnosticResourceManager
@@ -1523,6 +1528,7 @@ Set-DeliveryOptimizationStatus
 Set-DirectoryToScriptRoot
 Set-DirectoryToScriptRoot
 Set-Disk
+Set-DisplayColors
 Set-DnsClient
 Set-DnsClientDohServerAddress
 Set-DnsClientGlobalSetting
@@ -1673,6 +1679,7 @@ Set-PrintConfiguration
 Set-Printer
 Set-PrinterProperty
 Set-ProcessMitigation
+Set-prompt
 Set-PSBreakpoint
 Set-PSDebug
 Set-PSReadLineKeyHandler
@@ -1690,6 +1697,7 @@ Set-ScheduledJob
 Set-ScheduledJobOption
 Set-ScheduledTask
 Set-ScriptExtent
+Set-SecElevated
 Set-SecureBootUEFI
 Set-Service
 Set-SmbBandwidthLimit
@@ -1804,6 +1812,8 @@ Stop-StorageJob
 Stop-Trace
 Stop-Trace
 Stop-Transcript
+Submit-DebugFunction
+Submit-DebugFunction
 Suspend-BitLocker
 Suspend-BitsTransfer
 Suspend-PrintJob
@@ -1820,6 +1830,8 @@ Test-Connection
 Test-DscConfiguration
 Test-Dtc
 Test-FileCatalog
+Test-Help
+Test-HtmlData
 Test-Json
 Test-KdsRootKey
 Test-ModuleManifest
@@ -1910,6 +1922,7 @@ Wait-CheckDoPause
 Wait-CheckDoPause
 Wait-Debugger
 Wait-Event
+Wait-ForKeyPress
 Wait-Job
 Wait-Process
 Wait-YorNorQ
@@ -1924,6 +1937,8 @@ Write-HtlmData
 Write-Information
 Write-Mdm_Help
 Write-Mdm_Help
+Write-Module_Help
+Write-Module_Help
 Write-Output
 Write-PrinterNfcTag
 Write-Progress

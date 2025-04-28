@@ -7,11 +7,13 @@ function DevEnv_LanguageMode {
     # Imports
     # This works with uninstalled Modules
     $importName = "Mdm_Std_Library"
-    [string]$source = "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules"
-    # $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName
-    $global:scriptPath = $source
+    if (-not $global:moduleRootPath) { $global:moduleRootPath = (get-item $PSScriptRoot).Parent.FullName }
+    if (-not $global:projectRootPath) { $global:projectRootPath = (get-item $moduleRootPath).Parent.Parent.FullName }
+    [string]$source = "$global:projectRootPath\src\Modules"
+    # $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName
+    $global:moduleRootPath = $source
 
-    Import-Module -Name "$global:scriptPath\$importName\$importName" -Force -ErrorAction Continue
+    Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Continue
 
     Write-Host " Language Mode: $ExecutionContext.SessionState.LanguageMode"
     switch ($languageMode) {

@@ -25,7 +25,7 @@ PARAMETER DoDebug
     Debug this script.
 
 EXAMPLE
-    Import-module Install-Mdm_Dev_Env
+    Import-module Install-Mdm_DevEnv
 
 OUTPUTS
     Installed development modules

@@ -1,9 +1,0 @@
-
-CommandType     Name                                               Version    Source
------------     ----                                               -------    ------
-Function        Add-RegistryPath                                   1.0        Mdm_Bootstrap
-Function        Set-ScriptSecElevated                              1.0        Mdm_Bootstrap
-Function        Initialize-Dev_Env_Win                             1.0        Mdm_Bootstrap
-Function        Build-ModuleExports                                1.0        Mdm_Bootstrap
-Function        Set-DirectoryToScriptRoot                          1.0        Mdm_Bootstrap
-

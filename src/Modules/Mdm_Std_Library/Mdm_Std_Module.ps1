@@ -29,23 +29,23 @@ Function Export-ModuleMemberScan {
     param (
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [String]$moduleRoot,
+        [String]$moduleRootPath,
         [Parameter(Mandatory = $false)]
         [string]$modulePublic = "",
         [Parameter(Mandatory = $false)]
         [string]$modulePrivate = ""
     )
     begin {
-        if (-not $modulePublic) { $modulePublic = "$moduleRoot\Public" }
-        if (-not $modulePrivate) { $modulePrivate = "$moduleRoot\Private" }
+        if (-not $modulePublic) { $modulePublic = "$moduleRootPath\Public" }
+        if (-not $modulePrivate) { $modulePrivate = "$moduleRootPath\Private" }
     }
     process {
         # Export-ModuleMemberScan
         #Get public and private function definition files.
-        $Flat = @( Get-ChildItem -Path "$moduleRoot\*.ps1" -ErrorAction SilentlyContinue )
+        $Flat = @( Get-ChildItem -Path "$moduleRootPath\*.ps1" -ErrorAction SilentlyContinue )
         $Public = @( Get-ChildItem -Path "$modulePublic\*.ps1" -ErrorAction SilentlyContinue )
         $Private = @( Get-ChildItem -Path "$modulePrivate\*.ps1" -ErrorAction SilentlyContinue )
-        Write-Host "Loading... $moduleRoot"
+        Write-Host "Loading... $moduleRootPath"
         # Dot source the files
         Foreach ($import in @($Public + $Private + $Flat)) {
             Try {
@@ -98,8 +98,8 @@ function Import-These {
     .LINK
         Specify a URI to a help page, this will show when Get-Help -Online is used.
     .EXAMPLE
-        Import-These -moduleRoot "C:\Path\To\Module" -functionNames "Function1", "Function2"
-Import-These -moduleRoot "C:\Path\To\Module" -functionNames "Function1", "Function2", "Function3"
+        Import-These -moduleRootPath "C:\Path\To\Module" -functionNames "Function1", "Function2"
+Import-These -moduleRootPath "C:\Path\To\Module" -functionNames "Function1", "Function2", "Function3"
 #>
 
 
@@ -107,7 +107,7 @@ Import-These -moduleRoot "C:\Path\To\Module" -functionNames "Function1", "Functi
     param (
         [Parameter(Mandatory = $false)]
         [ValidateNotNullOrEmpty()]
-        [String]$moduleRoot,
+        [String]$moduleRootPath,
         [Parameter(Mandatory = $false)]
         [ValidateNotNullOrEmpty()]
         $moduleComponent,
@@ -117,14 +117,14 @@ Import-These -moduleRoot "C:\Path\To\Module" -functionNames "Function1", "Functi
     )
     
     begin {
-        if (-not $moduleRoot) { $moduleRoot = $global:scriptPath }
-        $moduleName = Split-Path -Path $moduleRoot -Qualifier
+        if (-not $moduleRootPath) { $moduleRootPath = $global:moduleRootPath }
+        $moduleName = Split-Path -Path $moduleRootPath -Qualifier
         if (-not $moduleComponent) { 
             $moduleFileName = $moduleName + ".psm1"
         } else {
             $moduleFileName = $moduleComponent + ".ps1"
         }
-        $moduleFileNameFull = "$($moduleRoot)\$moduleFileName"
+        $moduleFileNameFull = "$($moduleRootPath)\$moduleFileName"
     }
     
     process {

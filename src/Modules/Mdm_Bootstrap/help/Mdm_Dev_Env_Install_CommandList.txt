@@ -1,7 +1,0 @@
-Get-Dev_Env_Versions
-Install-Dev_Env_Win
-Install-Dev_Env_IDE_Win
-Install-Dev_Env_LLM_Win
-Install-Dev_Env_OS_Win
-Install-Dev_Env_Whisper_Win
-Get-Vs

@@ -5,36 +5,22 @@
     CompanyName          = "MacroDM"
     Copyright            = "(c) David G Horsman. All rights reserved."
     Description          = "Bootstrap MacroDm (Mdm) Installation and Standard functions libarary."
-    # GUID = ""
-    # Path = @(".\Write-FooBarBazCombos")
-    # NestedModules = @(".\FooFunctions\Write-FooFunctions.psm1", ".\BarFunctions\Write-BarFunctions.psm1") 
-    # Exports
-    # For best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    # FunctionsToExport       = '*'
-    # CmdletsToExport         = '*'
-    # VariablesToExport       = '*'
-    # AliasesToExport         = '*'
+    GUID                 = "9ec4db4f-6418-49e9-ad22-4d75ddd267de"
+    # Path               = @(".\Write-FooBarBazCombos")
+    # Modules
+    # RequiredModules         = @("Mdm_Std_Library")
+    # ModuleList              = @("Mdm_Std_Library", "Mdm_DevEnv_Install")
+    # NestedModules           = @() 
+    # # Script files (.ps1) that are run in the caller"s environment.
+    # Prior to importing this module.
+    # ScriptsToProcess        = @()
+    # ModuleToProcess         = @()
 
-    # Functions to export from this module.
-    # FunctionsToExport      = @()
-    # FunctionsToExport =
-    # Mdm_Bootstrap
-    #     "Initialize-Dev_Env_Win",
-        # "Add-RegistryPath",
-        # "Set-SecElevated",
-    # )
-    # Cmdlets to export from this module.
-    # CmdletsToExport      = @()
-        # "Initialize-Dev_Env_Win", 
-        # "Add-RegistryPath", 
-        # "Set-SecElevated"
-    # )
-    # Variables to export from this module.
-    # VariablesToExport = "*"
-    # Aliases to export from this module.
-    # AliasesToExport      = @()
-    # DSC resources to export from this module.
-    # DscResourcesToExport = @()
-    # List of all modules packaged with this module.
-    # ModuleList           = @()
+    # Exports
+    # Do not use wildcards. Use an empty array if there are no exports.
+    # FunctionsToExport       = @()
+    # CmdletsToExport         = @()
+    # VariablesToExport       = @()
+    # AliasesToExport         = @()
+    # DscResourcesToExport    = @()
 } 

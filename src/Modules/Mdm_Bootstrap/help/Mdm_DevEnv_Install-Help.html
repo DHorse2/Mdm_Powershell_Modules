@@ -1,4 +1,4 @@
-<!-- $fullHtml = @" -->
+﻿<!-- $fullHtml = @" -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_DevEnv_Install Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="04/26/2025 03:12:11">
+    <meta name="date" content="04/28/2025 10:57:14">
     <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -152,7 +152,75 @@ OUTPUTS
 GLOBALS
     # Logging
     logFileName = "Mdm_Installation_Log"
-    logFilePath = "G:\Script\Powershell\Mdm_Powershell_Modules\log"
+    logFilePath = "$global:projectRootPath\log"
+    logFileNameFull = ""
+    # Use a single log file repeatedly appending to it.
+    LogOneFile = $false
+
+    # This indicates that the modules have not been previously imported. 
+    InitDone = $true
+    InitStdDone = $false
+
+    # Modules array
+    moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install", "Mdm_Modules")
+
+    # Error display handling options:
+    UseTrace = $true;
+    UseTraceDetails = $true;
+    UseTraceStack = $true;
+        # include debug info with warnings
+        UseTraceWarning = $true;
+        # include full details with warnings
+        UseTraceWarningDetails = $false;
+        
+    # pause on this cmdlet/function name
+    DebugFunctionNames = "Add-RegistryPath"
+
+    DoVerbose = $false
+    DoPause = $false
+    DoDebug = $false
+    msgAnykey = ""
+    msgYorN = ""
+
+EXAMPLE
+    import-module Mdm_Std_Library
+</pre>
+<pre>NAME
+Mdm Standard Library
+
+SYNOPSIS
+    Mdm Standard Functions Library addresses cross-cutting functionality.
+
+DESCRIPTION
+    The Mdm (dba MacroDM) Standard Library is used by the other modules.
+    It addresses cross-cutting functionality.
+    This includes managing state, permissions, exceptions, path and files.
+    Also other functions like pausing, prompting, displaying and searching.
+    Also, help functions to auto-generate help more concisely & verbose.
+    The universally available switches appear here.
+
+    Global Setting
+    These are initialized on the first import. 
+    1. You can set them permanently. They are found at the top of the psm1 file.
+    2. You can also set them after the std include for script specific requirements.
+    For example, altering the logFileName as needed. 
+
+PARAMETER DoPause
+    Switch: Pause between steps.
+
+PARAMETER DoVerbose
+    Switch: Verbose output and prompts.
+
+PARAMETER DoDebug
+    Switch: Debug this script.
+
+OUTPUTS
+    The Standard Functions Module
+    
+GLOBALS
+    # Logging
+    logFileName = "Mdm_Installation_Log"
+    logFilePath = "$global:projectRootPath\log"
     logFileNameFull = ""
     # Use a single log file repeatedly appending to it.
     LogOneFile = $false
@@ -207,6 +275,28 @@ NOTES
 OUTPUTS
 Exported functions from Bootstrap, Standard Library, Development Environment Install modules.
 </pre>
+<pre>NAME
+    Mdm Modules
+
+SYNOPSIS
+    Bootstrap, Standard Library, Development Environment Install modules.
+
+DESCRIPTION
+    Imports:
+        Mdm_Bootstrap
+        Mdm_Std_Library
+        Mdm_DevEnv_Install
+    This imports the Mdm_Modules so that all functions are available.
+
+EXAMPLE
+    Import-module Mdm_Modules
+
+NOTES
+    none.
+
+OUTPUTS
+Exported functions from Bootstrap, Standard Library, Development Environment Install modules.
+</pre>
 <h2>Get-Vs</h2>
 
 
@@ -214,17 +304,17 @@ Exported functions from Bootstrap, Standard Library, Development Environment Ins
 <p><strong>Type:</strong> Alias. Command: Get-DevEnvVersions  Type:Function</p>
 <p><strong>Synopsis:</strong> List current versions.</p>
 <p><strong>Detailed Description:</strong> Cycles through components and display the current version.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch to pause at each step/page.
-
+<p><strong>Syntax:</strong> <pre>Get-DevEnvVersions
  DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Provide detailed information.
+ description: Switch to pause at each step/page.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Provide detailed information.
 
- DoDebug
- required: false, globbing: false, pipelineInput: false, position: named Get-DevEnvVersions
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
@@ -235,7 +325,7 @@ Exported functions from Bootstrap, Standard Library, Development Environment Ins
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Get-DevEnvVersions -DoVerbose
      Remarks:</pre>
 <p></p>
@@ -246,17 +336,17 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> List current versions.</p>
 <p><strong>Detailed Description:</strong> Cycles through components and display the current version.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch to pause at each step/page.
-
+<p><strong>Syntax:</strong> <pre>Get-DevEnvVersions
  DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Provide detailed information.
+ description: Switch to pause at each step/page.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Provide detailed information.
 
- DoDebug
- required: false, globbing: false, pipelineInput: false, position: named Get-DevEnvVersions
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
@@ -267,7 +357,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Get-DevEnvVersions -DoVerbose
      Remarks:</pre>
 <p></p>
@@ -281,17 +371,17 @@ Introduction: @{Text=PS &gt; }
 It installs Chocolatey (if not already installed), Python, Git, VSCode,
 creates a project directory and a Python virtual environment,
 and then installs TensorFlow, Keras, and PyTorch.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
-
+<p><strong>Syntax:</strong> <pre>Install-DevEnvIdeWin
  DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ description: Switch: Pause between steps.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoDebug
- required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvIdeWin
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
@@ -302,7 +392,7 @@ and then installs TensorFlow, Keras, and PyTorch.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Install-DevEnvIdeWin -DoVerbose
      Remarks:</pre>
 <p></p>
@@ -316,17 +406,17 @@ Introduction: @{Text=PS &gt; }
 Create Python virtual environment. Activates it.
 Upgrades pip and installs neural network libraries.
 Libraries: TensorFlow, Keras, PyTorch.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
-
+<p><strong>Syntax:</strong> <pre>Install-DevEnvLlmWin
  DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ description: Switch: Pause between steps.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoDebug
- required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvLlmWin
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
@@ -337,7 +427,7 @@ Libraries: TensorFlow, Keras, PyTorch.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Install-DevEnvLlmWin
      Remarks:</pre>
 <p></p>
@@ -354,7 +444,7 @@ Introduction: @{Text=PS &gt; }
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_DevEnv_Install Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="04/26/2025 03:12:11">
+    <meta name="date" content="04/28/2025 10:57:14">
     <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -464,15 +554,14 @@ Introduction: @{Text=PS &gt; }
         <h1>Help for Module: Mdm_DevEnv_Install</h1>
     </div>
     {{TemplateContent}}
-    <!-- <footer><p>&copy; David G. Horsman. All rights reserved.</p></footer> -->
+    <!-- <footer><p>{{Footer}}&copy; David G. Horsman. All rights reserved.</p></footer> -->
 </body>
-
 </html>) for each object</p>
-<p><strong>Syntax:</strong> <pre>inputObjects
+<p><strong>Syntax:</strong> <pre>Install-DevEnvModules
  description: .
 
- parameterValue: Object, required: false, globbing: false, pipelineInput: true (ByValue), position: 1 Install-DevEnvModules
-</pre></p>
+ inputObjects
+ parameterValue: Object, required: false, globbing: false, pipelineInput: true (ByValue), position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>inputObjects</strong>: .</p>
@@ -481,7 +570,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Install-DevEnvModules
      Remarks:</pre>
 <p></p>
@@ -495,17 +584,17 @@ Introduction: @{Text=PS &gt; }
 It installs Chocolatey (if not already installed).
 It will update PowerShell (from vs 5 to 7).
 TODO: sed, win linux, other tools?</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
-
+<p><strong>Syntax:</strong> <pre>Install-DevEnvOsWin
  DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ description: Switch: Pause between steps.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoDebug
- required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvOsWin
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
@@ -516,7 +605,7 @@ TODO: sed, win linux, other tools?</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Install-DevEnvOsWin -DoPause
      Remarks:</pre>
 <p></p>
@@ -527,17 +616,17 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Install local voice recognition (Whisper).</p>
 <p><strong>Detailed Description:</strong> Whisper is models designed to run voice recognition locally.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
-
+<p><strong>Syntax:</strong> <pre>Install-DevEnvWhisperWin
  DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ description: Switch: Pause between steps.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoDebug
- required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvWhisperWin
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
@@ -548,7 +637,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Install-DevEnvWhisperWin
      Remarks:</pre>
 <p></p>
@@ -563,15 +652,15 @@ Introduction: @{Text=PS &gt; }
     Install-DevEnvLlmWin
     Install-DevEnvWhisperWin
 When complete it displays current version for the environment.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
-
+<p><strong>Syntax:</strong> <pre>Install-DevEnvWin
  DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ description: Switch: Pause between steps.
 
- DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
  required: false, globbing: false, pipelineInput: false, position: named DoDebug
- required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvWin
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
@@ -582,12 +671,11 @@ When complete it displays current version for the environment.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Install-DevEnvWin -DoPause -UpdatePath
      Remarks:</pre>
 <p></p>
 <footer><p>&copy; David G. Horsman. All rights reserved.</p></footer>
-    <!-- <footer><p>&copy; David G. Horsman. All rights reserved.</p></footer> -->
+    <!-- <footer><p>{{Footer}}&copy; David G. Horsman. All rights reserved.</p></footer> -->
 </body>
-
 </html>

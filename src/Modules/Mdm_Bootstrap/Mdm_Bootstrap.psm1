@@ -1,34 +1,34 @@
 
+Write-Host "Mdm_Bootstrap.psm1"
 # Imports
 # This works with uninstalled Modules (both)
 $now = Get-Date -UFormat '%Y%m%d%R%z'
 $importName = "Mdm_Std_Library"
-if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName }
-Import-Module -Name "$global:scriptPath\$importName\$importName" -Force -ErrorAction Inquire
+if (-not $global:moduleRootPath) { $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName }
+Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Inquire
 
-. "$global:scriptPath\Mdm_Bootstrap\DevEnv_Install_Modules_Win.ps1"
+. "$global:moduleRootPath\Mdm_Bootstrap\DevEnv_Install_Modules_Win.ps1"
 Export-ModuleMember -Function DevEnv_Install_Modules_Win
 
 # function DevEnv_LanguageMode {
 #     [CmdletBinding()]
 #     param ()
 #     process {
-. "$global:scriptPath\Mdm_Bootstrap\DevEnv_LanguageMode.ps1"
+. "$global:moduleRootPath\Mdm_Bootstrap\DevEnv_LanguageMode.ps1"
 #     }
 # }
 Export-ModuleMember -Function DevEnv_LanguageMode
-# !!! TODO !!! this executes DevEnv_Module_Reset
-function DevEnv_Module_Reset {
+function DevEnv_Module_Reset_Func {
     [CmdletBinding()]
     param ()
     process {
-        . "$global:scriptPath\Mdm_Bootstrap\DevEnv_Module_Reset.ps1"
+        . "$global:moduleRootPath\Mdm_Bootstrap\DevEnv_Module_Reset.ps1"
     }
 }
-Export-ModuleMember -Function DevEnv_Module_Reset
+Export-ModuleMember -Function DevEnv_Module_Reset_Func
 # MAIN
 function Initialize-Dev_Env_Win {
-<#
+    <#
     .SYNOPSIS
         Setup (bootstrap) Windows for the Development Environment.
     .DESCRIPTION
@@ -36,7 +36,7 @@ function Initialize-Dev_Env_Win {
         This updates the Windows Environment variables.
         It installs these powershell modules to the system's directories.
         Set registry, Path and load PowerShell modules.
-        $source = "$global:scriptPath\"
+        $source = "$global:moduleRootPath\"
         $destination = "$Env:ProgramFiles\WindowsPowerShell\Modules"
     .PARAMETER UpdatePath
         Switch: A switch to indicate the path should be checked/updated.
@@ -56,10 +56,10 @@ function Initialize-Dev_Env_Win {
         This script is found and run in the "Mdm_Bootstrap" module of "Modules"
         So the parent directory is the Root Root of this Project's Modules
         .\src\Mdm_Modules\Mdm_Bootstrap
-        $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName
+        $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName
         
         Source:
-        $source = "$global:scriptPath\"
+        $source = "$global:moduleRootPath\"
         $destination = "$Env:ProgramFiles\WindowsPowerShell\Modules"
         Destination:
         This user (CurrentUser);
@@ -84,12 +84,11 @@ function Initialize-Dev_Env_Win {
         There should be not requirement to update the path
         assuming you install to a powershell directory.
     .OUTPUTS
-        TODO.
+        Preparse the Windows OS for development.
 #>
     [CmdletBinding()]
     param (
         [switch]$UpdatePath,
-        # TODO integrage stardard value (ie verbose)
         [switch]$DoPause,
         [switch]$DoVerbose
     )
@@ -103,12 +102,12 @@ function Initialize-Dev_Env_Win {
         Set-SecElevated
     
         # CONTINUE
-        if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName }
-        $scriptDrive = Split-Path -Path "$global:scriptPath" -Qualifier
+        if (-not $global:moduleRootPath) { $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName }
+        $scriptDrive = Split-Path -Path "$global:moduleRootPath" -Qualifier
         Set-Location $scriptDrive
-        Set-Location -Path "$global:scriptPath"
+        Set-Location -Path "$global:moduleRootPath"
         # Source:
-        $source = "$global:scriptPath\"
+        $source = "$global:moduleRootPath\"
         $destination = "$Env:ProgramFiles\WindowsPowerShell\Modules"
 
         # #####################
@@ -116,7 +115,7 @@ function Initialize-Dev_Env_Win {
         if ($DoVerbose) { 
             Write-Verbose "######################"
             Write-Verbose  "Copying PowerShell modules to ProgramFiles PowerShell modules directory..."
-            Write-Verbose  "$global:scriptPath Install to the module library."
+            Write-Verbose  "$global:moduleRootPath Install to the module library."
             Write-Verbose " "
             Write-Verbose -NoNewLine "Press any key to continue..."
             $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")        
@@ -144,14 +143,14 @@ function Initialize-Dev_Env_Win {
 # Components:
 #############################
 function Add-RegistryPath {
-<#
+    <#
     .SYNOPSIS
         Add to HKLM Environtment Path
     .DESCRIPTION
         This loads the specifiect Path key (PATH by default) and adds the new path to it.
     .PARAMETER envPathToUpdate
         The Path key to use.
-    .PARAMETER scriptPath
+    .PARAMETER moduleRootPath
         The Path to add to the envPath
     .EXAMPLE
         Add-RegistryPath "PATH" "c:\SOMEWHERER"
@@ -167,7 +166,7 @@ function Add-RegistryPath {
         $envPathToUpdate = "PSModulePath"
     .OUTPUTS
         none.
-#>
+    #>
     [CmdletBinding()]
     param ([string]$envPathToUpdate)
     begin {
@@ -189,7 +188,7 @@ function Add-RegistryPath {
     }
     process {
         # Check if already updated
-        $positionOfPath = $oldPath.IndexOf("$global:scriptPath")
+        $positionOfPath = $oldPath.IndexOf("$global:moduleRootPath")
         Write-Verbose " $positionOfPath" # -1 if missing
     
         # Back path up
@@ -212,21 +211,20 @@ function Add-RegistryPath {
         }
         # Update Environment Path
         if ($positionOfPath -lt 0) {
-            Write-Verbose "Updating path: $global:scriptPath"
-            $newpath = "$global:scriptPath;$oldPath"
+            Write-Verbose "Updating path: $global:moduleRootPath"
+            $newpath = "$global:moduleRootPath;$oldPath"
             Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name "$envPathToUpdate" -Value $newpath
             # Write-Host -NoNewLine "Press any key to continue..."
             # $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
         } else {
-            Write-Verbose "Found path: $global:scriptPath"
+            Write-Verbose "Found path: $global:moduleRootPath"
         }
     }
     end {}
-    clean {}
 }
 # Source: https://stackoverflow.com/questions/5648931/test-if-registry-value-exists
 Function Assert-RegistryValue {
-<#
+    <#
     .SYNOPSIS
         Return true if Registry Value exists.
     .DESCRIPTION
@@ -287,5 +285,5 @@ Function Assert-RegistryValue {
 Export-ModuleMember -Function `
     Initialize-Dev_Env_Win, `
     Assert-RegistryValue, `
-    Add-RegistryPath,
-DevEnv_Module_Reset
+    Add-RegistryPath, `
+    DevEnv_Module_Reset_Func

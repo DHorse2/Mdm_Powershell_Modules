@@ -1,6 +1,54 @@
 
+## psd1 files
+
+    ModuleToProcess
+    NestedModules
+    GUID
+    Author
+    CompanyName
+    Copyright
+    ModuleVersion
+    Description
+    PowerShellVersion
+    PowerShellHostName
+    PowerShellHostVersion
+    CLRVersion
+    DotNetFrameworkVersion
+    ProcessorArchitecture
+    RequiredModules
+    TypesToProcess
+    FormatsToProcess
+    ScriptsToProcess
+    PrivateData
+    RequiredAssemblies
+    ModuleList
+    FileList
+    FunctionsToExport
+    VariablesToExport
+    AliasesToExport
+    CmdletsToExport
+    DscResourcesToExport
+    CompatiblePSEditions
+    HelpInfoURI
+    RootModule
+    DefaultCommandPrefix
 
 
+## GUID's
+
+PS G:\Script\Powershell\Mdm_Powershell_Modules> [guid]::NewGuid().ToString()
+>> 
+35796121-0646-475d-a1bb-74d2c8652ee5
+PS G:\Script\Powershell\Mdm_Powershell_Modules> [guid]::NewGuid().ToString()
+>> 
+b024c60f-e202-4254-b278-eaf45d7c2483
+PS G:\Script\Powershell\Mdm_Powershell_Modules> [guid]::NewGuid().ToString()
+>> 
+9ec4db4f-6418-49e9-ad22-4d75ddd267de
+PS G:\Script\Powershell\Mdm_Powershell_Modules> [guid]::NewGuid().ToString()
+>>
+9fc209b3-e0ff-4d67-ab9a-676432e47520
+PS G:\Script\Powershell\Mdm_Powershell_Modules>
 
 ## Settings
 G:\Script\Powershell\Mdm_Powershell_Modules

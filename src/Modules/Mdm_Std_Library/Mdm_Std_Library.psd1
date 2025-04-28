@@ -3,18 +3,21 @@
     ModuleVersion        = "1.0"
     Author               = "David G Horsman"
     Description          = "Standard functions libarary."
+    GUID                 = "b024c60f-e202-4254-b278-eaf45d7c2483"
+
+    # Modules
+    # RequiredModules         = @()
+    # ModuleList              = @()
+    # NestedModules           = @() 
+    # Scripts prior to importing this module.
+    # ScriptsToProcess        = @()
+    # ModuleToProcess         = @()
+
     # Exports
-    # For best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    # # Functions to export from this module.
-    # FunctionsToExport    = @(*)
-    # # Cmdlets to export from this module.
-    # CmdletsToExport      = @(*)
-    # # Variables to export from this module.
-    # VariablesToExport = "*"
-    # # Aliases to export from this module.
-    # AliasesToExport      = @(*)
-    # DSC resources to export from this module.
-    # DscResourcesToExport = @()
-    # List of all modules packaged with this module.
-    # ModuleList           = @()
+    # Do not use wildcards. Use an empty array if there are no exports.
+    # FunctionsToExport       = @()
+    # CmdletsToExport         = @()
+    # VariablesToExport       = @()
+    # AliasesToExport         = @()
+    # DscResourcesToExport    = @()
 }

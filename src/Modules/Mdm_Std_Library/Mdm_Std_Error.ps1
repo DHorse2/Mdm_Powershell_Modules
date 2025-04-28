@@ -1,5 +1,5 @@
 
-function Get-NewError {
+function Get-ErrorNew {
     <#
     .SYNOPSIS
         Creates a powershell error object.
@@ -47,16 +47,16 @@ function Get-NewError {
         $PSCmdlet.WriteError($ErrorRecord)
     }
 }
-function Get-LastError {
+function Get-ErrorLast {
     <#
     .SYNOPSIS
-        Get-LastError.
+        Get-ErrorLast.
     .DESCRIPTION
-        Get-LastError does Get-Error.
+        Get-ErrorLast does Get-Error.
     .OUTPUTS
         The last error to occur.
     .EXAMPLE
-        Get-LastError
+        Get-ErrorLast
 #>
 
 
@@ -68,6 +68,13 @@ function Get-LastError {
     }
 }
 function Set-ErrorBreakOnLine {
+    # $serviceName = 'winrm'
+    # $orig = "if ($Service.Name -eq $serviceName) { break; }"
+    # Set a PSBreakpoint of type "line" on $line.
+    # But only if the $Service variable's Name property equals 'winrm'
+    # Set-PSBreakpoint -Action { $commandLine } -Line $($LineNumber) -Script $MyInvocation.MyCommand.Path
+
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -78,11 +85,6 @@ function Set-ErrorBreakOnLine {
     )
     process {
         if (-not $global:debugSetting) { $global:debugSetting = "" }
-        # $serviceName = 'winrm'
-        # $orig = "if ($Service.Name -eq $serviceName) { break; }"
-        # Set a PSBreakpoint of type "line" on $line.
-        # But only if the $Service variable's Name property equals 'winrm'
-        # Set-PSBreakpoint -Action { $commandLine } -Line $($LineNumber) -Script $MyInvocation.MyCommand.Path
         Set-PSBreakpoint -Action { $commandLine } -Line $($LineNumber) -Script $functionName
     }
 }
@@ -104,6 +106,12 @@ function Set-ErrorBreakOnFunction {
 }
 # Break on Variable
 function Set-ErrorBreakOnVariable {
+    # Set a PSBreakpoint of type "variable" on a variable.
+    # But this breaks only when it has changed.
+    # Here it is named "global:debugSetting,".
+    # Modes: Read, ReadWrite, Write
+
+
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -113,10 +121,6 @@ function Set-ErrorBreakOnVariable {
 
     )
     begin {
-        # Set a PSBreakpoint of type "variable" on a variable.
-        # But this breaks only when it has changed.
-        # Here it is named "global:debugSetting,".
-        # Modes: Read, ReadWrite, Write
         if (-not $watchVariable) { $watchVariable = $global:debugWatchVariable }
         if (-not $mode) { $mode = "Write" } else { $mode = $global:mode }
         # "Write-Host -ForegroundColor Green -Object ("The $Data variable has changed! Value is: {0}" -f $watchVariable); break;"
@@ -167,7 +171,7 @@ function Get-CallStackFormatted {
         return ($logMessageLines | Format-Table -AutoSize | Out-String)
     }
 }
-function Script_Debugger {
+function Debug-Script {
     [CmdletBinding()]
     param (
         $functionName = "",
@@ -181,7 +185,7 @@ function Script_Debugger {
         $ErrorPSItem
     )
     begin {
-        if ($global:DebugInScriptDebugger -eq $true) { return; }
+        if ($global:DebugInScriptDebugger -eq $true) { return $false; }
         $global:DebugInScriptDebugger = $true
         if (-not $localLogFileNameFull) { $localLogFileNameFull = $global:logFileNameFull }
         if ($localLogFileNameFull.Length -le 0) { $localLogFileNameFull = $global:logFileNameFull }
@@ -203,6 +207,7 @@ function Script_Debugger {
         Start-Sleep -Seconds 3
     }
     process {
+        $DoPromptError = $false
         #region Display Error Details
         if ($ErrorPSItem) {
             Add-LogText -logMessages "Passed error:" -IsError -ErrorPSItem $ErrorPSItem -localLogFileNameFull $localLogFileNameFull
@@ -216,13 +221,14 @@ function Script_Debugger {
         } catch {
             $logMessage = @("Error processing the stack.", "Command: $commandNext")
             Add-LogText -logMessages $logMessage -IsError  -ErrorPSItem $_ -localLogFileNameFull $localLogFileNameFull
+            $DoPromptError = $true
         }
         #endregion
         #region DoPause, DoPrompt, PsDebug and $commandLine
         try {
             # This creates a message fall thru preserving the area the error occured.
             # So the error message is prepared before the involcations.
-            $DoPromptError = $false
+            # $DoPromptError = $false
             # DoPause
             try {
                 $logMessage = "The parameter -DoPause $DoPause is incorrect.`nYou must specify -DoPause in seconds between 1 and 3600."
@@ -288,6 +294,7 @@ function Script_Debugger {
                             -localLogFileNameFull $global:logFileNameFull 
                         Invoke-Expression $commandNext 
                     } else {
+                        $DoPromptError = $true
                         Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -localLogFileNameFull $global:logFileNameFull
                     }
                 }
@@ -317,21 +324,50 @@ function Script_Debugger {
                 Add-LogText -logMessages $logMessage -IsWarning -localLogFileNameFull $localLogFileNameFull
             }
             if ($DoPromptError) {
-                if ($(Wait-YorNorQ -message "Script_Debugger had internal errors. Continue execution? ") -ne "Y") { 
+                if ($(Wait-YorNorQ -message "Debug-Script had internal errors. Continue execution? ") -ne "Y") { 
                     exit
                 }
+                return $false
             }
         } catch {
-            $logMessage += @("Script_Debugger is not working!!!`nCommand: $commandNext")
+            $logMessage += @("Debug-Script is not working!!!`nCommand: $commandNext")
             Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -localLogFileNameFull $localLogFileNameFull
             if ($(Wait-YorNorQ -message "Continue execution? ") -ne "Y") { 
                 exit
             }
+            return $false
         }
         #endregion
+        return $true
     }
     end {
         $global:DebugInScriptDebugger = $false
     }
+}
+function Debug-AssertFunction {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        $functionName
+    )
+    return ($global:debugFunctionNames -contains $functionName)
+}
+function Debug-SubmitFunction {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        $functionName,
+        $invocationFunctionName = "",
+        $pauseSeconds = 5
+    )
+    if (-not $global:DebugInScriptDebugger -and $global:DebugProgressFindName -and $(Debug-AssertFunction($functionName))) {
+        $logMessage = "Debug $invocationFunctionName for $($functionName)"
+        Add-LogText -logMessages $logMessage `
+            -IsWarning -DoTraceWarningDetails `
+            -localLogFileNameFull $global:logFileNameFull
+        $null = Debug-Script -DoPause $pauseSeconds -functionName $functionName -localLogFileNameFull $localLogFileNameFull
+        return $true
+    }
+    return $false
 }
 # See Add-LogError

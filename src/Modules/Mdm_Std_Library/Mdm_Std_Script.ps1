@@ -43,7 +43,7 @@ function Assert-SecElevated() {
         else { return $true }
     }
 }
-function Set-SecElevated ($message) {
+function Set-SecElevated {
 <#
     .SYNOPSIS
         Elevate script to Administrator.
@@ -64,6 +64,9 @@ function Set-SecElevated ($message) {
         None. Returns or Executes current script in an elevated process.
 #>
 
+
+[CmdletBinding()]
+    param ($message)
 
     # Set-SecElevated
     # Get the ID and security principal of the current user account
@@ -421,7 +424,7 @@ function Get-ScriptName {
     param()
     process { return $MyInvocation.Script_Name }
 }
-function Script_DoStart {
+function Start-Std {
 <#
     .SYNOPSIS
         Reset and initialize.
@@ -436,7 +439,7 @@ function Script_DoStart {
     .OUTPUTS
         none.
     .EXAMPLE
-        Script_DoStart -DoVerbose
+        Start-Std -DoVerbose
     .NOTES
         This serves little purpose.
 #>

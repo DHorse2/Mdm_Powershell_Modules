@@ -33,7 +33,7 @@ OUTPUTS
 GLOBALS
     # Logging
     logFileName = "Mdm_Installation_Log"
-    logFilePath = "G:\Script\Powershell\Mdm_Powershell_Modules\log"
+    logFilePath = "$global:projectRootPath\log"
     logFileNameFull = ""
     # Use a single log file repeatedly appending to it.
     LogOneFile = $false

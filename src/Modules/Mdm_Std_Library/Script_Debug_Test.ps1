@@ -1,11 +1,11 @@
-# found in Submit-DebugFunction
-# $null = Submit-DebugFunction -functionName $functionName -invocationFunctionName $($MyInvocation.MyCommand.Name) # Script_Debugger
+# found in Debug-SubmitFunction
+$null = Debug-SubmitFunction -functionName $functionName -invocationFunctionName $($MyInvocation.MyCommand.Name) # Debug-Script
 if (-not $global:DebugInScriptDebugger `
     -and $global:DebugProgressFindName `
-    -and $(Assert-DebugFunction($functionName))) {
+    -and $(Debug-AssertFunction($functionName))) {
     $logMessage = "Debug $($MyInvocation.MyCommand.Name) for $($functionName)"
     Add-LogText -logMessages $logMessage `
         -IsWarning -DoTraceWarningDetails `
         -localLogFileNameFull $global:logFileNameFull
-    Script_Debugger -DoPause 5 -functionName $functionName -localLogFileNameFull $localLogFileNameFull
+    $null = Debug-Script -DoPause 5 -functionName $functionName -localLogFileNameFull $localLogFileNameFull
 }

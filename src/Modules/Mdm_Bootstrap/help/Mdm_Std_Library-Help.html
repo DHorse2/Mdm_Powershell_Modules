@@ -1,4 +1,4 @@
-<!-- $fullHtml = @" -->
+﻿<!-- $fullHtml = @" -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_Std_Library Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="04/26/2025 03:11:14">
+    <meta name="date" content="04/28/2025 10:57:10">
     <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -152,7 +152,75 @@ OUTPUTS
 GLOBALS
     # Logging
     logFileName = "Mdm_Installation_Log"
-    logFilePath = "G:\Script\Powershell\Mdm_Powershell_Modules\log"
+    logFilePath = "$global:projectRootPath\log"
+    logFileNameFull = ""
+    # Use a single log file repeatedly appending to it.
+    LogOneFile = $false
+
+    # This indicates that the modules have not been previously imported. 
+    InitDone = $true
+    InitStdDone = $false
+
+    # Modules array
+    moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install", "Mdm_Modules")
+
+    # Error display handling options:
+    UseTrace = $true;
+    UseTraceDetails = $true;
+    UseTraceStack = $true;
+        # include debug info with warnings
+        UseTraceWarning = $true;
+        # include full details with warnings
+        UseTraceWarningDetails = $false;
+        
+    # pause on this cmdlet/function name
+    DebugFunctionNames = "Add-RegistryPath"
+
+    DoVerbose = $false
+    DoPause = $false
+    DoDebug = $false
+    msgAnykey = ""
+    msgYorN = ""
+
+EXAMPLE
+    import-module Mdm_Std_Library
+</pre>
+<pre>NAME
+Mdm Standard Library
+
+SYNOPSIS
+    Mdm Standard Functions Library addresses cross-cutting functionality.
+
+DESCRIPTION
+    The Mdm (dba MacroDM) Standard Library is used by the other modules.
+    It addresses cross-cutting functionality.
+    This includes managing state, permissions, exceptions, path and files.
+    Also other functions like pausing, prompting, displaying and searching.
+    Also, help functions to auto-generate help more concisely & verbose.
+    The universally available switches appear here.
+
+    Global Setting
+    These are initialized on the first import. 
+    1. You can set them permanently. They are found at the top of the psm1 file.
+    2. You can also set them after the std include for script specific requirements.
+    For example, altering the logFileName as needed. 
+
+PARAMETER DoPause
+    Switch: Pause between steps.
+
+PARAMETER DoVerbose
+    Switch: Verbose output and prompts.
+
+PARAMETER DoDebug
+    Switch: Debug this script.
+
+OUTPUTS
+    The Standard Functions Module
+    
+GLOBALS
+    # Logging
+    logFileName = "Mdm_Installation_Log"
+    logFilePath = "$global:projectRootPath\log"
     logFileNameFull = ""
     # Use a single log file repeatedly appending to it.
     LogOneFile = $false
@@ -191,6 +259,7 @@ EXAMPLE
 Add-LogError [-logMessage] &lt;Object&gt; [[-ErrorPSItem] &lt;ErrorRecord&gt;] [[-localLogFileNameFull] &lt;Object&gt;] [[-foregroundColor] &lt;Object&gt;] [[-backgroundColor] &lt;Object&gt;] [-IsError] [-IsWarning] [-SkipScriptLineDisplay] [-DoTraceWarningDetails] [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: Add-LogError
 CommonParameters: True
+WorkflowCommonParameters: False
 parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -213,6 +282,7 @@ parameter:</pre></p>
 Add-LogText [-logMessages] &lt;Object&gt; [[-localLogFileNameFull] &lt;string&gt;] [[-foregroundColor] &lt;Object&gt;] [[-backgroundColor] &lt;Object&gt;] [[-ErrorPSItem] &lt;ErrorRecord&gt;] [-KeepWhitespace] [-KeepEscapes] [-IsError] [-IsWarning] [-DoTraceWarningDetails] [-SkipScriptLineDisplay] [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: Add-LogText
 CommonParameters: True
+WorkflowCommonParameters: False
 parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -231,20 +301,6 @@ parameter:</pre></p>
 <p><strong>Return: </strong> System.Object</p>
 <p></p>
 <p></p>
-<h2>Assert-DebugFunction</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> 
-Assert-DebugFunction [-functionName] &lt;Object&gt; [&lt;CommonParameters&gt;]</p>
-<p><strong>Syntax:</strong> <pre>name: Assert-DebugFunction
-CommonParameters: True
-parameter: @{name=functionName; required=true; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>functionName</strong></p>
-<p></p>
-<p><strong>Return: </strong> System.Object</p>
-<p></p>
-<p></p>
 <h2>Assert-SecElevated</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Elevate script to Administrator.</p>
@@ -259,8 +315,22 @@ Start the new process.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Set-SecElevated &quot;Elevating myself.&quot;
+     Remarks:</pre>
+<p></p>
+<h2>Assert-Verbose</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Asserts verbose is on.</p>
+<p><strong>Detailed Description:</strong> Should check state.</p>
+<p><strong>Syntax:</strong> <pre>Assert-Verbose</pre></p>
+<p></p>
+<p><strong>Return: </strong> True if verbose is on</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS C:\&gt;}
+      Syntax: If (Assert-Verbose) { $null }
      Remarks:</pre>
 <p></p>
 <h2>Build-HelpHtml</h2>
@@ -273,28 +343,28 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> A short one-line action-based description, e.g. &apos;Tests if a function is valid&apos;</p>
 <p><strong>Detailed Description:</strong> A longer description of the function, its purpose, common use cases, etc.</p>
-<p><strong>Syntax:</strong> <pre>helpInfoObject
+<p><strong>Syntax:</strong> <pre>Build-HelpHtml
  description: [System.Management.Automation.HelpInfo]
 Used to pass the help information that will be formatted into HTML.
 
- parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue, ByPropertyName), position: 1 moduleObject
- description: [System.Management.Automation.PSModuleInfo]
+ helpInfoObject
+ parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue, ByPropertyName), position: 1 description: [System.Management.Automation.PSModuleInfo]
 Accepts a cmdlet object. Used to generate help content specific to a module.
 
- parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 cmdletObject
- description: Accepts a cmdlet object. Used to generate help content for a specific cmdlet.
+ moduleObject
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 description: Accepts a cmdlet object. Used to generate help content for a specific cmdlet.
 
- parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 3 htmlContentLocal
- description: Used to hold the passed HTML content that will be appended to or modified within the function.
+ cmdletObject
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 3 description: Used to hold the passed HTML content that will be appended to or modified within the function.
 
- parameterValue: Object[], required: false, globbing: false, pipelineInput: false, position: 4 description: [switch] Don't output the Name line.
+ htmlContentLocal
+ parameterValue: Object[], required: false, globbing: false, pipelineInput: false, position: 4 SkipName
+ description: [switch] Don't output the Name line.
 
- SkipName
- required: false, globbing: false, pipelineInput: false, position: named description: [switch] Don't output the command (object) type line.
+ required: false, globbing: false, pipelineInput: false, position: named SkipType
+ description: [switch] Don't output the command (object) type line.
 
- SkipType
- required: false, globbing: false, pipelineInput: false, position: named Build-HelpHtml
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>helpInfoObject</strong>: [System.Management.Automation.HelpInfo]
@@ -308,13 +378,8 @@ Accepts a cmdlet object. Used to generate help content specific to a module.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: $htmlContent += Build-HelpHtml `
-    -helpInfoObject $helpInfo `
-    -moduleObject $moduleInfo `
-    -cmdletObject $cmdlet `
-    -SkipName `
-    -ErrorAction Stop
      Remarks:</pre>
 <p></p>
 <h2>ConvertFrom-HashValue</h2>
@@ -323,6 +388,7 @@ Introduction: @{Text=PS &gt; }
 ConvertFrom-HashValue [[-textIn] &lt;Object&gt;] [[-textOut] &lt;Object&gt;] [[-textLineBreak] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: ConvertFrom-HashValue
 CommonParameters: True
+WorkflowCommonParameters: False
 parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -336,9 +402,10 @@ parameter:</pre></p>
 <h2>ConvertFrom-Template</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-ConvertFrom-Template [-templateContent] &lt;Object&gt; [-templateDoc] &lt;Object&gt; [[-templateData] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+ConvertFrom-Template [[-templateContent] &lt;Object&gt;] [-templateDoc] &lt;Object&gt; [-templateData] &lt;Object&gt; [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: ConvertFrom-Template
 CommonParameters: True
+WorkflowCommonParameters: False
 parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -355,6 +422,7 @@ parameter:</pre></p>
 ConvertTo-EscapedText [-textIn] &lt;Object&gt; [[-localLogFileNameFull] &lt;Object&gt;] [-KeepWhitespace] [-KeepEscapes] [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: ConvertTo-EscapedText
 CommonParameters: True
+WorkflowCommonParameters: False
 parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -372,7 +440,8 @@ parameter:</pre></p>
 ConvertTo-ObjectArray [[-InputObjects] &lt;Object[]&gt;] [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: ConvertTo-ObjectArray
 CommonParameters: True
-parameter: @{name=InputObjects; required=false; pipelineInput=true (ByValue, ByPropertyName); isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object[]; type=; position=0; aliases=None}</pre></p>
+WorkflowCommonParameters: False
+parameter: @{name=InputObjects; required=false; pipelineInput=true (ByValue, ByPropertyName); isDynamic=false; parameterSetName=(All); parameterValue=Object[]; type=; position=0; aliases=None}</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>InputObjects</strong></p>
@@ -386,7 +455,8 @@ parameter: @{name=InputObjects; required=false; pipelineInput=true (ByValue, ByP
 ConvertTo-Text [-textIn] &lt;Object&gt; [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: ConvertTo-Text
 CommonParameters: True
-parameter: @{name=textIn; required=true; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
+WorkflowCommonParameters: False
+parameter: @{name=textIn; required=true; pipelineInput=false; isDynamic=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>textIn</strong></p>
@@ -394,12 +464,13 @@ parameter: @{name=textIn; required=true; pipelineInput=false; isDynamic=false; g
 <p><strong>Return: </strong> System.Object</p>
 <p></p>
 <p></p>
-<h2>ConvertTo-TrimedText</h2>
+<h2>ConvertTo-TrimmedText</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-ConvertTo-TrimedText [-textIn] &lt;Object&gt; [[-localLogFileNameFull] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
-<p><strong>Syntax:</strong> <pre>name: ConvertTo-TrimedText
+ConvertTo-TrimmedText [-textIn] &lt;Object&gt; [[-localLogFileNameFull] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: ConvertTo-TrimmedText
 CommonParameters: True
+WorkflowCommonParameters: False
 parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -412,9 +483,10 @@ parameter:</pre></p>
 <h2>Copy-ItemWithProgressDisplay</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Copy-ItemWithProgressDisplay [[-source] &lt;Object&gt;] [[-destination] &lt;Object&gt;]</p>
+Copy-ItemWithProgressDisplay [[-source] &lt;Object&gt;] [[-destination] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: Copy-ItemWithProgressDisplay
-CommonParameters: False
+CommonParameters: True
+WorkflowCommonParameters: False
 parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -424,12 +496,68 @@ parameter:</pre></p>
 <p><strong>Return: </strong> System.Object</p>
 <p></p>
 <p></p>
+<h2>Debug-AssertFunction</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Debug-AssertFunction [-functionName] &lt;Object&gt; [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Debug-AssertFunction
+CommonParameters: True
+WorkflowCommonParameters: False
+parameter: @{name=functionName; required=true; pipelineInput=false; isDynamic=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>functionName</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Debug-Script</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Debug-Script [[-functionName] &lt;Object&gt;] [[-commandLine] &lt;Object&gt;] [[-logMessage] &lt;Object&gt;] [[-DoPause] &lt;Object&gt;] [[-PsDebug] &lt;Object&gt;] [[-localLogFileNameFull] &lt;string&gt;] [[-ErrorPSItem] &lt;Object&gt;] [-Break] [-DoPrompt] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Debug-Script
+CommonParameters: True
+WorkflowCommonParameters: False
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Break</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoPrompt</strong></p>
+<p>  - <strong>ErrorPSItem</strong></p>
+<p>  - <strong>PsDebug</strong></p>
+<p>  - <strong>commandLine</strong></p>
+<p>  - <strong>functionName</strong></p>
+<p>  - <strong>localLogFileNameFull</strong></p>
+<p>  - <strong>logMessage</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Debug-SubmitFunction</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Debug-SubmitFunction [-functionName] &lt;Object&gt; [[-invocationFunctionName] &lt;Object&gt;] [[-pauseSeconds] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Debug-SubmitFunction
+CommonParameters: True
+WorkflowCommonParameters: False
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>functionName</strong></p>
+<p>  - <strong>invocationFunctionName</strong></p>
+<p>  - <strong>pauseSeconds</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
 <h2>Export-Help</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Export-Help [[-moduleRoot] &lt;Object&gt;] [[-localLogFileNameFull] &lt;Object&gt;] [[-nameFilter] &lt;Object&gt;] [-DoPause] [-DoVerbose] [-DoDebug] [&lt;CommonParameters&gt;]</p>
+Export-Help [[-projectRootPath] &lt;Object&gt;] [[-moduleRootPath] &lt;Object&gt;] [[-localLogFileNameFull] &lt;Object&gt;] [[-nameFilter] &lt;Object&gt;] [-DoPause] [-DoVerbose] [-DoDebug] [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: Export-Help
 CommonParameters: True
+WorkflowCommonParameters: False
 parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -437,8 +565,9 @@ parameter:</pre></p>
 <p>  - <strong>DoPause</strong></p>
 <p>  - <strong>DoVerbose</strong></p>
 <p>  - <strong>localLogFileNameFull</strong></p>
-<p>  - <strong>moduleRoot</strong></p>
+<p>  - <strong>moduleRootPath</strong></p>
 <p>  - <strong>nameFilter</strong></p>
+<p>  - <strong>projectRootPath</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object</p>
 <p></p>
@@ -457,22 +586,24 @@ Import-Module -name Mdm_Std_Library -force
 ```
 This function re-imports the other module in the correct order.
 Note: It should not need to be run unless changes were made to the Mdm Modules.</p>
-<p><strong>Syntax:</strong> <pre>moduleRoot
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 localModuleNames
- parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 description: Switch: Pause between steps.
+<p><strong>Syntax:</strong> <pre>Export-Mdm_Help
+ projectRootPath
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 moduleRootPath
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 localModuleNames
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 3 DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
 
- DoDebug
- required: false, globbing: false, pipelineInput: false, position: named Export-Mdm_Help
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>moduleRoot</strong></p>
+<p>  - <strong>projectRootPath</strong></p>
+<p>  - <strong>moduleRootPath</strong></p>
 <p>  - <strong>localModuleNames</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
 <p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
@@ -480,9 +611,8 @@ Note: It should not need to be run unless changes were made to the Mdm Modules.<
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Import-Module -name Mdm_Std_Library -force
-Export-Mdm_Help -DoVerbose -DoPause
      Remarks:</pre>
 <p></p>
 <h2>Export-ModuleMemberScan</h2>
@@ -491,18 +621,18 @@ Export-Mdm_Help -DoVerbose -DoPause
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> The scans a module folder with a view to automatically load/import it.</p>
 <p><strong>Detailed Description:</strong> It didn&apos;t work. The problem isn&apos;t clear.</p>
-<p><strong>Syntax:</strong> <pre>moduleRoot
- parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 modulePublic
- description: Path for Public cmdlets to export.
+<p><strong>Syntax:</strong> <pre>Export-ModuleMemberScan
+ moduleRootPath
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 description: Path for Public cmdlets to export.
 
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 modulePrivate
- description: Path for Private functions.
+ modulePublic
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 description: Path for Private functions.
 
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 Export-ModuleMemberScan
-</pre></p>
+ modulePrivate
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>moduleRoot</strong></p>
+<p>  - <strong>moduleRootPath</strong></p>
 <p>  - <strong>modulePublic</strong>: Path for Public cmdlets to export.</p>
 <p>  - <strong>modulePrivate</strong>: Path for Private functions.</p>
 <p></p>
@@ -510,20 +640,21 @@ Export-Mdm_Help -DoVerbose -DoPause
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Export-ModuleMemberScan
      Remarks:</pre>
 <p></p>
 <h2>Get-AllCommands</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Get-AllCommands [[-moduleRoot] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+Get-AllCommands [[-moduleRootPath] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: Get-AllCommands
 CommonParameters: True
-parameter: @{name=moduleRoot; required=false; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
+WorkflowCommonParameters: False
+parameter: @{name=moduleRootPath; required=false; pipelineInput=false; isDynamic=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>moduleRoot</strong></p>
+<p>  - <strong>moduleRootPath</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object</p>
 <p></p>
@@ -536,11 +667,11 @@ parameter: @{name=moduleRoot; required=false; pipelineInput=false; isDynamic=fal
 and later restore that state.
 Don&apos;t alter the Saved Working Directory
 when setting to a passed Working Directory.</p>
-<p><strong>Syntax:</strong> <pre>dirWdPassed
+<p><strong>Syntax:</strong> <pre>Get-DirectoryNameFromSaved
  description: An optional directory to use.
 
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 Get-DirectoryNameFromSaved
-</pre></p>
+ dirWdPassed
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>dirWdPassed</strong>: An optional directory to use.</p>
@@ -549,8 +680,64 @@ when setting to a passed Working Directory.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Get-DirectoryNameFromSaved
+     Remarks:</pre>
+<p></p>
+<h2>Get-ErrorLast</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Get-ErrorLast.</p>
+<p><strong>Detailed Description:</strong> Get-ErrorLast does Get-Error.</p>
+<p><strong>Syntax:</strong> <pre>Get-ErrorLast</pre></p>
+<p></p>
+<p><strong>Return: </strong> The last error to occur.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS C:\&gt;}
+      Syntax: Get-ErrorLast
+     Remarks:</pre>
+<p></p>
+<h2>Get-ErrorNew</h2>
+
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Creates a powershell error object.</p>
+<p><strong>Detailed Description:</strong> Uses $PSCmdlet.WriteError to create a powershell error.</p>
+<p><strong>Syntax:</strong> <pre>Get-ErrorNew
+ description: The error message.
+
+ Message
+ parameterValue: Exception, required: false, globbing: false, pipelineInput: false, position: 1 description: The error type.
+
+ ErrorCategory
+ parameterValueGroup: @{parameterValue=System.Management.Automation.PSObject[]}, required: false, globbing: false, pipelineInput: false, position: 2 DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Message</strong>: The error message.</p>
+<p>  - <strong>ErrorCategory</strong>: The error type.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p></p>
+<p><strong>Return: </strong> An error object from what I can tell.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS C:\&gt;}
+      Syntax: TODO PsError Example
      Remarks:</pre>
 <p></p>
 <h2>Get-FileNamesFromPath</h2>
@@ -558,11 +745,11 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Creates a list of files in a directory.</p>
 <p><strong>Detailed Description:</strong> Creates a list of files in a directory.</p>
-<p><strong>Syntax:</strong> <pre>SourcePath
+<p><strong>Syntax:</strong> <pre>Get-FileNamesFromPath
  description: The folder to list the files of.
 
- parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 Get-FileNamesFromPath
-</pre></p>
+ SourcePath
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>SourcePath</strong>: The folder to list the files of.</p>
@@ -571,7 +758,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Get-FileNamesFromPath &quot;C:\Progams places&quot;
      Remarks:</pre>
 <p></p>
@@ -585,35 +772,22 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Get-Invocation_PSCommandPath
      Remarks:</pre>
 <p></p>
-<h2>Get-LastError</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Get-LastError.</p>
-<p><strong>Detailed Description:</strong> Get-LastError does Get-Error.</p>
-<p><strong>Syntax:</strong> <pre>Get-LastError</pre></p>
-<p></p>
-<p><strong>Return: </strong> The last error to occur.</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
-      Syntax: Get-LastError
-     Remarks:</pre>
-<p></p>
-<h2>Get-LogFileName</h2>
+<h2>Get-LineFromFile</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Get-LogFileName [[-localLogFileNameFull] &lt;Object&gt;] [-LogOneFile] [&lt;CommonParameters&gt;]</p>
-<p><strong>Syntax:</strong> <pre>name: Get-LogFileName
+Get-LineFromFile [[-FileName] &lt;string&gt;] [[-FileLineNumber] &lt;int&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Get-LineFromFile
 CommonParameters: True
+WorkflowCommonParameters: False
 parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>LogOneFile</strong></p>
-<p>  - <strong>localLogFileNameFull</strong></p>
+<p>  - <strong>FileLineNumber</strong></p>
+<p>  - <strong>FileName</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object</p>
 <p></p>
@@ -622,9 +796,9 @@ parameter:</pre></p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Retrieves the Module configuration.</p>
 <p><strong>Detailed Description:</strong> Gets the Module configuration settings.</p>
-<p><strong>Syntax:</strong> <pre>Filter
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 Get-ModuleConfig
-</pre></p>
+<p><strong>Syntax:</strong> <pre>Get-ModuleConfig
+ Filter
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Filter</strong></p>
@@ -633,7 +807,7 @@ parameter:</pre></p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Get-ModuleConfig
      Remarks:</pre>
 <p></p>
@@ -642,11 +816,11 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Gets the Module property.</p>
 <p><strong>Detailed Description:</strong> Retrieves the value of the Module property.</p>
-<p><strong>Syntax:</strong> <pre>InputObject
+<p><strong>Syntax:</strong> <pre>Get-ModuleProperty
  description: The input object to retrieve the property from.
 
- parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue), position: 1 Get-ModuleProperty
-</pre></p>
+ InputObject
+ parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue), position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>InputObject</strong>: The input object to retrieve the property from.</p>
@@ -655,7 +829,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Get-ModuleProperty -InputObject $obj
      Remarks:</pre>
 <p></p>
@@ -663,9 +837,9 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Retrieves the Module status.</p>
 <p><strong>Detailed Description:</strong> Gets the current status of Module.</p>
-<p><strong>Syntax:</strong> <pre>Format
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 Get-ModuleStatus
-</pre></p>
+<p><strong>Syntax:</strong> <pre>Get-ModuleStatus
+ Format
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Format</strong></p>
@@ -674,7 +848,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Get-ModuleStatus
      Remarks:</pre>
 <p></p>
@@ -688,7 +862,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Get-MyCommand_Definition
      Remarks:</pre>
 <p></p>
@@ -702,7 +876,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Get-MyCommand_InvocationName
      Remarks:</pre>
 <p></p>
@@ -716,7 +890,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Get-MyCommand_Name
      Remarks:</pre>
 <p></p>
@@ -730,50 +904,8 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Get-MyCommand_Origin
-     Remarks:</pre>
-<p></p>
-<h2>Get-NewError</h2>
-
-
-
-
-
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Creates a powershell error object.</p>
-<p><strong>Detailed Description:</strong> Uses $PSCmdlet.WriteError to create a powershell error.</p>
-<p><strong>Syntax:</strong> <pre>Message
- description: The error message.
-
- parameterValue: Exception, required: false, globbing: false, pipelineInput: false, position: 1 ErrorCategory
- description: The error type.
-
- parameterValueGroup: @{parameterValue=System.Management.Automation.PSObject[]}, required: false, globbing: false, pipelineInput: false, position: 2 description: Switch: Pause between steps.
-
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
-
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
-
- DoDebug
- required: false, globbing: false, pipelineInput: false, position: named Get-NewError
-</pre></p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>Message</strong>: The error message.</p>
-<p>  - <strong>ErrorCategory</strong>: The error type.</p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
-<p></p>
-<p><strong>Return: </strong> An error object from what I can tell.</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
-      Syntax: TODO PsError Example
      Remarks:</pre>
 <p></p>
 <h2>Get-PSCommandPath</h2>
@@ -787,7 +919,7 @@ from stackoverflow</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Get-PSCommandPath
      Remarks:</pre>
 <p></p>
@@ -801,7 +933,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Get-ScriptName
      Remarks:</pre>
 <p></p>
@@ -810,11 +942,11 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Get-ScriptPositionalParameters.</p>
 <p><strong>Detailed Description:</strong> Get-ScriptPositionalParameters.</p>
-<p><strong>Syntax:</strong> <pre>functionName
+<p><strong>Syntax:</strong> <pre>Get-ScriptPositionalParameters
  description: The function name to examine.
 
- parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 Get-ScriptPositionalParameters
-</pre></p>
+ functionName
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>functionName</strong>: The function name to examine.</p>
@@ -823,7 +955,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Get-ScriptPositionalParameters
      Remarks:</pre>
 <p></p>
@@ -831,9 +963,9 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Gets global variables and state.</p>
 <p><strong>Detailed Description:</strong> This will get globals to be returned without validation.</p>
-<p><strong>Syntax:</strong> <pre>DoClear
- required: false, globbing: false, pipelineInput: false, position: named Get-StdGlobals
-</pre></p>
+<p><strong>Syntax:</strong> <pre>Get-StdGlobals
+ DoClear
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoClear</strong></p>
@@ -842,19 +974,21 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Set-StdGlobals -DoPause -DoVerbose -DoDebug
      Remarks:</pre>
 <p></p>
 <h2>Get-Template</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Get-Template [-templateNameFull] &lt;Object&gt; [&lt;CommonParameters&gt;]</p>
+Get-Template [-templateNameFull] &lt;Object&gt; [-UseDefault] [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: Get-Template
 CommonParameters: True
-parameter: @{name=templateNameFull; required=true; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
+WorkflowCommonParameters: False
+parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>UseDefault</strong></p>
 <p>  - <strong>templateNameFull</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object</p>
@@ -866,7 +1000,8 @@ parameter: @{name=templateNameFull; required=true; pipelineInput=false; isDynami
 Get-UriFromPath [-Path] &lt;string&gt; [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: Get-UriFromPath
 CommonParameters: True
-parameter: @{name=Path; required=true; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=string; type=; position=0; aliases=None}</pre></p>
+WorkflowCommonParameters: False
+parameter: @{name=Path; required=true; pipelineInput=false; isDynamic=false; parameterSetName=(All); parameterValue=string; type=; position=0; aliases=None}</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Path</strong></p>
@@ -879,22 +1014,21 @@ parameter: @{name=Path; required=true; pipelineInput=false; isDynamic=false; glo
 <p><strong>Synopsis:</strong> Imports specified functions from a module.</p>
 <p><strong>Detailed Description:</strong> This function imports specified functions from a PowerShell module or script file.
 If no function names are provided, the entire module is imported.</p>
-<p><strong>Syntax:</strong> <pre>moduleRoot
+<p><strong>Syntax:</strong> <pre>Import-These
+ moduleRootPath
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 moduleComponent
  parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 functionNames
- parameterValue: String[], required: false, globbing: false, pipelineInput: false, position: 3 Import-These
-</pre></p>
+ parameterValue: String[], required: false, globbing: false, pipelineInput: false, position: 3</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>moduleRoot</strong></p>
+<p>  - <strong>moduleRootPath</strong></p>
 <p>  - <strong>moduleComponent</strong></p>
 <p>  - <strong>functionNames</strong></p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
-      Syntax: Import-These -moduleRoot &quot;C:\Path\To\Module&quot; -functionNames &quot;Function1&quot;, &quot;Function2&quot;
-Import-These -moduleRoot &quot;C:\Path\To\Module&quot; -functionNames &quot;Function1&quot;, &quot;Function2&quot;, &quot;Function3&quot;
+Introduction: @{Text=PS C:\&gt;}
+      Syntax: Import-These -moduleRootPath &quot;C:\Path\To\Module&quot; -functionNames &quot;Function1&quot;, &quot;Function2&quot;
      Remarks:</pre>
 <p></p>
 <h2>Initialize-Std</h2>
@@ -904,17 +1038,17 @@ Import-These -moduleRoot &quot;C:\Path\To\Module&quot; -functionNames &quot;Func
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Initializes a script..</p>
 <p><strong>Detailed Description:</strong> This processes switches, automatic variables, state.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
-
+<p><strong>Syntax:</strong> <pre>Initialize-Std
  DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ description: Switch: Pause between steps.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoDebug
- required: false, globbing: false, pipelineInput: false, position: named Initialize-Std
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
@@ -928,7 +1062,6 @@ Import-These -moduleRoot &quot;C:\Path\To\Module&quot; -functionNames &quot;Func
        Label:  
 Introduction:  
       Syntax: Initialize-Std -DoPause:$DoPause -DoVerbose:$DoVerbose Initialize-StdGlobalsReset
-Initialize-Std -DoPause:$DoPause -DoVerbose:$DoVerbose
      Remarks:</pre>
 <p></p>
 <h2>Initialize-StdGlobalsReset</h2>
@@ -945,26 +1078,26 @@ Initialize-Std -DoPause:$DoPause -DoVerbose:$DoVerbose
     $PS variables, 
     module metadata and
     state.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Verbose output and prompts.
-
+<p><strong>Syntax:</strong> <pre>Initialize-StdGlobalsReset
  DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Pause between steps.
+ description: Switch: Verbose output and prompts.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoPause
+ description: Switch: Pause between steps.
 
- DoDebug
- required: false, globbing: false, pipelineInput: false, position: named msgAnykey
- description: The prompt for "Enter any key".
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
 
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 msgYorN
- description: The prompt for "Enter Y, N, or Q to quit".
+ required: false, globbing: false, pipelineInput: false, position: named description: The prompt for "Enter any key".
 
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 description: Switch: indicates initialization is done.
+ msgAnykey
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 description: The prompt for "Enter Y, N, or Q to quit".
 
- initDone
- required: false, globbing: false, pipelineInput: false, position: named Initialize-StdGlobalsReset
-</pre></p>
+ msgYorN
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 initDone
+ description: Switch: indicates initialization is done.
+
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
@@ -978,20 +1111,37 @@ Initialize-Std -DoPause:$DoPause -DoVerbose:$DoVerbose
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Initialize-StdGlobalsReset
      Remarks:</pre>
 <p></p>
 <h2>Initialize-TemplateData</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Initialize-TemplateData [[-templateData] &lt;Object&gt;]</p>
+Initialize-TemplateData [[-templateData] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: Initialize-TemplateData
-CommonParameters: False
-parameter: @{name=templateData; required=false; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
+CommonParameters: True
+WorkflowCommonParameters: False
+parameter: @{name=templateData; required=false; pipelineInput=false; isDynamic=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>templateData</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>Open-LogFile</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Open-LogFile [[-localLogFileNameFull] &lt;Object&gt;] [-LogOneFile] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Open-LogFile
+CommonParameters: True
+WorkflowCommonParameters: False
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>LogOneFile</strong></p>
+<p>  - <strong>localLogFileNameFull</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object</p>
 <p></p>
@@ -1012,69 +1162,15 @@ Invoke-Command { &amp; pwsh -Command $MyInvocation.Line } -NoNewScope
 Unfortunately, $MyInvocation.Line does not return the correct result
     when a PowerShell script is called from a batch file.
     What alternatives exist that would work in this scenario?</p>
-<p><strong>Syntax:</strong> <pre>stringParam
+<p><strong>Syntax:</strong> <pre>Push-ShellPwsh
+ stringParam
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 switchParam
- required: false, globbing: false, pipelineInput: false, position: named Push-ShellPwsh
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>stringParam</strong></p>
 <p>  - <strong>switchParam</strong></p>
 <p></p>
-<p></p>
-<h2>Script_Debugger</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> 
-Script_Debugger [[-functionName] &lt;Object&gt;] [[-commandLine] &lt;Object&gt;] [[-logMessage] &lt;Object&gt;] [[-DoPause] &lt;Object&gt;] [[-PsDebug] &lt;Object&gt;] [[-localLogFileNameFull] &lt;string&gt;] [[-ErrorPSItem] &lt;Object&gt;] [-Break] [-DoPrompt] [&lt;CommonParameters&gt;]</p>
-<p><strong>Syntax:</strong> <pre>name: Script_Debugger
-CommonParameters: True
-parameter:</pre></p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>Break</strong></p>
-<p>  - <strong>DoPause</strong></p>
-<p>  - <strong>DoPrompt</strong></p>
-<p>  - <strong>ErrorPSItem</strong></p>
-<p>  - <strong>PsDebug</strong></p>
-<p>  - <strong>commandLine</strong></p>
-<p>  - <strong>functionName</strong></p>
-<p>  - <strong>localLogFileNameFull</strong></p>
-<p>  - <strong>logMessage</strong></p>
-<p></p>
-<p><strong>Return: </strong> System.Object</p>
-<p></p>
-<p></p>
-<h2>Script_DoStart</h2>
-
-
-
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Reset and initialize.</p>
-<p><strong>Detailed Description:</strong> This resets the global values and call the initializations.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
-
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
-
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
-
- DoDebug
- required: false, globbing: false, pipelineInput: false, position: named Script_DoStart
-</pre></p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
-<p></p>
-<p><strong>Return: </strong> none.</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
-      Syntax: Script_DoStart -DoVerbose
-     Remarks:</pre>
 <p></p>
 <h2>Search-Directory</h2>
 
@@ -1085,27 +1181,27 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Search a folder for files or (TODO) something else.</p>
 <p><strong>Detailed Description:</strong> Currently just outputs the folder list to a CSV file.</p>
-<p><strong>Syntax:</strong> <pre>inputObjects
+<p><strong>Syntax:</strong> <pre>Search-Directory
  description: This is a ValueFromPipeline and can be used with one or more objects.
 
- parameterValue: Object, required: false, globbing: false, pipelineInput: true (ByValue), position: 1 dir
- description: This defaults to "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules".
+ inputObjects
+ parameterValue: Object, required: false, globbing: false, pipelineInput: true (ByValue), position: 1 description: This defaults to "$global:projectRootPath\src\Modules".
 
- parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 folder
- description: Defaults to (Get-Item $dir).Parent.
+ dir
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 description: Defaults to (Get-Item $dir).Parent.
 
- parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 3 folderName
- description: Defaults to folder.Name.
+ folder
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 3 description: Defaults to folder.Name.
 
- parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 4 folderPath
- description: Defaults to folder.FullName.
+ folderName
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 4 description: Defaults to folder.FullName.
 
- parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 5 Search-Directory
-</pre></p>
+ folderPath
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 5</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>inputObjects</strong>: This is a ValueFromPipeline and can be used with one or more objects.</p>
-<p>  - <strong>dir</strong>: This defaults to &quot;G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules&quot;.</p>
+<p>  - <strong>dir</strong>: This defaults to &quot;$global:projectRootPath\src\Modules&quot;.</p>
 <p>  - <strong>folder</strong>: Defaults to (Get-Item $dir).Parent.</p>
 <p>  - <strong>folderName</strong>: Defaults to folder.Name.</p>
 <p>  - <strong>folderPath</strong>: Defaults to folder.FullName.</p>
@@ -1114,7 +1210,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Search-Directory &quot;G:\Script\Powershell\&quot;.
      Remarks:</pre>
 <p></p>
@@ -1123,24 +1219,42 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Set directory to the script&apos;s root directory.</p>
 <p><strong>Detailed Description:</strong> Set the working directory to the script&apos;s root directory..</p>
-<p><strong>Syntax:</strong> <pre>global:scriptPath
- parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 1 scriptDrive
- description: Optional drive letter.
+<p><strong>Syntax:</strong> <pre>Set-DirectoryToScriptRoot
+ global:moduleRootPath
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 1 description: Optional drive letter.
 
- parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 Set-DirectoryToScriptRoot
-</pre></p>
+ scriptDrive
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>global:scriptPath</strong></p>
+<p>  - <strong>global:moduleRootPath</strong></p>
 <p>  - <strong>scriptDrive</strong>: Optional drive letter.</p>
 <p></p>
 <p><strong>Return: </strong> none.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Set-DirectoryToScriptRoot
      Remarks:</pre>
+<p></p>
+<h2>Set-DisplayColors</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Set-DisplayColors [[-WarningBackgroundColor] &lt;Object&gt;] [[-WarningForegroundColor] &lt;Object&gt;] [[-ErrorBackgroundColor] &lt;Object&gt;] [[-ErrorForegroundColor] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Set-DisplayColors
+CommonParameters: True
+WorkflowCommonParameters: False
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>ErrorBackgroundColor</strong></p>
+<p>  - <strong>ErrorForegroundColor</strong></p>
+<p>  - <strong>WarningBackgroundColor</strong></p>
+<p>  - <strong>WarningForegroundColor</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
 <p></p>
 <h2>Set-ErrorBreakOnFunction</h2>
 <p><strong>Type:</strong> Function</p>
@@ -1148,6 +1262,7 @@ Introduction: @{Text=PS &gt; }
 Set-ErrorBreakOnFunction [[-functionName] &lt;Object&gt;] [[-LineNumber] &lt;int&gt;] [[-commandLine] &lt;string&gt;] [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: Set-ErrorBreakOnFunction
 CommonParameters: True
+WorkflowCommonParameters: False
 parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -1164,6 +1279,7 @@ parameter:</pre></p>
 Set-ErrorBreakOnLine [-functionName] &lt;Object&gt; [[-LineNumber] &lt;int&gt;] [[-commandLine] &lt;string&gt;] [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: Set-ErrorBreakOnLine
 CommonParameters: True
+WorkflowCommonParameters: False
 parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -1180,6 +1296,7 @@ parameter:</pre></p>
 Set-ErrorBreakOnVariable [-watchVariable] &lt;Object&gt; [[-Write] &lt;int&gt;] [[-commandLine] &lt;string&gt;] [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: Set-ErrorBreakOnVariable
 CommonParameters: True
+WorkflowCommonParameters: False
 parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -1196,14 +1313,14 @@ parameter:</pre></p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Set the currrent directory.</p>
 <p><strong>Detailed Description:</strong> Set the currrent working directory to the passed path.</p>
-<p><strong>Syntax:</strong> <pre>workingDirectory
+<p><strong>Syntax:</strong> <pre>Set-LocationToPath
  description: The direcotry to set as the current working directory.
 
- parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 description: Save the passed directory path.
+ workingDirectory
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 saveDirectory
+ description: Save the passed directory path.
 
- saveDirectory
- required: false, globbing: false, pipelineInput: false, position: named Set-LocationToPath
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>workingDirectory</strong>: The direcotry to set as the current working directory.</p>
@@ -1213,7 +1330,7 @@ parameter:</pre></p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Set-LocationToPath &quot;C:\temp&quot;
      Remarks:</pre>
 <p></p>
@@ -1222,11 +1339,11 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Set location to script root.</p>
 <p><strong>Detailed Description:</strong> Set location to script root.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Save the current directory.
-
+<p><strong>Syntax:</strong> <pre>Set-LocationToScriptRoot
  saveDirectory
- required: false, globbing: false, pipelineInput: false, position: named Set-LocationToScriptRoot
-</pre></p>
+ description: Switch: Save the current directory.
+
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>saveDirectory</strong>: Switch: Save the current directory.</p>
@@ -1235,7 +1352,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Set-LocationToScriptRoot -saveDirectory
      Remarks:</pre>
 <p></p>
@@ -1244,11 +1361,11 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Updates the Module configuration.</p>
 <p><strong>Detailed Description:</strong> Sets the Module configuration settings.</p>
-<p><strong>Syntax:</strong> <pre>Config
+<p><strong>Syntax:</strong> <pre>Set-ModuleConfig
  description: The new configuration values.
 
- parameterValue: Hashtable, required: true, globbing: false, pipelineInput: false, position: 1 Set-ModuleConfig
-</pre></p>
+ Config
+ parameterValue: Hashtable, required: true, globbing: false, pipelineInput: false, position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Config</strong>: The new configuration values.</p>
@@ -1257,11 +1374,8 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Set-ModuleConfig -Config @{
-    &quot;Setting1&quot; = &quot;New Value&quot;
-    &quot;Setting2&quot; = &quot;New Value&quot;
-}
      Remarks:</pre>
 <p></p>
 <h2>Set-ModuleProperty</h2>
@@ -1270,14 +1384,14 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Sets the Module property.</p>
 <p><strong>Detailed Description:</strong> Updates the value of the Module property.</p>
-<p><strong>Syntax:</strong> <pre>InputObject
+<p><strong>Syntax:</strong> <pre>Set-ModuleProperty
  description: The input object to update the property on.
 
- parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue), position: 1 Value
- description: The new value for the Module property.
+ InputObject
+ parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue), position: 1 description: The new value for the Module property.
 
- parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2 Set-ModuleProperty
-</pre></p>
+ Value
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>InputObject</strong>: The input object to update the property on.</p>
@@ -1287,7 +1401,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Set-ModuleProperty -InputObject $obj -Value &quot;new value&quot;
      Remarks:</pre>
 <p></p>
@@ -1296,11 +1410,11 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Updates the Module status.</p>
 <p><strong>Detailed Description:</strong> Sets the current status of Module.</p>
-<p><strong>Syntax:</strong> <pre>Status
+<p><strong>Syntax:</strong> <pre>Set-ModuleStatus
  description: The new status value.
 
- parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 Set-ModuleStatus
-</pre></p>
+ Status
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Status</strong>: The new status value.</p>
@@ -1309,8 +1423,31 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Set-ModuleStatus -Status &quot;Offline&quot;
+     Remarks:</pre>
+<p></p>
+<h2>Set-prompt</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Set command prompt.</p>
+<p><strong>Detailed Description:</strong> Set command prompt to Module default.</p>
+<p><strong>Syntax:</strong> <pre>Set-prompt
+ prefix
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 1 body
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 suffix
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 3</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>prefix</strong></p>
+<p>  - <strong>body</strong></p>
+<p>  - <strong>suffix</strong></p>
+<p></p>
+<p><strong>Return: </strong> none.</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS C:\&gt;}
+      Syntax: Set-prompt
      Remarks:</pre>
 <p></p>
 <h2>Set-SavedToDirectoryName</h2>
@@ -1319,11 +1456,11 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> Save working directory.</p>
 <p><strong>Detailed Description:</strong> Save working directory with a view to restoring it later.
 The default is to save the current directoy.</p>
-<p><strong>Syntax:</strong> <pre>dirWdPassed
+<p><strong>Syntax:</strong> <pre>Set-SavedToDirectoryName
  description: The Working Directory Name.
 
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 Set-SavedToDirectoryName
-</pre></p>
+ dirWdPassed
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>dirWdPassed</strong>: The Working Directory Name.</p>
@@ -1332,7 +1469,7 @@ The default is to save the current directoy.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Set-SavedToDirectoryName &quot;C:\PathToSave&quot;
      Remarks:</pre>
 <p></p>
@@ -1344,22 +1481,22 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Checks global variables and state.</p>
 <p><strong>Detailed Description:</strong> This will set globals to the passed values without validation.</p>
-<p><strong>Syntax:</strong> <pre>message
+<p><strong>Syntax:</strong> <pre>Set-StdGlobals
  description: The system message. Not used.
 
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 description: Switch: Pause between steps.
+ message
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
 
- DoDebug
  required: false, globbing: false, pipelineInput: false, position: named SkipClear
  required: false, globbing: false, pipelineInput: false, position: named Preserve
- required: false, globbing: false, pipelineInput: false, position: named Set-StdGlobals
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>message</strong>: The system message. Not used.</p>
@@ -1373,7 +1510,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Set-StdGlobals -DoPause -DoVerbose -DoDebug
      Remarks:</pre>
 <p></p>
@@ -1385,24 +1522,41 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Show-StdGlobals
      Remarks:</pre>
 <p></p>
-<h2>Submit-DebugFunction</h2>
+<h2>Start-Std</h2>
+
+
+
 <p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> 
-Submit-DebugFunction [-functionName] &lt;Object&gt; [[-invocationFunctionName] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
-<p><strong>Syntax:</strong> <pre>name: Submit-DebugFunction
-CommonParameters: True
-parameter:</pre></p>
+<p><strong>Synopsis:</strong> Reset and initialize.</p>
+<p><strong>Detailed Description:</strong> This resets the global values and call the initializations.</p>
+<p><strong>Syntax:</strong> <pre>Start-Std
+ DoPause
+ description: Switch: Pause between steps.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
+
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>functionName</strong></p>
-<p>  - <strong>invocationFunctionName</strong></p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
 <p></p>
-<p><strong>Return: </strong> System.Object</p>
+<p><strong>Return: </strong> none.</p>
 <p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS C:\&gt;}
+      Syntax: Start-Std -DoVerbose
+     Remarks:</pre>
 <p></p>
 <h2>Wait-AnyKey</h2>
 
@@ -1413,23 +1567,23 @@ parameter:</pre></p>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Enter any key.</p>
 <p><strong>Detailed Description:</strong> Prompts the user to enter any key to continue.</p>
-<p><strong>Syntax:</strong> <pre>message
+<p><strong>Syntax:</strong> <pre>Wait-AnyKey
  description: The prompt message.
 
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 timeout
- description: Number of seconds to wait (if present).
+ message
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 description: Number of seconds to wait (if present).
 
- parameterValue: Int32, required: false, globbing: false, pipelineInput: false, position: 2 description: Switch: Pause between steps.
+ timeout
+ parameterValue: Int32, required: false, globbing: false, pipelineInput: false, position: 2 DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
 
- DoDebug
- required: false, globbing: false, pipelineInput: false, position: named Wait-AnyKey
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>message</strong>: The prompt message.</p>
@@ -1442,7 +1596,7 @@ parameter:</pre></p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Wait-AnyKey
      Remarks:</pre>
 <p></p>
@@ -1456,9 +1610,27 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Wait-CheckDoPause
      Remarks:</pre>
+<p></p>
+<h2>Wait-ForKeyPress</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Wait-ForKeyPress [[-message] &lt;Object&gt;] [[-duration] &lt;Object&gt;] [[-foregroundColor] &lt;Object&gt;] [[-backgroundColor] &lt;Object&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Wait-ForKeyPress
+CommonParameters: False
+WorkflowCommonParameters: False
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>backgroundColor</strong></p>
+<p>  - <strong>duration</strong></p>
+<p>  - <strong>foregroundColor</strong></p>
+<p>  - <strong>message</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
 <p></p>
 <h2>Wait-YorNorQ</h2>
 
@@ -1468,20 +1640,20 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Prompts for Y(es), N(o) or Q(uit).</p>
 <p><strong>Detailed Description:</strong> Prompt the user for a Yes, No or Quit response.</p>
-<p><strong>Syntax:</strong> <pre>message
+<p><strong>Syntax:</strong> <pre>Wait-YorNorQ
  description: The prompt.
 
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 description: Switch: Pause between steps.
+ message
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
 
- DoDebug
- required: false, globbing: false, pipelineInput: false, position: named Wait-YorNorQ
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>message</strong>: The prompt.</p>
@@ -1493,7 +1665,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: $theResponse = Wait-YorNorQ &quot;Wait?&quot;
      Remarks:</pre>
 <p></p>
@@ -1501,13 +1673,13 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Write-HtlmData.</p>
 <p><strong>Detailed Description:</strong> Sends pipeline object to file.</p>
-<p><strong>Syntax:</strong> <pre>InputObject
+<p><strong>Syntax:</strong> <pre>Write-HtlmData
+ InputObject
  parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue), position: 1 FileName
  parameterValue: Object, required: true, globbing: false, pipelineInput: false, position: 2 head
  parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 3 header
  parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 4 title
- parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 5 Write-HtlmData
-</pre></p>
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 5</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>InputObject</strong></p>
@@ -1520,7 +1692,7 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: $YourPipeline | Write-HtlmData &quot;Filename.txt&quot;
      Remarks:</pre>
 <p></p>
@@ -1531,17 +1703,17 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Displays the help files for the Mdm Modules.</p>
 <p><strong>Detailed Description:</strong> You can display the help Using DoPause and DoVerbose for detailed help.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
-
+<p><strong>Syntax:</strong> <pre>Write-Mdm_Help
  DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ description: Switch: Pause between steps.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoDebug
- required: false, globbing: false, pipelineInput: false, position: named Write-Mdm_Help
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
+
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
@@ -1550,16 +1722,17 @@ Introduction: @{Text=PS &gt; }
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
+Introduction: @{Text=PS C:\&gt;}
       Syntax: Write-Mdm_Help -DoVerbose -DoPause
      Remarks:</pre>
 <p></p>
 <h2>Write-Module_Help</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Write-Module_Help [-moduleName] &lt;string&gt; [-DoPause] [-DoVerbose] [-DoDebug] [&lt;CommonParameters&gt;]</p>
+Write-Module_Help [-moduleName] &lt;string&gt; [-moduleRootPath] &lt;string&gt; [-DoPause] [-DoVerbose] [-DoDebug] [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: Write-Module_Help
 CommonParameters: True
+WorkflowCommonParameters: False
 parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -1567,12 +1740,12 @@ parameter:</pre></p>
 <p>  - <strong>DoPause</strong></p>
 <p>  - <strong>DoVerbose</strong></p>
 <p>  - <strong>moduleName</strong></p>
+<p>  - <strong>moduleRootPath</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object</p>
 <p></p>
 <p></p>
 <footer><p>&copy; David G. Horsman. All rights reserved.</p></footer>
-    <!-- <footer><p>&copy; David G. Horsman. All rights reserved.</p></footer> -->
+    <!-- <footer><p>{{Footer}}&copy; David G. Horsman. All rights reserved.</p></footer> -->
 </body>
-
 </html>

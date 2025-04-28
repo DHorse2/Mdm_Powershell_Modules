@@ -1,20 +1,25 @@
 
-# Mdm_Std_Library
+Write-Host "Mdm_Std_Library.psm1"
 # Script Path
-if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName }
+if (-not $moduleRootPath) { $moduleRootPath = (get-item $PSScriptRoot).Parent.FullName }
+if (-not $projectRootPath) { $projectRootPath = (get-item $moduleRootPath).Parent.Parent.FullName }
+#region Module Members
 # Import-Module Mdm_Std_Library
-. $global:scriptPath\Mdm_Std_Library\Mdm_Std_Error.ps1
+. $global:moduleRootPath\Mdm_Std_Library\Mdm_Std_Error.ps1
 Export-ModuleMember -Function @(
     # Exceptions Handling
-    "Get-LastError",
-    "Get-NewError",
+    "Get-ErrorLast",
+    "Get-ErrorNew",
     "Set-ErrorBreakOnLine",
     "Set-ErrorBreakOnFunction",
     "Set-ErrorBreakOnVariable",
     "Get-CallStackFormated",
-    "Script_Debugger"
+
+    "Debug-Script",
+    "Debug-AssertFunction",
+    "Debug-SubmitFunction"
 )
-. $global:scriptPath\Mdm_Std_Library\Mdm_Std_Module.ps1
+. $global:moduleRootPath\Mdm_Std_Library\Mdm_Std_Module.ps1
 Export-ModuleMember -Function @(
     # Scan and feature (cmdlet) selection
     "Export-ModuleMemberScan",
@@ -28,7 +33,7 @@ Export-ModuleMember -Function @(
     "Get-ModuleStatus",
     "Set-ModuleStatus"
 )
-. $global:scriptPath\Mdm_Std_Library\Mdm_Std_Script.ps1
+. $global:moduleRootPath\Mdm_Std_Library\Mdm_Std_Script.ps1
 Export-ModuleMember -Function @(
     # This script:
     "Get-Invocation_PSCommandPath",
@@ -41,7 +46,7 @@ Export-ModuleMember -Function @(
     "Get-ScriptPositionalParameters",
 
     # Script:
-    "Script_DoStart",
+    "Start-Std",
     "Initialize-Std",
     "Initialize-StdGlobalsReset",
     "Show-StdGlobals",
@@ -50,10 +55,10 @@ Export-ModuleMember -Function @(
     "Assert-Verbose",
     "Push-ShellPwsh"
 )
-. $global:scriptPath\Mdm_Std_Library\Mdm_Std_Etl.ps1
+. $global:moduleRootPath\Mdm_Std_Library\Mdm_Std_Etl.ps1
 Export-ModuleMember -Function @(
     # Etl
-    # Path and directory
+    # Etl Load - Path and directory
     "Get-DirectoryNameFromSaved",
     "Get-FileNamesFromPath",
     "Get-UriFromPath",
@@ -62,22 +67,23 @@ Export-ModuleMember -Function @(
     "Set-DirectoryToScriptRoot",
     "Set-SavedToDirectoryName",
     "Search-Directory",
-
-    "Copy-ItemWithProgressDisplay",
-
+    # Etl Transform
     "ConvertFrom-HashValue",
     "ConvertTo-Text",
+    "Get-LineFromFile",
     "ConvertTo-ObjectArray",
     "ConvertTo-EscapedText",
-    "ConvertTo-TrimedText",
+    "ConvertTo-TrimmedText",
     # Etl Log
     "Add-LogText",
     "Add-LogError",
-    "Get-LogFileName",
+    "Open-LogFile",
     # Etl Html
-    "Write-HtlmData"
+    "Write-HtlmData",
+    # Etl Other
+    "Copy-ItemWithProgressDisplay"
 )
-. $global:scriptPath\Mdm_Std_Library\Mdm_Std_Help.ps1
+. $global:moduleRootPath\Mdm_Std_Library\Mdm_Std_Help.ps1
 Export-ModuleMember -Function @(
     # Help
     "Export-Mdm_Help",
@@ -90,134 +96,10 @@ Export-ModuleMember -Function @(
     "Get-Template",
     "ConvertFrom-Template"
 )
-. $global:scriptPath\Mdm_Std_Library\Get-AllCommands.ps1
+. $global:moduleRootPath\Mdm_Std_Library\Get-AllCommands.ps1
 Export-ModuleMember -Function "Get-AllCommands"
-
-# Globals:
-Write-Verbose "Loading globals..."
-# Log
-if (-not $global:logFileNameFull) {
-    # The date and time will be appended to the name
-    # when LogOneFile is false.
-    [string]$global:logFileName = "Mdm_Installation_Log"
-    [string]$global:logFilePath = "G:\Script\Powershell\Mdm_Powershell_Modules\log"
-    [string]$global:logFileNameFull = ""
-    # Use a single log file repeatedly appending to it.
-    [bool]$global:LogOneFile = $false
-}
-# Global settings
-if (-not $global:InitDone) { 
-    # This indicates that the modules have not been previously imported. 
-    [bool]$global:InitDone = $true
-    [bool]$global:InitStdDone = $false
-    #
-    [string]$global:companyName = "MacroDM"
-    [string]$global:author = "David G. Horsman"
-    [string]$global:copyright = $global:author
-    [string]$global:copyright = "&copy; $global:copyright. All rights reserved."
-    [string]$global:license = "MIT"
-    [string]$global:title = ""
-    # Modules array
-    [array]$global:moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install", "Mdm_Modules")
-    [array]$global:moduleAddons = @("Mdm_Nightroman_PowerShelf", "Mdm_Springcomp_MyBox", "DevEnv_LanguageMode")
-
-    # Error display handling options:
-    [bool]$global:UseTrace = $true
-    [bool]$global:UseTraceDetails = $true
-    [bool]$global:UseTraceStack = $true
-    [bool]$global:DebugProgressFindName = $true
-    [int]$global:debugTraceStep = 0
-    [string]$global:debugSetting = ""
-    # include debug info with warnings
-    [bool]$global:UseTraceWarning = $true
-    # include full details with warnings
-    [bool]$global:UseTraceWarningDetails = $false
-    # Built in Powershell based Method:
-    [bool]$global:UsePsBreakpoint = $true
-
-    # Set-PSBreakpoint
-    # pause on this cmdlet/function name
-    [bool]$global:DebugProgressFindName = $true
-    [array]$global:debugFunctionNames = @()
-    # [array]$global:debugFunctionNames = @("Get-Vs", "Get-DevEnvVersions")
-    # [array]$global:debugFunctionNames = @("Get-Vs", "Get-DevEnvVersions", "Add-RegistryPath", "Assert-RegistryValue")
-    [string]$global:debugFunctionName = ""
-    [bool]$global:DebugInScriptDebugger = $false
-    [int]$global:debugFunctioLineNumber = 0
-    [string]$global:debugWatchVariable = ""
-    [string]$global:debugMode = "Write"
-    
-    # Built in Powershell based Method:
-    if ($global:UsePsBreakpoint) {
-        try {
-            #PSDebug
-            if ($global:debugSetting.Length -ge 1) {
-                $commandNext = "Set-PSDebug -$global:debugSetting"
-            } else {
-                $commandNext = "Set-PSDebug -Off"
-            }
-            Invoke-Expression $commandNext
-            #PSBreakpoint
-            Get-PSBreakpoint | Remove-PSBreakpoint
-            Set-PSBreakPoint -Command "Script_Debugger" -Action { 
-                Write-Host "<*>" -ForegroundColor Red
-                # Script_Debugger -Break;
-            }
-            if ($global:debugFunctionName.Length -ge 1) {
-                Set-PSBreakPoint -Command $global:debugFunctionName -Action { Script_Debugger -Break; }
-                Write-Host "Break set up for $global:debugFunctionName" -ForegroundColor Green
-            }
-            foreach ($functionName in $global:debugFunctionNames) {
-                Set-PSBreakpoint -Command $functionName -Action { Script_Debugger -Break; }
-                Write-Host "Break set up for $functionName" -ForegroundColor Green
-            }
-        } catch {
-            Write-Error -Message "PSBreakpoint (global:InitDone) errors in Mdm_Std_Library initialization!`n$_"
-            #  -ErrorRecord $_
-            Write-Host "Powershell debug features are unavailable in the Mdm Standard Library" `
-                -ForegroundColor Red
-        }
-        # This doesn't work:
-        # Source : https://stackoverflow.com/questions/20912371/is-there-a-way-to-enter-the-debugger-on-an-error/
-        # Get the current session using Get-PSSession
-        # $currentSession = New-PSSession
-        # $currentSession = Get-PSSession
-        # $currentSession = Get-PSSession | Where-Object { $_.Id -eq $session.Id }
-
-        # Extract relevant properties from the existing session
-        # $computerName = $currentSession.ComputerName
-        # $credential = $currentSession.Credential
-        # $newSession = New-PSSession -ComputerName $computerName -Credential $credential
-        # Invoke-Command -Session $currentSession -ScriptBlock {
-        # Set-PSBreakPoint -Command Script_Debugger -Action { break; }
-        # Break on LINE
-        # Set-PSBreakpoint -Script "C:\Path\To\YourScript.ps1" -Line 10
-        # }
-    }
-    # Control and defaults
-    [bool]$global:DoVerbose = $false
-    [bool]$global:DoPause = $false
-    [bool]$global:DoDebug = $false
-    [string]$global:msgAnykey = ""
-    [string]$global:msgYorN = ""
-    
-    # Color of error and warning text
-    $global:opt = (Get-Host).PrivateData
-    $global:messageBackgroundColor = [System.ConsoleColor]::Black
-    $global:messageForegroundColor = [System.ConsoleColor]::White
-    $global:opt.WarningBackgroundColor = [System.ConsoleColor]::Black
-    $global:opt.WarningForegroundColor = [System.ConsoleColor]::DarkYellow
-    # $global:opt.WarningForegroundColor = [System.ConsoleColor]::White
-    $global:opt.ErrorBackgroundColor = [System.ConsoleColor]::Black
-    $global:opt.ErrorForegroundColor = [System.ConsoleColor]::Red
-
-    $global:timeStarted = Get-Date
-    $global:timeStartedFormatted = "{0:yyyymmdd_hhmmss}" -f (Get-Date)
-    $global:timeCompleted = $global:timeStarted
-    $global:lastError = $null
-}
-
-# ###############################
+#endregion
+#region Functions
 function Assert-Verbose {
     <#
     .SYNOPSIS
@@ -280,10 +162,68 @@ function Set-DisplayColors {
         # Change the color of error and warning text
         # https://sqljana.wordpress.com/2017/03/01/powershell-hate-the-error-text-and-warning-text-colors-change-it/
         $global:opt = (Get-Host).PrivateData
-        $global:opt.WarningBackgroundColor = $WarningBackgroundColor
-        $global:opt.WarningForegroundColor = $WarningForegroundColor
-        $global:opt.ErrorBackgroundColor = $ErrorBackgroundColor
-        $global:opt.ErrorForegroundColor = $ErrorForegroundColor
+        $messageWarningBackgroundColor = $WarningBackgroundColor
+        $messageWarningForegroundColor = $WarningForegroundColor
+        $messageErrorBackgroundColor = $ErrorBackgroundColor
+        $messageErrorForegroundColor = $ErrorForegroundColor
+    }
+}
+# Define a function to convert ConsoleColor to System.Windows.Media.Color
+function Convert-ConsoleToMediaColor {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [System.ConsoleColor]$consoleColor
+    )
+    switch ($consoleColor) {
+        'Black' { return [System.Windows.Media.Color]::FromRgb(0, 0, 0) }
+        'DarkBlue' { return [System.Windows.Media.Color]::FromRgb(0, 0, 128) }
+        'DarkGreen' { return [System.Windows.Media.Color]::FromRgb(0, 128, 0) }
+        'DarkCyan' { return [System.Windows.Media.Color]::FromRgb(0, 128, 128) }
+        'DarkRed' { return [System.Windows.Media.Color]::FromRgb(128, 0, 0) }
+        'DarkMagenta' { return [System.Windows.Media.Color]::FromRgb(128, 0, 128) }
+        'DarkYellow' { return [System.Windows.Media.Color]::FromRgb(128, 128, 0) }
+        'Gray' { return [System.Windows.Media.Color]::FromRgb(192, 192, 192) }
+        'DarkGray' { return [System.Windows.Media.Color]::FromRgb(128, 128, 128) }
+        'Blue' { return [System.Windows.Media.Color]::FromRgb(0, 0, 255) }
+        'Green' { return [System.Windows.Media.Color]::FromRgb(0, 255, 0) }
+        'Cyan' { return [System.Windows.Media.Color]::FromRgb(0, 255, 255) }
+        'Red' { return [System.Windows.Media.Color]::FromRgb(255, 0, 0) }
+        'Magenta' { return [System.Windows.Media.Color]::FromRgb(255, 0, 255) }
+        'Yellow' { return [System.Windows.Media.Color]::FromRgb(255, 255, 0) }
+        'White' { return [System.Windows.Media.Color]::FromRgb(255, 255, 255) }
+        default { throw "Unsupported ConsoleColor: $consoleColor" }
+    }
+}
+# Define a function to convert System.Windows.Media.Color to ConsoleColor
+function Convert-MediaToConsoleColor {
+    param (
+        [Parameter(Mandatory = $true)]
+        [System.Windows.Media.Color]$mediaColor
+    )
+    # Get the RGB values from the MediaColor
+    $r = $mediaColor.R
+    $g = $mediaColor.G
+    $b = $mediaColor.B
+    # Determine the ConsoleColor based on the RGB values
+    switch ("$r,$g,$b") {
+        '0,0,0' { return [System.ConsoleColor]::Black }
+        '0,0,128' { return [System.ConsoleColor]::DarkBlue }
+        '0,128,0' { return [System.ConsoleColor]::DarkGreen }
+        '0,128,128' { return [System.ConsoleColor]::DarkCyan }
+        '128,0,0' { return [System.ConsoleColor]::DarkRed }
+        '128,0,128' { return [System.ConsoleColor]::DarkMagenta }
+        '128,128,0' { return [System.ConsoleColor]::DarkYellow }
+        '192,192,192' { return [System.ConsoleColor]::Gray }
+        '128,128,128' { return [System.ConsoleColor]::DarkGray }
+        '0,0,255' { return [System.ConsoleColor]::Blue }
+        '0,255,0' { return [System.ConsoleColor]::Green }
+        '0,255,255' { return [System.ConsoleColor]::Cyan }
+        '255,0,0' { return [System.ConsoleColor]::Red }
+        '255,0,255' { return [System.ConsoleColor]::Magenta }
+        '255,255,0' { return [System.ConsoleColor]::Yellow }
+        '255,255,255' { return [System.ConsoleColor]::White }
+        default { throw "Unsupported MediaColor: $mediaColor" }
     }
 }
 # ###############################
@@ -373,30 +313,6 @@ function Get-StdGlobals {
     }
     return @($global:DoPause, $global:DoVerbose, $global:DoDebug, $global:message)
 }
-function Assert-DebugFunction {
-    param (
-        [Parameter(Mandatory = $true)]
-        $functionName
-    )
-    return ($global:debugFunctionNames -contains $functionName)
-}
-function Submit-DebugFunction {
-    param (
-        [Parameter(Mandatory = $true)]
-        $functionName,
-        $invocationFunctionName = ""
-    )
-    if (-not $global:DebugInScriptDebugger -and $global:DebugProgressFindName -and $(Assert-DebugFunction($functionName))) {
-        $logMessage = "Debug $invocationFunctionName for $($functionName)"
-        Add-LogText -logMessages $logMessage `
-            -IsWarning -DoTraceWarningDetails `
-            -localLogFileNameFull $global:logFileNameFull
-        Script_Debugger -DoPause 5 -functionName $functionName -localLogFileNameFull $localLogFileNameFull
-        return $true
-    }
-    return $false
-}
-
 # ###############################
 # Function to check for key press
 function Wait-ForKeyPress {
@@ -406,8 +322,8 @@ function Wait-ForKeyPress {
         $foregroundColor,
         $backgroundColor
     )
-    if (-not $foregroundColor) { $foregroundColor = $global:opt.WarningForegroundColor }
-    if (-not $backgroundColor) { $backgroundColor = $global:opt.WarningBackgroundColor }
+    if (-not $foregroundColor) { $foregroundColor = $messageWarningForegroundColor }
+    if (-not $backgroundColor) { $backgroundColor = $messageWarningBackgroundColor }
     Write-Host -NoNewline "" -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
     [int]$startTime = $(Get-Date -UFormat "%s")
     [int]$remainingTime = $duration
@@ -602,12 +518,146 @@ Export-ModuleMember -Function @(
     # Mdm_Std_Library
     "Set-StdGlobals",
     "Get-StdGlobals",
-    "Assert-DebugFunction",
-    "Submit-DebugFunction",
-
     # Waiting & pausing
+    "Wait-ForKeyPress",
     "Wait-AnyKey",
     "Wait-CheckDoPause",
     "Set-StdGlobals",
     "Wait-YorNorQ"
+    # Other
+    "Set-DisplayColors",
+    "Set-prompt",
+    "Assert-Verbose"
 )
+#endregion
+#region Globals:
+Write-Verbose "Loading globals..."
+# Global settings
+if (-not $global:InitDone) { 
+    # This indicates that the modules have not been previously imported. 
+    [bool]$global:InitDone = $true
+    [bool]$global:InitStdDone = $false
+    #
+    [string]$global:companyName = "MacroDM"
+    [string]$global:companyNamePrefix = "Mdm"
+    [string]$global:author = "David G. Horsman"
+    [string]$global:copyright = $global:author
+    [string]$global:copyright = "&copy; $global:copyright. All rights reserved."
+    [string]$global:license = "MIT"
+    [string]$global:title = ""
+    # Modules array
+    [array]$global:moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install", "Mdm_Modules")
+    [array]$global:moduleAddons = @("Mdm_Nightroman_PowerShelf", "Mdm_Springcomp_MyBox")
+
+    # Error display handling options:
+    [bool]$global:UseTrace = $true
+    [bool]$global:UseTraceDetails = $true
+    [bool]$global:UseTraceStack = $true
+    [bool]$global:DebugProgressFindName = $true
+    [int]$global:debugTraceStep = 0
+    [string]$global:debugSetting = ""
+    # include debug info with warnings
+    [bool]$global:UseTraceWarning = $true
+    # include full details with warnings
+    [bool]$global:UseTraceWarningDetails = $false
+    # Built in Powershell based Method:
+    [bool]$global:UsePsBreakpoint = $true
+
+    # Set-PSBreakpoint
+    # pause on this cmdlet/function name
+    [bool]$global:DebugProgressFindName = $true
+    [array]$global:debugFunctionNames = @()
+    # [array]$global:debugFunctionNames = @("Get-Vs", "Get-DevEnvVersions")
+    # [array]$global:debugFunctionNames = @("Get-Vs", "Get-DevEnvVersions", "Add-RegistryPath", "Assert-RegistryValue")
+    [string]$global:debugFunctionName = ""
+    [bool]$global:DebugInScriptDebugger = $false
+    [int]$global:debugFunctioLineNumber = 0
+    [string]$global:debugWatchVariable = ""
+    [string]$global:debugMode = "Write"
+    
+    # Built in Powershell based Method:
+    if ($global:UsePsBreakpoint) {
+        try {
+            #PSDebug
+            if ($global:debugSetting.Length -ge 1) {
+                $commandNext = "Set-PSDebug -$global:debugSetting"
+            } else {
+                $commandNext = "Set-PSDebug -Off"
+            }
+            Invoke-Expression $commandNext
+            #PSBreakpoint
+            Get-PSBreakpoint | Remove-PSBreakpoint
+            Set-PSBreakPoint -Command "Debug-Script" -Action { 
+                Write-Host "<*>" -ForegroundColor Red
+                # Debug-Script -Break;
+            }
+            if ($global:debugFunctionName.Length -ge 1) {
+                Set-PSBreakPoint -Command $global:debugFunctionName -Action { Debug-Script -Break; }
+                Write-Host "Break set up for $global:debugFunctionName" -ForegroundColor Green
+            }
+            foreach ($functionName in $global:debugFunctionNames) {
+                Set-PSBreakpoint -Command $functionName -Action { Debug-Script -Break; }
+                Write-Host "Break set up for $functionName" -ForegroundColor Green
+            }
+        } catch {
+            Write-Error -Message "PSBreakpoint (global:InitDone) errors in Mdm_Std_Library initialization!`n$_"
+            #  -ErrorRecord $_
+            Write-Host "Powershell debug features are unavailable in the Mdm Standard Library" `
+                -ForegroundColor Red
+        }
+        # This doesn't work:
+        # Source : https://stackoverflow.com/questions/20912371/is-there-a-way-to-enter-the-debugger-on-an-error/
+        # Get the current session using Get-PSSession
+        # $currentSession = New-PSSession
+        # $currentSession = Get-PSSession
+        # $currentSession = Get-PSSession | Where-Object { $_.Id -eq $session.Id }
+
+        # Extract relevant properties from the existing session
+        # $computerName = $currentSession.ComputerName
+        # $credential = $currentSession.Credential
+        # $newSession = New-PSSession -ComputerName $computerName -Credential $credential
+        # Invoke-Command -Session $currentSession -ScriptBlock {
+        # Set-PSBreakPoint -Command Debug-Script -Action { break; }
+        # Break on LINE
+        # Set-PSBreakpoint -Script "C:\Path\To\YourScript.ps1" -Line 10
+        # }
+    }
+    # Control and defaults
+    [bool]$global:DoVerbose = $false
+    [bool]$global:DoPause = $false
+    [bool]$global:DoDebug = $false
+    [string]$global:msgAnykey = ""
+    [string]$global:msgYorN = ""
+    
+    # Color of error and warning text
+    $global:opt = (Get-Host).PrivateData
+    [System.ConsoleColor]$global:messageBackgroundColor = [System.ConsoleColor]::Black
+    [System.ConsoleColor]$global:messageForegroundColor = [System.ConsoleColor]::White
+    [System.ConsoleColor]$global:messageWarningBackgroundColor = Convert-MediaToConsoleColor([System.Windows.Media.Color]$global:opt.WarningBackgroundColor)
+    [System.ConsoleColor]$global:messageWarningForegroundColor = Convert-MediaToConsoleColor([System.Windows.Media.Color]$global:opt.WarningForegroundColor)
+    [System.ConsoleColor]$global:messageErrorBackgroundColor = Convert-MediaToConsoleColor([System.Windows.Media.Color]$global:opt.ErrorBackgroundColor)
+    [System.ConsoleColor]$global:messageErrorForegroundColor = Convert-MediaToConsoleColor([System.Windows.Media.Color]$global:opt.ErrorForegroundColor)
+
+    $colorChanged = $false
+    iF ($colorChanged) {
+        $global:opt.WarningBackgroundColor = Convert-ConsoleToMediaColor([System.ConsoleColor]$global:messageWarningBackgroundColor)
+        $global:opt.WarningForegroundColor = Convert-ConsoleToMediaColor([System.ConsoleColor]$global:messageWarningForegroundColor)
+        $global:opt.ErrorBackgroundColor = Convert-ConsoleToMediaColor([System.ConsoleColor]$global:messageErrorBackgroundColor)
+        $global:opt.ErrorForegroundColor = Convert-ConsoleToMediaColor([System.ConsoleColor]$global:messageErrorForegroundColor)
+    }
+
+    $global:timeStarted = Get-Date
+    $global:timeStartedFormatted = "{0:yyyymmdd_hhmmss}" -f ($global:timeStarted)
+    $global:timeCompleted = $null
+    $global:lastError = $null
+}
+# Log
+if (-not $global:logFileNameFull) {
+    [string]$global:logFileName = "$($global:companyNamePrefix)_Installation_Log"
+    [string]$global:logFilePath = "$global:projectRootPath\log"
+    [string]$global:logFileNameFull = ""
+    # Use a single log file repeatedly appending to it.
+    # The date and time will be appended to the name when LogOneFile is false.
+    [bool]$global:LogOneFile = $false
+}
+#endregion

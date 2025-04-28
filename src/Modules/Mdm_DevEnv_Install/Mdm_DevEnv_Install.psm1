@@ -1,17 +1,17 @@
 
-# Install-Mdm_Dev_Env
-if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName }
+Write-Host "Mdm_DevEnv_Install.psm1"
+if (-not $global:moduleRootPath) { $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName }
 # Components installed: 
-. "$global:scriptPath\Mdm_DevEnv_Install\Install-DevEnvOsWin.ps1"
-. "$global:scriptPath\Mdm_DevEnv_Install\Install-DevEnvIdeWin.ps1"
-. "$global:scriptPath\Mdm_DevEnv_Install\Install-DevEnvLlmWin.ps1"
-. "$global:scriptPath\Mdm_DevEnv_Install\Install-DevEnvWhisperWin.ps1"
+. "$global:moduleRootPath\Mdm_DevEnv_Install\Install-DevEnvOsWin.ps1"
+. "$global:moduleRootPath\Mdm_DevEnv_Install\Install-DevEnvIdeWin.ps1"
+. "$global:moduleRootPath\Mdm_DevEnv_Install\Install-DevEnvLlmWin.ps1"
+. "$global:moduleRootPath\Mdm_DevEnv_Install\Install-DevEnvWhisperWin.ps1"
 # MAIN function:
-. "$global:scriptPath\Mdm_DevEnv_Install\Install-DevEnvWin.ps1"
+. "$global:moduleRootPath\Mdm_DevEnv_Install\Install-DevEnvWin.ps1"
 
 # Imports
 $importName = "Mdm_Std_Library"
-Import-Module -Name "$global:scriptPath\$importName\$importName" -Force -ErrorAction Continue
+Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Continue
 
 # Variables: 
 #############################

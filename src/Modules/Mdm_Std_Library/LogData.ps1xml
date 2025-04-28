@@ -1,0 +1,63 @@
+<TypeDefinitions>
+    <TypeDefinition>
+        <Name>LogParameters</Name>
+        <Properties>
+            <Property>
+                <Name>LogMessages</Name>
+                <Type>System.String[]</Type> <!-- Array of strings for log messages -->
+            </Property>
+            <Property>
+                <Name>LocalLogFileNameFull</Name>
+                <Type>System.String</Type>
+            </Property>
+            <Property>
+                <Name>KeepWhitespace</Name>
+                <Type>System.Boolean</Type> <!-- Switch represented as a boolean -->
+            </Property>
+            <Property>
+                <Name>KeepEscapes</Name>
+                <Type>System.Boolean</Type> <!-- Switch represented as a boolean -->
+            </Property>
+            <Property>
+                <Name>IsError</Name>
+                <Type>System.Boolean</Type> <!-- Switch represented as a boolean -->
+            </Property>
+            <Property>
+                <Name>IsWarning</Name>
+                <Type>System.Boolean</Type> <!-- Switch represented as a boolean -->
+            </Property>
+            <Property>
+                <Name>DoTraceWarningDetails</Name>
+                <Type>System.Boolean</Type> <!-- Switch represented as a boolean -->
+            </Property>
+            <Property>
+                <Name>SkipScriptLineDisplay</Name>
+                <Type>System.Boolean</Type> <!-- Switch represented as a boolean -->
+            </Property>
+            <Property>
+                <Name>ForegroundColor</Name>
+                <Type>System.String</Type>
+            </Property>
+            <Property>
+                <Name>BackgroundColor</Name>
+                <Type>System.String</Type>
+            </Property>
+            <Property>
+                <Name>ErrorPSItem</Name>
+                <Type>System.Management.Automation.ErrorRecord</Type>
+            </Property>
+        </Properties>
+        <Methods>
+            <Method>
+                <Name>ToString</Name>
+                <ReturnType>System.String</ReturnType>
+                <ScriptBlock>
+                    <![CDATA[
+                    param($this)
+                    return "LogMessages: $($this.LogMessages -join ', '), LocalLogFileNameFull: $($this.LocalLogFileNameFull), IsError: $($this.IsError), IsWarning: $($this.IsWarning)"
+                    ]]>
+                </ScriptBlock>
+            </Method>
+        </Methods>
+    </TypeDefinition>
+</TypeDefinitions>

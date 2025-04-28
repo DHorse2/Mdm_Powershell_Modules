@@ -114,6 +114,7 @@ function Get-FileNamesFromPath {
     $SourceFileNames
 }
 function Get-UriFromPath {
+    [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
         [string]$Path
@@ -185,7 +186,7 @@ function Set-DirectoryToScriptRoot {
         Set directory to the script's root directory.
     .DESCRIPTION
         Set the working directory to the script's root directory..
-    .PARAMETER scriptPath
+    .PARAMETER moduleRootPath
         Optional path to use.
     .PARAMETER scriptDrive
         Optional drive letter.
@@ -198,23 +199,23 @@ function Set-DirectoryToScriptRoot {
 
     [CmdletBinding()]
     param (
-        $global:scriptPath = (get-item $PSScriptRoot).parent.FullName,
-        $scriptDrive = (Split-Path -Path "$global:scriptPath" -Qualifier)
+        $global:moduleRootPath = (get-item $PSScriptRoot).parent.FullName,
+        $scriptDrive = (Split-Path -Path "$global:moduleRootPath" -Qualifier)
     )
     
     # Drive and Path:
     # NOTE on script location: 
     # This script is found and run in the "Mdm_Bootstrap" module of "Modules"
     # So the parent directory is the Root Root of this Project's Modules
-    # $global:scriptPath = Split-Path -Path "$PSScriptRoot" -Parent
+    # $global:moduleRootPath = Split-Path -Path "$PSScriptRoot" -Parent
     # .\src\Modules\Mdm_Modules\Mdm_Bootstrap
-    # $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName
-    # $scriptDrive = Split-Path -Path "$global:scriptPath" -Qualifier
+    # $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName
+    # $scriptDrive = Split-Path -Path "$global:moduleRootPath" -Qualifier
     Set-Location $scriptDrive
     # NOTE: Must be directories to invoke directory creation
     # NOTE: New-Item doesn't work in priveledged directories
     # New-Item -ItemType File -Path $destination -Force
-    Set-Location -Path "$global:scriptPath"
+    Set-Location -Path "$global:moduleRootPath"
     Get-Location    
 }
 function Copy-ItemWithProgressDisplay {
@@ -252,6 +253,7 @@ function Copy-ItemWithProgressDisplay {
 #>
 
 
+    [CmdletBinding()]
     param (
         $source,
         $destination
@@ -345,6 +347,7 @@ function ConvertFrom-HashValue {
     }
 }
 function ConvertTo-Text {
+    [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
@@ -470,6 +473,34 @@ function ConvertTo-Text {
     Write-Verbose "Result: $textOut (type: $textOutType)"
     return $textOut
 }
+function Get-LineFromFile {
+    [CmdletBinding()]
+    param (
+        [string]$FileName,
+        [int]$FileLineNumber
+    )
+    # Check if the file exists
+    if (-Not (Test-Path $FileName)) {
+        $logMessage = "The script '$FileName' does not exist."
+        Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -localLogFileNameFull $global:logFileNameFull
+        return
+    }
+    # Read the content of the script file
+    $scriptContent = Get-Content -Path $FileName
+
+    # Check if the line number is valid
+    if ($FileLineNumber -lt 1 -or $FileLineNumber -gt $scriptContent.Count) {
+        $logMessage = "Line number $FileLineNumber is out of range for the script '$FileName'."
+        Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -localLogFileNameFull $global:logFileNameFull
+        return
+    }
+
+    # Display the specified line
+    $lineText = $scriptContent[$FileLineNumber - 1]  # Adjust for zero-based index
+    $results = "Line $FileLineNumber from '$FileName': $lineText"
+    Write-Verbose $results
+    return $lineText
+}
 function ConvertTo-ObjectArray {
     [CmdletBinding()]
     Param(
@@ -539,7 +570,7 @@ function ConvertTo-EscapedText {
         return $textOut
     }
 }
-function ConvertTo-TrimedText {
+function ConvertTo-TrimmedText {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -611,6 +642,7 @@ function Add-LogText {
                         } else {
                             Write-Error -Message $logMessage
                         }
+                        $null = Debug-Script -DoPause 60 -functionName "Add-LogError pause for interupt" -localLogFileNameFull $localLogFileNameFull
                     } elseif ($IsWarning) { 
                         if ($global:UseTrace -and $global:UseTraceWarning -and $ErrorPSItem) { 
                             Add-LogError $logMessage `
@@ -673,7 +705,7 @@ function Add-LogError {
             $column = $ErrorPSItem.InvocationInfo.OffsetInLine
             $functionName = $($helpInfoObject.Name)
             if (-not $functionName) { $functionName = $scriptName }
-            $null = Submit-DebugFunction -functionName $cmdlet.Name -invocationFunctionName $($MyInvocation.MyCommand.Name) # Script_Debugger
+            $null = Debug-SubmitFunction -pauseSeconds 5 -functionName "LogError for $functionName" -invocationFunctionName $($MyInvocation.MyCommand.Name) # Debug-Script
         } catch {
             Write-Error -Message "Add-LogError Error Object initialization error. $_"
         }
@@ -681,13 +713,13 @@ function Add-LogError {
         try {
             #region Colors
             if (-not $foregroundColor) {
-                if ($IsError) { $foregroundColor = $global:opt.ErrorForegroundColor }
-                elseif ($IsWarning) { $foregroundColor = $global:opt.WarningForegroundColor }
+                if ($IsError) { $foregroundColor = $messageErrorForegroundColor }
+                elseif ($IsWarning) { $foregroundColor = $messageWarningForegroundColor }
                 else { $foregroundColor = $global:messageForegroundColor }
             }
             if (-not $backgroundColor) {
-                if ($IsError) { $backgroundColor = $global:opt.ErrorBackgroundColor }
-                elseif ($IsWarning) { $backgroundColor = $global:opt.WarningBackgroundColor }
+                if ($IsError) { $backgroundColor = $messageErrorBackgroundColor }
+                elseif ($IsWarning) { $backgroundColor = $messageWarningBackgroundColor }
                 else { $backgroundColor = $global:messageBackgroundColor }
             }
             if (-not $foregroundColor) { $foregroundColor = [System.ConsoleColor]::Yellow }
@@ -788,7 +820,7 @@ function Add-LogError {
     }
     end { return $newMessage }
 }
-function Get-LogFileName {
+function Open-LogFile {
     [CmdletBinding()]
     param (
         $localLogFileNameFull = "",
@@ -804,7 +836,7 @@ function Get-LogFileName {
             $LogOneFile = $global:LogOneFile
         }
         # Log folder
-        if (-not $logFilePath) { $logFilePath = "$((get-item $PSScriptRoot ).FullName)\Log" }
+        if (-not $logFilePath) { $logFilePath = "$global:projectRootPath\Log" }
         $logFilePath = Convert-Path $logFilePath
         # Check if folder not exists, and create it
         if (-not(Test-Path $logFilePath -PathType Container)) {
@@ -913,18 +945,19 @@ function Test-HtmlData {
     [CmdletBinding()]
     param (
         [Parameter(mandatory = $true, ValueFromPipeline = $true)]$InputObject,
-        [Parameter(mandatory = $false)]$FileName = ""
+        [Parameter(mandatory = $false)]$fileName = ""
     )
     begin { }
     process { 
-        # G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Module_Test
-        if ($FileName.Length = = 0) {
-            $global:scriptPath = (get-item $PSScriptRoot ).Parent.Parent.Parent.FullName 
+        # $global:projectRootPath\src\Modules\Mdm_Module_Test
+        if (-not $global:projectRootPath) {
+            $global:projectRootPath = (get-item $PSScriptRoot ).Parent.Parent.Parent.FullName 
         }
-        # # G:\Script\Powershell\Mdm_Powershell_Modules
-        $FileName = "$global:scriptPath\test\testShowData.txt"
-        # # G:\Script\Powershell\Mdm_Powershell_Modules\test\testShowData.txt
-        Get-TestHtmlData | Write-HtlmData -file $Filename 
+        if (-not $fileName) {
+            $fileName = "$global:projectRootPath\test\testShowData.txt"
+        }
+        # # $global:projectRootPath\test\testShowData.txt
+        Get-TestHtmlData | Write-HtlmData -file $filename 
     }
     end { }
 }
@@ -939,7 +972,7 @@ function Search-Directory {
     .PARAMETER inputObjects
         This is a ValueFromPipeline and can be used with one or more objects.
     .PARAMETER dir
-        This defaults to "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules".
+        This defaults to "$global:projectRootPath\src\Modules".
     .PARAMETER folder
         Defaults to (Get-Item $dir).Parent.
     .PARAMETER folderName
@@ -956,7 +989,7 @@ function Search-Directory {
     [CmdletBinding()]
     param(
         [parameter(ValueFromPipeline)]$inputObjects,
-        $dir = "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules",
+        $dir = "$global:projectRootPath\src\Modules",
         $folder = (Get-Item $dir).Parent,
         $folderName = $folder.Name,
         $folderPath = $folder.FullName    

@@ -1,16 +1,17 @@
+
 function DevEnv_Install_Modules_Win {
-<#
+    <#
     .SYNOPSIS
         Install or update Mdm Modules.
     .DESCRIPTION
         This installs the libraries to the live system using Robocopy.
     .PARAMETER source
-        default: "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules" 
+        default: "$global:projectRootPath\src\Modules" 
     .PARAMETER destination
         default: "$env:PROGRAMFILES\\WindowsPowerShell\Modules"
 
         .PARAMETER logFilePath
-        default: "G:\Script\Powershell\Mdm_Powershell_Modules\log\"
+        default: "$global:projectRootPath\log\"
     .PARAMETER logFileName
         default: "Mdm_Installation_Log.txt"
     .PARAMETER LogOneFile
@@ -54,36 +55,48 @@ function DevEnv_Install_Modules_Win {
         [switch]$DoVerbose,
         [switch]$DoPause,
         [switch]$DoDebug,
-        [string]$source = "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules",
-        [string]$destination = "$env:PROGRAMFILES\WindowsPowerShell\Modules",
-        [string]$logFilePath = "G:\Script\Powershell\Mdm_Powershell_Modules\log",
+        [string]$source = "",
+        [string]$destination = "",
+        [string]$projectRootPath = "",
+        [string]$moduleRootPath = "",
+        [string]$logFilePath = "$global:projectRootPath\log",
         [string]$logFileName = "Mdm_Installation_Log",
         [switch]$LogOneFile,
-        [string]$nameFilter = "Mdm_*",
+        [string]$nameFilter = "$($global:companyNamePrefix)_*",
         [switch]$SkipHelp,
         [switch]$SkipRegistry,
+        [switch]$SkipCopy,
         [switch]$DoNewWindow,
         [string]$companyName = "MacroDM",
         [string]$copyOptions = "/E /FP /nc /ns /np /TEE"
-
     )
     # DevEnv_Install_Modules_Win
     # ================================= Initialization
     try {
-        if (-not $source) {$source = (get-item $PSScriptRoot).parent.FullName }
-        $source = Convert-Path $source
-        $moduleRoot = $source
+        # Remove Mdm Modules
+        $importName = "Mdm_Modules"
+        Write-Host "Removing $importName"
+        Remove-Module -name $importName `
+            -Force `
+            -ErrorAction SilentlyContinue
 
+        if (-not $moduleRootPath) { $moduleRootPath = (get-item $PSScriptRoot).Parent.FullName }
+        if (-not $projectRootPath) { $projectRootPath = (get-item $moduleRootPath).Parent.Parent.FullName }
+        if (-not $source) { $source = "$projectRootPath\src\Modules" }
+        $source = Convert-Path $source
+        if (-not $source) { $source = "$projectRootPath\src\Modules" }
+
+        if (-not $destination) { $destination = "$env:PROGRAMFILES\WindowsPowerShell\Modules" }
         $destination = Convert-Path $destination
         if (-not $destination) { $destination = Convert-Path "$env:PROGRAMFILES\WindowsPowerShell\Modules" }
+        if (-not $destination) { exit }
 
+        $global:projectRootPath = $projectRootPath
+        $global:moduleRootPath = $moduleRootPath
         # This works with uninstalled Modules (both)
         $importName = "Mdm_Std_Library"
-        # if (-not $global:scriptPath) { $global:scriptPath = (get-item $PSScriptRoot ).parent.FullName }
-        Import-Module -Name "$moduleRoot\$importName\$importName" -Force -ErrorAction Stop
-        $global:scriptPath = $moduleRoot
-    }
-    catch {
+        Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Stop
+    } catch {
         Write-Host " "
         Write-Host "The module environment is unstable." -ForegroundColor Red
         Write-Host "Run the DevEnv_Module_Reset script to reset it." -ForegroundColor Red
@@ -91,12 +104,13 @@ function DevEnv_Install_Modules_Win {
         Exit
     }
     # MAIN
-    $global:timeStartedFormatted = "{0:yyyymmdd_hhmmss}" -f (get-date)
-    $global:timeCompleted = $global:timeStarted
+    $global:timeStarted = Get-Date
+    $global:timeStartedFormatted = "{0:yyyymmdd_hhmmss}" -f ($global:timeStarted)
+    $global:timeCompleted = $null
 
     # Logging:
     # $global:logFileNameFull = 
-    Get-LogFileName
+    Open-LogFile
     $global:logFileNameFull = Convert-Path $global:logFileNameFull
     Write-Host "Log File: $global:logFileNameFull"
     $logMessage = @(
@@ -114,7 +128,6 @@ function DevEnv_Install_Modules_Win {
 
     # ================================= Codium setup
     # https://dev.to/opdev1004/how-to-add-open-with-vscodium-for-windows-3g0l
-
     if (-not $SkipRegistry) {
         Add-LogText "==================================================================" $global:logFileNameFull `
             -foregroundColor Green
@@ -141,15 +154,13 @@ function DevEnv_Install_Modules_Win {
         if (Test-Path $appExePath) {
             # Resolve the path
             $appExePath = Resolve-Path $appExePath | Select-Object -ExpandProperty Path
-        }
-        else {
+        } else {
             # Codium must be installed for all users.
             $appExePath = Resolve-Path "$env:Programfiles\VSCodium\VSCodium.exe"
             if (Test-Path $appExePath) {
                 # Resolve the path
                 $appExePath = Resolve-Path $appExePath | Select-Object -ExpandProperty Path
-            }
-            else {
+            } else {
                 # Throw an error TODO.
                 Add-LogText "VSCodium not found." $global:logFileNameFull -IsError
             }
@@ -215,60 +226,60 @@ function DevEnv_Install_Modules_Win {
     }
 
     # ================================= Install modules:
-
     # ================================= Execute COPY command:
-    if (-not $copyOptions) { $copyOptions = "/E /FP /nc /ns /np /TEE" }
-    $commandLine = "Robocopy `"$source`" `"$destination`" $copyOptions"
-    $commandLine = "$commandLine /LOG+:`"$global:logFileNameFull`"" # :: output status to LOG file (append to existing log).
-    # ================================= Reporting:
-    # if ($DoVerbose) {
-    Add-LogText "==================================================================" $global:logFileNameFull `
-        -foregroundColor Green
-    $logMessage = @( `
-            "Copying SOURCE: ""$source""", `
-            "DESTINATION: ""$destination""", `
-            " ", `
-            "Command: $commandLine", `
-            " ", `
-            "Starting processing..."
-    )
-    Add-LogText $logMessage $global:logFileNameFull
-    # }
+    if (-not $SkipCopy) {
+        if (-not $copyOptions) { $copyOptions = "/E /FP /nc /ns /np /TEE" }
+        $commandLine = "Robocopy `"$source`" `"$destination`" $copyOptions"
+        $commandLine = "$commandLine /LOG+:`"$global:logFileNameFull`"" # :: output status to LOG file (append to existing log).
+        # ================================= Reporting:
+        # if ($DoVerbose) {
+        Add-LogText "==================================================================" $global:logFileNameFull `
+            -foregroundColor Green
+        $logMessage = @( `
+                "Copying SOURCE: ""$source""", `
+                "DESTINATION: ""$destination""", `
+                " ", `
+                "Command: $commandLine", `
+                " ", `
+                "Starting processing..."
+        )
+        Add-LogText $logMessage $global:logFileNameFull
+        # }
 
-    Add-LogText "Remove modules if they exist..." $global:logFileNameFull
-    Remove-Item "$destination\Mdm_*" `
-        -Recurse -Force `
-        -ErrorAction SilentlyContinue
+        Add-LogText "Remove modules if they exist..." $global:logFileNameFull
+        Remove-Item "$destination\Mdm_*" `
+            -Recurse -Force `
+            -ErrorAction SilentlyContinue
 
-    Add-LogText "Copy modules to destination..." $global:logFileNameFull
-    if ($DoNewWindow) {
-        $roboCopyOptions = @($source, $destination)
-        $optionsArray = $copyOptions.split(" ")
-        foreach ($option in $optionsArray) {
-            $roboCopyOptions += $Option
+        Add-LogText "Copy modules to destination..." $global:logFileNameFull
+        if ($DoNewWindow) {
+            $roboCopyOptions = @($source, $destination)
+            $optionsArray = $copyOptions.split(" ")
+            foreach ($option in $optionsArray) {
+                $roboCopyOptions += $Option
+            }
+            $roboCopyOptions += "/LOG+:$global:logFileNameFull"
+            # $installProcess = 
+            Add-LogText -logMessages "NOTE: Opening new window..." `
+                -localLogFileNameFull $global:logFileNameFull `
+                -ForegroundColor Red
+            Start-Process -FilePath "robocopy" `
+                -ArgumentList $roboCopyOptions `
+                -Verb RunAs `
+                -NoNewWindow
+            # s/b -NoExit???
+            # Start-Process cmd "/c `"$commandLine & pause `""
+            # $installProcess = Start-Process powershell -ArgumentList "-NoProfile -Command $commandLine" -Verb RunAs -NoNewWindow
+            # Start-Process powershell -ArgumentList "-NoProfile -Command `"$commandLine`"" -Verb RunAs
+            # Start-Process powershell -ArgumentList "-NoExit -Command $commandLine" -Verb RunAs
+            # Note: NoNewWindow might be preferred if output isn't captured.
+            # ================================= Wait for completion
+            # if you have a process:
+            # $installProcess.WaitForExit()
+
+        } else {
+            Invoke-Expression $commandLine
         }
-        $roboCopyOptions += "/LOG+:$global:logFileNameFull"
-        # $installProcess = 
-        Add-LogText -logMessages "NOTE: Opening new window..." `
-            -localLogFileNameFull $global:logFileNameFull `
-            -ForegroundColor Red
-        Start-Process -FilePath "robocopy" `
-            -ArgumentList $roboCopyOptions `
-            -Verb RunAs `
-            -NoNewWindow
-        # s/b -NoExit???
-        # Start-Process cmd "/c `"$commandLine & pause `""
-        # $installProcess = Start-Process powershell -ArgumentList "-NoProfile -Command $commandLine" -Verb RunAs -NoNewWindow
-        # Start-Process powershell -ArgumentList "-NoProfile -Command `"$commandLine`"" -Verb RunAs
-        # Start-Process powershell -ArgumentList "-NoExit -Command $commandLine" -Verb RunAs
-        # Note: NoNewWindow might be preferred if output isn't captured.
-        # ================================= Wait for completion
-        # if you have a process:
-        # $installProcess.WaitForExit()
-
-    }
-    else {
-        Invoke-Expression $commandLine
     }
 
     # ================================= Help files
@@ -280,11 +291,11 @@ function DevEnv_Install_Modules_Win {
         # Export-Help
         try {
             Export-Help `
-                -moduleRoot $source `
+                -projectRootPath $projectRootPath `
+                -moduleRootPath $source `
                 -localLogFileNameFull $global:logFileNameFull `
                 -nameFilter $nameFilter
-        }
-        catch {
+        } catch {
             $logMessage = "Export-Help Failed."
             Add-LogText -logMessages $logMessage -IsError -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_
         }
@@ -310,16 +321,15 @@ function DevEnv_Install_Modules_Win {
         # Export-Mdm_Help
         try {
             Remove-Module $importName `
-            -ErrorAction SilentlyContinue
+                -ErrorAction SilentlyContinue
             Import-Module -Name $importName `
-            -Force -ErrorAction Stop
+                -Force -ErrorAction Stop
             Add-LogText "==================================================================" $global:logFileNameFull `
                 -foregroundColor Green
             Add-LogText "Performing Export-Mdm_Help..." $global:logFileNameFull `
                 -foregroundColor Green
-            Export-Mdm_Help -moduleRoot $moduleRoot
-        }
-        catch {
+            Export-Mdm_Help -moduleRootPath $moduleRootPath
+        } catch {
             $logMessage = "Export-Mdm_Help Failed."
             Add-LogText -logMessages $logMessage -IsError -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_
         }
@@ -334,8 +344,7 @@ function DevEnv_Install_Modules_Win {
             Add-LogText "Performing Get-AllCommands..." $global:logFileNameFull `
                 -foregroundColor Green
             Get-AllCommands
-        }
-        catch {
+        } catch {
             $logMessage = "Get-AllCommands Failed."
             Add-LogText -logMessages $logMessage -IsError -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_
         }
@@ -371,8 +380,7 @@ function DevEnv_Install_Modules_Win {
                 Add-LogText $commandLine $global:logFileNameFull
                 Invoke-Expression $commandLine
             }
-        }
-        catch {
+        } catch {
             $logMessage = "Failed to install help files."
             Add-LogText -logMessages $logMessage -IsError -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_
         }
@@ -390,28 +398,26 @@ function DevEnv_Install_Modules_Win {
     # Import Modules
     try {
         # Import-Module -name $moduleName `
-        Remove-Module -Name "$moduleRoot\$moduleName\$moduleName" `
+        Remove-Module -Name "$moduleRootPath\$moduleName\$moduleName" `
             -Force `
             -ErrorAction Stop
         # -Verbose `
         # Import-Module -name Mdm_Modules -Force >> $global:logFileNameFull
-    }
-    catch {
+    } catch {
         $logMessage = "No need to remove module: $moduleName."
         Add-LogText -logMessages $logMessage -IsWarning -SkipScriptLineDisplay -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_
     }
     # Import Modules
     try {
         # Import-Module -name $moduleName `
-        Import-Module -Name "$moduleRoot\$moduleName\$moduleName" `
+        Import-Module -Name "$moduleRootPath\$moduleName\$moduleName" `
             -Force `
             -ErrorAction Stop
         # -Verbose `
         # Import-Module -name Mdm_Modules -Force >> $global:logFileNameFull
-    }
-    catch {
+    } catch {
         $logMessage = "Failed to import module: $moduleName."
-        Add-LogText -logMessages $logMessage -IsError -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_ -IsError
+        Add-LogText -logMessages $logMessage -IsError -ErrorPSItem $_ -localLogFileNameFull $global:logFileNameFull
         # try {
         #     # Import-Module -name $moduleName `
         #     Import-Module -Name $moduleName `
@@ -429,10 +435,9 @@ function DevEnv_Install_Modules_Win {
     try {
         Add-LogText "==================" $global:logFileNameFull
         Add-LogText "Automatic Function Imports Test (Export-ModuleMemberScan $moduleName)" $global:logFileNameFull
-        Add-LogText "Export-ModuleMemberScan $moduleRoot" $global:logFileNameFull
-        Export-ModuleMemberScan "$moduleRoot\$moduleName"
-    }
-    catch {
+        Add-LogText "Export-ModuleMemberScan $moduleRootPath" $global:logFileNameFull
+        Export-ModuleMemberScan "$moduleRootPath\$moduleName"
+    } catch {
         $logMessage = "Export-ModuleMemberScan failed."
         Add-LogText -logMessages $logMessage -IsError -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_
     }
@@ -453,6 +458,6 @@ function DevEnv_Install_Modules_Win {
     Add-LogText "==================================================================" $global:logFileNameFull `
         -foregroundColor Green
     Add-LogText "Resetting Mdm Modules for bootstrap use." $global:logFileNameFull
-    . DevEnv_Module_Reset
+    . DevEnv_Module_Reset_Func
     # Invoke-Expression DevEnv_Module_Reset
 }

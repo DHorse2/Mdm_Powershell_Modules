@@ -1,22 +1,3 @@
-﻿=============================================
-Error in Script: Mdm_Std_Help.ps1, line 899, column 29
-Error in Script: Mdm_Std_Help.ps1, line 899, column 29
-Error in Template File TEXT processing.
-Details: 
-Cannot find path 'G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\$moduleRoot\Mdm_Bootstrap\help\Mdm_DevEnv_Install_Commands.txt' because it does not exist.
-ObjectNotFound: (G:\Script\Power...ll_Commands.txt:String) [Resolve-Path], ItemNotFoundException
-
-Stack trace: 
-Function_Name         Link                  Calling_Function
--------------         ----                  ----------------
-Frame[0]: , line 899. Mdm_Std_Help.ps1:899: None...
-
-Script stack trace: 
-at ConvertFrom-Template<Process>, G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Help.ps1: line 899
-at Export-Mdm_Help<Process>, G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Help.ps1: line 125
-at DevEnv_Install_Modules_Win, G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\DevEnv_Install_Modules_Win.ps1: line 331
-at <ScriptBlock>, <No file>: line 1
-=============================================
 # Mdm System Management Modules
 
 ## Order of script execution for a new system.
@@ -78,10 +59,9 @@ Install-DevEnvWin
 
 
 ## Other stuff
-Author: David G. Horsman
+Author: {{Author}}
 Companies:
 dba MacroDM (2010)  
 Macroscope Design Matrix (1986)  
 Axion Computer Software (1978)  
 Axion Computer Systems (1990)  
-

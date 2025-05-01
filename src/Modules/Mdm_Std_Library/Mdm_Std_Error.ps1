@@ -8,7 +8,7 @@ function Get-ErrorNew {
     .PARAMETER Message
         The error message.
     .PARAMETER ErrorCategory
-        The error type.
+        TODO The error type.
     .PARAMETER DoPause
         Switch: Pause between steps.
     .PARAMETER DoVerbose
@@ -16,7 +16,7 @@ function Get-ErrorNew {
     .PARAMETER DoDebug
         Switch: Debug this script.
     .EXAMPLE
-        TODO PsError Example
+        Get-NewError "I had an error" -ErrorCategory 
     .NOTES
         I haven't tested or used this code yet.
     .OUTPUTS
@@ -123,8 +123,11 @@ function Set-ErrorBreakOnVariable {
     begin {
         if (-not $watchVariable) { $watchVariable = $global:debugWatchVariable }
         if (-not $mode) { $mode = "Write" } else { $mode = $global:mode }
-        # "Write-Host -ForegroundColor Green -Object ("The $Data variable has changed! Value is: {0}" -f $watchVariable); break;"
-        if (-not $commandLine) { $commandLine = "break;" }
+        Write-Verbose `
+            -ForegroundColor Green `
+            -Object ("The $Data variable has changed! Value is: {0}" -f $watchVariable)
+        # break
+        if (-not $commandLine) { $commandLine = "break; " }
         $logMessage = "The watch Variable has changed! Value is: $watchVariable"
         $logMessage += "Action: $commandLine"
     }
@@ -204,7 +207,7 @@ function Debug-Script {
             "Script Debugger in $(Split-Path -Path $($frame.ScriptName) -Leaf), Line: $($frame.ScriptLineNumber)"
         )
         Add-LogText -logMessages $logMessage -IsWarning -localLogFileNameFull $localLogFileNameFull
-        Start-Sleep -Seconds 3
+        Start-Sleep -Seconds 2
     }
     process {
         $DoPromptError = $false
@@ -215,6 +218,7 @@ function Debug-Script {
         # Output the call stack
         try {
             $logMessage = @("Stack:")
+            $callStack = Get-PSCallStack
             $logMessageLine = Get-CallStackFormatted $callStack
             $logMessage += $logMessageLine.Trim()
             Add-LogText -logMessages $logMessage -foregroundColor Green -localLogFileNameFull $localLogFileNameFull

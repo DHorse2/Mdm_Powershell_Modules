@@ -23,13 +23,13 @@ function Install-DevEnvIdeWin {
             Python 3
             Git
             Visual Studio Code
-        TODO incomplete. .
+        TODO incomplete. Other toolchain apps.
             Micrsoft toolchain
             VsCode
             VsCodium
             Rust toolchain
     .OUTPUTS
-        A log (TODO).
+        A log of the installed modules
 #>
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)

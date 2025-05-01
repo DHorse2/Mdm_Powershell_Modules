@@ -1,4 +1,4 @@
-﻿<!-- $fullHtml = @" -->
+<!-- fullHtml = @" -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_DevEnv_Install Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="04/28/2025 10:57:14">
+    <meta name="date" content="04/30/2025 19:54:20">
     <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -186,96 +186,6 @@ EXAMPLE
     import-module Mdm_Std_Library
 </pre>
 <pre>NAME
-Mdm Standard Library
-
-SYNOPSIS
-    Mdm Standard Functions Library addresses cross-cutting functionality.
-
-DESCRIPTION
-    The Mdm (dba MacroDM) Standard Library is used by the other modules.
-    It addresses cross-cutting functionality.
-    This includes managing state, permissions, exceptions, path and files.
-    Also other functions like pausing, prompting, displaying and searching.
-    Also, help functions to auto-generate help more concisely & verbose.
-    The universally available switches appear here.
-
-    Global Setting
-    These are initialized on the first import. 
-    1. You can set them permanently. They are found at the top of the psm1 file.
-    2. You can also set them after the std include for script specific requirements.
-    For example, altering the logFileName as needed. 
-
-PARAMETER DoPause
-    Switch: Pause between steps.
-
-PARAMETER DoVerbose
-    Switch: Verbose output and prompts.
-
-PARAMETER DoDebug
-    Switch: Debug this script.
-
-OUTPUTS
-    The Standard Functions Module
-    
-GLOBALS
-    # Logging
-    logFileName = "Mdm_Installation_Log"
-    logFilePath = "$global:projectRootPath\log"
-    logFileNameFull = ""
-    # Use a single log file repeatedly appending to it.
-    LogOneFile = $false
-
-    # This indicates that the modules have not been previously imported. 
-    InitDone = $true
-    InitStdDone = $false
-
-    # Modules array
-    moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install", "Mdm_Modules")
-
-    # Error display handling options:
-    UseTrace = $true;
-    UseTraceDetails = $true;
-    UseTraceStack = $true;
-        # include debug info with warnings
-        UseTraceWarning = $true;
-        # include full details with warnings
-        UseTraceWarningDetails = $false;
-        
-    # pause on this cmdlet/function name
-    DebugFunctionNames = "Add-RegistryPath"
-
-    DoVerbose = $false
-    DoPause = $false
-    DoDebug = $false
-    msgAnykey = ""
-    msgYorN = ""
-
-EXAMPLE
-    import-module Mdm_Std_Library
-</pre>
-<pre>NAME
-    Mdm Modules
-
-SYNOPSIS
-    Bootstrap, Standard Library, Development Environment Install modules.
-
-DESCRIPTION
-    Imports:
-        Mdm_Bootstrap
-        Mdm_Std_Library
-        Mdm_DevEnv_Install
-    This imports the Mdm_Modules so that all functions are available.
-
-EXAMPLE
-    Import-module Mdm_Modules
-
-NOTES
-    none.
-
-OUTPUTS
-Exported functions from Bootstrap, Standard Library, Development Environment Install modules.
-</pre>
-<pre>NAME
     Mdm Modules
 
 SYNOPSIS
@@ -325,7 +235,7 @@ Exported functions from Bootstrap, Standard Library, Development Environment Ins
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS C:\&gt;}
+Introduction: @{Text=PS &gt; }
       Syntax: Get-DevEnvVersions -DoVerbose
      Remarks:</pre>
 <p></p>
@@ -357,7 +267,7 @@ Introduction: @{Text=PS C:\&gt;}
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS C:\&gt;}
+Introduction: @{Text=PS &gt; }
       Syntax: Get-DevEnvVersions -DoVerbose
      Remarks:</pre>
 <p></p>
@@ -388,11 +298,11 @@ and then installs TensorFlow, Keras, and PyTorch.</p>
 <p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
 <p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
 <p></p>
-<p><strong>Return: </strong> A log (TODO).</p>
+<p><strong>Return: </strong> A log of the installed modules</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS C:\&gt;}
+Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvIdeWin -DoVerbose
      Remarks:</pre>
 <p></p>
@@ -427,7 +337,7 @@ Libraries: TensorFlow, Keras, PyTorch.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS C:\&gt;}
+Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvLlmWin
      Remarks:</pre>
 <p></p>
@@ -435,7 +345,7 @@ Introduction: @{Text=PS C:\&gt;}
 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Install these modules on the local system.</p>
-<p><strong>Detailed Description:</strong> NOT IN USE. Performs an .Add(<!-- $fullHtml = @" -->
+<p><strong>Detailed Description:</strong> NOT IN USE. Performs an .Add(<!-- fullHtml = @" -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -444,7 +354,7 @@ Introduction: @{Text=PS C:\&gt;}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_DevEnv_Install Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="04/28/2025 10:57:14">
+    <meta name="date" content="04/30/2025 19:54:20">
     <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -558,9 +468,9 @@ Introduction: @{Text=PS C:\&gt;}
 </body>
 </html>) for each object</p>
 <p><strong>Syntax:</strong> <pre>Install-DevEnvModules
+ inputObjects
  description: .
 
- inputObjects
  parameterValue: Object, required: false, globbing: false, pipelineInput: true (ByValue), position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -570,7 +480,7 @@ Introduction: @{Text=PS C:\&gt;}
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS C:\&gt;}
+Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvModules
      Remarks:</pre>
 <p></p>
@@ -605,7 +515,7 @@ TODO: sed, win linux, other tools?</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS C:\&gt;}
+Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvOsWin -DoPause
      Remarks:</pre>
 <p></p>
@@ -637,7 +547,7 @@ Introduction: @{Text=PS C:\&gt;}
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS C:\&gt;}
+Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvWhisperWin
      Remarks:</pre>
 <p></p>
@@ -667,11 +577,11 @@ When complete it displays current version for the environment.</p>
 <p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
 <p>  - <strong>DoDebug</strong></p>
 <p></p>
-<p><strong>Return: </strong> TODO Should create a log.</p>
+<p><strong>Return: </strong> Install the development components.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS C:\&gt;}
+Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvWin -DoPause -UpdatePath
      Remarks:</pre>
 <p></p>

@@ -284,7 +284,7 @@ function Initialize-Std {
 
             # Debug
             if ($local:DoDebug) { $global:DoDebug = $true } else { $global:DoDebug = $false }
-            # PowerShell setting for -Debug (TODO: Issue 2: doesn't work)
+            # TODO PowerShell setting for -Debug (Issue 2: doesn't work)
             if ($DebugPreference -ne 'SilentlyContinue') { $global:DoDebug = $true } else {
                 if ($local:DoDebug) {
                     $global:DoDebug = $true
@@ -296,11 +296,17 @@ function Initialize-Std {
             if ($global:DoDebug) { Write-Host "Debugging." } else { Write-Verbose "Debug off." }
 
             # Verbosity
-            if ($local:DoVerbose) { $global:DoVerbose = $true } else { $global:DoVerbose = $false }
+            if ($local:DoVerbose) {
+                $global:DoVerbose = $true 
+                $VerbosePreference = $true
+            } else {
+                $global:DoVerbose = $false
+                $VerbosePreference = $false
+            }
             # Check automatice parameters 
-            # Write-Host "PSBoundParameters: $PSBoundParameters" (TODO: Issue 1: doesn't work)
-            # Write-Host "PSBoundParameters Verbose: $($PSCmdlet.Get-Invocation.BoundParameters['Verbose'])" (TODO: Issue 1: doesn't work)
-            # Write-Host "VerbosePreference: $VerbosePreference" # (TODO: Issue 1: doesn't work)
+            # TODO Write-Host "PSBoundParameters: $PSBoundParameters" (Issue 1: doesn't work)
+            # TODO Write-Host "PSBoundParameters Verbose: $($PSCmdlet.Get-Invocation.BoundParameters['Verbose'])" (Issue 1: doesn't work)
+            # TODO Write-Host "VerbosePreference: $VerbosePreference" # (Issue 1: doesn't work)
 
             # PowerShell setting
             # return [bool]$VerbosePreference -ne [System.Management.Automation.ActionPreference]::SilentlyContinue    
@@ -310,7 +316,7 @@ function Initialize-Std {
                 # Command line specifies -Verbose
                 $b = $PsBoundParameters.Get_Item('Verbose')
                 $global:DoVerbose = $b
-                Write-Debug "Bound Param Verbose $b"
+                Write-Host "Bound Param Verbose $b"
                 # $global:DoVerbose = $false
                 if ($null -eq $b) { $global:DoVerbose = $false }
                 Write-Debug "Verbose from Bound Param: $global:DoVerbose"
@@ -376,13 +382,34 @@ function Initialize-StdGlobalsReset {
         [switch]$initDone
     )
     process {
-        $global:DoVerbose = $DoVerbose
-        $global:DoPause = $DoPause
-        $global:DoDebug = $DoDebug
         $global:msgAnykey = $msgAnykey
         $global:msgYorN = $msgYorN
         $global:InitStdDone = $initDone
+        Set-DebugVerbose -DoDebug $DoDebug -DoVerbose $DoVerbose -DoPause $DoPause
     }
+}
+function Set-DebugVerbose {
+    # Set Debug Preference
+    # Set Verbose Preference
+    param (
+        [Parameter(Mandatory = $true)]
+        [bool]$DoDebug,
+        [Parameter(Mandatory = $true)]
+        [bool]$DoVerbose,
+        [Parameter(Mandatory = $true)]
+        [bool]$DoPause
+    )
+    if ($DoDebug) { $DebugPreference = "Continue" } 
+    else { $DebugPreference = "SilentlyContinue" }
+
+    if ($DoVerbose) { $VerbosePreference = "Continue" } 
+    else { $VerbosePreference = "SilentlyContinue" }
+    $global:DoDebug = $DoDebug
+    $global:DoVerbose = $DoVerbose
+    $global:DoPause = $DoPause
+    # Output the current settings
+    Write-Debug "Debug Mode: $DoDebug. Preference: $DebugPreference"
+    Write-Host "Verbose Mode: $DoVerbose. Preference: $VerbosePreference"
 }
 function Show-StdGlobals {
 <#

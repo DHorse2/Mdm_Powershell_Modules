@@ -26,7 +26,7 @@ function Install-DevEnvWhisperWin {
     # Check for Administrator Privileges
     $adminCheck = [Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()
     if (-not $adminCheck.IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-        Write-Verbose "Please run this script as an Administrator." -ForegroundColor Red
+        Write-Error "Please run this script as an Administrator." -ForegroundColor Red
         exit
     }
 

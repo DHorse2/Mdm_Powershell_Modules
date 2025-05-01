@@ -44,7 +44,7 @@ function Get-DirectoryNameFromSaved {
     if ($null -eq $dirWdTemp) { $dirWdTemp = $PWD.Path }
     
     if ($null -ne $global:dirWdTemp -and $global:dirWdTemp -ne $PWD.Path) {
-        Write-Verbose "Working directory: $($PWD.Path) set to $global:dirWdTemp."
+        Write-Debug "Working directory: $($PWD.Path) set to $global:dirWdTemp."
         $global:dirWdTemp | Set-Location
     }
     $dirWdTemp
@@ -80,7 +80,7 @@ function Set-SavedToDirectoryName {
             $global:dirWdSaved = $PWD.Path
         }
     }
-    Write-Verbose "$global:dirWdSaved saved. "
+    Write-Debug "$global:dirWdSaved saved. "
 }
 function Get-FileNamesFromPath {
     <#
@@ -156,7 +156,7 @@ function Set-LocationToPath {
     }
     if ($PWD -ne $workingDirectory) {
         Set-Location -ErrorAction Stop -LiteralPath $workingDirectory
-        Write-Verbose "Working directory: $($PWD.Path)"
+        Write-Debug "Working directory: $($PWD.Path)"
     }
 }
 function Set-LocationToScriptRoot {
@@ -281,6 +281,34 @@ function Copy-ItemWithProgressDisplay {
 }
 # Text extraction
 #############################
+function Get-LineFromFile {
+    [CmdletBinding()]
+    param (
+        [string]$FileName,
+        [int]$FileLineNumber
+    )
+    # Check if the file exists
+    if (-Not (Test-Path $FileName)) {
+        $logMessage = "The script '$FileName' does not exist."
+        Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -localLogFileNameFull $global:logFileNameFull
+        return
+    }
+    # Read the content of the script file
+    $scriptContent = Get-Content -Path $FileName
+
+    # Check if the line number is valid
+    if ($FileLineNumber -lt 1 -or $FileLineNumber -gt $scriptContent.Count) {
+        $logMessage = "Line number $FileLineNumber is out of range for the script '$FileName'."
+        Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -localLogFileNameFull $global:logFileNameFull
+        return
+    }
+
+    # Display the specified line
+    $lineText = $scriptContent[$FileLineNumber - 1]  # Adjust for zero-based index
+    $results = "Line $FileLineNumber from '$FileName': $lineText"
+    Write-Debug $results
+    return $lineText
+}
 function ConvertFrom-HashValue {
     [CmdletBinding()]
     param (
@@ -289,43 +317,54 @@ function ConvertFrom-HashValue {
         $textLineBreak = "`n"
     )
     process {
+        Write-Debug "String"
         $textOutExtra = @()
         # $textInType = $textIn.GetType()
-        # Write-Verbose " "
-        # Write-Verbose "TextIn Name: $($textIn.Name)"
-        # Write-Verbose "TextIn Type: $($textInType)"
-        # Write-Verbose "TextIn TypeNameOfValue: $($textIn.TypeNameOfValue)"
-        # Write-Verbose "TextIn Value: $($textIn.Value)"
+        # Write-Debug " "
+        # Write-Debug "TextIn Name: $($textIn.Name)"
+        # Write-Debug "TextIn Type: $($textInType)"
+        # Write-Debug "TextIn TypeNameOfValue: $($textIn.TypeNameOfValue)"
+        # Write-Debug "TextIn Value: $($textIn.Value)"
         foreach ($textItem in $textIn.PSObject.Properties) {
             # $textItem = $textItem.Key
-            # Write-Verbose " "
-            # Write-Verbose "Object Key: $($textItem.Name)"
-            # Write-Verbose "Object Type: $($textItem.TypeNameOfValue)"
-            # Write-Verbose "Object Value: $($textItem.Value)"
+            # Write-Debug " "
+            # Write-Debug "Object Key: $($textItem.Name)"
+            # Write-Debug "Object Type: $($textItem.TypeNameOfValue)"
+            # Write-Debug "Object Value: $($textItem.Value)"
             if ($textItem.Name -eq "Name" -or $textItem.Name -eq "name") {
+                Write-Debug "Name"
                 $textOut += "$($textItem.Value)$textLineBreak"
             } elseif ($textItem.Name -eq "Text" -or $textItem.Name -eq "text") {
+                Write-Debug "Text"
                 $textOut += "$($textItem.Value)$textLineBreak"
             } elseif ($textItem.Name -eq "Description" -or $textItem.Name -eq "description") {
+                Write-Debug "Description"
                 $textInType = $textItem.Value.GetType().FullName
                 if ($textInType -eq "System.String") { 
-                    Write-Verbose "String"
+                    Write-Debug "String"
                     # If it's a string, just use it directly
                     $textOut += "$($textItem.Name): $($textItem.Value)$textLineBreak"
                 } else {
+                    Write-Debug "Name also"
                     $textOut += "$($textItem.Name): $(ConvertTo-Text $textItem.Value)$textLineBreak"
                 }
             } elseif ($textItem.Name -eq "Type" -or $textItem.Name -eq "type") {
+                Write-Debug "Type"
                 $textOut += ConvertTo-Text $textItem.Value
             } elseif ($textItem.Name -eq "syntaxItem") {
+                Write-Debug "syntaxItem"
                 $textOut += ConvertTo-Text $textItem.Value
             } elseif ($textItem.Name -eq "returnValue") {
+                Write-Debug "returnValue"
                 $textOut += ConvertTo-Text $textItem.Value
             } elseif ($textItem.Name -eq "parameter") {
+                Write-Debug "parameter"
                 $textOut += ConvertTo-Text $textItem.Value
             } elseif ($textItem.Name -eq "textItem") {
+                Write-Debug "textItem"
                 $textOut += ConvertTo-Text $textItem.Value
             } else {
+                Write-Debug "Other"
                 $textOutExtra += "$($textItem.Name): $($textItem.Value)$textLineBreak"
             }
         }
@@ -353,6 +392,7 @@ function ConvertTo-Text {
         [ValidateNotNullOrEmpty()]
         $textIn
     )
+    Write-Debug "ConvertTo-Text"
     # Initialize description text
     $textOut = @()
     if ($textIn) {
@@ -362,7 +402,7 @@ function ConvertTo-Text {
         # $textIn | Get-Member
         switch ( $textInType ) {
             "hashtable" {
-                Write-Verbose "hashtable"
+                Write-Debug "hashtable"
                 # Access the description property
                 if ($textIn.ContainsKey('Text')) {
                     if ($textIn.text -is [System.Collections.IEnumerable] `
@@ -376,13 +416,13 @@ function ConvertTo-Text {
                 }
             }
             "System.Object[]" {
-                Write-Verbose "Object[]"
+                Write-Debug "Object[]"
                 # Create the output string, including all properties and avoiding empty strings
                 $formattedProperties = @()
                 $textIn | ForEach-Object {
                     # Create a formatted string for each property
                     $tmp = $_.PSObject
-                    Write-Verbose $tmp
+                    Write-Debug $tmp
                     # $formattedProperties += $_
 
                     # Loop through each property in the object
@@ -413,7 +453,7 @@ function ConvertTo-Text {
                 $textOut += $formattedProperties -join "`n"  # Join with new line for better readability            
             }            
             "System.Management.Automation.PSObject[]" {
-                Write-Verbose "PSObject[]"
+                Write-Debug "PSObject[]"
                 # If it's an array of PSObjects, join their 'text' properties
                 # Create the output string, including all properties and avoiding empty strings
                 $textIn | ForEach-Object {
@@ -431,7 +471,7 @@ function ConvertTo-Text {
                 # $textOut += $formattedProperties -join "`n"  # Join with new line for better readability            
             }
             "System.Management.Automation.PSObject" {
-                Write-Verbose "PSObject"
+                Write-Debug "PSObject"
                 # Handle the case where $textIn is a single PSObject
                 $properties = $textIn.PSObject.Properties
                 $formattedProperties = @()
@@ -441,25 +481,25 @@ function ConvertTo-Text {
                 $textOut += $formattedProperties -join "`n"  # Join with new line for better readability            
             }
             "System.Collections.IEnumerable" {
-                Write-Verbose "IEnumerable"
+                Write-Debug "IEnumerable"
                 # Access the Text property if it exists
                 $textOut += ($textIn | ForEach-Object {
                         if ($textIn.PSObject.Properties['Text']) { $textInType.Text } 
                     }) -join "`n"
             }
             "System.Management.Automation.PSCustomObject" {
-                Write-Verbose "PSCustomObject"
+                Write-Debug "PSCustomObject"
                 # Create a formatted string of properties
                 $properties = $textIn.PSObject.Properties
                 $textOut += ConvertFrom-HashValue -textIn $textIn -textOut $textOut
             }
             "System.String" { 
-                Write-Verbose "String"
+                Write-Debug "String"
                 # If it's a string, just use it directly
                 $textOut += $textIn            
             }
             default { 
-                Write-Verbose "default: $textInType"
+                Write-Debug "default: $textInType"
                 # Unknow object
                 # TODO throw warning
                 $textOut += $textIn            
@@ -467,39 +507,11 @@ function ConvertTo-Text {
         }
     } else { 
         $textOut += "No detailed description available."
-        Write-Verbose $textOut
+        Write-Debug $textOut
     }
     $textOutType = $textOut.GetType()
-    Write-Verbose "Result: $textOut (type: $textOutType)"
+    Write-Debug "Result: $textOut (type: $textOutType)"
     return $textOut
-}
-function Get-LineFromFile {
-    [CmdletBinding()]
-    param (
-        [string]$FileName,
-        [int]$FileLineNumber
-    )
-    # Check if the file exists
-    if (-Not (Test-Path $FileName)) {
-        $logMessage = "The script '$FileName' does not exist."
-        Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -localLogFileNameFull $global:logFileNameFull
-        return
-    }
-    # Read the content of the script file
-    $scriptContent = Get-Content -Path $FileName
-
-    # Check if the line number is valid
-    if ($FileLineNumber -lt 1 -or $FileLineNumber -gt $scriptContent.Count) {
-        $logMessage = "Line number $FileLineNumber is out of range for the script '$FileName'."
-        Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -localLogFileNameFull $global:logFileNameFull
-        return
-    }
-
-    # Display the specified line
-    $lineText = $scriptContent[$FileLineNumber - 1]  # Adjust for zero-based index
-    $results = "Line $FileLineNumber from '$FileName': $lineText"
-    Write-Verbose $results
-    return $lineText
 }
 function ConvertTo-ObjectArray {
     [CmdletBinding()]
@@ -515,7 +527,7 @@ function ConvertTo-ObjectArray {
         $OutputObjects.Add($_) | Out-Null
     }
     end {
-        Write-Verbose "Passing off $($OutputObjects.Count) objects downstream" 
+        Write-Debug "Passing off $($OutputObjects.Count) objects downstream" 
         # return ,$OutputObjects.ToArray()
         @(, $OutputObjects)
     }
@@ -531,6 +543,7 @@ function ConvertTo-EscapedText {
         [switch]$KeepEscapes
     )
     process {
+        Write-Debug "Escape Text"
         # Initialize description text
         $textOut = $textIn
         if ($textOut) {
@@ -538,6 +551,7 @@ function ConvertTo-EscapedText {
             switch ( $textInType ) {
                 # Create the output string, including all properties and avoiding empty strings
                 "System.String" { 
+                    Write-Debug "String"
                     if (-not $KeepWhitespace) { $textOut = $textOut.TrimEnd() }
                     if (-not $KeepEscapes) {
                         $textOut = $textOut `
@@ -549,6 +563,7 @@ function ConvertTo-EscapedText {
                     }
                 }
                 "System.Object[]" {
+                    Write-Debug "Object[]"
                     # Recursive loop
                     foreach ($textRow in $textOut) {
                         <# $textRow is the current item #>
@@ -558,7 +573,7 @@ function ConvertTo-EscapedText {
                     }
                 }              
                 default { 
-                    # Unknow object
+                    Write-Debug "Unknow object"
                     # TODO throw warning
                     $textOut += "Error. Cant handle type $textInType for $textIn"
                     Add-LogText $textOut
@@ -577,13 +592,142 @@ function ConvertTo-TrimmedText {
         $textIn,
         $localLogFileNameFull = ""
     )
-    process { return ConvertTo-EscapedText $textIn $localLogFileNameFull -KeepEscapes }
+    process {
+        Write-Debug "Trim Text"
+        return ConvertTo-EscapedText $textIn $localLogFileNameFull -KeepEscapes 
+    }
+}
+function Resolve-Variables {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$inputString
+    )
+    # Use a regex to find all variable references in the string
+    try {
+        # Find all matches for variables in the input string
+        # $resolvedString = $inputString -replace '\$([a-zA-Z_]\w*|$\$[^$]+\))', {
+        if ($inputString -match '\$(\w+)' -or `
+                $inputString -match '\$([a-zA-Z_]\w*|$\$[^$]+\))') {
+            # Hold the resolved string
+            $resolvedString = $inputString
+            # Find all variable references
+            i=0
+            $matches = [regex]::Matches($inputString, '\$(\w+)')
+            foreach ($match in $matches) {
+                # Get the variable
+                $varName = $match.Groups[1].Value
+                Write-Debug "Variable: $varName"
+                # Retrieve the value of the variable
+                $varValue = (Get-Variable -Name $varName -ValueOnly -ErrorAction SilentlyContinue)
+                Write-Debug "Variable value: $varValue"
+
+                if ($null -ne $varValue) {
+                    i++
+                    # Replace the variable in the resolved string
+                    $resolvedString = $resolvedString -replace [regex]::Escape($match.Value), $varValue
+                } else {
+                    $logMessage = "Resolve-Variables: $varName has a null value."
+                    Add-LogText $logMessage -IsError -ErrorPSItem $_ -localLogFileNameFull $global:logFileNameFull
+                }
+            }
+            Write-Debug "$i variables found."
+            return $resolvedString
+        } else {
+            Write-Debug "No variables found."
+            return $inputString
+        }
+
+    } catch {
+        $logMessage = "Resolve-Variables encountered an error."
+        Add-LogText $logMessage -IsError -ErrorPSItem $_ -localLogFileNameFull $global:logFileNameFull        
+    }
+}
+function Resolve-Variables3 {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$inputString
+    )
+    # Use a regex to find all variable references in the string
+    try {
+        # $resolvedString = $inputString -replace '\$([a-zA-Z_]\w*|$\$[^$]+\))', {
+        if ($inputString -match '\$(\w+)') {
+            Write-Host "Match found: $($matches[0])"
+            $varTemp = $matches
+            # param($matches)
+            # Check if matches are found
+            if ($matches.Count -gt 0) {
+                # Get the variable name from the match
+                $varName = $matches[1]
+                Write-Host "Variable: $varName"
+                # Use Get-Variable to retrieve the value of the variable
+                $varValue = (Get-Variable -Name $varName `
+                        -ValueOnly `
+                        -ErrorAction SilentlyContinue)
+                Write-Host "Variable value: $varValue"
+                if ($null -ne $varValue) {
+                    $resolvedString = $inputString -replace '\$(\w+)', $varValue       
+                    return $resolvedString
+                } else {
+                    $logMessage = "Resolve-Variables: $varName has a null value."
+                    Add-LogText $logMessage `
+                        -IsError -ErrorPSItem $_ `
+                        -localLogFileNameFull $global:logFileNameFull        
+                }
+            }
+            # Variable not found
+            return $inputString
+        } else {
+            Write-Host "Resolve-Variables, Variables found."
+            return $inputString
+        }
+        
+    } catch {
+        $logMessage = "Resolve-Variables encountered an error."
+        Add-LogText $logMessage `
+            -IsError -ErrorPSItem $_ `
+            -localLogFileNameFull $global:logFileNameFull        
+    }
+    # return $resolvedString
+}
+function Resolve-Variables2 {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$inputString
+    )
+    # Use a regex to find all variable references in the string
+    # $resolvedString = $inputString -replace '\$([a-zA-Z_]\w*|$\$[^$]+\))', {
+    if ($inputString -match '\$(\w+)') {
+        Write-Host "Match found: $($matches[0])"
+    } else {
+        Write-Host "No match found."
+    }
+        
+    $resolvedString = $inputString -replace '\$(\w+)', {
+        param($matches)
+        # Check if matches are found
+        if ($matches.Count -gt 0) {
+            # Get the variable name from the match
+            $varName = $matches[1]
+            # Use Get-Variable to retrieve the value of the variable
+            $varValue = (Get-Variable -Name $varName -ValueOnly -ErrorAction SilentlyContinue)
+            if ($null -ne $varValue) {
+                return $varValue
+            }
+        }
+        
+        # Return the original if variable not found or no matches
+        return $matches[0]  # Return the original match (e.g., $PSScri        # return $inputString      
+    }
+    return $resolvedString
 }
 # Logging
 #############################
 function Add-LogText {
     # per https://stackoverflow.com/questions/24432190/generic-parameter-in-powershell
-    # (TODO: Inprogress. Implement pipelines)
+    # TODO: (Inprogress. Implement pipelines)
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline = $True, ValueFromPipelineByPropertyName = $True, Mandatory = $true)]
@@ -605,7 +749,6 @@ function Add-LogText {
     )
     process {
         try {
-            # if (-not $ErrorPSItem) { $ErrorPSItem = Get-PSCallStack }
             # Log File
             if (-not $localLogFileNameFull) { $localLogFileNameFull = $global:logFileNameFull }
             if ($localLogFileNameFull.Length -le 0) { $localLogFileNameFull = $global:logFileNameFull }
@@ -693,10 +836,11 @@ function Add-LogError {
         #region Error Objects, debugger, Script and Location of error
         try {
             if (-not $DoTraceWarningDetails) { $DoTraceWarningDetails = $global:DoTraceWarningDetails }
+            $callStack = Get-PSCallStack
             if ($ErrorPSItem) { 
                 $global:lastError = $ErrorPSItem 
             } else { 
-                $ErrorPSItem = Get-PSCallStack
+                $ErrorPSItem = $callStack
             }
             $localLastError = $Error
             $scriptNameFull = $ErrorPSItem.InvocationInfo.ScriptName
@@ -771,25 +915,25 @@ function Add-LogError {
                         $newMessage += "`n"
                         Write-Host " "
                         $errorLine = "Stack trace: "
-                        Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                        Write-Host $errorLine -ForegroundColor Green -BackgroundColor $backgroundColor
                         $newMessage += "`n" + $errorLine
 
-                        $logMessageLine = Get-CallStackFormatted $ErrorPSItem.InvocationInfo "`n"
+                        $logMessageLine = Get-CallStackFormatted $callStack "`n"
                         $errorLine = $logMessageLine.Trim()
-                        Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                        Write-Host $errorLine -ForegroundColor Green
                         $newMessage += "`n" + $errorLine
 
-                        if ($ErrorPSItem.ScriptStackTrace) {
-                            $newMessage += "`n"
-                            Write-Host " "
-                            $errorLine = "Script stack trace: "
-                            Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
-                            $newMessage += "`n" + $errorLine
+                        # if ($ErrorPSItem.ScriptStackTrace) {
+                        #     $newMessage += "`n"
+                        #     Write-Host " "
+                        #     $errorLine = "Script stack trace: "
+                        #     Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                        #     $newMessage += "`n" + $errorLine
 
-                            $errorLine = "$($ErrorPSItem.ScriptStackTrace)"
-                            Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
-                            $newMessage += "`n" + $errorLine
-                        }
+                        #     $errorLine = "$($ErrorPSItem.ScriptStackTrace)"
+                        #     Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                        #     $newMessage += "`n" + $errorLine
+                        # }
                         # $errorLine = "$($ErrorPSItem.ScriptStackTrace)"
                         # Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
                         # $newMessage += "`n" + $errorLine
@@ -933,10 +1077,7 @@ function Test-HtmlData {
     .EXAMPLE
         Test-HtmlData $MyData -DoPause
     .LINK
-        XXX: http://www.XXX
-        TODO: Maybe
-    .LINK
-        YYY
+        http://www.XXX
     .NOTES
         none.
 #>
@@ -966,7 +1107,7 @@ function Test-HtmlData {
 function Search-Directory {
     <#
     .SYNOPSIS
-        Search a folder for files or (TODO) something else.
+        TODO Search a folder for files or something else.
     .DESCRIPTION
         Currently just outputs the folder list to a CSV file.
     .PARAMETER inputObjects

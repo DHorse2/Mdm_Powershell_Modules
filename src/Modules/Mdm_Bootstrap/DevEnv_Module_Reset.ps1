@@ -12,7 +12,7 @@ $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName
 $global:projectRootPath = (get-item $global:moduleRootPath ).Parent.Parent.FullName
 $source = "$global:projectRootPath\src\Modules"
 Write-Host "Clearing breakpoints..."
-Get-PSBreakpoint | Remove-PSBreakpoint
+# Get-PSBreakpoint | Remove-PSBreakpoint
 Set-PSDebug -Off
 
 $importName = "Mdm_Bootstrap"

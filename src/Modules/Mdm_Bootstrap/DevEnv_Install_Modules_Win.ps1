@@ -55,8 +55,8 @@ function DevEnv_Install_Modules_Win {
         [switch]$DoVerbose,
         [switch]$DoPause,
         [switch]$DoDebug,
-        [string]$source = "",
-        [string]$destination = "",
+        [string]$source = "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules",
+        [string]$destination = "C:\Program Files\WindowsPowerShell\Modules",
         [string]$projectRootPath = "",
         [string]$moduleRootPath = "",
         [string]$logFilePath = "$global:projectRootPath\log",
@@ -73,23 +73,30 @@ function DevEnv_Install_Modules_Win {
     # DevEnv_Install_Modules_Win
     # ================================= Initialization
     try {
+        # Prompt for run settings
+        Set-DebugVerbose
         # Remove Mdm Modules
         $importName = "Mdm_Modules"
         Write-Host "Removing $importName"
         Remove-Module -name $importName `
             -Force `
             -ErrorAction SilentlyContinue
-
-        if (-not $moduleRootPath) { $moduleRootPath = (get-item $PSScriptRoot).Parent.FullName }
+        if (-not $source) { 
+            $source = (get-item $PSScriptRoot).Parent.FullName
+        } else {
+            $source = Convert-Path $source
+        }
+        if (-not $moduleRootPath) { $moduleRootPath = (get-item $source).FullName }
         if (-not $projectRootPath) { $projectRootPath = (get-item $moduleRootPath).Parent.Parent.FullName }
-        if (-not $source) { $source = "$projectRootPath\src\Modules" }
-        $source = Convert-Path $source
-        if (-not $source) { $source = "$projectRootPath\src\Modules" }
 
-        if (-not $destination) { $destination = "$env:PROGRAMFILES\WindowsPowerShell\Modules" }
+        if (-not $destination) {
+            $destination = "$env:PROGRAMFILES\WindowsPowerShell\Modules"
+        }
         $destination = Convert-Path $destination
-        if (-not $destination) { $destination = Convert-Path "$env:PROGRAMFILES\WindowsPowerShell\Modules" }
-        if (-not $destination) { exit }
+        if (-not $destination) { 
+            Write-Error "No destination for files!"
+            exit 
+        }
 
         $global:projectRootPath = $projectRootPath
         $global:moduleRootPath = $moduleRootPath
@@ -97,11 +104,11 @@ function DevEnv_Install_Modules_Win {
         $importName = "Mdm_Std_Library"
         Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Stop
     } catch {
-        Write-Host " "
-        Write-Host "The module environment is unstable." -ForegroundColor Red
-        Write-Host "Run the DevEnv_Module_Reset script to reset it." -ForegroundColor Red
-        Write-Host " "
-        Exit
+        Write-Error " "
+        Write-Error "The module environment is unstable." -ForegroundColor Red
+        Write-Error "Run the DevEnv_Module_Reset script to reset it." -ForegroundColor Red
+        Write-Error " "
+        Break
     }
     # MAIN
     $global:timeStarted = Get-Date
@@ -161,7 +168,7 @@ function DevEnv_Install_Modules_Win {
                 # Resolve the path
                 $appExePath = Resolve-Path $appExePath | Select-Object -ExpandProperty Path
             } else {
-                # Throw an error TODO.
+                # TODO Throw an error
                 Add-LogText "VSCodium not found." $global:logFileNameFull -IsError
             }
         }
@@ -330,15 +337,11 @@ function DevEnv_Install_Modules_Win {
                 -foregroundColor Green
             Export-Mdm_Help -moduleRootPath $moduleRootPath
         } catch {
-            $logMessage = "Export-Mdm_Help Failed."
+            $logMessage = "Export-Mdm_Help Failed on Import-Module."
             Add-LogText -logMessages $logMessage -IsError -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_
         }
         # Get-AllCommands
         try {
-            # Remove-Module $importName `
-            # -ErrorAction SilentlyContinue
-            # Import-Module -Name $importName `
-            # -Force -ErrorAction Stop
             Add-LogText "==================================================================" $global:logFileNameFull `
                 -foregroundColor Green
             Add-LogText "Performing Get-AllCommands..." $global:logFileNameFull `
@@ -395,41 +398,25 @@ function DevEnv_Install_Modules_Win {
     Add-LogText "Reloading Mdm Modules." $global:logFileNameFull
     $moduleName = "Mdm_Modules"
     Add-LogText "Standard import ($moduleName) test..."
-    # Import Modules
+    # Remove Modules
     try {
-        # Import-Module -name $moduleName `
         Remove-Module -Name "$moduleRootPath\$moduleName\$moduleName" `
             -Force `
             -ErrorAction Stop
         # -Verbose `
-        # Import-Module -name Mdm_Modules -Force >> $global:logFileNameFull
     } catch {
         $logMessage = "No need to remove module: $moduleName."
         Add-LogText -logMessages $logMessage -IsWarning -SkipScriptLineDisplay -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_
     }
     # Import Modules
     try {
-        # Import-Module -name $moduleName `
         Import-Module -Name "$moduleRootPath\$moduleName\$moduleName" `
             -Force `
             -ErrorAction Stop
         # -Verbose `
-        # Import-Module -name Mdm_Modules -Force >> $global:logFileNameFull
     } catch {
         $logMessage = "Failed to import module: $moduleName."
         Add-LogText -logMessages $logMessage -IsError -ErrorPSItem $_ -localLogFileNameFull $global:logFileNameFull
-        # try {
-        #     # Import-Module -name $moduleName `
-        #     Import-Module -Name $moduleName `
-        #         -Force `
-        #         -Verbose `
-        #         -ErrorAction Stop
-        #     # Import-Module -name Mdm_Modules -Force >> $global:logFileNameFull
-        # }
-        # catch {
-        #     $logMessage = "Failed retry to import module: $moduleName."
-        #     Add-LogText $logMessage $global:logFileNameFull -IsError
-        # }
     }
     # Export-ModuleMemberScan
     try {

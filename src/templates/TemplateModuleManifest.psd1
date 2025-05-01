@@ -126,8 +126,9 @@ PSData = @{
 HelpInfoUri = “http://go.microsoft.com/fwlink/?LinkId=216150”
 # HelpInfoURI = ''
 
-# Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
-# DefaultCommandPrefix = ''
+# Default prefix for commands exported from this module. 
+# Override the default prefix used with Import-Module.
+# companyNamePrefix = 'Mdm'
 
 }
 
@@ -136,5 +137,5 @@ HelpInfoUri = “http://go.microsoft.com/fwlink/?LinkId=216150”
 
 # This command gets the manifest as a hash table, so you can get the keys as properties. 
 # The command returns the value of the HelpInfoUri key.
-# C:\ps-test>(Invoke-Expression (Get-Content (Get-Module -List NetQos).Path -Raw)).HelpInfoUri
+# C:\ps-test>(Invoke-Expression (Get-Content -Path (Get-Module -List NetQos).Path -Raw)).HelpInfoUri
 

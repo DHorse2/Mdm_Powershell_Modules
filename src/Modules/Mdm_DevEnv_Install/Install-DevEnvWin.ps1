@@ -22,7 +22,7 @@ function Install-DevEnvWin {
     .NOTES
         Confirms each step.
     .OUTPUTS
-        TODO Should create a log.
+        Install the development components.
 #>
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)

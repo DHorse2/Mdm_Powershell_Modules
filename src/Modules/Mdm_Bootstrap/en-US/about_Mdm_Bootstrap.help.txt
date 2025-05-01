@@ -60,5 +60,5 @@ NOTES
     SOLUTION: This was caused by the registry's environment setting:
         __PSLockDownPolicy
     This is 4 (Constrained) and needs to be (8) Full Language Mode
-    Note: This reduces the security of the system. todo
+    TODO Note: This reduces the security of the system.
     The bootstrap modules contains solution to alter this setting.

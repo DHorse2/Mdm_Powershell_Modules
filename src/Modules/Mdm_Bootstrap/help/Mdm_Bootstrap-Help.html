@@ -1,4 +1,4 @@
-﻿<!-- $fullHtml = @" -->
+<!-- fullHtml = @" -->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_Bootstrap Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="04/28/2025 10:57:05">
+    <meta name="date" content="04/30/2025 19:54:05">
     <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -179,72 +179,7 @@ NOTES
     SOLUTION: This was caused by the registry's environment setting:
         __PSLockDownPolicy
     This is 4 (Constrained) and needs to be (8) Full Language Mode
-    Note: This reduces the security of the system. todo
-    The bootstrap modules contains solution to alter this setting.
-</pre>
-<pre>NAME
-Mdm Bootstrap
-
-SYNOPSIS
-    Bootstrap the (MDM) Development Environment on a Windows 10/11 platform.
-
-DESCRIPTION
-    Set registry, Path and load PowerShell modules
-    This is the first step of setting up the Development Environment.
-    The Initialize-Dev_Env_Win function is the main function.
-    This updates the Windows Environment variables.
-    It installs these powershell modules to the system's directories.
-    It sets registry, Path and load PowerShell modules.
-    It can elevate its own permissions if needed.
-
-OUTPUTS
-    The Mdm Bootstrap Module functions.
-
-EXAMPLE
-    Import-module Mdm_Bootstrap
-
-NOTES
-    I originally had each function a .ps1 file:
-    I had issues. It is the "dot sourcing" issue found online.
-    The solution needs Full Language Mode to run.
-    ```powershell
-        . "$PSScriptRoot\Assert-SecElevated.ps1"
-        . "$PSScriptRoot\Export-ModuleMemberScan.ps1"
-        . "$PSScriptRoot\Get-DirectoryNameFromSaved.ps1"
-        . "$PSScriptRoot\Get-FilesNamesFromSaved.ps1"
-        . "$PSScriptRoot\Set-SavedToDirectoryName.ps1"
-        . "$PSScriptRoot\Set-LocationToPath"
-        . "$PSScriptRoot\Wait-AnyKey.ps1"
-        . "$PSScriptRoot\Wait-CheckDoPause.ps1"
-        . "$PSScriptRoot\Wait-YorNorQ.ps1"
-    ```
-    I now have a module .psm1 file but the .ps1 file are components or classes:
-    ```powershell
-        . "$PSScriptRoot\Mdm_Std_Library.psm1"
-        . "$PSScriptRoot\Mdm_Std_Help.ps1"
-        . "$PSScriptRoot\Mdm_Std_Etl.ps1"
-        . "$PSScriptRoot\Mdm_Std_Script.ps1"
-        . "$PSScriptRoot\Mdm_Std_Error.ps1"
-        . "$PSScriptRoot\Mdm_Std_Module.ps1"
-    ```
-
-    You have to dot source ". xxx" these in your .PSM1 file.
-    Also: See function Export-ModuleMember. 
-    This also failed for the same reasons.
-    
-    Regardless: This is powershell best practices,
-    and similar to modules in the wild.
-    Additionally, the PSM1 file get unwieldly large
-    while using the above technique isolates the functions
-    making them easier to find.
-
-    (It seems) the main difference is they typically use .net (C#).
-    That isn't a barrier beyond wanting to master (THIS) powershell syntax.
-
-    SOLUTION: This was caused by the registry's environment setting:
-        __PSLockDownPolicy
-    This is 4 (Constrained) and needs to be (8) Full Language Mode
-    Note: This reduces the security of the system. todo
+    TODO Note: This reduces the security of the system.
     The bootstrap modules contains solution to alter this setting.
 </pre>
 <h2>Add-RegistryPath</h2>
@@ -253,9 +188,9 @@ NOTES
 <p><strong>Synopsis:</strong> Add to HKLM Environtment Path</p>
 <p><strong>Detailed Description:</strong> This loads the specifiect Path key (PATH by default) and adds the new path to it.</p>
 <p><strong>Syntax:</strong> <pre>Add-RegistryPath
+ envPathToUpdate
  description: The Path key to use.
 
- envPathToUpdate
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -265,7 +200,7 @@ NOTES
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS C:\&gt;}
+Introduction: @{Text=PS &gt; }
       Syntax: Add-RegistryPath &quot;PATH&quot; &quot;c:\SOMEWHERER&quot;
      Remarks:</pre>
 <p></p>
@@ -277,12 +212,12 @@ Introduction: @{Text=PS C:\&gt;}
 <p><strong>Synopsis:</strong> Return true if Registry Value exists.</p>
 <p><strong>Detailed Description:</strong> Check the registry path &amp; value. Asserts it exists.</p>
 <p><strong>Syntax:</strong> <pre>Assert-RegistryValue
+ Path
  description: The Registry Path to check.
 
- Path
- parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 description: The Registry Key name (Value) to access.
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 Name
+ description: The Registry Key name (Value) to access.
 
- Name
  parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2 PassThru
  description: If true this outputs an ItemProperty otherwise true/false
 
@@ -298,7 +233,7 @@ null/ItemProperty if PassThur switch is present.</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS C:\&gt;}
+Introduction: @{Text=PS &gt; }
       Syntax: Assert-RegistryValue &quot;PATH&quot;
      Remarks:</pre>
 <p></p>
@@ -328,40 +263,40 @@ Introduction: @{Text=PS C:\&gt;}
  required: false, globbing: false, pipelineInput: false, position: named DoDebug
  description: Debug this script.
 
- required: false, globbing: false, pipelineInput: false, position: named description: default: "$global:projectRootPath\src\Modules"
+ required: false, globbing: false, pipelineInput: false, position: named source
+ description: default: "$global:projectRootPath\src\Modules"
 
- source
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 description: default: "$env:PROGRAMFILES\\WindowsPowerShell\Modules"
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 destination
+ description: default: "$env:PROGRAMFILES\\WindowsPowerShell\Modules"
 
- destination
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 projectRootPath
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 moduleRootPath
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 4 description: default: "$global:projectRootPath\log\"
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 4 logFilePath
+ description: default: "$global:projectRootPath\log\"
 
- logFilePath
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 description: default: "Mdm_Installation_Log.txt"
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 logFileName
+ description: default: "Mdm_Installation_Log.txt"
 
- logFileName
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 6 LogOneFile
  description: Switch to not create separate file with the date in the file name.
 
- required: false, globbing: false, pipelineInput: false, position: named description: Default is "Mmd_*". IE. These modules.
+ required: false, globbing: false, pipelineInput: false, position: named nameFilter
+ description: Default is "Mmd_*". IE. These modules.
 You could override it if you had other local modules to install
 
- nameFilter
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 7 SkipHelp
  required: false, globbing: false, pipelineInput: false, position: named SkipRegistry
  required: false, globbing: false, pipelineInput: false, position: named SkipCopy
  required: false, globbing: false, pipelineInput: false, position: named DoNewWindow
  description: Switch to execute copy commands in a separate shell window.
 
- required: false, globbing: false, pipelineInput: false, position: named description: MacroDM currently. It's optional.
+ required: false, globbing: false, pipelineInput: false, position: named companyName
+ description: MacroDM currently. It's optional.
 
- companyName
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 8 description: These are RoboCopy options.
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 8 copyOptions
+ description: These are RoboCopy options.
 Currently: "/E /FP /nc /ns /np /TEE"
 
- copyOptions
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 9</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -387,7 +322,7 @@ Currently: &quot;/E /FP /nc /ns /np /TEE&quot;</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS C:\&gt;}
+Introduction: @{Text=PS &gt; }
       Syntax: DevEnv_Install_Modules_Win
      Remarks:</pre>
 <p></p>
@@ -397,8 +332,7 @@ Introduction: @{Text=PS C:\&gt;}
 DevEnv_LanguageMode [[-languageMode] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: DevEnv_LanguageMode
 CommonParameters: True
-WorkflowCommonParameters: False
-parameter: @{name=languageMode; required=false; pipelineInput=false; isDynamic=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
+parameter: @{name=languageMode; required=false; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>languageMode</strong></p>
@@ -412,7 +346,6 @@ parameter: @{name=languageMode; required=false; pipelineInput=false; isDynamic=f
 DevEnv_Module_Reset_Func [&lt;CommonParameters&gt;]</p>
 <p><strong>Syntax:</strong> <pre>name: DevEnv_Module_Reset_Func
 CommonParameters: True
-WorkflowCommonParameters: False
 parameter:</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -453,7 +386,7 @@ $destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS C:\&gt;}
+Introduction: @{Text=PS &gt; }
       Syntax: Initialize-Dev_Env_Win -SilentMode -UpdatePath
      Remarks:</pre>
 <p></p>

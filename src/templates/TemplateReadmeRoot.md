@@ -42,19 +42,23 @@ Install-DevEnvWin
 
 ### Development Environment Install
 ```text
-{{File: $moduleRoot\Mdm_Bootstrap\help\Mdm_DevEnv_Install_Commands.txt}}
+{{File: {{ModuleRootPath}}\XXXX$PSScriptRoot}}
+```
+
+```text
+{{File: {{ModuleRootPath}}\Mdm_Bootstrap\help\Mdm_DevEnv_Install_Commands.txt}}
 ```
 
 ### Standard Functions
 
 ```text
-{{File: $moduleRoot\Mdm_Bootstrap\help\Mdm_Std_Library_Commands.txt}}
+{{File: {{ModuleRootPath}}\Mdm_Bootstrap\help\Mdm_Std_Library_Commands.txt}}
 ```
 
 ### Mdm Bootstrap
 
 ```text
-{{File: $moduleRoot\Mdm_Bootstrap\help\Mdm_Bootstrap_Commands.txt}}
+{{File: {{ModuleRootPath}}\Mdm_Bootstrap\help\Mdm_Bootstrap_Commands.txt}}
 ```
 
 

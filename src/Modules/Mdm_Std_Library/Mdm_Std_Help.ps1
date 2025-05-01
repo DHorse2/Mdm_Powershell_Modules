@@ -54,6 +54,7 @@ function Export-Mdm_Help {
             # Remove Module
             try {
                 Remove-Module -Name $moduleName `
+                    -Force `
                     -ErrorAction Stop
             } catch { 
                 $logMessage = "No need to remove module: $moduleName."
@@ -61,7 +62,7 @@ function Export-Mdm_Help {
                     -SkipScriptLineDisplay `
                     -localLogFileNameFull $global:logFileNameFull -ErrorPSItem $_
             }
-            # Import-Module -name $moduleName `
+            # Import Module -name $moduleRootPath\$moduleName\$moduleName
             try {
                 Import-Module -Name "$moduleRootPath\$moduleName\$moduleName" `
                     -Force `
@@ -96,9 +97,9 @@ function Export-Mdm_Help {
         }
         # Aggragation
         try {
-            Get-Content "$moduleRootPath\Mdm_Bootstrap\help\*_Commands.txt" `
+            Get-Content -Path "$moduleRootPath\Mdm_Bootstrap\help\*_Commands.txt" `
             | Out-File "$moduleRootPath\Mdm_Bootstrap\help\Commands.txt"
-            Get-Content "$moduleRootPath\Mdm_Bootstrap\help\*_CommandList.txt" `
+            Get-Content -Path "$moduleRootPath\Mdm_Bootstrap\help\*_CommandList.txt" `
             | Out-File "$moduleRootPath\Mdm_Bootstrap\help\CommandList.txt"
         } catch { 
             $logMessage = "Error aggragating files in Export-Mdm_Help."
@@ -169,7 +170,7 @@ function Write-Module_Help {
         [switch]$DoDebug
     )
     process {
-        # Import-Module
+        # Import Module
         try {
             $logMessage = "Write Mdm_Help: $moduleName"
             Add-LogText -logMessages $logMessage -SkipScriptLineDisplay -localLogFileNameFull $global:logFileNameFull
@@ -223,7 +224,7 @@ function Write-Mdm_Help {
         [switch]$DoDebug
     )
     process {
-        # Check path (TODO)
+        # TODO Check path
         $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName
         $outputDirectory = "$($global:moduleRootPath)\Mdm_Bootstrap\help"
         if (-not (Test-Path -Path $outputDirectory)) {
@@ -783,7 +784,7 @@ function Get-Template {
     )
     process {
         try {
-            $templateDoc = Get-Content $templateNameFull `
+            $templateDoc = Get-Content -Path $templateNameFull `
                 -Raw `
                 -ErrorAction Stop
         } catch {
@@ -843,6 +844,8 @@ function Initialize-TemplateData {
     if ($global:copyright) { $templateData['{{Copyright}}'] = $global:copyright }
     if ($global:license) { $templateData['{{License}}'] = $global:license }
     if ($global:title) { $templateData['{{Title}}'] = $global:title }
+    if ($global:moduleRootPath) { $templateData['{{ModuleRootPath}}'] = $global:moduleRootPath }
+    if ($global:projectRootPath) { $templateData['{{ProjectRootPath}}'] = $global:projectRootPath }
     return $templateData
 }
 function ConvertFrom-Template {
@@ -861,23 +864,24 @@ function ConvertFrom-Template {
         # Replace placeholders with actual values
         try {
             $templateContentJoined = $templateContent -join "`n"
-            $docFilled = $templateDoc `
+            $docFilled = Resolve-Variables $templateDoc
+            $docFilled = $docFilled `
                 -replace '{{TemplateContent}}', $templateContentJoined `
                 -replace '{{Now}}', $now
 
             if ($templateData) {
                 foreach ($key in $templateData.Keys) {
                     if ($key -like "{{File: *}}") {
-                        try {
-                            $pattern = '\{\{File: \s*'
-                            # Use -replace to remove the pattern and the closing braces
-                            $fileNameFull = $key -replace $pattern, '' -replace '\}\}', ''
-                            $templateInsertDoc = Get-Content $fileNameFull -Raw
-                            $docFilled = $docFilled -replace [regex]::Escape($key), $templateInsertDoc
-                        } catch {
-                            $logMessage = "Unable to process document insert referenced in template."
-                            Add-LogText -logMessages $logMessage -IsError -ErrorPSItem $_ -localLogFileNameFull $localLogFileNameFull
-                        }
+                        # try {
+                        #     $pattern = '\{\{File: \s*'
+                        #     # Use -replace to remove the pattern and the closing braces
+                        #     $fileNameFull = $key -replace $pattern, '' -replace '\}\}', ''
+                        #     $templateInsertDoc = Get-Content -Path $fileNameFull -Raw
+                        #     $docFilled = $docFilled -replace [regex]::Escape($key), $templateInsertDoc
+                        # } catch {
+                        #     $logMessage = "Unable to process document insert referenced in template."
+                        #     Add-LogText -logMessages $logMessage -IsError -ErrorPSItem $_ -localLogFileNameFull $localLogFileNameFull
+                        # }
                     } else {
                         $docFilled = $docFilled -replace [regex]::Escape($key), $templateData[$key]
                     }
@@ -895,12 +899,12 @@ function ConvertFrom-Template {
             $fileMatches = [regex]::Matches($docFilled, $filePattern)
 
             foreach ($match in $fileMatches) {
-                $fileName = $match.Groups[1].Value.Trim()
-                $fileName = Resolve-Path $fileName | Select-Object -ExpandProperty Path
-                Write-Verbose "Found file reference: $fileName"
                 try {
+                    $fileName = $match.Groups[1].Value.Trim()
+                    $fileNameFull = "$($fileName)"
+                    Write-Verbose "Found file reference: $fileName"
                     # Get the content of the file
-                    $templateInsertDoc = Get-Content $fileName -Raw
+                    $templateInsertDoc = Get-Content -Path $fileNameFull -Raw
                     # Replace the full match in $docFilled with the content of the file
                     $docFilled = $docFilled -replace [regex]::Escape($match.Value), $templateInsertDoc
                 } catch {

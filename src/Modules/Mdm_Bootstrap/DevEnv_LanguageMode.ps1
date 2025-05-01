@@ -10,8 +10,8 @@ function DevEnv_LanguageMode {
     if (-not $global:moduleRootPath) { $global:moduleRootPath = (get-item $PSScriptRoot).Parent.FullName }
     if (-not $global:projectRootPath) { $global:projectRootPath = (get-item $moduleRootPath).Parent.Parent.FullName }
     [string]$source = "$global:projectRootPath\src\Modules"
-    # $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName
     $global:moduleRootPath = $source
+    $global:projectRootPath = $source
 
     Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Continue
 

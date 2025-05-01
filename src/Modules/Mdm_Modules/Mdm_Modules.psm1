@@ -12,9 +12,10 @@ Write-Host "Mdm_Modules.psm1"
 # . $PSScriptRoot\..\Mdm_Bootstrap\Mdm_Bootstrap.psm1
 # . $PSScriptRoot\..\Mdm_DevEnv_Install\Mdm_DevEnv_Install.psm1
 #
-Import-Module -name Mdm_Bootstrap
-Import-Module -name Mdm_Std_Library
-Import-Module -name Mdm_DevEnv_Install
+if (-not $global:moduleRootPath) { $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName }
+Import-Module -name "$global:moduleRootPath\Mdm_Bootstrap\Mdm_Bootstrap"
+Import-Module -name "$global:moduleRootPath\Mdm_Std_Library\Mdm_Std_Library"
+Import-Module -name "$global:moduleRootPath\Mdm_DevEnv_Install\Mdm_DevEnv_Install"
 
 # Note: This works with uninstalled Modules (both) and unstable environments
 if (-not $global:moduleRootPath) { $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName }

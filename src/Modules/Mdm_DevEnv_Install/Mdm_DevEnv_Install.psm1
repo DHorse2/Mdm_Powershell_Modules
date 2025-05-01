@@ -65,7 +65,8 @@ Function Get-DevEnvVersions {
         $stdLibraryPath = "$PSScriptRoot\..\Mdm_Std_Library\Mdm_Std_Library.psm1"
         if (Test-Path $stdLibraryPath) {
             if ($global:DoVerbose) { Write-Host "Loading Std_Library.ps1..." -ForegroundColor Cyan }
-            . $stdLibraryPath
+            # . $stdLibraryPath
+            Import-Module -Name $stdLibraryPath
         }
         else {
             Write-Error "Mdm_Std_Library.psm1 NOT FOUND at $stdLibraryPath"
@@ -168,12 +169,6 @@ function Install-DevEnvModules {
         .
     .EXAMPLE
         Install-DevEnvModules
-    .LINK
-        XXX: http://www.XXX
-    .LINK
-        YYY
-    .NOTES
-        .
 #>
     [CmdletBinding()]
     param(

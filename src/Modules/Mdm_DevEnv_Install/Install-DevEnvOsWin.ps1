@@ -42,7 +42,7 @@ function Install-DevEnvOsWin {
         Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
     }
     else {
-        Write-Host "Chocolatey is already installed."
+        Write-Verbose "Chocolatey is already installed."
     }
 
     # Refresh environment PATH for the current session

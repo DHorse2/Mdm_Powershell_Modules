@@ -1,10 +1,10 @@
 
 Write-Host "Mdm_Std_Library.psm1"
 # Script Path
-if (-not $moduleRootPath) { $moduleRootPath = (get-item $PSScriptRoot).Parent.FullName }
-if (-not $projectRootPath) { $projectRootPath = (get-item $moduleRootPath).Parent.Parent.FullName }
+if (-not $global:moduleRootPath) { $global:moduleRootPath = (get-item $PSScriptRoot).Parent.FullName }
+if (-not $global:projectRootPath) { $global:projectRootPath = (get-item $moduleRootPath).Parent.Parent.FullName }
 #region Module Members
-# Import-Module Mdm_Std_Library
+# Import Module Mdm_Std_Library
 . $global:moduleRootPath\Mdm_Std_Library\Mdm_Std_Error.ps1
 Export-ModuleMember -Function @(
     # Exceptions Handling
@@ -49,6 +49,7 @@ Export-ModuleMember -Function @(
     "Start-Std",
     "Initialize-Std",
     "Initialize-StdGlobalsReset",
+    "Set-DebugVerbose",
     "Show-StdGlobals",
     "Set-DisplayColors",
     "Assert-SecElevated",
@@ -74,6 +75,7 @@ Export-ModuleMember -Function @(
     "ConvertTo-ObjectArray",
     "ConvertTo-EscapedText",
     "ConvertTo-TrimmedText",
+    "Resolve-Variables",
     # Etl Log
     "Add-LogText",
     "Add-LogError",
@@ -197,33 +199,77 @@ function Convert-ConsoleToMediaColor {
 }
 # Define a function to convert System.Windows.Media.Color to ConsoleColor
 function Convert-MediaToConsoleColor {
+    [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [System.Windows.Media.Color]$mediaColor
+        $mediaColor
     )
-    # Get the RGB values from the MediaColor
-    $r = $mediaColor.R
-    $g = $mediaColor.G
-    $b = $mediaColor.B
-    # Determine the ConsoleColor based on the RGB values
-    switch ("$r,$g,$b") {
-        '0,0,0' { return [System.ConsoleColor]::Black }
-        '0,0,128' { return [System.ConsoleColor]::DarkBlue }
-        '0,128,0' { return [System.ConsoleColor]::DarkGreen }
-        '0,128,128' { return [System.ConsoleColor]::DarkCyan }
-        '128,0,0' { return [System.ConsoleColor]::DarkRed }
-        '128,0,128' { return [System.ConsoleColor]::DarkMagenta }
-        '128,128,0' { return [System.ConsoleColor]::DarkYellow }
-        '192,192,192' { return [System.ConsoleColor]::Gray }
-        '128,128,128' { return [System.ConsoleColor]::DarkGray }
-        '0,0,255' { return [System.ConsoleColor]::Blue }
-        '0,255,0' { return [System.ConsoleColor]::Green }
-        '0,255,255' { return [System.ConsoleColor]::Cyan }
-        '255,0,0' { return [System.ConsoleColor]::Red }
-        '255,0,255' { return [System.ConsoleColor]::Magenta }
-        '255,255,0' { return [System.ConsoleColor]::Yellow }
-        '255,255,255' { return [System.ConsoleColor]::White }
-        default { throw "Unsupported MediaColor: $mediaColor" }
+    $mediaColorType = $mediaColor.GetType().FullName
+    if ($mediaColorType -eq "System.ConsoleColor") {
+        return [System.ConsoleColor]$mediaColor
+    } elseif ($mediaColorType -eq "System.Windows.Media.Color") {
+        # Get the RGB values from the MediaColor
+        $r = $mediaColor.R
+        $g = $mediaColor.G
+        $b = $mediaColor.B
+        # Determine the ConsoleColor based on the RGB values
+        switch ("$r,$g,$b") {
+            '0,0,0' { return [System.ConsoleColor]::Black }
+            '0,0,128' { return [System.ConsoleColor]::DarkBlue }
+            '0,128,0' { return [System.ConsoleColor]::DarkGreen }
+            '0,128,128' { return [System.ConsoleColor]::DarkCyan }
+            '128,0,0' { return [System.ConsoleColor]::DarkRed }
+            '128,0,128' { return [System.ConsoleColor]::DarkMagenta }
+            '128,128,0' { return [System.ConsoleColor]::DarkYellow }
+            '192,192,192' { return [System.ConsoleColor]::Gray }
+            '128,128,128' { return [System.ConsoleColor]::DarkGray }
+            '0,0,255' { return [System.ConsoleColor]::Blue }
+            '0,255,0' { return [System.ConsoleColor]::Green }
+            '0,255,255' { return [System.ConsoleColor]::Cyan }
+            '255,0,0' { return [System.ConsoleColor]::Red }
+            '255,0,255' { return [System.ConsoleColor]::Magenta }
+            '255,255,0' { return [System.ConsoleColor]::Yellow }
+            '255,255,255' { return [System.ConsoleColor]::White }
+            default { 
+                Write-Error "Unsupported MediaColor: $mediaColor" 
+                return [System.ConsoleColor]::Red
+            }
+        }
+    } else {
+        Write-Error $("Expected [System.Windows.Media.Color] or [System.ConsoleColor]`n" `
+        + "Got type: $mediaColorType from: $mediaColor.`n"  `
+        + "Attempting to Convert-NameToConsoleColor by value.")
+        return Convert-NameToConsoleColor $mediaColor
+    }
+}
+function Convert-NameToConsoleColor {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$colorName
+    )
+    $colorName = $colorName.ToLower()
+    switch ($colorName) {
+        'black' { return [System.ConsoleColor]::Black }
+        'darkblue' { return [System.ConsoleColor]::DarkBlue }
+        'darkgreen' { return [System.ConsoleColor]::DarkGreen }
+        'darkcyan' { return [System.ConsoleColor]::DarkCyan }
+        'darkred' { return [System.ConsoleColor]::DarkRed }
+        'darkmagenta' { return [System.ConsoleColor]::DarkMagenta }
+        'darkyellow' { return [System.ConsoleColor]::DarkYellow }
+        'gray' { return [System.ConsoleColor]::Gray }
+        'darkgray' { return [System.ConsoleColor]::DarkGray }
+        'blue' { return [System.ConsoleColor]::Blue }
+        'green' { return [System.ConsoleColor]::Green }
+        'cyan' { return [System.ConsoleColor]::Cyan }
+        'red' { return [System.ConsoleColor]::Red }
+        'magenta' { return [System.ConsoleColor]::Magenta }
+        'yellow' { return [System.ConsoleColor]::Yellow }
+        'white' { return [System.ConsoleColor]::White }
+        default {
+            Write-Error "Unsupported color name: $colorName. Using Red."
+            return [System.ConsoleColor]::Red
+        }
     }
 }
 # ###############################
@@ -420,15 +466,6 @@ function Wait-AnyKey {
     }
     # }
 }
-# Set-Variable -Name "Wait-AnyKeyKey" -Value {
-# param ($message)
-# if (Assert-Verbose) { 
-#     Write-Host "$message" -ForegroundColor Yellow -NoNewline
-#     $null = $host.ui.RawUI.ReadKey("NoEcho, IncludeKeyDown")
-# }
-# } -Scope Global
-# TODO wait timeout /t 5
-# Timeout preparation
 function Wait-CheckDoPause {
     <#
     .SYNOPSIS
@@ -586,7 +623,7 @@ if (-not $global:InitDone) {
             }
             Invoke-Expression $commandNext
             #PSBreakpoint
-            Get-PSBreakpoint | Remove-PSBreakpoint
+            #  TODO Get-PSBreakpoint | Remove-PSBreakpoint
             Set-PSBreakPoint -Command "Debug-Script" -Action { 
                 Write-Host "<*>" -ForegroundColor Red
                 # Debug-Script -Break;
@@ -631,12 +668,13 @@ if (-not $global:InitDone) {
     
     # Color of error and warning text
     $global:opt = (Get-Host).PrivateData
+    Add-Type -AssemblyName PresentationCore
     [System.ConsoleColor]$global:messageBackgroundColor = [System.ConsoleColor]::Black
     [System.ConsoleColor]$global:messageForegroundColor = [System.ConsoleColor]::White
-    [System.ConsoleColor]$global:messageWarningBackgroundColor = Convert-MediaToConsoleColor([System.Windows.Media.Color]$global:opt.WarningBackgroundColor)
-    [System.ConsoleColor]$global:messageWarningForegroundColor = Convert-MediaToConsoleColor([System.Windows.Media.Color]$global:opt.WarningForegroundColor)
-    [System.ConsoleColor]$global:messageErrorBackgroundColor = Convert-MediaToConsoleColor([System.Windows.Media.Color]$global:opt.ErrorBackgroundColor)
-    [System.ConsoleColor]$global:messageErrorForegroundColor = Convert-MediaToConsoleColor([System.Windows.Media.Color]$global:opt.ErrorForegroundColor)
+    [System.ConsoleColor]$global:messageWarningBackgroundColor = Convert-MediaToConsoleColor($global:opt.WarningBackgroundColor)
+    [System.ConsoleColor]$global:messageWarningForegroundColor = Convert-MediaToConsoleColor($global:opt.WarningForegroundColor)
+    [System.ConsoleColor]$global:messageErrorBackgroundColor = Convert-MediaToConsoleColor($global:opt.ErrorBackgroundColor)
+    [System.ConsoleColor]$global:messageErrorForegroundColor = Convert-MediaToConsoleColor($global:opt.ErrorForegroundColor)
 
     $colorChanged = $false
     iF ($colorChanged) {

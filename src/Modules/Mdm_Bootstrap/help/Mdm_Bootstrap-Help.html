@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_Bootstrap Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="04/30/2025 19:54:05">
+    <meta name="date" content="05/01/2025 10:52:28">
     <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -257,13 +257,13 @@ Introduction: @{Text=PS &gt; }
  DoVerbose
  description: Provide detailed information.
 
- required: false, globbing: false, pipelineInput: false, position: named DoPause
+ required: true, globbing: false, pipelineInput: false, position: named DoPause
  description: Switch to pause at each step/page.
 
- required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ required: true, globbing: false, pipelineInput: false, position: named DoDebug
  description: Debug this script.
 
- required: false, globbing: false, pipelineInput: false, position: named source
+ required: true, globbing: false, pipelineInput: false, position: named source
  description: default: "$global:projectRootPath\src\Modules"
 
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 destination

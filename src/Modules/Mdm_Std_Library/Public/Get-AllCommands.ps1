@@ -5,7 +5,8 @@ function Get-AllCommands {
         $moduleRootPath = ""
     )
     process {
-        if (-not $moduleRootPath) { $moduleRootPath = (get-item $PSScriptRoot).parent.FullName }
+        Get-ModuleRootPath
+        if (-not $moduleRootPath) { $moduleRootPath = $global:moduleRootPath }
         
         # Collect all Cmdlets to a text file
         Get-Command `

@@ -1,0 +1,77 @@
+[
+    {
+        "identifier": {
+            "id": "ms-dotnettools.vscode-dotnet-runtime",
+            "uuid": "1aab81a1-b3d9-4aef-976b-577d5d90fe3f"
+        },
+        "version": "2.0.5",
+        "location": {
+            "$mid": 1,
+            "path": "/c:/Users/david/.vscode/extensions/ms-dotnettools.vscode-dotnet-runtime-2.0.5",
+            "scheme": "file"
+        },
+        "relativeLocation": "ms-dotnettools.vscode-dotnet-runtime-2.0.5",
+        "metadata": {
+            "id": "1aab81a1-b3d9-4aef-976b-577d5d90fe3f",
+            "publisherId": "d05e23de-3974-4ff0-8d47-23ee77830092",
+            "publisherDisplayName": "Microsoft",
+            "targetPlatform": "undefined",
+            "updated": false,
+            "isPreReleaseVersion": false,
+            "hasPreReleaseVersion": false,
+            "installedTimestamp": 1717253004997,
+            "pinned": false
+        }
+    },
+    {
+        "identifier": {
+            "id": "ms-dotnettools.csharp",
+            "uuid": "d0bfc4ab-1d3a-4487-8782-7cf6027b4fff"
+        },
+        "version": "2.31.19",
+        "location": {
+            "$mid": 1,
+            "path": "/c:/Users/david/.vscode/extensions/ms-dotnettools.csharp-2.31.19-win32-x64",
+            "scheme": "file"
+        },
+        "relativeLocation": "ms-dotnettools.csharp-2.31.19-win32-x64",
+        "metadata": {
+            "id": "d0bfc4ab-1d3a-4487-8782-7cf6027b4fff",
+            "publisherId": "d05e23de-3974-4ff0-8d47-23ee77830092",
+            "publisherDisplayName": "Microsoft",
+            "targetPlatform": "win32-x64",
+            "updated": false,
+            "isPreReleaseVersion": false,
+            "hasPreReleaseVersion": false,
+            "installedTimestamp": 1717253006111,
+            "pinned": false
+        }
+    },
+    {
+        "identifier": {
+            "id": "ms-dotnettools.csdevkit",
+            "uuid": "7ad42776-8f7e-4214-bf67-4f0b518ef629"
+        },
+        "version": "1.6.8",
+        "location": {
+            "$mid": 1,
+            "fsPath": "c:\\Users\\david\\.vscode\\extensions\\ms-dotnettools.csdevkit-1.6.8-win32-x64",
+            "_sep": 1,
+            "external": "file:///c%3A/Users/david/.vscode/extensions/ms-dotnettools.csdevkit-1.6.8-win32-x64",
+            "path": "/c:/Users/david/.vscode/extensions/ms-dotnettools.csdevkit-1.6.8-win32-x64",
+            "scheme": "file"
+        },
+        "relativeLocation": "ms-dotnettools.csdevkit-1.6.8-win32-x64",
+        "metadata": {
+            "id": "7ad42776-8f7e-4214-bf67-4f0b518ef629",
+            "publisherId": "d05e23de-3974-4ff0-8d47-23ee77830092",
+            "publisherDisplayName": "Microsoft",
+            "targetPlatform": "win32-x64",
+            "updated": false,
+            "isPreReleaseVersion": false,
+            "hasPreReleaseVersion": false,
+            "installedTimestamp": 1717253019458,
+            "pinned": false
+        }
+    }
+]

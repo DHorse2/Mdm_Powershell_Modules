@@ -7,11 +7,10 @@ function DevEnv_LanguageMode {
     # Imports
     # This works with uninstalled Modules
     $importName = "Mdm_Std_Library"
-    if (-not $global:moduleRootPath) { $global:moduleRootPath = (get-item $PSScriptRoot).Parent.FullName }
-    if (-not $global:projectRootPath) { $global:projectRootPath = (get-item $moduleRootPath).Parent.Parent.FullName }
+    Get-ModuleRootPath
     [string]$source = "$global:projectRootPath\src\Modules"
     $global:moduleRootPath = $source
-    $global:projectRootPath = $source
+    $global:projectRootPath = (get-item $global:moduleRootPath).Parent.Parent.FullName
 
     Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Continue
 

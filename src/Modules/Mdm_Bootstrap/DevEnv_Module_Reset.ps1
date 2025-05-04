@@ -8,9 +8,25 @@ Remove-Module -name $importName `
     -Force `
     -ErrorAction SilentlyContinue
 
-$global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName
-$global:projectRootPath = (get-item $global:moduleRootPath ).Parent.Parent.FullName
+$folderName = Split-Path ((get-item $PSScriptRoot ).FullName) -Leaf
+if ( $folderName -eq "Public" -or $folderName -eq "Private" ) {
+    $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.Parent.FullName
+} elseif ($folderName -ne $importName) {
+    $global:moduleRootPath = "$global:projectRootPath\src\Modules"
+    # $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName
+} else {
+    $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName
+}
+if (-not (Get-Item $global:moduleRootPath -ErrorAction SilentlyContinue)) {
+    $global:moduleRootPath = (Get-Item $PSScriptRoot).Parent.FullName
+}
+$global:projectRootPath = (get-item $global:moduleRootPath).Parent.Parent.FullName
+# if (-not $global:projectRootPath) { $global:projectRootPath = (get-item $global:moduleRootPath).Parent.Parent.FullName }
 $source = "$global:projectRootPath\src\Modules"
+Write-Host "Project Root: $global:projectRootPath"
+Write-Host " Module Root: $global:moduleRootPath"
+# Write-Host "      Source: $source"
+
 Write-Host "Clearing breakpoints..."
 # Get-PSBreakpoint | Remove-PSBreakpoint
 Set-PSDebug -Off
@@ -39,8 +55,14 @@ Write-Host "Clearing globals before import..."
 [string]$global:logFilePath = ""
 [string]$global:logFileNameFull = ""
 [bool]$global:LogOneFile = $false
-[string]$global:projectRootPath = (get-item $PSScriptRoot ).Parent.Parent.Parent.FullName
-[string]$global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName
+
+$folderName = Split-Path ((get-item $PSScriptRoot ).FullName) -Leaf
+if ( $folderName -eq "Public" `
+        -or $folderName -eq "Private" `
+        -or $folderName -ne $importName) {
+    $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.Parent.FullName
+} else { $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName }
+$global:projectRootPath = (get-item $global:moduleRootPath).Parent.Parent.FullName
 
 Write-Host "You will find a list of functions displayed."
 Write-Host "If not, run this a second time."

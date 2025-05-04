@@ -59,10 +59,10 @@ function DevEnv_Install_Modules_Win {
         [string]$destination = "C:\Program Files\WindowsPowerShell\Modules",
         [string]$projectRootPath = "",
         [string]$moduleRootPath = "",
-        [string]$logFilePath = "$global:projectRootPath\log",
-        [string]$logFileName = "Mdm_Installation_Log",
+        [string]$logFilePath = "",
+        [string]$logFileName = "",
         [switch]$LogOneFile,
-        [string]$nameFilter = "$($global:companyNamePrefix)_*",
+        [string]$nameFilter = "",
         [switch]$SkipHelp,
         [switch]$SkipRegistry,
         [switch]$SkipCopy,
@@ -78,16 +78,20 @@ function DevEnv_Install_Modules_Win {
         # Remove Mdm Modules
         $importName = "Mdm_Modules"
         Write-Host "Removing $importName"
-        Remove-Module -name $importName `
-            -Force `
-            -ErrorAction SilentlyContinue
+        $modulePath = "$global:moduleRootPath\$importName\$importName"
+        if (((Get-Module -Name $importName) -or $global:DoForce)) {
+            Remove-Module -name $importName `
+                -Force `
+                -ErrorAction SilentlyContinue `
+        }
         if (-not $source) { 
             $source = (get-item $PSScriptRoot).Parent.FullName
         } else {
             $source = Convert-Path $source
         }
-        if (-not $moduleRootPath) { $moduleRootPath = (get-item $source).FullName }
-        if (-not $projectRootPath) { $projectRootPath = (get-item $moduleRootPath).Parent.Parent.FullName }
+        Get-ModuleRootPath
+        if (-not $moduleRootPath) { $moduleRootPath = $global:moduleRootPath }
+        if (-not $projectRootPath) { $projectRootPath = $global:projectRootPath }
 
         if (-not $destination) {
             $destination = "$env:PROGRAMFILES\WindowsPowerShell\Modules"
@@ -101,25 +105,44 @@ function DevEnv_Install_Modules_Win {
         $global:projectRootPath = $projectRootPath
         $global:moduleRootPath = $moduleRootPath
         # This works with uninstalled Modules (both)
+        $importName = "Mdm_Modules"
+        if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
+            Write-Host "Importing $importName"
+            $modulePath = "$global:moduleRootPath\$importName\$importName"
+            Import-Module -Name $modulePath @global:importParams
+        }
+        $importName = "Mdm_Bootstrap"
+        if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
+            Write-Host "Importing $importName"
+            $modulePath = "$global:moduleRootPath\$importName\$importName"
+            Import-Module -Name $modulePath @global:importParams
+        }
         $importName = "Mdm_Std_Library"
-        Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Stop
+        if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
+            Write-Host "Importing $importName"
+            $modulePath = "$global:moduleRootPath\$importName\$importName"
+            Import-Module -Name $modulePath @global:importParams
+        }
     } catch {
-        Write-Error " "
-        Write-Error "The module environment is unstable." -ForegroundColor Red
-        Write-Error "Run the DevEnv_Module_Reset script to reset it." -ForegroundColor Red
-        Write-Error " "
+        Write-Error "The module environment is unstable. Error: $_"
+        Write-Error "Run the DevEnv_Module_Reset script to reset it." 
         Break
     }
     # MAIN
     $global:timeStarted = Get-Date
     $global:timeStartedFormatted = "{0:yyyymmdd_hhmmss}" -f ($global:timeStarted)
     $global:timeCompleted = $null
+    if (-not $nameFilter) { $nameFilter = "$($global:companyNamePrefix)_*" }
+    if (-not $companyName) { $companyName = "MacroDM" }
 
     # Logging:
     # $global:logFileNameFull = 
+    if (-not $logFilePath) { $logFilePath = "$global:projectRootPath\log" }
+    if (-not $logFileName) { $logFileName = "Mdm_Installation_Log" }
     Open-LogFile
     $global:logFileNameFull = Convert-Path $global:logFileNameFull
     Write-Host "Log File: $global:logFileNameFull"
+    # Start
     $logMessage = @(
         " ", `
             "==================================================================", `

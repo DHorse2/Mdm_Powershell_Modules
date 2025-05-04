@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_Modules Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="04/30/2025 19:54:25">
+    <meta name="date" content="05/01/2025 10:52:49">
     <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -537,13 +537,13 @@ parameter:</pre></p>
  DoVerbose
  description: Provide detailed information.
 
- required: false, globbing: false, pipelineInput: false, position: named DoPause
+ required: true, globbing: false, pipelineInput: false, position: named DoPause
  description: Switch to pause at each step/page.
 
- required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ required: true, globbing: false, pipelineInput: false, position: named DoDebug
  description: Debug this script.
 
- required: false, globbing: false, pipelineInput: false, position: named source
+ required: true, globbing: false, pipelineInput: false, position: named source
  description: default: "$global:projectRootPath\src\Modules"
 
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 destination
@@ -1361,7 +1361,7 @@ Introduction: @{Text=PS &gt; }
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_Modules Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="04/30/2025 19:54:25">
+    <meta name="date" content="05/01/2025 10:52:49">
     <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -1688,6 +1688,22 @@ parameter: @{name=inputString; required=true; pipelineInput=false; isDynamic=fal
 Introduction: @{Text=PS &gt; }
       Syntax: Search-Directory &quot;G:\Script\Powershell\&quot;.
      Remarks:</pre>
+<p></p>
+<h2>Set-DebugVerbose</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Set-DebugVerbose [-DoDebug] &lt;bool&gt; [-DoVerbose] &lt;bool&gt; [-DoPause] &lt;bool&gt; [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Set-DebugVerbose
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoVerbose</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
 <p></p>
 <h2>Set-DirectoryToScriptRoot</h2>
 

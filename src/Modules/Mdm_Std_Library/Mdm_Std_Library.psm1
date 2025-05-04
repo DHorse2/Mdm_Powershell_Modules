@@ -1,11 +1,24 @@
 
 Write-Host "Mdm_Std_Library.psm1"
 # Script Path
-if (-not $global:moduleRootPath) { $global:moduleRootPath = (get-item $PSScriptRoot).Parent.FullName }
-if (-not $global:projectRootPath) { $global:projectRootPath = (get-item $moduleRootPath).Parent.Parent.FullName }
+if (-not $global:moduleRootPath) {
+    $folderName = Split-Path ((get-item $PSScriptRoot ).FullName) -Leaf
+    if ( $folderName -eq "Public" `
+            -or $folderName -eq "Private" ) {
+        # -or $folderName -ne $importName) {
+        # the moduleName (folderName) is unlikely to be Mdm_Std_Library.
+        # $importName is unavailable here or is $this.psm1.
+        $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.Parent.FullName
+    } else { $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName }
+    # $global:projectRootPath = $null
+}
+if (-not $global:projectRootPath) { $global:projectRootPath = (get-item $global:moduleRootPath).Parent.Parent.FullName }
+# if (-not $global:moduleRootPath) { $global:moduleRootPath = (get-item $PSScriptRoot).Parent.FullName }
+# if (-not $global:projectRootPath) { $global:projectRootPath = (get-item $moduleRootPath).Parent.Parent.FullName }
 #region Module Members
 # Import Module Mdm_Std_Library
-. $global:moduleRootPath\Mdm_Std_Library\Mdm_Std_Error.ps1
+. $global:moduleRootPath\Mdm_Std_Library\Public\Mdm_Std_Error.ps1
+# . .\Public\Mdm_Std_Error.ps1
 Export-ModuleMember -Function @(
     # Exceptions Handling
     "Get-ErrorLast",
@@ -19,7 +32,8 @@ Export-ModuleMember -Function @(
     "Debug-AssertFunction",
     "Debug-SubmitFunction"
 )
-. $global:moduleRootPath\Mdm_Std_Library\Mdm_Std_Module.ps1
+. $global:moduleRootPath\Mdm_Std_Library\Public\Mdm_Std_Module.ps1
+# . .\Public\Mdm_Std_Module.ps1
 Export-ModuleMember -Function @(
     # Scan and feature (cmdlet) selection
     "Export-ModuleMemberScan",
@@ -33,7 +47,8 @@ Export-ModuleMember -Function @(
     "Get-ModuleStatus",
     "Set-ModuleStatus"
 )
-. $global:moduleRootPath\Mdm_Std_Library\Mdm_Std_Script.ps1
+
+. $global:moduleRootPath\Mdm_Std_Library\Public\Mdm_Std_Script.ps1
 Export-ModuleMember -Function @(
     # This script:
     "Get-Invocation_PSCommandPath",
@@ -56,7 +71,7 @@ Export-ModuleMember -Function @(
     "Assert-Verbose",
     "Push-ShellPwsh"
 )
-. $global:moduleRootPath\Mdm_Std_Library\Mdm_Std_Etl.ps1
+. $global:moduleRootPath\Mdm_Std_Library\Public\Mdm_Std_Etl.ps1
 Export-ModuleMember -Function @(
     # Etl
     # Etl Load - Path and directory
@@ -85,7 +100,7 @@ Export-ModuleMember -Function @(
     # Etl Other
     "Copy-ItemWithProgressDisplay"
 )
-. $global:moduleRootPath\Mdm_Std_Library\Mdm_Std_Help.ps1
+. $global:moduleRootPath\Mdm_Std_Library\Public\Mdm_Std_Help.ps1
 Export-ModuleMember -Function @(
     # Help
     "Export-Mdm_Help",
@@ -98,7 +113,7 @@ Export-ModuleMember -Function @(
     "Get-Template",
     "ConvertFrom-Template"
 )
-. $global:moduleRootPath\Mdm_Std_Library\Get-AllCommands.ps1
+. $global:moduleRootPath\Mdm_Std_Library\Public\Get-AllCommands.ps1
 Export-ModuleMember -Function "Get-AllCommands"
 #endregion
 #region Functions
@@ -590,6 +605,8 @@ if (-not $global:InitDone) {
     [bool]$global:UseTrace = $true
     [bool]$global:UseTraceDetails = $true
     [bool]$global:UseTraceStack = $true
+    [hashtable]$global:importParamsPrelude = @{}
+    [hashtable]$global:importParams = @{}
     [bool]$global:DebugProgressFindName = $true
     [int]$global:debugTraceStep = 0
     [string]$global:debugSetting = ""
@@ -663,6 +680,8 @@ if (-not $global:InitDone) {
     [bool]$global:DoVerbose = $false
     [bool]$global:DoPause = $false
     [bool]$global:DoDebug = $false
+    [bool]$global:DoForce = $false
+    [string]$global:debugErrorActionPreference = "Continue"
     [string]$global:msgAnykey = ""
     [string]$global:msgYorN = ""
     
@@ -690,12 +709,12 @@ if (-not $global:InitDone) {
     $global:lastError = $null
 }
 # Log
-if (-not $global:logFileNameFull) {
-    [string]$global:logFileName = "$($global:companyNamePrefix)_Installation_Log"
-    [string]$global:logFilePath = "$global:projectRootPath\log"
-    [string]$global:logFileNameFull = ""
-    # Use a single log file repeatedly appending to it.
-    # The date and time will be appended to the name when LogOneFile is false.
-    [bool]$global:LogOneFile = $false
-}
+# [string]$global:logFileName = "$($global:companyNamePrefix)_Installation_Log"
+# [string]$global:logFilePath = "$global:projectRootPath\log"
+# [string]$global:logFileNameFull = ""
+# Use a single log file repeatedly appending to it.
+# The date and time will be appended to the name when LogOneFile is false.
+# [bool]$global:LogOneFile = $LogOneFile
+
+if (-not $global:logFileNameFull) { Open-LogFile -SkipCreate }
 #endregion

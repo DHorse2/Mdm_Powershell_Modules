@@ -12,7 +12,7 @@ ModuleType Version    PreRelease Name                                PSEdition E
 Script     1.0                   Mdm_Bootstrap                       Desk      {Assert-RegistryValue, DevEnv_Module_Reset_Func, Add-RegistryPath, DevEnv…
 Script     1.0                   Mdm_DevEnv_Install                  Desk      {Get-DevEnvVersions, Install-DevEnvModules, Install-DevEnvWin, Install-De…
 Script     1.0                   Mdm_Modules                         Core,Desk 
-Script     1.0                   Mdm_Std_Library                     Desk      {Set-DirectoryToScriptRoot, Get-LineFromFile, Debug-Script, Open-LogFile…}
+Script     1.0                   Mdm_Std_Library                     Desk      {Set-ModuleProperty, Get-Template, Write-Mdm_Help, Search-Directory…}
 
     Directory: C:\Program Files\PowerShell\7\Modules
 

@@ -1,31 +1,37 @@
 
 Write-Host "Mdm_Bootstrap.psm1"
-# Imports
-# This works with uninstalled Modules (both)
 $now = Get-Date -UFormat '%Y%m%d%R%z'
-$importName = "Mdm_Std_Library"
-if (-not $global:moduleRootPath) { $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName }
-Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Inquire
-
-. "$global:moduleRootPath\Mdm_Bootstrap\DevEnv_Install_Modules_Win.ps1"
-Export-ModuleMember -Function DevEnv_Install_Modules_Win
-
-# function DevEnv_LanguageMode {
-#     [CmdletBinding()]
-#     param ()
-#     process {
-. "$global:moduleRootPath\Mdm_Bootstrap\DevEnv_LanguageMode.ps1"
-#     }
-# }
-Export-ModuleMember -Function DevEnv_LanguageMode
+#region functions
+# Go To Locations
+function GoToProjectRoot_Func {
+    [CmdletBinding()]
+    param ()
+    process {
+        . "$global:moduleRootPath\Mdm_Bootstrap\GoToProjectRoot.ps1"
+    }
+}
+function GoToModuleRoot_Func {
+    [CmdletBinding()]
+    param ()
+    process {
+        . "$global:moduleRootPath\Mdm_Bootstrap\GoToModuleRoot.ps1"
+    }
+}
+function GoToBootstrap_Func {
+    [CmdletBinding()]
+    param ()
+    process {
+        . "$global:moduleRootPath\Mdm_Bootstrap\GoToBootstrap.ps1"
+    }
+}
+# Environment
 function DevEnv_Module_Reset_Func {
     [CmdletBinding()]
     param ()
     process {
-        . "$global:moduleRootPath\Mdm_Bootstrap\DevEnv_Module_Reset.ps1"
+        . "$global:moduleRootPath\Mdm_Bootstrap\Public\DevEnv_Module_Reset.ps1"
     }
 }
-Export-ModuleMember -Function DevEnv_Module_Reset_Func
 # MAIN
 function Initialize-Dev_Env_Win {
     <#
@@ -56,7 +62,7 @@ function Initialize-Dev_Env_Win {
         This script is found and run in the "Mdm_Bootstrap" module of "Modules"
         So the parent directory is the Root Root of this Project's Modules
         .\src\Mdm_Modules\Mdm_Bootstrap
-        $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName
+        $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName
         
         Source:
         $source = "$global:moduleRootPath\"
@@ -102,7 +108,7 @@ function Initialize-Dev_Env_Win {
         Set-SecElevated
     
         # CONTINUE
-        if (-not $global:moduleRootPath) { $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName }
+        Get-ModuleRootPath
         $scriptDrive = Split-Path -Path "$global:moduleRootPath" -Qualifier
         Set-Location $scriptDrive
         Set-Location -Path "$global:moduleRootPath"
@@ -141,7 +147,6 @@ function Initialize-Dev_Env_Win {
     end { Write-Verbose "Done " }
 }
 # Components:
-#############################
 function Add-RegistryPath {
     <#
     .SYNOPSIS
@@ -270,20 +275,88 @@ Function Assert-RegistryValue {
     }
     end {}
 }
-#
-#############################
-#
+
+function Get-ModuleRootPath {
+    [CmdletBinding()]
+    param (
+        $folderPath,
+        [switch]$DoClear
+    )
+    begin {
+        if ($DoClear -or $folderPath) {
+            $global:moduleRootPath = $null
+            $global:projectRootPath = $null
+        }
+    }
+    process {
+        if (-not $global:moduleRootPath) {
+            if (-not $folderPath) {
+                $folderPath = (get-item $PSScriptRoot).FullName
+                $folderName = Split-Path $folderPath -Leaf 
+            }
+            if ( $folderName -eq "Public" `
+                    -or $folderName -eq "Private" `
+                    -or $folderName -ne $importName) {
+                $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.Parent.FullName
+            } else { $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName }
+            # $global:projectRootPath = $null
+        }
+        if (-not $global:projectRootPath) { $global:projectRootPath = (get-item $global:moduleRootPath).Parent.Parent.FullName }
+    }
+    end { }
+}
+#endregion
+#region Main
+# Imports
+# This works with uninstalled Modules (both)
+$importName = "Mdm_Std_Library"
+Get-ModuleRootPath
+if (-not (Get-Module -Name $importName)) {
+    Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Inquire
+}
+
+. "$global:moduleRootPath\Mdm_Bootstrap\Public\DevEnv_Install_Modules_Win.ps1"
+# function DevEnv_LanguageMode {
+#     [CmdletBinding()]
+#     param ()
+#     process {
+. "$global:moduleRootPath\Mdm_Bootstrap\Public\DevEnv_LanguageMode.ps1"
+#     }
+# }
+#endregion
+#region .inactive
 # Initialize-Dev_Env_Win
 # 
 # Sets up registry, PowerShell common modules and Path
 # Copies script folders to the PowerShell Modules directory.
 #
-# "g:\Script\PowerShell\src\Modules\Mdm_Modules\Mdm_Bootstrap\Initialize-Dev_Env_Win.ps1"
+# "g:\Script\PowerShell\src\Modules\Mdm_Modules\Mdm_Bootstrap\Public\Initialize-Dev_Env_Win.ps1"
 #
 # function Initialize-Dev_Env_Win ([switch]$UpdatePath, [switch]$DoVerbose) { }
-#
+#endregion
+#region Exports
 Export-ModuleMember -Function `
+    Get-ModuleRootPath, `
+    DevEnv_Install_Modules_Win, `
+    DevEnv_LanguageMode, `
     Initialize-Dev_Env_Win, `
     Assert-RegistryValue, `
     Add-RegistryPath, `
-    DevEnv_Module_Reset_Func
+    DevEnv_Module_Reset_Func, `
+    GoToProjectRoot_Func, `
+    GoToModuleRoot_Func, `
+    GoToBootstrap_Func
+
+Set-Alias -Name GoProject -Value GoToProjectRoot_Func
+Set-Alias -Name GoModule -Value GoToModuleRoot_Func
+Set-Alias -Name GoBootstrap -Value GoToBootstrap_Func
+Set-Alias -Name DevEnvReset -Value DevEnv_Module_Reset_Func
+Set-Alias -Name IDevEnvModules -Value DevEnv_Install_Modules_Win
+# Export the aliases
+Export-ModuleMember -Alias `
+    GoProject, `
+    GoModule, `
+    GoBootstrap, `
+    DevEnvReset, `
+    IDevEnvModules
+#endregion

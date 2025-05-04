@@ -41,9 +41,6 @@ Install-DevEnvWin
 ## Modules
 
 ### Development Environment Install
-```text
-{{File: {{ModuleRootPath}}\XXXX$PSScriptRoot}}
-```
 
 ```text
 {{File: {{ModuleRootPath}}\Mdm_Bootstrap\help\Mdm_DevEnv_Install_Commands.txt}}

@@ -1,4 +1,8 @@
 
+# Export all the functions
+
+Export-ModuleMember -Function $Public.Basename -Alias *
+
 ## psd1 files
 
     ModuleToProcess
@@ -335,7 +339,7 @@ This script is found and run in the "Mdm_Bootstrap" module of "Modules"
 So the parent directory is the Root Root of this Project's Modules
 $scriptPath = Split-Path -Path "$PSScriptRoot" -Parent
 .\src\Mdm_Modules\Mdm_Bootstrap
-$scriptPath = (get-item $PSScriptRoot ).parent.FullName
+$scriptPath = (get-item $PSScriptRoot ).Parent.FullName
 $scriptDrive = Split-Path -Path "$scriptPath" -Qualifier
 Set-Location $scriptDrive
 NOTE: Must be directories to invoke directory creation

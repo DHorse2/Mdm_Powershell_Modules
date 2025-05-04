@@ -122,7 +122,7 @@ function Export-Mdm_Help {
             # Create a hashtable for key-value pairs
             $templateData = Initialize-TemplateData
             # $templateData['{{ModuleName}}'] = $moduleName
-            $null = Debug-Script -DoPause 15 -functionName "Create Readme in Export-Mdm_Help" -localLogFileNameFull $localLogFileNameFull
+            # $null = Debug-Script -DoPause 15 -functionName "Create Readme in Export-Mdm_Help" -localLogFileNameFull $localLogFileNameFull
             $DocFilled = ConvertFrom-Template `
                 -templateDoc $templateDoc `
                 -templateData $templateData `
@@ -225,7 +225,7 @@ function Write-Mdm_Help {
     )
     process {
         # TODO Check path
-        $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName
+        $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName
         $outputDirectory = "$($global:moduleRootPath)\Mdm_Bootstrap\help"
         if (-not (Test-Path -Path $outputDirectory)) {
             New-Item -ItemType Directory -Path $outputDirectory -Force
@@ -576,7 +576,7 @@ function Export-Help {
                         $htmlContent += "<h1>$($moduleName)</h1>"
                         # Import the Module
                         try {
-                            # $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName
+                            # $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName
                             Remove-Module `
                                 -Name "$moduleRootPath\$moduleName\$moduleName" `
                                 -ErrorAction Stop

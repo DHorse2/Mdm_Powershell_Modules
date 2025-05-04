@@ -1,7 +1,7 @@
 
 #region Module Import / Export
 Function Export-ModuleMemberScan {
-<#
+    <#
     .SYNOPSIS
         The scans a module folder with a view to automatically load/import it.
     .DESCRIPTION
@@ -87,7 +87,7 @@ function $scriptName {
     }
 }
 function Import-These {
-<#
+    <#
     .SYNOPSIS
         Imports specified functions from a module.
     .DESCRIPTION
@@ -182,7 +182,7 @@ Import-These -moduleRootPath "C:\Path\To\Module" -functionNames "Function1", "Fu
 #region Module State
 
 function Get-ModuleProperty {
-<#
+    <#
     .SYNOPSIS
         Gets the Module property.
     .DESCRIPTION
@@ -206,7 +206,7 @@ function Get-ModuleProperty {
     }
 }
 function Set-ModuleProperty {
-<#
+    <#
     .SYNOPSIS
         Sets the Module property.
     .DESCRIPTION
@@ -233,7 +233,7 @@ function Set-ModuleProperty {
     process { $InputObject | ForEach-Object { $_.Module = $Value } }
 }
 function Get-ModuleConfig {
-<#
+    <#
     .SYNOPSIS
         Retrieves the Module configuration.
     .DESCRIPTION
@@ -266,7 +266,7 @@ function Get-ModuleConfig {
     }
 }
 function Set-ModuleConfig {
-<#
+    <#
     .SYNOPSIS
         Updates the Module configuration.
     .DESCRIPTION
@@ -298,7 +298,7 @@ function Set-ModuleConfig {
 #endregion
 #region Module Status
 function Get-ModuleStatus {
-<#
+    <#
     .SYNOPSIS
         Retrieves the Module status.
     .DESCRIPTION
@@ -324,7 +324,7 @@ function Get-ModuleStatus {
     }
 }
 function Set-ModuleStatus {
-<#
+    <#
     .SYNOPSIS
         Updates the Module status.
     .DESCRIPTION

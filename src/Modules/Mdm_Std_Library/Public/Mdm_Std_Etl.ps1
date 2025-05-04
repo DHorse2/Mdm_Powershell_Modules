@@ -199,7 +199,7 @@ function Set-DirectoryToScriptRoot {
 
     [CmdletBinding()]
     param (
-        $global:moduleRootPath = (get-item $PSScriptRoot).parent.FullName,
+        $global:moduleRootPath = (get-item $PSScriptRoot).Parent.FullName,
         $scriptDrive = (Split-Path -Path "$global:moduleRootPath" -Qualifier)
     )
     
@@ -209,7 +209,7 @@ function Set-DirectoryToScriptRoot {
     # So the parent directory is the Root Root of this Project's Modules
     # $global:moduleRootPath = Split-Path -Path "$PSScriptRoot" -Parent
     # .\src\Modules\Mdm_Modules\Mdm_Bootstrap
-    # $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName
+    # $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName
     # $scriptDrive = Split-Path -Path "$global:moduleRootPath" -Qualifier
     Set-Location $scriptDrive
     # NOTE: Must be directories to invoke directory creation
@@ -967,26 +967,42 @@ function Add-LogError {
 function Open-LogFile {
     [CmdletBinding()]
     param (
-        $localLogFileNameFull = "",
-        [switch]$LogOneFile
+        $localLogFileNameFull,
+        [switch]$LogOneFile,
+        [switch]$SkipCreate
     )
     process {
+        try {
         if ($localLogFileNameFull) { 
             $logFilePath = Split-Path -Path $localLogFileNameFull
             $logFileName = Split-Path $localLogFileNameFull -leaf
         } else {
+            if ($LogOneFile) { $global:LogOneFile = $LogOneFile }
+            if (-not $global:logFileNameFull) {
+                $global:logFileName = "$($global:companyNamePrefix)_Installation_Log"
+                $global:logFilePath = "$global:projectRootPath\log"
+                $global:logFileNameFull = ""
+                # Use a single log file repeatedly appending to it.
+                # The date and time will be appended to the name when LogOneFile is false.
+                [bool]$global:LogOneFile = $LogOneFile
+            }
             $logFilePath = $global:logFilePath
             $logFileName = $global:logFileName
             $LogOneFile = $global:LogOneFile
         }
         # Log folder
+        try {
         if (-not $logFilePath) { $logFilePath = "$global:projectRootPath\Log" }
-        $logFilePath = Convert-Path $logFilePath
         # Check if folder not exists, and create it
         if (-not(Test-Path $logFilePath -PathType Container)) {
-            New-Item -path $logFilePath -ItemType Directory
+            if (-not $SkipCreate) { New-Item -path $logFilePath -ItemType Directory }
         }
+        $logFilePath = Convert-Path $logFilePath
+    } catch {
+
+    }
     
+        try {
         # Construct the full log file name
         if (-not $logFileName) { $logFileName = "Mdm_Installation_Log" }
         # $logFileNameFull = Join-Path -Path $logFilePath -ChildPath $logFileName
@@ -996,9 +1012,22 @@ function Open-LogFile {
         
         # Check if file exists, and create it
         if (-not(Test-Path $logFileNameFull -PathType Leaf)) {
-            New-Item -path $logFileNameFull -ItemType File
+            if (-not $SkipCreate) { New-Item -path $logFileNameFull -ItemType File }
         }
+    } catch {
+
     }
+            
+        $global:logFilePath = $logFilePath
+        $global:logFileName = $logFileName
+        $global:LogOneFile = $LogOneFile
+        $global:logFileNameFull = $logFileNameFull
+}
+    catch {
+        Write-Error "Oper-LogFile had an error."
+        Write-Error "$_"
+    }
+}
     end {
         # Write-Host "Returning: $logFileNameFull"
         # POWERSHELL ERROR. This cannot be return as a string.

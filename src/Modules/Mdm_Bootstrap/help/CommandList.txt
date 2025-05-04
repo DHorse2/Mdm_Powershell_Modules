@@ -123,9 +123,6 @@ Connect-PSSession
 Connect-VirtualDisk
 Connect-WSMan
 Context
-Convert-ConsoleToMediaColor
-Convert-MediaToConsoleColor
-Convert-NameToConsoleColor
 Convert-Path
 Convert-PhysicalDisk
 ConvertFrom-CliXml
@@ -393,8 +390,8 @@ F:
 Find-Ast
 Find-Command
 Find-Command
-Find-DSCResource
 Find-DscResource
+Find-DSCResource
 Find-LapsADExtendedRights
 Find-Module
 Find-Module
@@ -441,7 +438,6 @@ Get-BcdEntryHypervisorSettings
 Get-BcdStore
 Get-BitLockerVolume
 Get-BitsTransfer
-Get-CallStackFormatted
 Get-Certificate
 Get-CertificateAutoEnrollmentPolicy
 Get-CertificateEnrollmentPolicyServer
@@ -844,7 +840,6 @@ Get-TargetPortal
 Get-Template
 Get-Template
 Get-TestDriveItem
-Get-TestHtmlData
 Get-TimeZone
 Get-TlsCipherSuite
 Get-TlsEccCurve
@@ -983,8 +978,6 @@ Invoke-LapsPolicyProcessing
 Invoke-Mock
 Invoke-OperationValidation
 Invoke-Pester
-Invoke-ProcessWithExit
-Invoke-ProcessWithTimeout
 Invoke-RestMethod
 Invoke-ScriptAnalyzer
 Invoke-TroubleshootingPack
@@ -1369,8 +1362,6 @@ Resolve-DnsName
 Resolve-Path
 Resolve-Variables
 Resolve-Variables
-Resolve-Variables2
-Resolve-Variables3
 Restart-Computer
 Restart-NetAdapter
 Restart-PcsvDevice
@@ -1437,6 +1428,8 @@ Set-Culture
 Set-DAClientExperienceConfiguration
 Set-DAEntryPointTableItem
 Set-Date
+Set-DebugVerbose
+Set-DebugVerbose
 Set-DeliveryOptimizationStatus
 Set-DirectoryToScriptRoot
 Set-DirectoryToScriptRoot
@@ -1612,7 +1605,6 @@ Set-ScheduledJob
 Set-ScheduledJobOption
 Set-ScheduledTask
 Set-ScriptExtent
-Set-SecElevated
 Set-SecureBootUEFI
 Set-Service
 Set-SmbBandwidthLimit
@@ -1745,8 +1737,6 @@ Test-Connection
 Test-DscConfiguration
 Test-Dtc
 Test-FileCatalog
-Test-Help
-Test-HtmlData
 Test-Json
 Test-KdsRootKey
 Test-ModuleManifest

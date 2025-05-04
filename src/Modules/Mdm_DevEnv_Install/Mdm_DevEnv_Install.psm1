@@ -1,17 +1,37 @@
 
 Write-Host "Mdm_DevEnv_Install.psm1"
-if (-not $global:moduleRootPath) { $global:moduleRootPath = (get-item $PSScriptRoot ).parent.FullName }
-# Components installed: 
-. "$global:moduleRootPath\Mdm_DevEnv_Install\Install-DevEnvOsWin.ps1"
-. "$global:moduleRootPath\Mdm_DevEnv_Install\Install-DevEnvIdeWin.ps1"
-. "$global:moduleRootPath\Mdm_DevEnv_Install\Install-DevEnvLlmWin.ps1"
-. "$global:moduleRootPath\Mdm_DevEnv_Install\Install-DevEnvWhisperWin.ps1"
-# MAIN function:
-. "$global:moduleRootPath\Mdm_DevEnv_Install\Install-DevEnvWin.ps1"
-
 # Imports
+$importName = "Mdm_Bootstrap"
+if (-not (Get-Module -Name $importName)) {
+    Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Continue
+}
 $importName = "Mdm_Std_Library"
-Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Continue
+if (-not (Get-Module -Name $importName)) {
+    Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Continue
+}
+# $importName = "Mdm_WinFormPS"
+# if (-not (Get-Module -Name $importName)) {
+#     Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Continue
+# }
+
+# Get-ModuleRootPath
+# Components installed: 
+. "$global:moduleRootPath\Mdm_DevEnv_Install\Public\Install-DevEnvOsWin.ps1"
+. "$global:moduleRootPath\Mdm_DevEnv_Install\Public\Install-DevEnvIdeWin.ps1"
+. "$global:moduleRootPath\Mdm_DevEnv_Install\Public\Install-DevEnvLlmWin.ps1"
+. "$global:moduleRootPath\Mdm_DevEnv_Install\Public\Install-DevEnvWhisperWin.ps1"
+# MAIN function:
+. "$global:moduleRootPath\Mdm_DevEnv_Install\Public\Install-DevEnvWin.ps1"
+. "$global:moduleRootPath\Mdm_DevEnv_Install\Public\Install-DevEnv.ps1"
+. "$global:moduleRootPath\Mdm_DevEnv_Install\Public\DevEnvGui.ps1"
+
+Set-Alias -Name IWinWhisper -Value Install-DevEnvWhisperWin
+Set-Alias -Name IWinLlm -Value Install-DevEnvLlmWin
+Set-Alias -Name IWinIde -Value Install-DevEnvIdeWin
+Set-Alias -Name IWinOs -Value Install-DevEnvOsWin
+Set-Alias -Name IDevEnv -Value Install-DevEnv
+Set-Alias -Name IDevEnvWin -Value Install-DevEnvWin
+Set-Alias -Name Get-Vs -Value Get-DevEnvVersions
 
 # Variables: 
 #############################
@@ -188,4 +208,3 @@ function Install-DevEnvModules {
     }
 }
 #############################
-Set-Alias -Name Get-Vs -Value Get-DevEnvVersions

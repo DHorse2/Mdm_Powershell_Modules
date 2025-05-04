@@ -18,14 +18,23 @@
     # Functions to export from this module.
     FunctionsToExport = 
         "Get-DevEnvVersions",
+        "Install-DevEnvOsWin",
         "Install-DevEnvModules",
-        "Install-DevEnvWin",
         "Install-DevEnvIdeWin",
         "Install-DevEnvLlmWin",
-        "Install-DevEnvOsWin",
-        "Install-DevEnvWhisperWin"
+        "Install-DevEnvWhisperWin",
+        "Install-DevEnvWin",
+        "Install-DevEnv",
+        "DevEnvGui"
     CmdletsToExport         = @()
     VariablesToExport       = @()
-    AliasesToExport         = "Get-Vs"
+    AliasesToExport         =
+        "Get-Vs",
+        "IWinLlm",
+        "IWinIde",
+        "IWinOs",
+        "IDevEnv",
+        "IDevEnvWin"
+
     DscResourcesToExport    = @()
 }

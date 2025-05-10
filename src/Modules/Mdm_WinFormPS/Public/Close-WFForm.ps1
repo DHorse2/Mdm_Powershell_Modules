@@ -3,14 +3,14 @@ function Close-WFForm {
     [CmdletBinding()]
     param(
         [Parameter(ValueFromPipeline)]
-        $Forms
+        $form
     )
 
     begin {
-        [Collections.ArrayList]$Forms = @()
+        [Collections.ArrayList]$forms = @()
     }
     process {
-        [void]$Forms.Add($_)
+        [void]$forms.Add($_)
     }
     end {
         # $inputObjects | ForEach-Object -Parallel {

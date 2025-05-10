@@ -58,7 +58,7 @@ process {
 	}
 	catch {
 		$stream.Close()
-		Write-Error $_
+		Write-Error -Message $_
 	}
 }
 end {

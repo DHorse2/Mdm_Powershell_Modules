@@ -96,7 +96,7 @@ param(
 )
 
 $ErrorActionPreference = 1
-trap { Write-Error $_ }
+trap { Write-Error -Message $_ }
 
 if ($PSVersionTable.PSEdition -eq 'Core') {
 	$ngen = powershell -NoProfile -Command 'Join-Path ([Runtime.InteropServices.RuntimeEnvironment]::GetRuntimeDirectory()) ngen.exe'

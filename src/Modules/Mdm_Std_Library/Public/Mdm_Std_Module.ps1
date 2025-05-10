@@ -68,7 +68,7 @@ Function Export-ModuleMemberScan {
                     & $import.FullName
                     Write-Host -Message "    Executable Script: $($import.FullName)"
                     # If no functions are found, create a wrapper function
-                    $scriptName = [System.IO.Path]::GetFileNameWithoutExtension($import.FullName)
+                    $scriptName = [System.IO.Path]::GetFileNameWithoutExtension($import.FullName) + "_Func"
                     $wrapperFunction = @"
 function $scriptName {
     & `"$($import.FullName)`"
@@ -76,12 +76,13 @@ function $scriptName {
 "@
                     # Use Invoke-Expression to define the wrapper function
                     $null = Invoke-Expression $wrapperFunction
-                    Export-ModuleMember -Function $functions.Name
+                    Export-ModuleMember -Function $scriptName
+                    # Export-ModuleMember -Function $functions.Name
                     # (You could prompt to execute here. Don't.)
                     Write-Host -Message "Created wrapper function: $scriptName for script: $($import.FullName)"                    
                 }
             } Catch {
-                Write-Error -Message "Failed to import component $($import.FullName): $_"
+                Add-LogError -IsError -ErrorPSItem $ErrorPSItem -Message "Failed to import component $($import.FullName): $_"
             }
         }
     }
@@ -169,7 +170,7 @@ Import-These -moduleRootPath "C:\Path\To\Module" -functionNames "Function1", "Fu
                 return $false 
             }
         } catch {
-            Write-Error "An error occurred: $_"
+            Write-Error -Message "An error occurred: $_"
             return $false
         }
     }

@@ -8,162 +8,119 @@
 
 @{
 
-# Script module or binary module file associated with this manifest.
-RootModule = 'Mdm_WinFormPS.psm1'
+    # Script module or binary module file associated with this manifest.
+    RootModule           = 'Mdm_WinFormPS.psm1'
+    # Version number of this module.
+    ModuleVersion        = '1.0.0'
+    # ID used to uniquely identify this module
+    GUID                 = 'df3d1de7-37bd-4262-9e10-69a72bd0f8f0'
+    Author               = 'Francois-Xavier Cat'
+    # Author (WFWindow)  = 'David G. Horsman'
+    CompanyName          = 'LazyWinAdmin.com'
+    Copyright            = '(c) 2016 Francois-Xavier Cat. All rights reserved. Licensed under The MIT License (MIT)'
 
-# Version number of this module.
-ModuleVersion = '1.0.0'
+    # Description of the functionality provided by this module
+    Description          = 'PowerShell module to interact with Windows Forms (WinForms) controls'
 
-# ID used to uniquely identify this module
-GUID = 'df3d1de7-37bd-4262-9e10-69a72bd0f8f0'
+    # Minimum PowerShell version required
+    # PowerShellVersion    = '3.0'
+    PowerShellVersion    = '5.1'
+    CompatiblePSEditions = @('Core', 'Desktop')  # Compatible editions
+    RequiredModules      = @()       # Any required modules
+    
+    # Assemblies that must be loaded prior to importing this module
+    # Specify required assemblies
+    RequiredAssemblies   = @(
+        'System.Windows.Forms', # For Windows Forms
+        'System.Drawing', # For drawing support
+        'Microsoft.VisualBasic',
+        'PresentationCore' # For WPF
+    )
+    # 
 
-# Author of this module
-Author = 'Francois-Xavier Cat'
+    # Functions to export from this module
+    FunctionsToExport    = @(
+        'Load-DataGridView',
+        'Load-ListBox',
+        'Refresh-DataGridView',
+        'Add-WFDataGridViewColumn',
+        'Add-WFDataGridViewRow',
+        'Add-WFListViewItem',
+        'Add-WFRichTextBoxText',
+        'Clear-WFDataGridViewSelection',
+        'Clear-WFErrorProvider',
+        'Clear-WFListBox',
+        'Clear-WFRichTextBox',
+        'ConvertTo-WFDataTable',
+        'Disable-WFButton',
+        'Disable-WFRichTextBox',
+        'Disable-WFTabControl',
+        'Disable-WFTextBox',
+        'Enable-WFButton',
+        'Enable-WFRichTextBox',
+        'Enable-WFTabControl',
+        'Enable-WFTextBox',
+        'Find-WFDataGridViewValue',
+        'Get-Assembly',
+        'Get-WFCheckedListBoxItem',
+        'Get-WFComboboxItem',
+        'Get-WFForm',
+        'Get-WFListBoxItem',
+        'Get-WFListViewItem',
+        'Import-WFDataGridView',
+        'Import-WFListBox',
+        'New-WFBalloonNotification',
+        'New-WFForm',
+        'New-WFInputBox',
+        'New-WFMenuStrip',
+        'New-WFMessageBox',
+        'New-WFOpenFileDialog',
+        'New-WFOpenFolderDialog',
+        'New-WFSpeakerBeep',
+        'New-WFWindow',
+        'Remove-WFListBoxItem',
+        'Reset-WFDataGridViewFormat',
+        'Set-WFDataGridView',
+        'Set-WFDataGridViewFilter',
+        'Set-WFForm',
+        'Set-WFListViewColumn',
+        'Set-WFRichTextBox',
+        'Show-WFForm',
+        'Update-WFDataGridView',
+        'WindowStateDefault' 
+        )
 
-# Company or vendor of this module
-CompanyName = 'LazyWinAdmin.com'
+    # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
+    PrivateData          = @{
 
-# Copyright statement for this module
-Copyright = '(c) 2016 Francois-Xavier Cat. All rights reserved. Licensed under The MIT License (MIT)'
+        PSData = @{
+            # Title of the module
+            Title      = 'WinFormPS'
 
-# Description of the functionality provided by this module
-Description = 'PowerShell module to interact with Windows Forms (WinForms) controls'
+            # Tags applied to this module. These help with module discovery in online galleries.
+            Tags       = @('Winforms', 'GUI', 'WindowsForms')
 
-# Minimum version of the Windows PowerShell engine required by this module
-PowerShellVersion = '3.0'
+            # A URL to the license for this module.
+            LicenseUri = 'https://github.com/lazywinadmin/WinFormPS/blob/master/LICENSE.md'
 
-# Name of the Windows PowerShell host required by this module
-# PowerShellHostName = ''
+            # A URL to the main website for this project.
+            ProjectUri = 'https://github.com/lazywinadmin/WinFormPS'
 
-# Minimum version of the Windows PowerShell host required by this module
-# PowerShellHostVersion = ''
+            # A URL to an icon representing this module.
+            # IconUri = ''
 
-# Minimum version of Microsoft .NET Framework required by this module
-# DotNetFrameworkVersion = ''
+            # ReleaseNotes of this module
+            # ReleaseNotes = ''
 
-# Minimum version of the common language runtime (CLR) required by this module
-# CLRVersion = ''
+        } # End of PSData hashtable
 
-# Processor architecture (None, X86, Amd64) required by this module
-# ProcessorArchitecture = ''
+    } # End of PrivateData hashtable
 
-# Modules that must be imported into the global environment prior to importing this module
-# RequiredModules = @()
+    # HelpInfo URI of this module
+    # HelpInfoURI = ''
 
-# Assemblies that must be loaded prior to importing this module
-# RequiredAssemblies = @()
-
-# Script files (.ps1) that are run in the caller's environment prior to importing this module.
-# ScriptsToProcess = @()
-
-# Type files (.ps1xml) to be loaded when importing this module
-# TypesToProcess = @()
-
-# Format files (.ps1xml) to be loaded when importing this module
-# FormatsToProcess = @()
-
-# Modules to import as nested modules of the module specified in RootModule/ModuleToProcess
-# NestedModules = @()
-
-# Functions to export from this module
-FunctionsToExport = @(
-    'Load-DataGridView',
-    'Load-ListBox',
-    'Refresh-DataGridView',
-    'Add-WFDataGridViewColumn',
-    'Add-WFDataGridViewRow',
-    'Add-WFListViewItem',
-    'Add-WFRichTextBoxText',
-    'Clear-WFDataGridViewSelection',
-    'Clear-WFErrorProvider',
-    'Clear-WFListBox',
-    'Clear-WFRichTextBox',
-    'ConvertTo-WFDataTable',
-    'Disable-WFButton',
-    'Disable-WFRichTextBox',
-    'Disable-WFTabControl',
-    'Disable-WFTextBox',
-    'Enable-WFButton',
-    'Enable-WFRichTextBox',
-    'Enable-WFTabControl',
-    'Enable-WFTextBox',
-    'Find-WFDataGridViewValue',
-    'Get-WFCheckedListBoxItem',
-    'Get-WFComboboxItem',
-    'Get-WFForm',
-    'Get-WFListBoxItem',
-    'Get-WFListViewItem',
-    'Import-WFDataGridView',
-    'Import-WFListBox',
-    'New-WFBalloonNotification',
-    'New-WFForm',
-    'New-WFInputBox',
-    'New-WFMenuStrip',
-    'New-WFMessageBox',
-    'New-WFOpenFileDialog',
-    'New-WFOpenFolderDialog',
-    'New-WFSpeakerBeep',
-    'Remove-WFListBoxItem',
-    'Reset-WFDataGridViewFormat',
-    'Set-WFDataGridView',
-    'Set-WFDataGridViewFilter',
-    'Set-WFForm',
-    'Set-WFListViewColumn',
-    'Set-WFRichTextBox',
-    'Show-WFForm',
-    'Update-WFDataGridView'
-)
-
-
-# Cmdlets to export from this module
-#CmdletsToExport = '*'
-
-# Variables to export from this module
-#VariablesToExport = '*'
-
-# Aliases to export from this module
-#AliasesToExport = '*'
-
-# DSC resources to export from this module
-# DscResourcesToExport = @()
-
-# List of all modules packaged with this module
-# ModuleList = @()
-
-# List of all files packaged with this module
-# FileList = @()
-
-# Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
-PrivateData = @{
-
-    PSData = @{
-        # Title of the module
-        Title = 'WinFormPS'
-
-        # Tags applied to this module. These help with module discovery in online galleries.
-        Tags = @('Winforms', 'GUI', 'WindowsForms')
-
-        # A URL to the license for this module.
-        LicenseUri = 'https://github.com/lazywinadmin/WinFormPS/blob/master/LICENSE.md'
-
-        # A URL to the main website for this project.
-        ProjectUri = 'https://github.com/lazywinadmin/WinFormPS'
-
-        # A URL to an icon representing this module.
-        # IconUri = ''
-
-        # ReleaseNotes of this module
-        # ReleaseNotes = ''
-
-    } # End of PSData hashtable
-
-} # End of PrivateData hashtable
-
-# HelpInfo URI of this module
-# HelpInfoURI = ''
-
-# Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
-# DefaultCommandPrefix = ''
+    # Default prefix for commands exported from this module. Override the default prefix using Import-Module -Prefix.
+    # DefaultCommandPrefix = ''
 
 }
 

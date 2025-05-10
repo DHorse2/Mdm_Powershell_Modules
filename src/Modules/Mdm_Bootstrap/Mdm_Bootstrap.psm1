@@ -2,26 +2,52 @@
 Write-Host "Mdm_Bootstrap.psm1"
 $now = Get-Date -UFormat '%Y%m%d%R%z'
 #region functions
+# Build and Update
+function Invoke-Build {
+    [CmdletBinding()]
+    param ()
+    process {
+        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Build.ps1"
+        . "$path"
+        # . "$global:moduleRootPath\Build.ps1"
+    }
+}
+function Invoke-Update {
+    [CmdletBinding()]
+    param ()
+    process {
+        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Update.ps1"
+        . "$path"
+        # . "$global:moduleRootPath\Update.ps1"
+    }
+}
+
 # Go To Locations
-function GoToProjectRoot_Func {
+function Enter-ProjectRoot {
     [CmdletBinding()]
     param ()
     process {
-        . "$global:moduleRootPath\Mdm_Bootstrap\GoToProjectRoot.ps1"
+        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Bootstrap\Public\GoToProjectRoot.ps1"
+        . "$path"
+        # . "$global:moduleRootPath\Mdm_Bootstrap\Public\GoToProjectRoot.ps1"
     }
 }
-function GoToModuleRoot_Func {
+function Enter-ModuleRoot {
     [CmdletBinding()]
     param ()
     process {
-        . "$global:moduleRootPath\Mdm_Bootstrap\GoToModuleRoot.ps1"
+        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Bootstrap\Public\GoToModuleRoot.ps1"
+        . "$path"
+        # . "$global:moduleRootPath\Mdm_Bootstrap\Public\GoToModuleRoot.ps1"
     }
 }
-function GoToBootstrap_Func {
+function Enter-Bootstrap {
     [CmdletBinding()]
     param ()
     process {
-        . "$global:moduleRootPath\Mdm_Bootstrap\GoToBootstrap.ps1"
+        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Bootstrap\Public\GoToBootstrap.ps1"
+        . "$path"
+        # . "$global:moduleRootPath\Mdm_Bootstrap\Public\GoToBootstrap.ps1"
     }
 }
 # Environment
@@ -29,7 +55,9 @@ function DevEnv_Module_Reset_Func {
     [CmdletBinding()]
     param ()
     process {
-        . "$global:moduleRootPath\Mdm_Bootstrap\Public\DevEnv_Module_Reset.ps1"
+        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Bootstrap\DevEnv_Module_Reset.ps1"
+        . "$path"
+        # . "$global:moduleRootPath\Mdm_Bootstrap\DevEnv_Module_Reset.ps1"
     }
 }
 # MAIN
@@ -143,7 +171,8 @@ function Initialize-Dev_Env_Win {
         }
         
     }
-    process { Copy-Item -Path $source -Destination $destination -Force -Recurse -PassThru | if ($DoVerbose) { ForEach-Object { Write-Verbose $_.FullName } } }
+    # process { Copy-Item -Path $source -Destination $destination -Force -Recurse -PassThru | if ($DoVerbose) { ForEach-Object { Write-Verbose $_.FullName } } }
+    process { Write-Error -Message "This is not currently used. No robocopy"}
     end { Write-Verbose "Done " }
 }
 # Components:
@@ -183,10 +212,10 @@ function Add-RegistryPath {
         if ($null -eq $oldPath) {
             # Using the system PATH isn't best practices for powershell:
             # Default:
-            Write-Host "Path $envPathToUpdate is null in the system Environment... Enter a key:" -NoNewline
+            Write-Host "Add-RegistryPath: Path $envPathToUpdate is null in the system Environment... Enter a key:" -NoNewline
             $null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
             $envPathToUpdate = "PATH"
-            Write-Warning "Using $envPathToUpdate instead..."
+            Write-Warning -Message "Using $envPathToUpdate instead..."
             $oldPath = (Get-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name "$envPathToUpdate").path
             Write-Verbose $oldPath
         }
@@ -289,19 +318,17 @@ function Get-ModuleRootPath {
         }
     }
     process {
-        if (-not $global:moduleRootPath) {
-            if (-not $folderPath) {
-                $folderPath = (get-item $PSScriptRoot).FullName
-                $folderName = Split-Path $folderPath -Leaf 
-            }
-            if ( $folderName -eq "Public" `
-                    -or $folderName -eq "Private" `
-                    -or $folderName -ne $importName) {
-                $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.Parent.FullName
-            } else { $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName }
-            # $global:projectRootPath = $null
-        }
-        if (-not $global:projectRootPath) { $global:projectRootPath = (get-item $global:moduleRootPath).Parent.Parent.FullName }
+        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Modules\Project.ps1"
+        . "$path"
+
+        # if (-not $global:moduleRootPath) {
+        #     if (-not $folderPath) { $folderPath = (get-item $PSScriptRoot).FullName }
+        #     $folderName = Split-Path $folderPath -Leaf 
+        #     if ( $folderName -eq "Public" -or $folderName -eq "Private" ) {
+        #         $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.Parent.FullName
+        #     } else { $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName }
+        # }
+        # if (-not $global:projectRootPath) { $global:projectRootPath = (get-item $global:moduleRootPath).Parent.Parent.FullName }
     }
     end { }
 }
@@ -311,9 +338,9 @@ function Get-ModuleRootPath {
 # This works with uninstalled Modules (both)
 $importName = "Mdm_Std_Library"
 Get-ModuleRootPath
-if (-not (Get-Module -Name $importName)) {
-    Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Inquire
-}
+# if (-not (Get-Module -Name $importName)) {
+Import-Module -Name "$global:moduleRootPath\$importName" -Force -ErrorAction Inquire
+# }
 
 . "$global:moduleRootPath\Mdm_Bootstrap\Public\DevEnv_Install_Modules_Win.ps1"
 # function DevEnv_LanguageMode {
@@ -336,24 +363,36 @@ if (-not (Get-Module -Name $importName)) {
 #endregion
 #region Exports
 Export-ModuleMember -Function `
-    Get-ModuleRootPath, `
     DevEnv_Install_Modules_Win, `
+    # Reset `
+    DevEnv_Module_Reset_Func, `
+    # Utils `
     DevEnv_LanguageMode, `
     Initialize-Dev_Env_Win, `
     Assert-RegistryValue, `
     Add-RegistryPath, `
-    DevEnv_Module_Reset_Func, `
-    GoToProjectRoot_Func, `
-    GoToModuleRoot_Func, `
-    GoToBootstrap_Func
+    Get-ModuleRootPath, `
+    # GoTo Location `
+    Enter-ProjectRoot, `
+    Enter-ModuleRoot, `
+    Enter-Bootstrap, `
+    # Build `
+    Invoke-Build, `
+    Invoke-Update
 
-Set-Alias -Name GoProject -Value GoToProjectRoot_Func
-Set-Alias -Name GoModule -Value GoToModuleRoot_Func
-Set-Alias -Name GoBootstrap -Value GoToBootstrap_Func
+Set-Alias -Name Build -Value Invoke-Build
+Set-Alias -Name Update -Value Invoke-Update
+
+Set-Alias -Name GoProject -Value Enter-ProjectRoot
+Set-Alias -Name GoModule -Value Enter-ModuleRoot
+Set-Alias -Name GoBootstrap -Value Enter-Bootstrap
+
 Set-Alias -Name DevEnvReset -Value DevEnv_Module_Reset_Func
 Set-Alias -Name IDevEnvModules -Value DevEnv_Install_Modules_Win
 # Export the aliases
 Export-ModuleMember -Alias `
+    Build, `
+    Update, `
     GoProject, `
     GoModule, `
     GoBootstrap, `

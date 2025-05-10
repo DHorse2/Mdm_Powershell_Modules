@@ -52,7 +52,7 @@
 
 param(
 	[Parameter(Mandatory=1)]
-	[hashtable]$Data,
+	[hashtable]data,
 	[string]$Html = "$env:TEMP\Coverage.htm",
 	[scriptblock]$Show = {Invoke-Item -LiteralPath $args[0]}
 )
@@ -67,7 +67,7 @@ function encode($Text) {
 	[System.Web.HttpUtility]::HtmlEncode($text)
 }
 
-function convert($Path, $Data) {
+function convert($Path, data) {
 	$lines = Get-Content -LiteralPath $Path
 
 	[ref]$bugs = $null
@@ -117,7 +117,7 @@ function convert($Path, $Data) {
 			continue
 		}
 
-		if (!($pass = $Data[$n])) {
+		if (!($pass = data[$n])) {
 			if (!$can -or $can[$n]) {
 				$pass = '---->'
 			}
@@ -135,7 +135,7 @@ function convert($Path, $Data) {
 	'<html><title>Coverage</title>'
 	'<body>'
 
-	$paths = $Data.Keys | Sort-Object
+	$paths = data.Keys | Sort-Object
 
 	### index
 	'<h3>Covered Scripts</h3>'
@@ -152,7 +152,7 @@ function convert($Path, $Data) {
 	foreach($path in $paths) { if (Test-Path -LiteralPath $path) {
 		++$n
 		"<hr/><h3><a id='file$n'>$(encode $path)</a></h3>"
-		convert $path $Data[$path]
+		convert $path data[$path]
 	}}
 
 	'</body>'

@@ -65,7 +65,7 @@ function Set-SecElevated {
 
 
     [CmdletBinding()]
-    param ($message)
+    param ($Message)
 
     # Set-SecElevated
     # Get the ID and security principal of the current user account
@@ -168,6 +168,168 @@ function Invoke-ProcessWithTimeout {
         }
     }
 }
+function Invoke-Invoke {
+    [CmdletBinding()]
+    param(
+        [parameter(ValueFromPipeline = $true)]
+        [hashtable]$Command,
+
+        [string]$CommandLineOnly,
+        [string]$CommandNameOnly,
+
+        [string]$Options,
+        [switch]$DoNewWindow,
+        [switch]$DoVerbose,
+        [switch]$DoPause,
+        [switch]$DoDebug,
+        [switch]$HandleError
+    )
+
+    begin {
+        $null = Debug-Script -DoPause 60 -functionName "Invoke-Invoke pause for interupt" -logFileNameFull $logFileNameFull
+        [Collections.ArrayList]$CommandLines = @()
+        [Collections.ArrayList]$CommandResults = @()
+        if (-not $Options) { $Options = "" }
+    }
+    process {
+        Write-Verbose "Command: $Command"
+        Write-Verbose "CommandName: $CommandNameOnly"
+        Write-Verbose "CommandLine: $CommandLineOnly"
+        if ($Command) {
+            # A piped command will ignore passed single values (Only's)
+            if ($Command -is [hashtable]) {
+                Write-Debug " Hashtable"
+                if (-not $Command.ContainsKey('CommandLine') -or -not $Command.ContainsKey('CommandName')) {
+                    Write-Verbose " Bad Keys"
+                    $Message = "The hashtable does not contain the required keys."
+                    Add-LogText -Message $Message -IsError -logFileNameFull $global:logFileNameFull
+                    return
+                }
+            } else {
+                $Message = "The variable `Command` is not a hashtable."
+                Add-LogText -Message $Message -IsError -logFileNameFull $global:logFileNameFull
+                return
+            }
+            $CommandLine = $Command['CommandLine']
+            $CommandName = $Command['CommandName']
+        } else {
+            $CommandLine = "$CommandLineOnly"
+            $CommandName = "$CommandNameOnly"
+            [hashtable]$Command = @{
+                CommandLine = $commandLine
+                CommandName = $commandName
+            }
+        }
+        if (-not $Command['CommandLine'] -or -not $Command['CommandName']) {
+            $Message = "The hashtable must contain both 'CommandLine' and 'CommandName' keys. `nCommand: $Command"
+            Add-LogText -Message $Message -IsError -logFileNameFull $global:logFileNameFull
+            return
+        }            
+        if ($DoVerbose) {
+            Add-LogText -Message "Received Command: $($Command | Out-String)" -logFileNameFull $global:logFileNameFull -ForegroundColor Red
+        }
+        if (-not $CommandLine -or -not $CommandName) {
+            $Message = "Both CommandLine and CommandName must be provided. `nCommandName($CommandName)- CommandLine($CommandLine)"
+            Add-LogText -Message $Message -IsError -logFileNameFull $global:logFileNameFull
+            return
+        }
+        [void]$CommandLines.Add( @{
+                CommandName = $CommandName
+                CommandLine = $CommandLine
+            }
+        )
+    }
+    end {
+        # Produces array of ($exitCode, $standardOutput, $errorOutput)
+        $standardOutput = ""
+        $errorOutput = ""
+        $exitCode = 0
+        $i = 0
+        if ($DoVerbose) { Add-LogText "Invoke command..." $global:logFileNameFull }
+        foreach ($Command in $CommandLines) {
+            $i++
+            $CommandLine = $Command['CommandLine']
+            $CommandName = $Command['CommandName']
+            if ($DoNewWindow) {
+                $outOptions = ""
+                $optionsArray = $Options.split(" ")
+                foreach ($option in $optionsArray) {
+                    $outOptions += $option
+                }
+                # $installProcess = 
+                if ($DoVerbose) { 
+                    Add-LogText -Message "NOTE: Opening new window..." `
+                        -logFileNameFull $global:logFileNameFull `
+                        -ForegroundColor Red
+                }
+                # Create a new process
+                $process = New-Object System.Diagnostics.Process
+                $process.StartInfo.FileName = $global:companyName
+                $process.StartInfo.Arguments = $outOptions
+                $process.StartInfo.UseShellExecute = $false
+                $process.StartInfo.RedirectStandardOutput = $true
+                $process.StartInfo.RedirectStandardError = $true
+                $process.StartInfo.CreateNoWindow = $true
+                # Start the process
+                $process.Start() | Out-Null
+                # Capture the output
+                $standardOutput = $process.StandardOutput.ReadToEnd()
+                $errorOutput = $process.StandardError.ReadToEnd()
+                # Wait for the process to exit
+                $process.WaitForExit()
+                $exitCode = $process.ExitCode
+            } else {
+                # Execute the command and capture output and error
+                # Redirect output to a temporary file
+                $tempFile = [System.IO.Path]::GetTempFileName()
+                Invoke-Expression "$commandLine *> $tempFile"
+                $output = Get-Content $tempFile
+                Remove-Item $tempFile
+                $errorOutput = $output | Where-Object { $_ -match "error" }
+                $standardOutput = $output | Where-Object { $_ -notmatch "error" }
+                $exitCode = $LASTEXITCODE
+            }
+            if ($HandleError) {
+                if ($exitCode -ne 1 -or $errorOutput) {
+                    $Message = "$CommandName error $exitCode - $(Get-RobocopyExitMessage($exitCode))."
+                    if ($errorOutput) { $Message += "`nDetails: $errorOutput" }
+                    Add-LogText -Message $Message -IsError -logFileNameFull $global:logFileNameFull
+                } elseif ($standardOutput) {
+                    if ($DoVerbose) { 
+                        Add-LogText -Message "Output from $($CommandName): `n$standardOutput" -IsError -logFileNameFull $global:logFileNameFull
+                    } else {
+                        Add-LogText -Message "Ok" -logFileNameFull $global:logFileNameFull
+                    }
+                }
+            }
+            # $CommandResults.Add("($i) [$exitCode] { $commandLine } ### $output")
+            [CommandResult]$result = @{
+                sequence       = $i
+                ExitCode       = $exitCode
+                CommandName    = $CommandName
+                CommandLine    = $CommandLine
+                standardOutput = $standardOutput
+                errorOutput    = $errorOutput
+                result         = $output
+            }
+
+            $CommandResults.Add($result)
+        }
+        return [Collections.ArrayList]$CommandResults
+    }
+    # Execute the  command using cmd.exe
+    # with /c which does the command and then terminates. 
+    # The 2>&1 redirects standard error to standard output, 
+    # allowing you to capture both in the $output variable.
+    # Execute the command and capture only the error output
+    # $errorOutput = & cmd.exe /c $commandLine 2>&1 1>$null
+    # $errorOutput = & cmd.exe /c $commandLine 1>$null 2>&1
+    # $output = & cmd.exe /c $commandLine 2>&1
+    # $output = & cmd.exe /c $commandLine 1>&1 2>&1
+    # $output = Invoke-Expression "$commandLine 2>&1"
+    # $output = & cmd.exe /c "$commandLine 1>&1 2>&1"
+    # $output = & cmd.exe /c "$commandLine 2>&1"
+}
 function Push-ShellPwsh {
     <# 
     .DESCRIPTION
@@ -242,7 +404,7 @@ function Initialize-Std {
     .EXAMPLE
         Initialize-Std -DoPause:$DoPause -DoVerbose:$DoVerbose
     .EXAMPLE
-        Initialize-StdGlobalsReset
+        Reset-StdGlobals
         Initialize-Std -DoPause:$DoPause -DoVerbose:$DoVerbose
     .NOTES
         none.
@@ -292,7 +454,7 @@ function Initialize-Std {
             }
             if ($global:DoDebug) { Write-Host "Debugging." } else { Write-Verbose "Debug off." }
 
-            # Verbosity
+            # Verbosity TODO syntax errors
             if ($local:DoVerbose) {
                 $global:DoVerbose = $true 
                 $VerbosePreference = $true
@@ -371,18 +533,18 @@ function Initialize-Std {
         if ($global:DoVerbose) {
             Write-Host ""
             Write-Host "Init end  Local Pause: $local:DoPause, Verbose: $local:DoVerbose, Debug: $local:DoDebug"
-            Write-Host "Init end Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug Init: $global:InitStdDone"
+            Write-Host "Init end Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug, Force: $global:DoForce Init: $global:InitStdDone"
         }
-        $null = Set-ImportParamsGlobal
+        $null = Set-CommonParametersGlobal
 
         # $importName = "Mdm_Std_Library"
-        # $modulePath = "$global:moduleRootPath\$importName\$importName"
+        # $modulePath = "$global:moduleRootPath\$importName"
         # if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
-        #     Import-Module -Name $modulePath @global:importParamsStd
+        #     Import-Module -Name $modulePath @global:commonParametersStd
         # }
     }
 }
-function Initialize-StdGlobalsReset {
+function Reset-StdGlobals {
     <#
     .SYNOPSIS
         Resets the global state.
@@ -407,7 +569,7 @@ function Initialize-StdGlobalsReset {
     .OUTPUTS
         none.
     .EXAMPLE
-        Initialize-StdGlobalsReset
+        Reset-StdGlobals
 #>
 
 
@@ -427,23 +589,68 @@ function Initialize-StdGlobalsReset {
         Set-DebugVerbose -DoDebug $DoDebug -DoVerbose $DoVerbose -DoPause $DoPause
     }
 }
-function Set-ImportParamsGlobal {
+function Set-CommonParametersGlobal {
     [CmdletBinding()]
     param(
         [parameter(ValueFromPipeline)]
-        [hashtable]$importParams = @{}
+        [hashtable]$commonParameters = @{}
     )
+    begin {
+        # Initialize outputParams as a hashtable
+        [hashtable]$outputParams = @{}
+        if (-not $commonParameters) { $commonParameters = $PSBoundParameters }
+    }
     process {
-        if ($global:DoForce) { $importParams['Force'] = $true }
-        if ($global:DoVerbose) { $importParams['Verbose'] = $true }
-        if ($global:DoDebug) { $importParams['Debug'] = $true }
-        $importParams['ErrorAction'] = if ($global:errorActionValue) { $global:errorActionValue } else { 'Continue' }
-        $global:importParams = $global:importParamsPrelude
-        $global:importParams += $importParams
-        # So: passed + DOxxx + global prelude
-        $global:importParams
+        # Copy each key-value pair from the incoming hashtable
+        foreach ($key in $commonParameters.Keys) {
+            $outputParams[$key] = $commonParameters[$key]
+        }
+    }
+    end {
+        # Add global parameters based on conditions
+        if ($global:DoForce) { $outputParams['Force'] = $true }
+        if ($global:DoVerbose) { $outputParams['Verbose'] = $true }
+        if ($global:DoDebug) { $outputParams['Debug'] = $true }
+        if ($global:DoPause) { $outputParams['Pause'] = $true }
+        $outputParams['ErrorAction'] = if ($global:errorActionValue) { $global:errorActionValue } else { 'Continue' }
+
+        # Combine with global prelude
+        [hashtable]$global:commonParameters = @{}
+        $global:commonParameters += $global:commonParametersPrelude
+        $global:commonParameters += $outputParams
+
+        # Return the combined parameters
+        return [hashtable]$global:commonParameters
     }
 }
+function Set-CommonParameters {
+    [CmdletBinding()]
+    param(
+        [parameter(ValueFromPipeline)]
+        [hashtable]$commonParameters = @{},
+        [switch]$DoVerbose,
+        [switch]$DoPause,
+        [switch]$DoDebug
+    )
+    begin {
+        #  if (-not $outputParams) { $outputParams = New-Object System.Collections.ArrayList($null) }
+        $outputParams = $PSBoundParameters
+    }
+    process {
+        $outputParams.Add($_) | Out-Null
+    }
+    end {
+        if ($DoForce -or $PSBoundParameters['Force']) { $outputParams['Force'] = $true; Write-Verbose "Force" }
+        if ($DoVerbose -or $PSBoundParameters['Verbose'] -or $VerbosePreference -ne 'Continue') { $outputParams['Verbose'] = $true; Write-Verbose "Verbose" }
+        # if ($DoDebug -or $PSBoundParameters['Debug']) { $outputParams['Debug'] = $true; Write-Verbose "Debug" }
+        if (Assert-Debug) { $outputParams['Debug'] = $true; Write-Verbose "Debug" }
+        $outputParams['ErrorAction'] = if ($errorActionValue) { $errorActionValue } else { 'Continue' }
+        # $outputParams += $global:commonParametersPrelude
+        return $outputParams
+    }
+}
+
+
 function Set-DebugVerbose {
     # Set Debug Preference
     # Set Verbose Preference
@@ -451,22 +658,23 @@ function Set-DebugVerbose {
     param (
         [bool]$DoDebug,
         [bool]$DoVerbose,
-        [bool]$DoPause
+        [bool]$DoPause,
+        [bool]$DoForce
     )
     if ($DoDebug) { $DebugPreference = "Continue" } 
     else { $DebugPreference = "SilentlyContinue" }
-
     if ($DoVerbose) { $VerbosePreference = "Continue" } 
     else { $VerbosePreference = "SilentlyContinue" }
+    $global:DoForce = $DoForce
     $global:DoDebug = $DoDebug
     $global:DoVerbose = $DoVerbose
     $global:DoPause = $DoPause
     # params
-    $null = Set-ImportParamsGlobal
+    $null = Set-CommonParametersGlobal
 
     # Output the current settings
     Write-Debug "Debug Mode: $DoDebug. Preference: $DebugPreference"
-    Write-Host "Verbose Mode: $DoVerbose. Preference: $VerbosePreference"
+    Write-Verbose "Verbose Mode: $DoVerbose. Preference: $VerbosePreference"
 }
 function Show-StdGlobals {
     <#
@@ -482,14 +690,14 @@ function Show-StdGlobals {
     [CmdletBinding()]
     param ()
     process {
-        Write-Host "Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug Init: $global:InitStdDone"
+        Write-Host "Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug, Force: $global:DoForce Init: $global:InitStdDone"
         if ($global:msgAnykey.Lenth -gt 0) {
             Write-Host "Anykey prompt: $global:msgAnykey"
         }
         if ($global:msgYorN.Lenth -gt 0) {
             Write-Host "Y,Q or N prompt: $global:msgYorN"
         }
-        Write-Host "Auto Params: $global:importParamsStd"
+        Write-Host "Auto Params: $global:commonParametersStd"
     }
 }
 function Get-ScriptName { 
@@ -534,7 +742,7 @@ function Start-Std {
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
     process {
         # Import-Module Mdm_Std_Library -Force
-        Initialize-StdGlobalsReset  `
+        Reset-StdGlobals  `
             -DoPause:$DoPause `
             -DoVerbose:$DoVerbose `
             -DoDebug:$DoDebug

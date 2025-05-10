@@ -1,4 +1,5 @@
 
+# DevEnv Gui
 function DevEnvGui {
     <#
 .SYNOPSIS
@@ -19,103 +20,58 @@ function DevEnvGui {
     param (
         [Parameter()]
         [string]$fileNameFull = "",
-        [switch]$ResetSettings
+        [switch]$ResetSettings,
+        [string]$logFilePath = "",
+        [string]$logFileName = "",
+        [switch]$LogOneFile,
+        [string]$companyName = "MacroDM",
+        [string]$title
     )
     
     begin {
-        $assemblyName = "System.Windows.Forms"
         # $assemblySystemWindowsForms = Get-Assembly -assemblyName $assemblyName
+        $assemblyName = "System.Windows.Forms"
         $null = Get-Assembly -assemblyName $assemblyName
-        # Import-Module Mdm_WinFormPS
-        if (-not (Get-Module -Name Mdm_WinFormPS)) {
-            Import-Module Mdm_WinFormPS
-        }
-        try {
-            $form = New-WFForm
-            Get-JsonData -parentObject $form.Data ".\DevEnvGuiConfig.json"
-            Get-JsonData -parentObject $form.Data.Components ".\DevEnvComponents.json"
-            Show-WFForm $form
-        } catch {
-            Write-Error "TODO DevEnvGui error. $_"
-        }
+        $null = Get-Import "Mdm_WinFormPS" -DoForce
+        Get-ModuleRootPath
+        $global:timeStarted = Get-Date
+        $global:timeStartedFormatted = "{0:yyyymmdd_hhmmss}" -f ($global:timeStarted)
+        $global:timeCompleted = $null
+    
+        # Logging:
+        # $global:logFileNameFull = 
+        if (-not $logFilePath) { $logFilePath = "$global:projectRootPath\log" }
+        if (-not $logFileName) { $logFileName = "Mdm_DevEnvGui_Log" }
+        # Sets the global log file name
+        $logFileNameFull = Open-LogFile -OpenLogFile `
+            -logFilePath $logFilePath -logFileName $logFileName
+        Write-Host "Log File: $global:logFileNameFull"
+        # Start
+        $Message = @(
+            " ", `
+                "==================================================================", `
+                "Loading User Interface at $global:timeStartedFormatted", `
+                "==================================================================", `
+                "   Function: $PSCommandPath", `
+                "    Logfile: $global:logFileNameFull", `
+                "Script Root: $PSScriptRoot"
+        )
+        Add-LogText -Message $Message -logFileNameFull $global:logFileNameFull `
+            -ForegroundColor Green
     }
-    process {
-        Show-WFForm($form)
-    }
-    end { }
-}
-
-function Get-JsonData {
-    [CmdletBinding()]
-    param(
-        [parameter(ValueFromPipeline)]$inputObjects,
-        # Parameter help description
-        $parentObject
-    )
-
-    begin {
-        [Collections.ArrayList]$inputObjects = @()
-        # Path to the JSON file
-        $jsonFilePath = "path\to\your\file.json"
-        $dataOut = @{}
-
-    }
-    process {
-        [void]$inputObjects.Add($_)
-    }
-    end {
-        $inputObjects | ForEach-Object {
-            try {
-                $filePath = $_
-                # Read the JSON file
-                $jsonContent = Get-Content -Path $_ -Raw
-                # Convert the JSON string to a PowerShell object
-                $data = $jsonContent | ConvertFrom-Json
-                # Access the properties of the object
-                if ($parentObject) {
-                    if ($data.name) {
-                        $parentObject[$data.name] = $data
-                    } else { $parentObject += $data }
-                } else {
-                    $dataOut += $data
-                }
-                Write-Verbose "Data: $data"
-            } catch {
-                Write-Error "Error processing file $($filePath): $_"
-            }
-        }
-        # Collect results if not using parentObject
-        if ($parentObject) {
-            Write-Output $parentObject
-        } else {
-            Write-Output $dataOut
-        }
-    }
-}
-
-function Get-Assembly {
-    # Load assemblies such as:
-    #   Microsoft.VisualBasic
-    #   System.Windows.Forms
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [string]$assemblyName
-    )
-    begin { }
     process {
         try {
-            # Load the Assembly
-            $assembly = Add-Type -AssemblyName $assemblyName -ErrorAction 'Stop' -ErrorVariable ErrorBeginAddType
-            Write-Verbose "Successfully loaded assembly: $assemblyName"
-            return $assembly
+            $window = New-WFWindow
+            # $window = New-WFWindow -window $null -formsArray $null -state $null
+            Get-JsonData -parentObject $window.state.data -inputObject ".\DevEnvGuiConfig.json"
+            Get-JsonData -parentObject $window.state.data['Components'] -inputObject ".\DevEnvComponents.json"
+            Show-WFForm $window.forms[0]
         } catch {
-            Write-Warning -Message "[BEGIN] Something went wrong while loading assembly $assemblyName."
-            if ($ErrorBeginAddType) {
-                Write-Warning -Message "[BEGIN] Error details: $($ErrorBeginAddType)"
-            }
-            Write-Error -Message $_.Exception.Message
+            $Message = "DevEnvGui unable to create and open form."
+            Add-LogText -Message $Message -IsError -logFileNameFull $global:logFileNameFull -ErrorPSItem $_
+
         }
+        Show-WFForm([System.Windows.Forms.Form]$window.forms[0])
     }
     end { }
 }

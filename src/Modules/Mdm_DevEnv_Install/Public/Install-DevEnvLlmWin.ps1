@@ -24,6 +24,7 @@ function Install-DevEnvLlmWin {
 #>
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
+    Initialize-Std -$DoPause -$DoVerbose -$DoDebug
     Write-Verbose "######################"
     Write-Verbose  "Copying PowerShell modules to System32 PowerShell modules directory..."
     Write-Verbose "Script Security Check and Elevate"
@@ -31,7 +32,7 @@ function Install-DevEnvLlmWin {
 
     # Ensure the script is running as administrator
     if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-        Write-Error "This script must be run as an Administrator. Please restart PowerShell with elevated privileges."
+        Write-Error -Message "This script must be run as an Administrator. Please restart PowerShell with elevated privileges."
         exit
     }
 

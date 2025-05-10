@@ -1,4 +1,31 @@
 
+# More Commands
+
+# ############################################################################################
+
+Get-Module -ListAvailable
+get-command | Out-File "commands.txt"
+Import-Module -name .\Mdm_Modules -force -verbose
+remove-module -name .\Mdm_Modules -verbose -force
+Update
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+. .\DevEnv_Module_Reset.ps1
+. .\GoToBootstrap
+G:\Script\Powershell\Mdm_Powershell_Modules
+G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules
+G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules
+G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap
+G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library
+G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_DevEnv_Install
+G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS
+.\src\Modules
+
+# ############################################################################################
+
+# View State
+
+ Get-Variable -Scope Global
+
 # Export all the functions
 
 Export-ModuleMember -Function $Public.Basename -Alias *

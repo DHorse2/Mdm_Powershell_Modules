@@ -1,4 +1,20 @@
 
+function Assert-Debug {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $false)]
+        [switch]$IgnorePSBoundParameters,
+        [Parameter(Mandatory = $false)]
+        [switch]$IgnoreDebugPreference,
+        [Parameter(Mandatory = $false)]
+        [switch]$IgnorePSDebugContext
+    )
+    process {
+        ((-not $IgnoreDebugPreference.IsPresent) -and ($DebugPreference -ne "SilentlyContinue")) -or
+        ((-not $IgnorePSBoundParameters.IsPresent) -and $PSBoundParameters.Debug.IsPresent) -or
+        ((-not $IgnorePSDebugContext.IsPresent) -and ($PSDebugContext))
+    }
+}
 function Get-ErrorNew {
     <#
     .SYNOPSIS
@@ -125,14 +141,14 @@ function Set-ErrorBreakOnVariable {
         if (-not $mode) { $mode = "Write" } else { $mode = $global:mode }
         Write-Verbose `
             -ForegroundColor Green `
-            -Object ("The $Data variable has changed! Value is: {0}" -f $watchVariable)
+            -Object ("The data variable has changed! Value is: {0}" -f $watchVariable)
         # break
         if (-not $commandLine) { $commandLine = "break; " }
-        $logMessage = "The watch Variable has changed! Value is: $watchVariable"
-        $logMessage += "Action: $commandLine"
+        $Message = "The watch Variable has changed! Value is: $watchVariable"
+        $Message += "Action: $commandLine"
     }
     process {
-        Add-LogText $logMessage -ForegroundColor Green
+        Add-LogText $Message -ForegroundColor Green
         Set-PSBreakpoint -Action { $commandLine } -Variable $watchVariable -Mode $mode
     }
 }
@@ -145,25 +161,25 @@ function Get-CallStackFormatted {
     )
     begin {
         # Initialize as an ArrayList
-        $logMessageLines = @()
+        $MessageLines = @()
     }
     process {
         $i = 0
         foreach ($frame in $callStack) {
             if ($frame.ScriptName.Length -gt 1 -and $frame.Command -ne "<ScriptBlock>") {
-                $logMessageLine = "Frame[$i]: $($frame.Command), line $($frame.ScriptLineNumber)."
-                $logMessageLink = "$(Split-Path -Path $($frame.ScriptName) -Leaf):$($frame.ScriptLineNumber):"
+                $MessageLine = "Frame[$i]: $($frame.Command), line $($frame.ScriptLineNumber)."
+                $MessageLink = "$(Split-Path -Path $($frame.ScriptName) -Leaf):$($frame.ScriptLineNumber):"
                 
                 if ($frame.InvocationInfo.ScriptName) {
-                    $logMessageCaller = "$(Split-Path -Path $($frame.InvocationInfo.ScriptName) -Leaf) at line $($frame.InvocationInfo.ScriptLineNumber)"
+                    $MessageCaller = "$(Split-Path -Path $($frame.InvocationInfo.ScriptName) -Leaf) at line $($frame.InvocationInfo.ScriptLineNumber)"
                 } else {
-                    $logMessageCaller = "None"
+                    $MessageCaller = "None"
                 }
                 # Add a hashtable to the array
-                $logMessageLines += [PSCustomObject]@{
-                    Function_Name    = $logMessageLine
-                    Link             = $logMessageLink
-                    Calling_Function = "$logMessageCaller$separator"
+                $MessageLines += [PSCustomObject]@{
+                    Function_Name    = $MessageLine
+                    Link             = $MessageLink
+                    Calling_Function = "$MessageCaller$separator"
                 }                
             }
             $i++
@@ -171,7 +187,30 @@ function Get-CallStackFormatted {
     }
     end {
         # Output the formatted table
-        return ($logMessageLines | Format-Table -AutoSize | Out-String)
+        return ($MessageLines | Format-Table -AutoSize | Out-String)
+    }
+}
+function Get-VariableScoped {
+    [CmdletBinding()]
+    param (
+        [string]$variableName,
+        [string]$scope = "Global"
+    )
+    process {
+        if ($variableName) {
+            # Get the variable from the scope
+            $variable = Get-Variable -Name $variableName -Scope $scope -ErrorAction SilentlyContinue
+        } else {
+            $variableName = "result for $scope"
+            $variable = Get-Variable -Scope $scope -ErrorAction SilentlyContinue
+        }
+        
+        if ($null -ne $variable) {
+            return $variable.Value
+        } else {
+            Write-Warning -Message "Get-VariableScoped: Variable $variableName does not exist in the global scope."
+            return $null
+        }
     }
 }
 function Debug-Script {
@@ -179,52 +218,52 @@ function Debug-Script {
     param (
         $functionName = "",
         $commandLine = "",
-        $logMessage = @(),
+        $Message = @(),
         $DoPause,
         $PsDebug = "",
         [switch]$Break,
         [switch]$DoPrompt,
-        [string]$localLogFileNameFull = "",
+        [string]$logFileNameFull = "",
         $ErrorPSItem
     )
     begin {
         if ($global:DebugInScriptDebugger -eq $true) { return $false; }
         $global:DebugInScriptDebugger = $true
-        if (-not $localLogFileNameFull) { $localLogFileNameFull = $global:logFileNameFull }
-        if ($localLogFileNameFull.Length -le 0) { $localLogFileNameFull = $global:logFileNameFull }
+        if (-not $logFileNameFull) { $logFileNameFull = $global:logFileNameFull }
+        if ($logFileNameFull.Length -le 0) { $logFileNameFull = $global:logFileNameFull }
         if ($ErrorPSItem) { $global:lastError = $ErrorPSItem }
         # Get the call stack
         $callStack = Get-PSCallStack
         $frame = $callStack[0]
         if ($functionName.Length -ge 1) { $functionNameText = " for function: $functionName" } else { $functionNameText = "" }
-        $logMessageLine = "Script Debugger$functionNameText"
+        $MessageLine = "Script Debugger$functionNameText"
         # "Called by $($MyInvocation.ScriptName), Line: $($MyInvocation.ScriptLineNumber)",
         # Display the header
-        $logMessage += @(
-            $logMessageLine,
+        $Message += @(
+            $MessageLine,
             "Called by $(Split-Path -Path $($MyInvocation.ScriptName) -Leaf), Line: $($MyInvocation.ScriptLineNumber)",
             "(You can add a breakpoint location here:)"
             "Script Debugger in $(Split-Path -Path $($frame.ScriptName) -Leaf), Line: $($frame.ScriptLineNumber)"
         )
-        Add-LogText -logMessages $logMessage -IsWarning -localLogFileNameFull $localLogFileNameFull
+        Add-LogText -Message $Message -IsWarning -logFileNameFull $logFileNameFull
         Start-Sleep -Seconds 2
     }
     process {
         $DoPromptError = $false
         #region Display Error Details
         if ($ErrorPSItem) {
-            Add-LogText -logMessages "Passed error:" -IsError -ErrorPSItem $ErrorPSItem -localLogFileNameFull $localLogFileNameFull
+            Add-LogText -Message "Passed error:" -IsError -ErrorPSItem $ErrorPSItem -logFileNameFull $logFileNameFull
         }
         # Output the call stack
         try {
-            $logMessage = @("Stack:")
+            $Message = @("Stack:")
             $callStack = Get-PSCallStack
-            $logMessageLine = Get-CallStackFormatted $callStack
-            $logMessage += $logMessageLine.Trim()
-            Add-LogText -logMessages $logMessage -foregroundColor Green -localLogFileNameFull $localLogFileNameFull
+            $MessageLine = Get-CallStackFormatted $callStack
+            $Message += $MessageLine.Trim()
+            Add-LogText -Message $Message -foregroundColor Green -logFileNameFull $logFileNameFull
         } catch {
-            $logMessage = @("Error processing the stack.", "Command: $commandNext")
-            Add-LogText -logMessages $logMessage -IsError  -ErrorPSItem $_ -localLogFileNameFull $localLogFileNameFull
+            $Message = @("Error processing the stack.", "Command: $commandNext")
+            Add-LogText -Message $Message -IsError  -ErrorPSItem $_ -logFileNameFull $logFileNameFull
             $DoPromptError = $true
         }
         #endregion
@@ -235,7 +274,7 @@ function Debug-Script {
             # $DoPromptError = $false
             # DoPause
             try {
-                $logMessage = "The parameter -DoPause $DoPause is incorrect.`nYou must specify -DoPause in seconds between 1 and 3600."
+                $Message = "The parameter -DoPause $DoPause is incorrect.`nYou must specify -DoPause in seconds between 1 and 3600."
                 if ($DoPause) {
                     $commandValid = $true
                     switch ($DoPause) {
@@ -250,29 +289,29 @@ function Debug-Script {
                         default { $commandValid = $false }
                     }
                     if ($commandValid) {
-                        $logMessage = "Pause exection timer for the next $sleepSeconds seconds. `nYou can: `n   1. Press the debug pause button followed by step out and `"Y`". `n   2. Enter `"Y`" to just continue. `n   3. Let it time out."
-                        Add-LogText -logMessages $logMessage -IsWarning -localLogFileNameFull $localLogFileNameFull
+                        $Message = "Pause exection timer for the next $sleepSeconds seconds. `nYou can: `n   1. Press the debug pause button followed by step out and `"Y`". `n   2. Enter `"Y`" to just continue. `n   3. Let it time out."
+                        Add-LogText -Message $Message -IsWarning -logFileNameFull $logFileNameFull
                         # Start-Sleep -Seconds $sleepSeconds
-                        $logMessage = "Pause exection timer"
-                        $null = Wait-ForKeyPress -message $logMessage -duration $sleepSeconds
+                        $Message = "Pause exection timer"
+                        $null = Wait-ForKeyPress -Message $Message -duration $sleepSeconds
                     } else {
                         $DoPromptError = $true
-                        Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -localLogFileNameFull $localLogFileNameFull
+                        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -logFileNameFull $logFileNameFull
                     }
                 }
             } catch {
                 $DoPromptError = $true
-                Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -localLogFileNameFull $localLogFileNameFull
+                Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -logFileNameFull $logFileNameFull
             }
             # DoPrompt
             if ($DoPrompt) {
-                if ($(Wait-YorNorQ -message "Continue execution? ") -ne "Y") { 
+                if ($(Wait-YorNorQ -Message "Continue execution? ") -ne "Y") { 
                     exit
                 }
             }
             # PsDebug
             try {
-                $logMessage = @("Invalid PsDebug parameter ($PsDebug)!`nUse ""Off"", ""Trace 0, 1, or 2"", ""Step"" or ""Strict"" `nCommand: $PsDebug")
+                $Message = @("Invalid PsDebug parameter ($PsDebug)!`nUse ""Off"", ""Trace 0, 1, or 2"", ""Step"" or ""Strict"" `nCommand: $PsDebug")
                 if ($PsDebug) {
                     $commandValid = $true
                     switch ($PsDebug) {
@@ -291,52 +330,52 @@ function Debug-Script {
                     }
                     if ($commandValid) {
                         $commandNext = "Set-PSDebug -$PsDebug"
-                        $logMessage = "Attempt: $commandNext"
-                        # Add-LogText -logMessages $commandLine -IsWarning -localLogFileNameFull $global:logFileNameFull
-                        Add-LogText -logMessages $logMessage `
+                        $Message = "Attempt: $commandNext"
+                        # Add-LogText -Message $commandLine -IsWarning -logFileNameFull $global:logFileNameFull
+                        Add-LogText -Message $Message `
                             -foregroundColor Green `
-                            -localLogFileNameFull $global:logFileNameFull 
+                            -logFileNameFull $global:logFileNameFull 
                         Invoke-Expression $commandNext 
                     } else {
                         $DoPromptError = $true
-                        Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -localLogFileNameFull $global:logFileNameFull
+                        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -logFileNameFull $global:logFileNameFull
                     }
                 }
             } catch {
                 $DoPromptError = $true
-                Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay-ErrorPSItem $_ -localLogFileNameFull $localLogFileNameFull
+                Add-LogText -Message $Message -IsError -SkipScriptLineDisplay-ErrorPSItem $_ -logFileNameFull $logFileNameFull
             }
             # execute the command
             try {
                 # if ($commandLine -eq "" ) { $commandLine = $commandLineDefault }
                 if ($commandLine.Length -ge 1) {
-                    $logMessage = "Command: $commandLine"
+                    $Message = "Command: $commandLine"
                     $commandNext = $commandLine
-                    Add-LogText -logMessages $logMessage -IsWarning -localLogFileNameFull $global:logFileNameFull
+                    Add-LogText -Message $Message -IsWarning -logFileNameFull $global:logFileNameFull
                     Invoke-Expression $commandLine 
                 }
             } catch {
                 $DoPromptError = $true
-                $logMessage = @("Invalid command passed to Script_Debbugger`nCommand: $commandLine")
-                Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -localLogFileNameFull $localLogFileNameFull
+                $Message = @("Invalid command passed to Script_Debbugger`nCommand: $commandLine")
+                Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -logFileNameFull $logFileNameFull
             }
             # Break handling - this returns to the caller
-            $logMessage = "Break is not working, use breakpoints and debug to break."
+            $Message = "Break is not working, use breakpoints and debug to break."
             if ($Break) { 
                 break
                 $DoPromptError = $true
-                Add-LogText -logMessages $logMessage -IsWarning -localLogFileNameFull $localLogFileNameFull
+                Add-LogText -Message $Message -IsWarning -logFileNameFull $logFileNameFull
             }
             if ($DoPromptError) {
-                if ($(Wait-YorNorQ -message "Debug-Script had internal errors. Continue execution? ") -ne "Y") { 
+                if ($(Wait-YorNorQ -Message "Debug-Script had internal errors. Continue execution? ") -ne "Y") { 
                     exit
                 }
                 return $false
             }
         } catch {
-            $logMessage += @("Debug-Script is not working!!!`nCommand: $commandNext")
-            Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -localLogFileNameFull $localLogFileNameFull
-            if ($(Wait-YorNorQ -message "Continue execution? ") -ne "Y") { 
+            $Message += @("Debug-Script is not working!!!`nCommand: $commandNext")
+            Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -logFileNameFull $logFileNameFull
+            if ($(Wait-YorNorQ -Message "Continue execution? ") -ne "Y") { 
                 exit
             }
             return $false
@@ -365,11 +404,11 @@ function Debug-SubmitFunction {
         $pauseSeconds = 5
     )
     if (-not $global:DebugInScriptDebugger -and $global:DebugProgressFindName -and $(Debug-AssertFunction($functionName))) {
-        $logMessage = "Debug $invocationFunctionName for $($functionName)"
-        Add-LogText -logMessages $logMessage `
+        $Message = "Debug $invocationFunctionName for $($functionName)"
+        Add-LogText -Message $Message `
             -IsWarning -DoTraceWarningDetails `
-            -localLogFileNameFull $global:logFileNameFull
-        $null = Debug-Script -DoPause $pauseSeconds -functionName $functionName -localLogFileNameFull $localLogFileNameFull
+            -logFileNameFull $global:logFileNameFull
+        $null = Debug-Script -DoPause $pauseSeconds -functionName $functionName -logFileNameFull $logFileNameFull
         return $true
     }
     return $false

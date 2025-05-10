@@ -2,6 +2,7 @@ PS G:\Script\Powershell> get-verb
 
 Verb        AliasPrefix Group          Description
 ----        ----------- -----          -----------
+Common:
 Add         a           Common         Adds a resource to a container, or attaches an item to another item
 Clear       cl          Common         Removes all the resources from a container but does not delete the container
 Close       cs          Common         Changes the state of a resource to make it inaccessible, unavailable, or unusable
@@ -36,12 +37,16 @@ Switch      sw          Common         Specifies an action that alternates betwe
 Undo        un          Common         Sets a resource to its previous state
 Unlock      uk          Common         Releases a resource that was locked
 Watch       wc          Common         Continually inspects or monitors a resource for changes
+
+Communications:
 Connect     cc          Communications Creates a link between a source and a destination
 Disconnect  dc          Communications Breaks the link between a source and a destination
 Read        rd          Communications Acquires information from a source
 Receive     rc          Communications Accepts information sent from a source
 Send        sd          Communications Delivers information to a destination
 Write       wr          Communications Adds information to a target
+
+Data:
 Backup      ba          Data           Stores data by replicating it
 Checkpoint  ch          Data           Creates a snapshot of the current state of the data or of its configuration
 Compare     cr          Data           Evaluates the data from one resource against the data from another resource
@@ -66,6 +71,8 @@ Save        sv          Data           Preserves data to avoid loss
 Sync        sy          Data           Assures that two or more resources are in the same state
 Unpublish   ub          Data           Makes a resource unavailable to others
 Update      ud          Data           Brings a resource up-to-date to maintain its state, accuracy, conformance, or compliance
+
+Diagnostic:
 Debug       db          Diagnostic     Examines a resource to diagnose operational problems
 Measure     ms          Diagnostic     Identifies resources that are consumed by a specified operation, or retrieves statistics about a resource
 Ping        pi          Diagnostic     Use the Test verb
@@ -73,6 +80,8 @@ Repair      rp          Diagnostic     Restores a resource to a usable condition
 Resolve     rv          Diagnostic     Maps a shorthand representation of a resource to a more complete representation
 Test        t           Diagnostic     Verifies the operation or consistency of a resource
 Trace       tr          Diagnostic     Tracks the activities of a resource
+
+Lifecycle:
 Approve     ap          Lifecycle      Confirms or agrees to the status of a resource or process
 Assert      as          Lifecycle      Affirms the state of a resource
 Build       bd          Lifecycle      Creates an artifact (usually a binary or document) out of some set of input files (usually source code or declarative documents)
@@ -95,7 +104,11 @@ Suspend     ss          Lifecycle      Pauses an activity
 Uninstall   us          Lifecycle      Removes a resource from an indicated location
 Unregister  ur          Lifecycle      Removes the entry for a resource from a repository
 Wait        w           Lifecycle      Pauses an operation until a specified event occurs
+
+Other:
 Use         u           Other          Uses or includes a resource to do something
+
+Security:
 Block       bl          Security       Restricts access to a resource
 Grant       gr          Security       Allows access to a resource
 Protect     pt          Security       Safeguards a resource from attack or loss

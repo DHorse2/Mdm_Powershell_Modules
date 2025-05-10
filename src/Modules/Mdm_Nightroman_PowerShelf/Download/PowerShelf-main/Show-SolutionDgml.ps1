@@ -230,7 +230,7 @@ foreach($project in $map.Values) {
 			# When a project is removed from a solution its references are not
 			# removed from unloaded projects, so missing links are possible.
 			if ($project2.Count -eq 0) {
-				Write-Warning "Cannot find '$name2' referenced by '$projectPath' in the solution."
+				Write-Warning -Message "Cannot find '$name2' referenced by '$projectPath' in the solution."
 				continue
 			}
 

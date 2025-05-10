@@ -34,127 +34,144 @@ function New-WFForm {
         [Switch]$Controls,
         [Switch]$TabIndex,
         [Switch]$Text,
+        [switch]$MenuBar,
         [switch]$OkButton,
-        [switch]$CancelButton
+        [switch]$CancelButton,
+        $state
     )
 	
     BEGIN {
-        Get-Assembly -AssemblyName "System.Windows.Forms"
+        try {
+            Get-Assembly -AssemblyName "System.Windows.Forms"
+        } catch {
+            Add-LogError -IsError -ErrorPSItem $ErrorPSItem "Failed to load System.Windows.Forms assembly: $_"
+            return
+        }
     }
+    
     PROCESS {
-        if (-not $form) {
-            $form = New-Object System.Windows.Forms.Form
-            $form
-            $form.Size = New-Object System.Drawing.Size(400, 400)
-            # FormClosing event handler
-            $form.Add_FormClosing({
-                    param($sender, $e)
-                    # Prompt the user for confirmation
-                    $result = [System.Windows.Forms.MessageBox]::Show("Are you sure you want to close the form?", "Confirm Close", [System.Windows.Forms.MessageBoxButtons]::YesNo)
-                    # If the user clicks "No", cancel the closing event
-                    if ($result -eq [System.Windows.Forms.DialogResult]::No) {
-                        $e.Cancel = $true
-                    }
-                })
-        }
-        if ($Title) {
-            $form.Title = $Title
-        } else {
-            $form.Text = "Unknown Windows GUI Form"
-        }
-        if (-not $form.Data) {
-            # Initialize $data as a property of the form
-            $form.Data = @{
-                Package    = "MacroDM"
-                Module     = ""
-                ScriptName = ""
-                FormName   = ""
-                Options    = [PSCustomObject]@{
-                    Options = $false
-                }
+        try {
+            if (-not $form) {
+                [System.Windows.Forms.Form]$form = New-Object System.Windows.Forms.Form
+                $form.Size = New-Object System.Drawing.Size(400, 400)
+                # FormClosing event handler
+                $form.Add_FormClosing({
+                        param($sender, $e)
+                        # Prompt the user for confirmation
+                        $result = [System.Windows.Forms.MessageBox]::Show("Are you sure you want to close the form?", "Confirm Close", [System.Windows.Forms.MessageBoxButtons]::YesNo)
+                        # If the user clicks "No", cancel the closing event
+                        if ($result -eq [System.Windows.Forms.DialogResult]::No) {
+                            $e.Cancel = $true
+                        }
+                    })
+            }
+            if ($Title) {
+                $form.Title = $Title
+            } else {
+                $form.Text = "Unknown Windows GUI Form"
+            }
+            # Styling
+            $form.TopMost = $true
+            $form.Size = New-Object System.Drawing.Size(400, 132)
+            $form.FormBorderStyle = 'FixedDialog'
+            if ($state -and $state.x -ge 0 -and $state.y -ge 0) {
+                $form.StartPosition = 'Manual'
+                $form.Location = New-Object System.Drawing.Point($state.x, $state.y)
+            } else {
+                $form.StartPosition = 'CenterScreen'
             }
 
-        }
-        # Styling
-        $form.TopMost = $true
-        $form.Size = New-Object System.Drawing.Size(400, 132)
-        $form.FormBorderStyle = 'FixedDialog'
-        if ($State -and $State.x -ge 0 -and $State.y -ge 0) {
-            $form.StartPosition = 'Manual'
-            $form.Location = New-Object System.Drawing.Point($State.x, $State.y)
-        } else {
-            $form.StartPosition = 'CenterScreen'
-        }
-        
-        if ($Text) {
-            # $label = New-Object System.Windows.Forms.Label
-            # $label.Location = New-Object System.Drawing.Point(10, 10)
-            # $label.Size = New-Object System.Drawing.Size(380, 20)
-            # $label.Text = $Prompt
-            # $form.Controls.Add($label)
-            $text = New-Object System.Windows.Forms.TextBox
-            $text.Text = $Default
-            $text.Location = New-Object System.Drawing.Point(10, 30)
-            $text.Size = New-Object System.Drawing.Size(365, 20)
-            $form.Controls.Add($text)
-        }
-    
-        if ($OkButton) {
-            $ok = New-Object System.Windows.Forms.Button
-            $ok.Location = New-Object System.Drawing.Point(225, 60)
-            $ok.Size = New-Object System.Drawing.Size(75, 23)
-            $ok.Text = $Text1
-            $ok.DialogResult = 'OK'
-            $form.AcceptButton = $ok
-            $form.Controls.Add($ok)
-        }
-    
-        if ($CancelButton) {
-            $cancel = New-Object System.Windows.Forms.Button
-            $cancel.Location = New-Object System.Drawing.Point(300, 60)
-            $cancel.Size = New-Object System.Drawing.Size(75, 23)
-            $cancel.Text = $Text2
-            $cancel.DialogResult = 'Continue'
-            $form.Controls.Add($cancel)
-        }
-    
-        $form.add_Load({
-                if ($Text) { $Text.Select() }
-                elseif ($OkButton) { $ok.Select() }
-                else { $form.Select() }
-                $form.Activate()
-            })
-    
-        $result = $form.ShowDialog()
-    
-        if ($State) {
-            $State.x = [Math]::Max(0, $form.Location.X)
-            $State.y = [Math]::Max(0, $form.Location.Y)
-        }
-    
-        if ($result -eq 'OK') {
-            return $text.Text
-        }
-    
-        if ($result -eq 'Continue') {
-            return 'continue'
-        }
-    
-        'quit'
+            # if ($MenuBar) {
+            #     ($menuMain, $mainToolStrip) = New-WFMenuStrip -form $form
+            # }
+            if ($MenuBar) {
+                ($menuMain, $mainToolStrip) = New-WFMenuStrip
+                $form.MainMenuStrip = [System.Windows.Forms.MenuStrip]$menuMain
+                $form.Controls.Add([System.Windows.Forms.ToolStrip]$mainToolStrip)
+                $form.Controls.Add([System.Windows.Forms.MenuStrip]$menuMain)
+            }
 
-        # ####
-        # IF ($PSBoundParameters["Controls"])
-        # {
-        # 	$form.Controls
-        # }
-        # IF ($PSBoundParameters["TabIndex"])
-        # {
-        # 	$form.TabIndex
-        # }
-        # # [Alias('Title')]
-        # IF ($PSBoundParameters["Text"])
-        # {
-        # 	$form.Text
-        # }
+            # ( $menuMain, $mainToolStrip ) = New-WFMenuStrip
+            # if ($menuMain) {
+            #     $form.MainMenuStrip = $menuMain
+            #     $form.Controls.Add($menuMain)
+            #     [void]$form.Controls.Add($mainToolStrip)
+            # }
+            
+            if ($Text) {
+                # $label = New-Object System.Windows.Forms.Label
+                # $label.Location = New-Object System.Drawing.Point(10, 10)
+                # $label.Size = New-Object System.Drawing.Size(380, 20)
+                # $label.Text = $Prompt
+                # $form.Controls.Add($label)
+                $text = New-Object System.Windows.Forms.TextBox
+                $text.Text = $Default
+                $text.Location = New-Object System.Drawing.Point(10, 30)
+                $text.Size = New-Object System.Drawing.Size(365, 20)
+                $form.Controls.Add($text)
+            }
+    
+            if ($OkButton) {
+                $ok = New-Object System.Windows.Forms.Button
+                $ok.Location = New-Object System.Drawing.Point(225, 60)
+                $ok.Size = New-Object System.Drawing.Size(75, 23)
+                $ok.Text = $Text1
+                $ok.DialogResult = 'OK'
+                $form.AcceptButton = $ok
+                $form.Controls.Add($ok)
+            }
+    
+            if ($CancelButton) {
+                $cancel = New-Object System.Windows.Forms.Button
+                $cancel.Location = New-Object System.Drawing.Point(300, 60)
+                $cancel.Size = New-Object System.Drawing.Size(75, 23)
+                $cancel.Text = $Text2
+                $cancel.DialogResult = 'Continue'
+                $form.Controls.Add($cancel)
+            }
+            # On Load
+            $form.Add_Load({
+                    if ($Text) { $Text.Select() }
+                    elseif ($OkButton) { $ok.Select() }
+                    else { $form.Select() }
+                    $form.Activate()
+                })
+            # State
+            if ($state) {
+                $state.x = [Math]::Max(0, $form.Location.X)
+                $state.y = [Math]::Max(0, $form.Location.Y)
+            }
+    
+            function Get-Result ($default) {
+                $result = $form.ShowDialog()
+                if ($result -eq 'OK') {
+                    return $text.Text
+                }
+                if ($result -eq 'Continue') {
+                    return 'continue'
+                }
+                $result = $default
+                if (-not $result) { $result = 'quit' }
+                return $result
+            }
+            # ####
+            # IF ($PSBoundParameters["Controls"])
+            # {
+            # 	$form.Controls
+            # }
+            # IF ($PSBoundParameters["TabIndex"])
+            # {
+            # 	$form.TabIndex
+            # }
+            # # [Alias('Title')]
+            # IF ($PSBoundParameters["Text"])
+            # {
+            # 	$form.Text
+            # }
+        } catch {
+            Add-LogError -IsError -ErrorPSItem $ErrorPSItem "Failed to create form using System.Windows.Forms assembly: $_"
+            return
+        }
     } #PROCESS
+    end { return [System.Windows.Forms.Form]$form }
 }

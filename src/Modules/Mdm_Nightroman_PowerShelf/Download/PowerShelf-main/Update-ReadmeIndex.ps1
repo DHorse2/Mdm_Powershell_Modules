@@ -68,7 +68,7 @@ param(
 )
 
 $ErrorActionPreference = 1
-trap { Write-Error $_ }
+trap { Write-Error -Message $_ }
 
 # Gets markdown list lines with links to folders recursively.
 function Get-List($Path, $Level) {
@@ -98,7 +98,7 @@ function Get-List($Path, $Level) {
 				Get-List $dirPath ($Level + 1)
 			}
 			elseif (!$NoWarning) {
-				Write-Warning "Found no README in '$dirPath'."
+				Write-Warning -Message "Found no README in '$dirPath'."
 			}
 			continue
 		}

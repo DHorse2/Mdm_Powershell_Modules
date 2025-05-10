@@ -101,7 +101,7 @@ function Get-Choice(
 
 # no source?
 if (!$exist1) {
-	Write-Warning "Directory1 '$Directory1' does not exist."
+	Write-Warning -Message "Directory1 '$Directory1' does not exist."
 	if ((Get-Choice "Mirror 2->1 '$Directory2' to '$Directory1'") -eq 0) {
 		Invoke-Robocopy $Directory2 $Directory1
 	}
@@ -110,7 +110,7 @@ if (!$exist1) {
 
 # no target?
 if (!$exist2) {
-	Write-Warning "Directory2 '$Directory2' does not exist."
+	Write-Warning -Message "Directory2 '$Directory2' does not exist."
 	if ((Get-Choice "Mirror 1->2 '$Directory1' to '$Directory2'") -eq 0) {
 		Invoke-Robocopy $Directory1 $Directory2
 	}
@@ -170,8 +170,8 @@ if ($extra1) {Write-Host "$extra1 extra in '$Directory1'" -ForegroundColor DarkG
 if ($extra2) {Write-Host "$extra2 extra in '$Directory2'" -ForegroundColor DarkCyan}
 
 # warnings
-if ($others) {Write-Warning "$others mismatched"}
-if ($newer1 -and $newer2) {Write-Warning "Both directories have newer files."}
+if ($others) {Write-Warning -Message "$others mismatched"}
+if ($newer1 -and $newer2) {Write-Warning -Message "Both directories have newer files."}
 
 # ask 1->2
 if (!$others -and $newer1 -and !$newer2) {
@@ -207,7 +207,7 @@ switch(Get-Choice Choose 'What would you like to do?' @(
 			Start-Process $env:MERGE "`"$Directory1`" `"$Directory2`""
 		}
 		else {
-			Write-Warning "%MERGE% is not defined or does not exist."
+			Write-Warning -Message "%MERGE% is not defined or does not exist."
 		}
 	}
 }

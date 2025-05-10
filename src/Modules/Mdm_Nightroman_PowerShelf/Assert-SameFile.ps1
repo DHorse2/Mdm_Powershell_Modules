@@ -85,7 +85,7 @@ param(
 $ErrorActionPreference = 1
 
 if ($View -and !($View -is [string] -or $View -is [scriptblock])) {
-	Write-Error "Invalid view command: '$View'."
+	Write-Error -Message "Invalid view command: '$View'."
 }
 
 function Start-View([string]$A, [string]$B) {
@@ -107,7 +107,7 @@ if ($Text) {
 	}
 
 	if (!$View) {
-		Write-Error "Different sample and result text."
+		Write-Error -Message "Different sample and result text."
 	}
 
 	# use cyclic suffix 0-9 to reduce collisions
@@ -125,17 +125,17 @@ if ($Text) {
 	Start-View $Sample $Result
 
 	if ($Fail) {
-		Write-Error "Different sample and result text."
+		Write-Error -Message "Different sample and result text."
 	}
 
-	Write-Warning "Different sample and result text."
+	Write-Warning -Message "Different sample and result text."
 	return
 }
 
 # result must exist
 $fileResult = [System.IO.FileInfo]$PSCmdlet.GetUnresolvedProviderPathFromPSPath($Result)
 if (!$fileResult.Exists) {
-	Write-Error "Missing result file '$Result'."
+	Write-Error -Message "Missing result file '$Result'."
 }
 
 # make missing sample
@@ -143,7 +143,7 @@ $fileSample = [System.IO.FileInfo]$PSCmdlet.GetUnresolvedProviderPathFromPSPath(
 if (!$fileSample.Exists) {
 	$null = [System.IO.Directory]::CreateDirectory($fileSample.DirectoryName)
 	Copy-Item -LiteralPath $fileResult.FullName -Destination $fileSample.FullName -Force
-	Write-Warning "Created missing sample file '$Sample'."
+	Write-Warning -Message "Created missing sample file '$Sample'."
 	return
 }
 
@@ -170,17 +170,17 @@ if ($same) {
 
 # fail
 if (!$View) {
-	Write-Error "Different sample '$Sample' and result '$Result'."
+	Write-Error -Message "Different sample '$Sample' and result '$Result'."
 }
 
 # show
 Start-View $fileSample.FullName $fileResult.FullName
 
 if ($Fail) {
-	Write-Error "Different sample '$Sample' and result '$Result'."
+	Write-Error -Message "Different sample '$Sample' and result '$Result'."
 }
 
-Write-Warning "Different sample '$Sample' and result '$Result'."
+Write-Warning -Message "Different sample '$Sample' and result '$Result'."
 
 # choice, cast is for v2.0
 function Get-Choice($Caption, $Message, $Choices) {
@@ -201,6 +201,6 @@ switch(Get-Choice 'Different result' 'How would you like to proceed?' @(
 		Copy-Item -LiteralPath $fileResult.FullName -Destination $fileSample.FullName -Force
 	}
 	2 {
-		Write-Error "Different sample '$Sample' and result '$Result'."
+		Write-Error -Message "Different sample '$Sample' and result '$Result'."
 	}
 }

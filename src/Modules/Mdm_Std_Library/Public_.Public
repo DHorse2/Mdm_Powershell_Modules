@@ -1,0 +1,901 @@
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.
+    Name: Mdm_Modules
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: MacroDm (Mdm) Bootstrap, Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules\Mdm_Modules.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Modules.
+    Name: Mdm_Bootstrap
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Bootstrap MacroDm (Mdm) Installation and Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap\Mdm_Bootstrap.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Bootstrap.
+    Name: Mdm_Std_Library
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1
+    Version: 1.0
+    Author: David G Horsman
+    Description: Standard functions libarary.
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library\Mdm_Std_Library.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_Std_Library.
+    Name: Mdm_WinFormPS
+    Path: G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1
+    Version: 1.0.0
+    Author: Francois-Xavier Cat
+    Description: PowerShell module to interact with Windows Forms (WinForms) controls
+    ExportedFunctions: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.FunctionInfo]
+    ExportedCmdlets: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.CmdletInfo]
+    ExportedVariables: System.Collections.Generic.Dictionary`2[System.String,System.Management.Automation.PSVariable]
+    RequiredModules:
+Get-Import: Module path G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS\Mdm_WinFormPS.psd1. Expected G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS.

@@ -11,8 +11,7 @@ function DevEnv_LanguageMode {
     [string]$source = "$global:projectRootPath\src\Modules"
     $global:moduleRootPath = $source
     $global:projectRootPath = (get-item $global:moduleRootPath).Parent.Parent.FullName
-
-    Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Continue
+    Import-Module -Name "$global:moduleRootPath\$importName" -Force -ErrorAction Continue
 
     Write-Host " Language Mode: $ExecutionContext.SessionState.LanguageMode"
     switch ($languageMode) {
@@ -20,7 +19,7 @@ function DevEnv_LanguageMode {
         "Constrained" { $regValue = "4" }
         "Restricted" { $regValue = "1" }
         Default { 
-            $logMessage = @( `
+            $Message = @( `
                     "Valid languge modes are: ", `
                     " ", `
                     "    Full - (8) FullLanguage:", `
@@ -43,7 +42,7 @@ function DevEnv_LanguageMode {
                     "    NoLanguage (not allowed) - (0) NoLanguage This would disable all scripts (like this one).", `
                     " " `
             )
-            Add-LogText $logMessage
+            Add-LogText -Message $Message
             exit 
         }
     }

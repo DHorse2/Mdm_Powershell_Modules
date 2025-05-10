@@ -3,18 +3,18 @@ function Show-WFForm {
     [CmdletBinding()]
     param(
         [Parameter(ValueFromPipeline)]
-        $Forms
+        [System.Windows.Forms.Form]$window
     )
 
     begin {
-        [Collections.ArrayList]$Forms = @()
+        [Collections.ArrayList]$windows = @()
     }
     process {
-        [void]$Forms.Add($_)
+        [void]$windows.Add($_)
     }
     end {
         # $inputObjects | ForEach-Object -Parallel {
-            $inputObjects | ForEach-Object {
+            $windows | ForEach-Object {
                 # Show the form
                 $_.Show() | Out-Null      
                 # $_.ShowDialog() | Out-Null      

@@ -32,27 +32,27 @@ function Install-DevEnvWin {
     # $IsLinux
     if ($IsWindows) {
 
-        if (Wait-YorNorQ -message "Set up the Windows OS?" -eq "Y") { 
+        if (Wait-YorNorQ -Message "Set up the Windows OS?" -eq "Y") { 
             Install-DevEnvOsWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -ErrorAction Inquire 
         }
 
-        if (Wait-YorNorQ -message "Set up the IDE?"-eq "Y") { 
+        if (Wait-YorNorQ -Message "Set up the IDE?"-eq "Y") { 
             Install-DevEnvIdeWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -ErrorAction Inquire 
         }
 
-        if (Wait-YorNorQ -message "Set up the LLM?"-eq "Y") { 
+        if (Wait-YorNorQ -Message "Set up the LLM?"-eq "Y") { 
             Install-DevEnvLlmWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -ErrorAction Inquire 
         }
 
-        if (Wait-YorNorQ -message "Set up the Whisper Voice?"-eq "Y") { 
+        if (Wait-YorNorQ -Message "Set up the Whisper Voice?"-eq "Y") { 
             Install-DevEnvWhisperWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -ErrorAction Inquire 
         }
 
-        if (Wait-YorNorQ -message "Display current versions?"-eq "Y") { 
+        if (Wait-YorNorQ -Message "Display current versions?"-eq "Y") { 
             Get-DevEnvVersions -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug 
         }
     } else {
-        $logMessage = "This script is only run on the Windows OS."
-        Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -localLogFileNameFull $global:logFileNameFull
+        $Message = "This script is only run on the Windows OS."
+        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -logFileNameFull $global:logFileNameFull
     }
 }

@@ -32,12 +32,12 @@ function Install-DevEnv {
     # $IsLinux
     if ($IsWindows) {
 
-        if (Wait-YorNorQ -message "Set up the Windows Environment?" -eq "Y") { 
+        if (Wait-YorNorQ -Message "Set up the Windows Environment?" -eq "Y") { 
             Install-DevEnvWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -ErrorAction Inquire 
         }
 
     } else {
-        $logMessage = "This script is only run on the Windows OS."
-        Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -localLogFileNameFull $global:logFileNameFull
+        $Message = "This script is only run on the Windows OS."
+        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -logFileNameFull $global:logFileNameFull
     }
 }

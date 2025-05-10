@@ -31,7 +31,7 @@ param(
 )
 
 begin {
-	if ($args) { Write-Error -ErrorAction Stop "Unknown arguments: $args" }
+	if ($args) { Write-Error -ErrorAction Stop -Message "Unknown arguments: $args" }
 
 	function GetType($value) {
 		if ($null -eq $value) {return '<null>'}

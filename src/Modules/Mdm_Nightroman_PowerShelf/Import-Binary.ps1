@@ -33,7 +33,7 @@ try {
 	}
 }
 catch {
-	Write-Error $_
+	Write-Error -Message $_
 }
 finally {
 	$stream.Close()

@@ -4,7 +4,7 @@
 
 First, from the root directory (here) you can run:
 ```powershell
-. .\GoToBootstrap
+. .\Public\GoToBootstrap
 ```
 This will make Mdm_Bootstrap the current directory.
 

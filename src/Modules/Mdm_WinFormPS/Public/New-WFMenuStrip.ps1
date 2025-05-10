@@ -18,13 +18,13 @@ function New-WFMenuStrip {
     
     [CmdletBinding()]
     param (
-        $form
+        [System.Windows.Forms.Form]$form
     )
     
     begin {
-        if (-not $form) {
-            $form = New-WFForm
-        }
+        # if (-not $form) {
+        #     $form = New-WFForm
+        # }
         $menuMain = New-Object System.Windows.Forms.MenuStrip
         $mainToolStrip = New-Object System.Windows.Forms.ToolStrip
         $menuFile = New-Object System.Windows.Forms.ToolStripMenuItem
@@ -38,42 +38,48 @@ function New-WFMenuStrip {
         $toolStripAbout = New-Object System.Windows.Forms.ToolStripButton        
     }
     process {
-        # File Menu
-        # add a drop-down menu item to the File menu:
-        # Menu: File -> Save
-        $menuSave.Text = "Save"
-        $menuSave.Add_Click({ SaveFile })
-        [void]$menuFile.DropDownItems.Add($menuSave)
+        try {
+            # File Menu
+            # add a drop-down menu item to the File menu:
+            # Menu: File -> Save
+            $menuSave.Text = "Save"
+            $menuSave.Add_Click({ SaveFile })
+            [void]$menuFile.DropDownItems.Add($menuSave)
 
-        # script  stopped when the Exit menu is clicked
-        # Menu: File -> Exit
-        $menuExit.Text = "Exit"
-        $menuExit.Add_Click({ $main_Form.Close() })
-        [void]$menuFile.DropDownItems.Add($menuExit)
+            # script  stopped when the Exit menu is clicked
+            # Menu: File -> Exit
+            $menuExit.Text = "Exit"
+            $menuExit.Add_Click({ $mainForm.Close() })
+            [void]$menuFile.DropDownItems.Add($menuExit)
 
-        # Menu: File -> *
-        $menuFile.Text = "File"
-        [void]$menuMain.Items.Add($menuFile)
+            # Menu: File -> *
+            $menuFile.Text = "File"
+            [void]$menuMain.Items.Add($menuFile)
 
-        # Help
-        # Menu: Help
-        # Menu: Help -> About
-        $menuAbout.Text = "About"
-        $menuAbout.Add_Click({ ShowAbout })
-        [void]$menuHelp.DropDownItems.Add($menuAbout)        
+            # Help
+            # Menu: Help
+            # Menu: Help -> About
+            $menuAbout.Text = "About"
+            $menuAbout.Add_Click({ ShowAbout })
+            [void]$menuHelp.DropDownItems.Add($menuAbout)        
 
-        $menuHelp.Text = "Help"
-        [void]$menuMain.Items.Add($menuHelp)
-
-        #############################
-        # Add Menu Bar
-        [void]$main_Form.Controls.Add($menuMain)
-
+            $menuHelp.Text = "Help"
+            [void]$menuMain.Items.Add($menuHelp)
+        } catch {
+            Add-LogError -IsError -ErrorPSItem $ErrorPSItem "New-WFMenuStrip Failed to create menu strip. $_"
+        }
     }
     end {
-        $main_form.MainMenuStrip = $menuMain
-        $main_form.Controls.Add($menuMain)
-        [void]$mainForm.Controls.Add($mainToolStrip)    
+        try {
+            if ($form) {
+                $form.MainMenuStrip = [System.Windows.Forms.MenuStrip]$menuMain
+                $form.Controls.Add([System.Windows.Forms.ToolStrip]$mainToolStrip)
+                $form.Controls.Add([System.Windows.Forms.MenuStrip]$menuMain)
+            }
+        } catch {
+            Add-LogError -IsError -ErrorPSItem $ErrorPSItem "New-WFMenuStrip Failed to add menu strip to form. $_"
+        }
+        return ( [System.Windows.Forms.MenuStrip]$menuMain, [System.Windows.Forms.ToolStrip]$mainToolStrip )
     }
 }
 

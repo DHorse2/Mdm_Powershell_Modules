@@ -1,6 +1,6 @@
 For setup enter:
 ```
-. .\GoToBootstrap
+. .\Public\GoToBootstrap
 ```
 
 

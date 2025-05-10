@@ -49,14 +49,14 @@ if ($Target -eq 'Process') {
 elseif ($Target -eq 'Machine') {
 	$value2 = [System.Environment]::GetEnvironmentVariable($Name, 'User')
 	if ($null -ne $value2) {
-		Write-Warning "Set-Env: Existing User variable '$Name' takes over."
+		Write-Warning -Message "Set-Env: Existing User variable '$Name' takes over."
 		$ValueOrNull = $value2
 	}
 }
 elseif ($Target -eq 'User' -and !$Value) {
 	$value2 = [System.Environment]::GetEnvironmentVariable($Name, 'Machine')
 	if ($null -ne $value2) {
-		Write-Warning "Set-Env: Existing Machine variable '$Name' takes over."
+		Write-Warning -Message "Set-Env: Existing Machine variable '$Name' takes over."
 		$ValueOrNull = $value2
 	}
 }

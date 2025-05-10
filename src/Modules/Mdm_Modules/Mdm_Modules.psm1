@@ -2,7 +2,7 @@
 Write-Host "Mdm_Modules.psm1"
 # Write-Verbose "Loading..."
 # $importName = "Mdm_Modules"
-# Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Continue
+# Import-Module -Name "$global:moduleRootPath\$importName" -Force -ErrorAction Continue
 
 # Mdm_Modules
 # Imports Bootstrap, Standard Library, Development Environment Install
@@ -13,49 +13,31 @@ Write-Host "Mdm_Modules.psm1"
 # . $PSScriptRoot\..\Mdm_DevEnv_Install\Mdm_DevEnv_Install.psm1
 #
 # Get-ModuleRootPath may not be available so: 
-if (-not $global:moduleRootPath) {
-    if (-not $folderPath) {
-        $folderPath = (get-item $PSScriptRoot).FullName
-        $folderName = Split-Path $folderPath -Leaf 
-    }
-    if ( $folderName -eq "Public" `
-            -or $folderName -eq "Private" `
-            -or $folderName -ne $importName) {
-        $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.Parent.FullName
-    } else { $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName }
-    # $global:projectRootPath = $null
-}
-if (-not $global:projectRootPath) { $global:projectRootPath = (get-item $global:moduleRootPath).Parent.Parent.FullName }
+# if (-not $global:moduleRootPath) {
+#     $folderPath = (get-item $PSScriptRoot).FullName
+#     $folderName = Split-Path $folderPath -Leaf 
+#     if ( $folderName -eq "Public" -or $folderName -eq "Private" ) {
+#         $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.Parent.FullName
+#     } else { $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName }
+# }
+# if (-not $global:projectRootPath) { $global:projectRootPath = (get-item $global:moduleRootPath).Parent.Parent.FullName }
+$path = "$($(get-item $PSScriptRoot).FullName)\Project.ps1"
+. "$path"
 
-$importParams = @{}
-if ($global:DoForce) { $importParams['Force'] = $true }
-if ($global:DoVerbose) { $importParams['Verbose'] = $true }
-if ($global:DoDebug) { $importParams['Debug'] = $true }
-$importParams['ErrorAction'] = if ($global:errorActionValue) { $global:errorActionValue } else { 'Continue' }
+[bool]$DoVerbose = $global:DoVerbose
+[bool]$DoPause = $global:DoPause
+[bool]$DoDebug = $global:DoDebug
+[bool]$DoForce = $global:DoForce
 
-$importName = "Mdm_Bootstrap"
-if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
-    $modulePath = "$global:moduleRootPath\$importName\$importName"
-    Import-Module -Name $modulePath @importParams
+if ($DoVerbose) { 
+    Write-Host "Mdm_Modules.psm1"
+    Write-Host "Project Root: $global:projectRootPath"
+    Write-Host " Module Root: $global:moduleRootPath"
+    Write-Host "Execution at: $global:projectRootPathActual"
 }
 
-$importName = "Mdm_Std_Library"
-if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
-    $modulePath = "$global:moduleRootPath\$importName\$importName"
-    Import-Module -Name $modulePath @importParams
-}
-
-$importName = "Mdm_DevEnv_Install"
-if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
-    $modulePath = "$global:moduleRootPath\$importName\$importName"
-    Import-Module -Name $modulePath @importParams
-}
-
-$importName = "Mdm_WinFormPS"
-if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
-    $modulePath = "$global:moduleRootPath\$importName\$importName"
-    Import-Module -Name $modulePath @importParams
-}
+# Import all modules and set commonParameters
+. .\Import-All.ps1
 
 # Export all the functions
 # Export-ModuleMember -Function $Public.Basename -Alias *
@@ -66,7 +48,7 @@ Get-ModuleRootPath
 # if ($VerbosePreference -eq 'Continue') { commandString += " -Verbose" }
 # if ($Force) { $commandString += " -Force" }
 # if ($Debug) { $commandString += " -Debug" }
-# $command = 'Import-Module -Name "$global:moduleRootPath\$importName\$importName" -ErrorAction Continue'
+# $command = 'Import-Module -Name "$global:moduleRootPath\$importName" -ErrorAction Continue'
 # if ($commandString.Length -ge 1) { $command += $commandString }
 # Invoke-Expression $command
 

@@ -44,7 +44,7 @@ param(
 function Add-Path($Path) {
 	# resolve and check
 	$Path = $PSCmdlet.GetUnresolvedProviderPathFromPSPath($Path)
-	if (![System.IO.Directory]::Exists($Path)) { Write-Error "Missing directory '$Path'." -ErrorAction Stop }
+	if (![System.IO.Directory]::Exists($Path)) { Write-Error -Message "Missing directory '$Path'." -ErrorAction Stop }
 
 	# already added?
 	$var = [Environment]::GetEnvironmentVariable($Name)

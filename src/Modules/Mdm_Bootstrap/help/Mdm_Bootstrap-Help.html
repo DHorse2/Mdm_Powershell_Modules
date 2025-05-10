@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_Bootstrap Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="05/01/2025 10:52:28">
+    <meta name="date" content="05/04/2025 14:44:31">
     <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -187,11 +187,11 @@ NOTES
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Add to HKLM Environtment Path</p>
 <p><strong>Detailed Description:</strong> This loads the specifiect Path key (PATH by default) and adds the new path to it.</p>
-<p><strong>Syntax:</strong> <pre>Add-RegistryPath
- envPathToUpdate
- description: The Path key to use.
+<p><strong>Syntax:</strong> <pre>description: The Path key to use.
 
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1</pre></p>
+ envPathToUpdate
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 Add-RegistryPath
+</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>envPathToUpdate</strong>: The Path key to use.</p>
@@ -211,17 +211,17 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Return true if Registry Value exists.</p>
 <p><strong>Detailed Description:</strong> Check the registry path &amp; value. Asserts it exists.</p>
-<p><strong>Syntax:</strong> <pre>Assert-RegistryValue
+<p><strong>Syntax:</strong> <pre>description: The Registry Path to check.
+
  Path
- description: The Registry Path to check.
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 description: The Registry Key name (Value) to access.
 
- parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 Name
- description: The Registry Key name (Value) to access.
+ Name
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2 description: If true this outputs an ItemProperty otherwise true/false
 
- parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2 PassThru
- description: If true this outputs an ItemProperty otherwise true/false
-
- required: false, globbing: false, pipelineInput: false, position: named</pre></p>
+ PassThru
+ required: false, globbing: false, pipelineInput: false, position: named Assert-RegistryValue
+</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Path</strong>: The Registry Path to check.</p>
@@ -253,51 +253,51 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Install or update Mdm Modules.</p>
 <p><strong>Detailed Description:</strong> This installs the libraries to the live system using Robocopy.</p>
-<p><strong>Syntax:</strong> <pre>DevEnv_Install_Modules_Win
+<p><strong>Syntax:</strong> <pre>description: Provide detailed information.
+
  DoVerbose
- description: Provide detailed information.
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch to pause at each step/page.
 
- required: true, globbing: false, pipelineInput: false, position: named DoPause
- description: Switch to pause at each step/page.
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Debug this script.
 
- required: true, globbing: false, pipelineInput: false, position: named DoDebug
- description: Debug this script.
+ DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named description: default: "$global:projectRootPath\src\Modules"
 
- required: true, globbing: false, pipelineInput: false, position: named source
- description: default: "$global:projectRootPath\src\Modules"
+ source
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 description: default: "$env:PROGRAMFILES\\WindowsPowerShell\Modules"
 
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 destination
- description: default: "$env:PROGRAMFILES\\WindowsPowerShell\Modules"
-
+ destination
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 projectRootPath
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 moduleRootPath
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 4 logFilePath
- description: default: "$global:projectRootPath\log\"
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 4 description: default: "$global:projectRootPath\log\"
 
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 logFileName
- description: default: "Mdm_Installation_Log.txt"
+ logFilePath
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 description: default: "Mdm_Installation_Log.txt"
 
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 6 LogOneFile
- description: Switch to not create separate file with the date in the file name.
+ logFileName
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 6 description: Switch to not create separate file with the date in the file name.
 
- required: false, globbing: false, pipelineInput: false, position: named nameFilter
- description: Default is "Mmd_*". IE. These modules.
+ LogOneFile
+ required: false, globbing: false, pipelineInput: false, position: named description: Default is "Mmd_*". IE. These modules.
 You could override it if you had other local modules to install
 
+ nameFilter
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 7 SkipHelp
  required: false, globbing: false, pipelineInput: false, position: named SkipRegistry
  required: false, globbing: false, pipelineInput: false, position: named SkipCopy
- required: false, globbing: false, pipelineInput: false, position: named DoNewWindow
- description: Switch to execute copy commands in a separate shell window.
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch to execute copy commands in a separate shell window.
 
- required: false, globbing: false, pipelineInput: false, position: named companyName
- description: MacroDM currently. It's optional.
+ DoNewWindow
+ required: false, globbing: false, pipelineInput: false, position: named description: MacroDM currently. It's optional.
 
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 8 copyOptions
- description: These are RoboCopy options.
+ companyName
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 8 description: These are RoboCopy options.
 Currently: "/E /FP /nc /ns /np /TEE"
 
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 9</pre></p>
+ copyOptions
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 9 DevEnv_Install_Modules_Win
+</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoVerbose</strong>: Provide detailed information.</p>
@@ -353,6 +353,60 @@ parameter:</pre></p>
 <p><strong>Return: </strong> System.Object</p>
 <p></p>
 <p></p>
+<h2>Get-ModuleRootPath</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Get-ModuleRootPath [[-folderPath] &lt;Object&gt;] [-DoClear] [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: Get-ModuleRootPath
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoClear</strong></p>
+<p>  - <strong>folderPath</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>GoToBootstrap_Func</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+GoToBootstrap_Func [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: GoToBootstrap_Func
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>GoToModuleRoot_Func</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+GoToModuleRoot_Func [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: GoToModuleRoot_Func
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
+<h2>GoToProjectRoot_Func</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+GoToProjectRoot_Func [&lt;CommonParameters&gt;]</p>
+<p><strong>Syntax:</strong> <pre>name: GoToProjectRoot_Func
+CommonParameters: True
+parameter:</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object</p>
+<p></p>
+<p></p>
 <h2>Initialize-Dev_Env_Win</h2>
 
 
@@ -365,17 +419,17 @@ It installs these powershell modules to the system&apos;s directories.
 Set registry, Path and load PowerShell modules.
 $source = &quot;$global:moduleRootPath\&quot;
 $destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
-<p><strong>Syntax:</strong> <pre>Initialize-Dev_Env_Win
+<p><strong>Syntax:</strong> <pre>description: Switch: A switch to indicate the path should be checked/updated.
+
  UpdatePath
- description: Switch: A switch to indicate the path should be checked/updated.
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Pause between steps.
 
- required: false, globbing: false, pipelineInput: false, position: named DoPause
- description: Switch: Pause between steps.
+ DoPause
+ required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
 
- required: false, globbing: false, pipelineInput: false, position: named DoVerbose
- description: Switch: Verbose output and prompts.
-
- required: false, globbing: false, pipelineInput: false, position: named</pre></p>
+ DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named Initialize-Dev_Env_Win
+</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>UpdatePath</strong>: Switch: A switch to indicate the path should be checked/updated.</p>

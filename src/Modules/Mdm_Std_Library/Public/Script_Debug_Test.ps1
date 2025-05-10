@@ -3,9 +3,9 @@ $null = Debug-SubmitFunction -functionName $functionName -invocationFunctionName
 if (-not $global:DebugInScriptDebugger `
     -and $global:DebugProgressFindName `
     -and $(Debug-AssertFunction($functionName))) {
-    $logMessage = "Debug $($MyInvocation.MyCommand.Name) for $($functionName)"
-    Add-LogText -logMessages $logMessage `
+    $Message = "Debug $($MyInvocation.MyCommand.Name) for $($functionName)"
+    Add-LogText -Message $Message `
         -IsWarning -DoTraceWarningDetails `
-        -localLogFileNameFull $global:logFileNameFull
-    $null = Debug-Script -DoPause 5 -functionName $functionName -localLogFileNameFull $localLogFileNameFull
+        -logFileNameFull $global:logFileNameFull
+    $null = Debug-Script -DoPause 5 -functionName $functionName -logFileNameFull $logFileNameFull
 }

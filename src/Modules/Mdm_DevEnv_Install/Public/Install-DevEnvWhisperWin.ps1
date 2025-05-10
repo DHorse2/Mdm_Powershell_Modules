@@ -21,12 +21,13 @@ function Install-DevEnvWhisperWin {
 #>
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
+    Initialize-Std -$DoPause -$DoVerbose -$DoDebug
     # PowerShell Script to Install Whisper on Windows
 
     # Check for Administrator Privileges
     $adminCheck = [Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()
     if (-not $adminCheck.IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-        Write-Error "Please run this script as an Administrator." -ForegroundColor Red
+        Write-Error -Message "Please run this script as an Administrator." -ForegroundColor Red
         exit
     }
 
@@ -38,7 +39,7 @@ function Install-DevEnvWhisperWin {
         Start-Process -FilePath "$env:TEMP\python-installer.exe" -ArgumentList "/quiet InstallAllUsers=1 PrependPath=1" -Wait
         Remove-Item "$env:TEMP\python-installer.exe"
         $env:Path = "$env:Path;C:\Python310;C:\Python310\Scripts"
-        Write-Verbose "Python installed successfully." -foregroundColor Green
+        Write-Verbose "Python installed successfully." -ForegroundColor Green
     }
 
     # Ensure pip is up to date

@@ -1,6 +1,8 @@
-Assert-RegistryValue
-DevEnv_Module_Reset_Func
 Add-RegistryPath
-DevEnv_LanguageMode
-DevEnv_Install_Modules_Win
+GoToBootstrap_Func
 Initialize-Dev_Env_Win
+GoToProjectRoot_Func
+Get-ModuleRootPath
+Assert-RegistryValue
+GoToModuleRoot_Func
+DevEnv_Module_Reset_Func

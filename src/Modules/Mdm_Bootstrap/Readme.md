@@ -95,6 +95,7 @@ These are found at the top of the Mdm_Std_Library.psm1 file after the module mem
     [bool]$global:DoVerbose = $false
     [bool]$global:DoPause = $false
     [bool]$global:DoDebug = $false
+    [bool]$global:DoForce = $false
     [string]$global:msgAnykey = ""
     [string]$global:msgYorN = ""
     

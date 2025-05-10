@@ -29,9 +29,10 @@ function Install-DevEnvOsWin {
 #>
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
+    Initialize-Std -$DoPause -$DoVerbose -$DoDebug
     # Ensure the script is running as administrator
     if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-        Write-Error "This script must be run as an Administrator. Please restart PowerShell with elevated privileges."
+        Write-Error -Message "This script must be run as an Administrator. Please restart PowerShell with elevated privileges."
         exit
     }
     # Install Chocolatey if it is not installed

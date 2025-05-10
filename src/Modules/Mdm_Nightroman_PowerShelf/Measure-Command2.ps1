@@ -60,7 +60,7 @@ param(
 )
 
 trap {
-	Write-Warning 'For more details try to examine $Error.'
+	Write-Warning -Message 'For more details try to examine $Error.'
 	$PSCmdlet.ThrowTerminatingError($_)
 }
 

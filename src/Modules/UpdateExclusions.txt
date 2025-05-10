@@ -1,0 +1,5 @@
+Build.ps1
+Update.ps1
+UpdateExclusions.txt
+UpdateExclusionsTemp.txt
+G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\readmd.md

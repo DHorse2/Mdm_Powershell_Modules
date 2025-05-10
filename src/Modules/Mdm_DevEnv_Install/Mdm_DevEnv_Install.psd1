@@ -25,7 +25,9 @@
         "Install-DevEnvWhisperWin",
         "Install-DevEnvWin",
         "Install-DevEnv",
-        "DevEnvGui"
+        "DevEnvGui",
+        "Get-Assembly",
+        "Get-JsonData"
     CmdletsToExport         = @()
     VariablesToExport       = @()
     AliasesToExport         =

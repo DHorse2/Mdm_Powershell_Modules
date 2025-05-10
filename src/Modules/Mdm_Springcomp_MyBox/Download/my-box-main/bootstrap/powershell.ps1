@@ -19,4 +19,4 @@ irm 'https://raw.githubusercontent.com/springcomp/my-box/master/bootstrap/pwsh-c
 	-OutFile $env:TEMP\pwsh-core.ps1
 
 $pwsh = "$env:LOCALAPPDATA\Microsoft\powershell\pwsh.exe"
-. $pwsh -nologo -noprofile -file $env:TEMP\pwsh-core.ps1
+. $pwsh -nologo -noprofile -file "$env:TEMP\pwsh-core.ps1"

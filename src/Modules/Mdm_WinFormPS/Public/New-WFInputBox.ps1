@@ -31,14 +31,11 @@
 	(
 		[Parameter(Mandatory = $true)]
 		[string]$Message,
-		
 		[Alias('WindowsTitle')]
 		[string]$Title,
-		
 		[Alias('DefaultText')]
 		[string]$DefaultInputText
 	)
-	
 	BEGIN
 	{
 		TRY
@@ -48,9 +45,9 @@
 		}
 		CATCH
 		{
-			Write-Warning -message "[BEGIN] Something wrong happened"
-			IF ($ErrorBeginAddType) { Write-Warning -message "[BEGIN] Error while loading assembly Microsoft.VisualBasic" }
-			Write-Error -message $Error[0].Exception.Message
+			Write-Warning -Message "New-WFInputBox: Something wrong happened during assembly loading."
+			IF ($ErrorBeginAddType) { Write-Warning -Message "[BEGIN] Error while loading assembly Microsoft.VisualBasic" }
+			Add-LogError -IsError -ErrorPSItem $ErrorPSItem -Message $Error[0].Exception.Message
 		}
 	}
 	PROCESS

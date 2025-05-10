@@ -1,18 +1,36 @@
 
 Write-Host "Mdm_DevEnv_Install.psm1"
-# Imports
+# Script Path
+if (-not $global:moduleRootPath) {
+    $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Modules\Project.ps1"
+    . "$path"
+}
+
+$path = "$global:moduleRootPath\Mdm_Std_Library\Public\Get-Parameters.ps1"
+. "$path"
+
+# Imports Import-Module
 $importName = "Mdm_Bootstrap"
-if (-not (Get-Module -Name $importName)) {
-    Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Continue
+if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
+    $modulePath = "$global:moduleRootPath\$importName"
+    Import-Module -Name $modulePath @commonParameters
 }
+# $null = Get-Import -Name "$global:moduleRootPath\$importName" `
+#     -CheckImported -ErrorAction Continue
 $importName = "Mdm_Std_Library"
-if (-not (Get-Module -Name $importName)) {
-    Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Continue
+if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
+    $modulePath = "$global:moduleRootPath\$importName"
+    Import-Module -Name $modulePath @commonParameters
 }
-# $importName = "Mdm_WinFormPS"
-# if (-not (Get-Module -Name $importName)) {
-#     Import-Module -Name "$global:moduleRootPath\$importName\$importName" -Force -ErrorAction Continue
-# }
+# $null = Get-Import -Name "$global:moduleRootPath\$importName" `
+#     -CheckImported -ErrorAction Continue
+$importName = "Mdm_WinFormPS"
+if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
+    $modulePath = "$global:moduleRootPath\$importName"
+    Import-Module -Name $modulePath @commonParameters
+}
+# $null = Get-Import -Name "$global:moduleRootPath\$importName" `
+#     -CheckImported -ErrorAction Continue
 
 # Get-ModuleRootPath
 # Components installed: 
@@ -38,7 +56,7 @@ Set-Alias -Name Get-Vs -Value Get-DevEnvVersions
 
 # Dev Env Tool Versions
 Function Get-DevEnvVersions {
-<#
+    <#
     .SYNOPSIS
         List current versions.
     .DESCRIPTION
@@ -58,7 +76,7 @@ Function Get-DevEnvVersions {
 #>
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
-    Initialize-StdGlobalsReset `
+    Reset-StdGlobals `
         -DoPause:$DoPause `
         -DoVerbose:$DoVerbose `
         -DoDebug:$DoDebug
@@ -77,19 +95,19 @@ Function Get-DevEnvVersions {
     Write-Verbose "Powershell version:"
     Write-Verbose $PSVersionTable.PSVersion
     if (Get-Command Wait-AnyKey -ErrorAction SilentlyContinue) {
-        if ($global:DoVerbose) { Write-Host "Wait-AnyKey loaded successfully." -foregroundColor Green }
-    }
-    else {
-        Write-Warning "Error: Wait-AnyKey function not loaded."
+        if ($global:DoVerbose) { Write-Host "Wait-AnyKey loaded successfully." -ForegroundColor Green }
+    } else {
+        Write-Warning -Message "Get-DevEnvVersions Error: Wait-AnyKey function not loaded."
         if ($global:DoVerbose) { Write-Host "Trying library path method." -ForegroundColor Red }
+
         $stdLibraryPath = "$PSScriptRoot\..\Mdm_Std_Library\Mdm_Std_Library.psm1"
         if (Test-Path $stdLibraryPath) {
             if ($global:DoVerbose) { Write-Host "Loading Std_Library.ps1..." -ForegroundColor Cyan }
             # . $stdLibraryPath
-            Import-Module -Name $stdLibraryPath
-        }
-        else {
-            Write-Error "Mdm_Std_Library.psm1 NOT FOUND at $stdLibraryPath"
+            # Import-Module -Name $stdLibraryPath
+            $null = Get-Import -Name $stdLibraryPath -DoVerbose
+        } else {
+            Write-Error -Message "Mdm_Std_Library.psm1 NOT FOUND at $stdLibraryPath"
             exit
         }
         # exit
@@ -161,9 +179,9 @@ Function Get-DevEnvVersions {
         node -v | Write-Host
         Write-Verbose "################################################################################"
 
-        if ($global:DoDebug) {
-            Write-Host " Local Pause: $local:DoPause, Verbose: $local:DoVerbose, Debug: $local:DoDebug"
-            Write-Host "Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug"
+        if ($global:DoDebug -or $global:DoVerbose) {
+            Write-Host " Local Pause: $local:DoPause, Verbose: $local:DoVerbose, Debug: $local:DoDebug, Force: $local:DoForce"
+            Write-Host "Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug, Force: $global:DoForce"
     
             Write-Host "$global:msgAnykey Pause: $global:DoPause"
             if ($global:DoPause) { Wait-AnyKey }
@@ -172,7 +190,7 @@ Function Get-DevEnvVersions {
 }
 # Install-DevEnvWhisperWin
 function Install-DevEnvModules {
-<#
+    <#
     .SYNOPSIS
         Install these modules on the local system.
     .DESCRIPTION
@@ -192,7 +210,7 @@ function Install-DevEnvModules {
 #>
     [CmdletBinding()]
     param(
-        [parameter(ValueFromPipeline)]$inputObjects
+        [parameter(ValueFromPipeline)]$inputObject
     )
 
     begin {

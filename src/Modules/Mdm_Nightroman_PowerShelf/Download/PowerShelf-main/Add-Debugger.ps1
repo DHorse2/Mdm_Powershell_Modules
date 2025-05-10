@@ -211,12 +211,12 @@ $null = New-Variable -Name _Debugger -Scope Global -Description Add-Debugger.ps1
 ### Define debugger output.
 if ($Path) {
 	function global:Write-Debugger {
-		param($Data)
+		param(data)
 		if ($_Debugger.UseAnsi) {
 			$OutputRendering = $PSStyle.OutputRendering
 			$PSStyle.OutputRendering = 'ANSI'
 		}
-		$Data | Out-File -LiteralPath $_Debugger.Path -Encoding utf8 -ErrorAction 0 -Append
+		data | Out-File -LiteralPath $_Debugger.Path -Encoding utf8 -ErrorAction 0 -Append
 		if ($_Debugger.UseAnsi) {
 			$PSStyle.OutputRendering = $OutputRendering
 		}
@@ -225,8 +225,8 @@ if ($Path) {
 }
 else {
 	function global:Write-Debugger {
-		param($Data)
-		$Data | Out-Host
+		param(data)
+		data | Out-Host
 	}
 }
 
@@ -262,7 +262,7 @@ else {
 
 # Gets an input string from a dialog.
 function global:Read-InputBox {
-	param($Prompt, $Title, $Default, $Text1, $Text2, $State)
+	param($Prompt, $Title, $Default, $Text1, $Text2, $state)
 
 	Add-Type -AssemblyName System.Windows.Forms
 
@@ -271,9 +271,9 @@ function global:Read-InputBox {
 	$form.TopMost = $true
 	$form.Size = New-Object System.Drawing.Size(400, 132)
 	$form.FormBorderStyle = 'FixedDialog'
-	if ($State -and $State.x -ge 0 -and $State.y -ge 0) {
+	if ($state -and $state.x -ge 0 -and $state.y -ge 0) {
 		$form.StartPosition = 'Manual'
-		$form.Location = New-Object System.Drawing.Point($State.x, $State.y)
+		$form.Location = New-Object System.Drawing.Point($state.x, $state.y)
 	}
 	else {
 		$form.StartPosition = 'CenterScreen'
@@ -313,9 +313,9 @@ function global:Read-InputBox {
 
 	$result = $form.ShowDialog()
 
-	if ($State) {
-		$State.x = [Math]::Max(0, $form.Location.X)
-		$State.y = [Math]::Max(0, $form.Location.Y)
+	if ($state) {
+		$state.x = [Math]::Max(0, $form.Location.X)
+		$state.y = [Math]::Max(0, $form.Location.Y)
 	}
 
 	if ($result -eq 'OK') {
@@ -347,14 +347,14 @@ function global:Watch-Debugger {
 
 # Writes the current invocation info.
 function global:Write-DebuggerInfo {
-	param($InvocationInfo, $State)
+	param($InvocationInfo, $state)
 
 	# write position message
 	if ($_ = $InvocationInfo.PositionMessage) {
 		Write-Debugger ($_.Trim())
 	}
 
-	if (!$State.n -and !$State.m) {
+	if (!$state.n -and !$state.m) {
 		return
 	}
 
@@ -365,7 +365,7 @@ function global:Write-DebuggerInfo {
 
 	# write file lines
 	$markIndex = $InvocationInfo.ScriptLineNumber - 1
-	Write-DebuggerFile $file ($markIndex - $State.n) ($State.n + 1 + $State.m) $markIndex
+	Write-DebuggerFile $file ($markIndex - $state.n) ($state.n + 1 + $state.m) $markIndex
 }
 
 # Writes the specified file lines.

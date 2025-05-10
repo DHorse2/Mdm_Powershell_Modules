@@ -7,7 +7,7 @@
                 <Type>System.String[]</Type> <!-- Array of strings for log messages -->
             </Property>
             <Property>
-                <Name>LocalLogFileNameFull</Name>
+                <Name>logFileNameFull</Name>
                 <Type>System.String</Type>
             </Property>
             <Property>
@@ -54,7 +54,7 @@
                 <ScriptBlock>
                     <![CDATA[
                     param($this)
-                    return "LogMessages: $($this.LogMessages -join ', '), LocalLogFileNameFull: $($this.LocalLogFileNameFull), IsError: $($this.IsError), IsWarning: $($this.IsWarning)"
+                    return "LogMessages: $($this.LogMessages -join ', '), logFileNameFull: $($this.logFileNameFull), IsError: $($this.IsError), IsWarning: $($this.IsWarning)"
                     ]]>
                 </ScriptBlock>
             </Method>

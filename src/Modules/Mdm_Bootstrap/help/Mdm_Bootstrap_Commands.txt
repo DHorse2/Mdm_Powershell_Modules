@@ -1,10 +1,12 @@
 
 Module        PSEdition CommandType Name
 ------        --------- ----------- ----
-Mdm_Bootstrap              Function Assert-RegistryValue
-Mdm_Bootstrap              Function DevEnv_Module_Reset_Func
 Mdm_Bootstrap              Function Add-RegistryPath
-Mdm_Bootstrap              Function DevEnv_LanguageMode
-Mdm_Bootstrap              Function DevEnv_Install_Modules_Win
+Mdm_Bootstrap              Function GoToBootstrap_Func
 Mdm_Bootstrap              Function Initialize-Dev_Env_Win
+Mdm_Bootstrap              Function GoToProjectRoot_Func
+Mdm_Bootstrap              Function Get-ModuleRootPath
+Mdm_Bootstrap              Function Assert-RegistryValue
+Mdm_Bootstrap              Function GoToModuleRoot_Func
+Mdm_Bootstrap              Function DevEnv_Module_Reset_Func
 

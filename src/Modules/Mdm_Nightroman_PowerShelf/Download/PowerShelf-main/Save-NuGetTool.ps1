@@ -23,8 +23,8 @@ $ErrorActionPreference = 'Stop'
 $here = $PSCmdlet.GetUnresolvedProviderPathFromPSPath('')
 $zip = "$here\$PackageId.zip"
 $dir = "$here\$PackageId"
-if (Test-Path -LiteralPath $zip) {Write-Error "Remove '$zip' or use another directory."}
-if (Test-Path -LiteralPath $dir) {Write-Error "Remove '$dir' or use another directory."}
+if (Test-Path -LiteralPath $zip) {Write-Error -Message "Remove '$zip' or use another directory."}
+if (Test-Path -LiteralPath $dir) {Write-Error -Message "Remove '$dir' or use another directory."}
 
 $web = New-Object System.Net.WebClient
 $web.UseDefaultCredentials = $true
@@ -32,13 +32,13 @@ try {
 	$web.DownloadFile("http://nuget.org/api/v2/package/$PackageId", $zip)
 }
 catch {
-	Write-Error "Cannot download the package : $_"
+	Write-Error -Message "Cannot download the package : $_"
 }
 
 $shell = New-Object -ComObject Shell.Application
 $from = $shell.NameSpace("$zip\tools")
 if (!$from) {
-	Write-Error "Missing package item '$zip\tools'."
+	Write-Error -Message "Missing package item '$zip\tools'."
 }
 $one, $two = @($from.Items())
 if (!$two -and $one.Name -eq $PackageId) {

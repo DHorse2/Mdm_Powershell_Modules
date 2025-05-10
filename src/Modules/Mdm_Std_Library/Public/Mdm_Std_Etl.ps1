@@ -1,6 +1,5 @@
 
-# Path and directory
-#############################
+#region Path and directory
 function Get-DirectoryNameFromSaved {
     <#
     .SYNOPSIS
@@ -289,8 +288,8 @@ function Get-LineFromFile {
     )
     # Check if the file exists
     if (-Not (Test-Path $FileName)) {
-        $logMessage = "The script '$FileName' does not exist."
-        Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -localLogFileNameFull $global:logFileNameFull
+        $Message = "The script '$FileName' does not exist."
+        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -logFileNameFull $global:logFileNameFull
         return
     }
     # Read the content of the script file
@@ -298,8 +297,8 @@ function Get-LineFromFile {
 
     # Check if the line number is valid
     if ($FileLineNumber -lt 1 -or $FileLineNumber -gt $scriptContent.Count) {
-        $logMessage = "Line number $FileLineNumber is out of range for the script '$FileName'."
-        Add-LogText -logMessages $logMessage -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -localLogFileNameFull $global:logFileNameFull
+        $Message = "Line number $FileLineNumber is out of range for the script '$FileName'."
+        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -logFileNameFull $global:logFileNameFull
         return
     }
 
@@ -309,6 +308,8 @@ function Get-LineFromFile {
     Write-Debug $results
     return $lineText
 }
+#endregion
+#region Convert
 function ConvertFrom-HashValue {
     [CmdletBinding()]
     param (
@@ -538,7 +539,7 @@ function ConvertTo-EscapedText {
     param (
         [Parameter(Mandatory = $true)]
         $textIn,
-        $localLogFileNameFull = "",
+        $logFileNameFull = "",
         [switch]$KeepWhitespace,
         [switch]$KeepEscapes
     )
@@ -567,7 +568,7 @@ function ConvertTo-EscapedText {
                     # Recursive loop
                     foreach ($textRow in $textOut) {
                         <# $textRow is the current item #>
-                        $textRow = ConvertTo-EscapedText $textRow $localLogFileNameFull `
+                        $textRow = ConvertTo-EscapedText $textRow $logFileNameFull `
                             -KeepEscapes:$KeepEscapes `
                             -KeepWhitespace:$KeepWhitespace
                     }
@@ -590,13 +591,14 @@ function ConvertTo-TrimmedText {
     param (
         [Parameter(Mandatory = $true)]
         $textIn,
-        $localLogFileNameFull = ""
+        $logFileNameFull = ""
     )
     process {
         Write-Debug "Trim Text"
-        return ConvertTo-EscapedText $textIn $localLogFileNameFull -KeepEscapes 
+        return ConvertTo-EscapedText $textIn $logFileNameFull -KeepEscapes 
     }
 }
+#endregion
 function Resolve-Variables {
     [CmdletBinding()]
     param (
@@ -627,8 +629,8 @@ function Resolve-Variables {
                     # Replace the variable in the resolved string
                     $resolvedString = $resolvedString -replace [regex]::Escape($match.Value), $varValue
                 } else {
-                    $logMessage = "Resolve-Variables: $varName has a null value."
-                    Add-LogText $logMessage -IsError -ErrorPSItem $_ -localLogFileNameFull $global:logFileNameFull
+                    $Message = "Resolve-Variables: $varName has a null value."
+                    Add-LogText $Message -IsError -ErrorPSItem $_ -logFileNameFull $global:logFileNameFull
                 }
             }
             Write-Debug "$i variables found."
@@ -639,8 +641,8 @@ function Resolve-Variables {
         }
 
     } catch {
-        $logMessage = "Resolve-Variables encountered an error."
-        Add-LogText $logMessage -IsError -ErrorPSItem $_ -localLogFileNameFull $global:logFileNameFull        
+        $Message = "Resolve-Variables encountered an error."
+        Add-LogText $Message -IsError -ErrorPSItem $_ -logFileNameFull $global:logFileNameFull        
     }
 }
 function Resolve-Variables3 {
@@ -670,10 +672,10 @@ function Resolve-Variables3 {
                     $resolvedString = $inputString -replace '\$(\w+)', $varValue       
                     return $resolvedString
                 } else {
-                    $logMessage = "Resolve-Variables: $varName has a null value."
-                    Add-LogText $logMessage `
+                    $Message = "Resolve-Variables: $varName has a null value."
+                    Add-LogText $Message `
                         -IsError -ErrorPSItem $_ `
-                        -localLogFileNameFull $global:logFileNameFull        
+                        -logFileNameFull $global:logFileNameFull        
                 }
             }
             # Variable not found
@@ -684,10 +686,10 @@ function Resolve-Variables3 {
         }
         
     } catch {
-        $logMessage = "Resolve-Variables encountered an error."
-        Add-LogText $logMessage `
+        $Message = "Resolve-Variables encountered an error."
+        Add-LogText -Message $Message `
             -IsError -ErrorPSItem $_ `
-            -localLogFileNameFull $global:logFileNameFull        
+            -logFileNameFull $global:logFileNameFull        
     }
     # return $resolvedString
 }
@@ -723,17 +725,16 @@ function Resolve-Variables2 {
     }
     return $resolvedString
 }
-# Logging
-#############################
+#region Logging
 function Add-LogText {
     # per https://stackoverflow.com/questions/24432190/generic-parameter-in-powershell
     # TODO: (Inprogress. Implement pipelines)
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline = $True, ValueFromPipelineByPropertyName = $True, Mandatory = $true)]
-        $logMessages,
+        $Message,
         [Parameter(Mandatory = $false)]
-        [string]$localLogFileNameFull = "",
+        [string]$logFileNameFull = "",
         [switch]$KeepWhitespace,
         [switch]$KeepEscapes,
         [switch]$IsError,
@@ -741,74 +742,82 @@ function Add-LogText {
         [switch]$DoTraceWarningDetails,
         [switch]$SkipScriptLineDisplay,
         [Parameter(Mandatory = $false)]
-        $foregroundColor,
+        $ForegroundColor,
         [Parameter(Mandatory = $false)]
-        $backgroundColor,
+        $BackgroundColor,
         [Parameter(Mandatory = $false)]
         [System.Management.Automation.ErrorRecord]$ErrorPSItem
     )
-    process {
+    begin {
         try {
             # Log File
-            if (-not $localLogFileNameFull) { $localLogFileNameFull = $global:logFileNameFull }
-            if ($localLogFileNameFull.Length -le 0) { $localLogFileNameFull = $global:logFileNameFull }
-            # Check if folder not exists, and create it
-            $logFilePath = Split-Path -Path $localLogFileNameFull
-            if (-not(Test-Path $logFilePath -PathType Container)) {
-                New-Item -path $logFilePath -ItemType Directory
+            if (-not $logFileNameFull) { $logFileNameFull = $global:logFileNameFull }
+            if (-not $logFileNameFull -or -not(Test-Path $logFileNameFull)) {
+                if (-not $logFileNameFull) { $logFileNameFull = (get-item $PSScriptRoot ).FullName }
+                $logFileNameFull = Open-LogFile -OpenLogFile -logFileNameFull $logFileNameFull
             }
-            # Check if file exists, and create it
-            if (-not(Test-Path $localLogFileNameFull -PathType Leaf)) {
-                New-Item -path $localLogFileNameFull -ItemType File
-            }
+            # $logFilePath = Split-Path -Path $logFileNameFull
+            # $logFIleName = Split-Path $logFileNameFull -PathType Leaf
+            # # Check if folder not exists, and create it
+            # if (-not(Test-Path $logFilePath -PathType Container)) {
+            #     New-Item -path $logFilePath -ItemType Directory
+            # }
+            # # Check if file exists, and create it
+            # if (-not(Test-Path $logFileNameFull -PathType Leaf)) {
+            #     New-Item -path $logFileNameFull -ItemType File
+            # }
         } catch {
-            Write-Error "Add-LogText Log File preparation error. $_"
+            Write-Error -Message "Add-LogText Log File preparation error. $_"
         }
-        $logMessageIndex = -1
-        foreach ($logMessage in $logMessages) {
+    }
+    process {
+        $MessageIndex = -1
+        foreach ($Message in $Message) {
             try {
-                $logMessageIndex++
+                $MessageIndex++
                 # pre-process message (for html)
                 # TODO. Should the log be html also?
-                $logMessage = ConvertTo-EscapedText $logMessage -KeepEscapes
-                # $logMessage | Out-File -FilePath $localLogFileNameFull –Append
+                $Message = ConvertTo-EscapedText $Message -KeepEscapes
+                # $Message | Out-File -FilePath $logFileNameFull –Append
             
                 # Display message to user
                 if ($IsError -or $IsWarning) {
                     if ($IsError) {
                         if ($global:UseTrace -and $ErrorPSItem) { 
-                            Add-LogError $logMessage `
+                            Add-LogError $Message `
                                 -IsError -ErrorPSItem $ErrorPSItem `
                                 -DoTraceWarningDetails:$DoTraceWarningDetails `
                                 -SkipScriptLineDisplay:$SkipScriptLineDisplay `
-                                -localLogFileNameFull $localLogFileNameFull
+                                -logFileNameFull $logFileNameFull
                         } else {
-                            Write-Error -Message $logMessage
+                            Write-Error -Message $Message
                         }
-                        $null = Debug-Script -DoPause 60 -functionName "Add-LogError pause for interupt" -localLogFileNameFull $localLogFileNameFull
+                        if ($global:DoDebugPause) {
+                            $null = Debug-Script -DoPause 60 -functionName "Error handling pause for debugger interupt (and step out)." -logFileNameFull $logFileNameFull
+                        }
                     } elseif ($IsWarning) { 
                         if ($global:UseTrace -and $global:UseTraceWarning -and $ErrorPSItem) { 
-                            Add-LogError $logMessage `
+                            Add-LogError -Message $Message `
                                 -IsWarning -ErrorPSItem $ErrorPSItem `
                                 -DoTraceWarningDetails:$DoTraceWarningDetails `
                                 -SkipScriptLineDisplay:$SkipScriptLineDisplay `
-                                -localLogFileNameFull $localLogFileNameFull
+                                -logFileNameFull $logFileNameFull
                         } else {
-                            Write-Warning -Message $logMessage
+                            Write-Warning -Message $Message
                         }
                     }
                 } else { 
-                    if (-not $foregroundColor) { $foregroundColor = $global:messageForegroundColor }
-                    if (-not $foregroundColor) { $foregroundColor = [System.ConsoleColor]::White }
-                    if (-not $backgroundColor) { $backgroundColor = $global:messageBackgroundColor }
-                    if (-not $backgroundColor) { $backgroundColor = [System.ConsoleColor]::Black }
-                    Write-Host $logMessage `
-                        -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                    if (-not $ForegroundColor) { $ForegroundColor = $global:messageForegroundColor }
+                    if (-not $ForegroundColor) { $ForegroundColor = [System.ConsoleColor]::White }
+                    if (-not $BackgroundColor) { $BackgroundColor = $global:messageBackgroundColor }
+                    if (-not $BackgroundColor) { $BackgroundColor = [System.ConsoleColor]::Black }
+                    Write-Host -Message $Message `
+                        -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
                 }
                 # Write to storage
-                $logMessage | Out-File -FilePath $localLogFileNameFull –Append
+                $Message | Out-File -FilePath $logFileNameFull –Append
             } catch {
-                Write-Error "Add-LogText LogMessage processing error at index $logMessageIndex. $_"
+                Write-Error -Message "Add-LogText LogMessage processing error at index $MessageIndex. $_"
             }
         }
     }
@@ -817,7 +826,7 @@ function Add-LogError {
     [CmdletBinding()]
     param (
         [Parameter(ValueFromPipeline = $True, ValueFromPipelineByPropertyName = $True, Mandatory = $true)]
-        $logMessage,
+        $Message,
         [Parameter(Mandatory = $false)]
         [System.Management.Automation.ErrorRecord]$ErrorPSItem,
         [switch]$IsError,
@@ -825,12 +834,21 @@ function Add-LogError {
         [switch]$SkipScriptLineDisplay,
         [switch]$DoTraceWarningDetails,
         [Parameter(Mandatory = $false)]
-        $localLogFileNameFull = "",
+        $logFileNameFull = "",
         [Parameter(Mandatory = $false)]
-        $foregroundColor,
+        $ForegroundColor,
         [Parameter(Mandatory = $false)]
-        $backgroundColor
+        $BackgroundColor
     )
+    # You can capture both stdout and stderr to separate variables
+    # and then suppress all output:
+    # Invoke-Expression "somecommand.exe" `
+    #   -ErrorVariable errOut `
+    #   -OutVariable succOut 2>&1 >$null
+    # 1 is stdout, 2 is stderr, and 
+    # 2>&1 combines stderr into stdout. 
+    # Then >$null discards stdout
+    # also: $errOutput = $( $output = & $command $params ) 2>&1
     begin { [string]$newMessage = "" }
     process {
         #region Error Objects, debugger, Script and Location of error
@@ -856,18 +874,18 @@ function Add-LogError {
         #endregion
         try {
             #region Colors
-            if (-not $foregroundColor) {
-                if ($IsError) { $foregroundColor = $messageErrorForegroundColor }
-                elseif ($IsWarning) { $foregroundColor = $messageWarningForegroundColor }
-                else { $foregroundColor = $global:messageForegroundColor }
+            if (-not $ForegroundColor) {
+                if ($IsError) { $ForegroundColor = $messageErrorForegroundColor }
+                elseif ($IsWarning) { $ForegroundColor = $messageWarningForegroundColor }
+                else { $ForegroundColor = $global:messageForegroundColor }
             }
-            if (-not $backgroundColor) {
-                if ($IsError) { $backgroundColor = $messageErrorBackgroundColor }
-                elseif ($IsWarning) { $backgroundColor = $messageWarningBackgroundColor }
-                else { $backgroundColor = $global:messageBackgroundColor }
+            if (-not $BackgroundColor) {
+                if ($IsError) { $BackgroundColor = $messageErrorBackgroundColor }
+                elseif ($IsWarning) { $BackgroundColor = $messageWarningBackgroundColor }
+                else { $BackgroundColor = $global:messageBackgroundColor }
             }
-            if (-not $foregroundColor) { $foregroundColor = [System.ConsoleColor]::Yellow }
-            if (-not $backgroundColor) { $backgroundColor = [System.ConsoleColor]::DarkBlue }
+            if (-not $ForegroundColor) { $ForegroundColor = [System.ConsoleColor]::Yellow }
+            if (-not $BackgroundColor) { $BackgroundColor = [System.ConsoleColor]::DarkBlue }
             #endregion
             #region Output
             # Category prefix
@@ -881,12 +899,12 @@ function Add-LogError {
             }
             if ($traceDetails) {        
                 $errorLine = "============================================="
-                Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
                 $newMessage += $errorLine + "`n"
             }
             $errorLine = "$($errorTypeText)Script: $scriptName, line $line, column $column"
             if (-not $SkipScriptLineDisplay) {
-                Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
                 $newMessage += $errorLine + "`n"
             }
             # Newlines are required after this line
@@ -894,20 +912,20 @@ function Add-LogError {
             #endregion
             #region Error Detail
             try {
-                $errorLine = $logMessage
-                Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                $errorLine = $Message
+                Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
                 $newMessage += "`n" + $errorLine
                 if ($traceDetails) {        
                     $errorLine = "Details: "
-                    Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                    Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
                     $newMessage += "`n" + $errorLine
 
                     $errorLine = "$($ErrorPSItem.Exception.Message)"
-                    Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                    Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
                     $newMessage += "`n" + $errorLine
 
                     $errorLine = "$($ErrorPSItem.CategoryInfo)"
-                    Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                    Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
                     $newMessage += "`n" + $errorLine
 
                     # Stack trace
@@ -915,11 +933,11 @@ function Add-LogError {
                         $newMessage += "`n"
                         Write-Host " "
                         $errorLine = "Stack trace: "
-                        Write-Host $errorLine -ForegroundColor Green -BackgroundColor $backgroundColor
+                        Write-Host $errorLine -ForegroundColor Green -BackgroundColor $BackgroundColor
                         $newMessage += "`n" + $errorLine
 
-                        $logMessageLine = Get-CallStackFormatted $callStack "`n"
-                        $errorLine = $logMessageLine.Trim()
+                        $MessageLine = Get-CallStackFormatted $callStack "`n"
+                        $errorLine = $MessageLine.Trim()
                         Write-Host $errorLine -ForegroundColor Green
                         $newMessage += "`n" + $errorLine
 
@@ -927,15 +945,15 @@ function Add-LogError {
                         #     $newMessage += "`n"
                         #     Write-Host " "
                         #     $errorLine = "Script stack trace: "
-                        #     Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                        #     Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
                         #     $newMessage += "`n" + $errorLine
 
                         #     $errorLine = "$($ErrorPSItem.ScriptStackTrace)"
-                        #     Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                        #     Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
                         #     $newMessage += "`n" + $errorLine
                         # }
                         # $errorLine = "$($ErrorPSItem.ScriptStackTrace)"
-                        # Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                        # Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
                         # $newMessage += "`n" + $errorLine
                     }
                     # Additional details
@@ -943,23 +961,23 @@ function Add-LogError {
                         $newMessage += "`n"
                         Write-Host " "
                         $errorLine = "Additional details: "
-                        Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                        Write-Host -Message $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
                         $newMessage += "`n" + $errorLine
 
                         $errorLine = "$($ErrorPSItem.ErrorDetails)"
-                        Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                        Write-Host -Message $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
                         $newMessage += "`n" + $errorLine
                     }
                     $errorLine = "============================================="
-                    Write-Host $errorLine -ForegroundColor $foregroundColor -BackgroundColor $backgroundColor
+                    Write-Host -Message $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
                     $newMessage += "`n" + $errorLine
                 }
             } catch {
-                Write-Error "Add-LogError ouput processing Trace Details error. $_"
+                Write-Error -Message "Add-LogError ouput processing Trace Details error. $_"
             }
             #endregion
         } catch {
-            Write-Error "Add-LogError output processing error. $_"
+            Write-Error -Message "Add-LogError output processing error. $_"
         }
     }
     end { return $newMessage }
@@ -967,78 +985,102 @@ function Add-LogError {
 function Open-LogFile {
     [CmdletBinding()]
     param (
-        $localLogFileNameFull,
+        # Does not include the file extension
+        [string]$logFileNameFull,
+        [string]$logFilePath,
+        [string]$logFileName,
+        [string]$logFileExtension = "txt",
+        [switch]$OpenLogFile,
         [switch]$LogOneFile,
         [switch]$SkipCreate
     )
+    begin {
+        try {
+            if ($LogOneFile) { $global:LogOneFile = $LogOneFile }
+            if ($logFileNameFull -and ($logFilePath -or $logFileName)) {
+                Write-Warning -Message "Open-LogFile error, don't specify the Full file name AND a FilePath or FileName."
+                Write-Warning -Message "FileNameFull will be used and parsed."
+            }
+            if ($logFileNameFull) {
+                $logFilePath = Split-Path -Path $logFileNameFull
+                # $logFileNameWithExtension = Split-Path $logFileNameFull -leaf
+                $logFileName = [System.IO.Path]::GetFileName($logFileNameFull)
+                $logFileExtension = [System.IO.Path]::GetFileNameWithoutExtension($logFileNameFull)
+            }
+            if ($logFilePath -or $logFileName) {
+                # Save changes
+                if (-not $logFilePath) { $logFilePath = "$global:projectRootPath\Log" }
+                $global:logFilePath = $logFilePath
+                if (-not $logFileName) { $logFileName = "Mdm_Installation_Log" }
+                $global:logFileName = $logFileName
+                if (-not $logFileNameFull) { $logFileNameFull = "$logFilePath\$logFileName.$logFileExtension" }
+            } else {
+                # Use defaults
+                if (-not $global:logFileNameFull) {
+                    $global:logFileName = "$($global:companyNamePrefix)_Installation_Log"
+                    $global:logFilePath = "$global:projectRootPath\log"
+                    # Use a single log file repeatedly appending to it.
+                    # The date and time will be appended to the name when LogOneFile is false.
+                    [bool]$global:LogOneFile = $LogOneFile
+                }
+                $logFilePath = $global:logFilePath
+                $logFileName = $global:logFileName
+                $LogOneFile = $global:LogOneFile
+            }
+            # Construct the full log file name
+            # $logFileNameFull = Join-Path -Path $logFilePath -ChildPath $logFileName
+            $logFileNameFull = "$logFilePath\$logFileName"
+            if (-not $LogOneFile) { $logFileNameFull = "$($logFileNameFull)_$global:timeStartedFormatted" }
+            $logFileNameFull = "$logFileNameFull.$logFileExtension"
+            $global:logFileNameFull = $logFileNameFull
+        } catch {
+            Write-Error -Message "Open-LogFile error processing file name information. $_"
+        }
+    }
     process {
         try {
-        if ($localLogFileNameFull) { 
-            $logFilePath = Split-Path -Path $localLogFileNameFull
-            $logFileName = Split-Path $localLogFileNameFull -leaf
-        } else {
-            if ($LogOneFile) { $global:LogOneFile = $LogOneFile }
-            if (-not $global:logFileNameFull) {
-                $global:logFileName = "$($global:companyNamePrefix)_Installation_Log"
-                $global:logFilePath = "$global:projectRootPath\log"
-                $global:logFileNameFull = ""
-                # Use a single log file repeatedly appending to it.
-                # The date and time will be appended to the name when LogOneFile is false.
-                [bool]$global:LogOneFile = $LogOneFile
+            # Log folder
+            try {
+                # Check if folder not exists, and create it
+                if (-not(Test-Path $logFilePath -PathType Container)) {
+                    if (-not $SkipCreate) { New-Item -path $logFilePath -ItemType Directory }
+                }
+                $logFilePath = Convert-Path $logFilePath
+            } catch {
+                Write-Error -Message "Open-LogFile error processing file path $logFilePath. $_"
             }
-            $logFilePath = $global:logFilePath
-            $logFileName = $global:logFileName
-            $LogOneFile = $global:LogOneFile
-        }
-        # Log folder
-        try {
-        if (-not $logFilePath) { $logFilePath = "$global:projectRootPath\Log" }
-        # Check if folder not exists, and create it
-        if (-not(Test-Path $logFilePath -PathType Container)) {
-            if (-not $SkipCreate) { New-Item -path $logFilePath -ItemType Directory }
-        }
-        $logFilePath = Convert-Path $logFilePath
-    } catch {
-
-    }
     
-        try {
-        # Construct the full log file name
-        if (-not $logFileName) { $logFileName = "Mdm_Installation_Log" }
-        # $logFileNameFull = Join-Path -Path $logFilePath -ChildPath $logFileName
-        $logFileNameFull = "$logFilePath\$logFileName"
-        if (-not $LogOneFile) { $logFileNameFull = "$($logFileNameFull)_$global:timeStartedFormatted" }
-        $logFileNameFull = "$logFileNameFull.txt"
-        
-        # Check if file exists, and create it
-        if (-not(Test-Path $logFileNameFull -PathType Leaf)) {
-            if (-not $SkipCreate) { New-Item -path $logFileNameFull -ItemType File }
+            try {
+                # Check if file exists, and create it
+                if (-not(Test-Path $logFileNameFull -PathType Leaf)) {
+                    if (-not $SkipCreate) { New-Item -path $logFileNameFull -ItemType File }
+                }
+                if ($LogOneFile) { 
+                    try {
+                        $logFileNameFull = Convert-Path $logFileNameFull
+                    } catch {
+                        Write-Warning -Message "Open-LogFile didn't find file $logFileNameFull."
+                    }
+                }
+            } catch {
+                Write-Error -Message "Open-LogFile error creating file $logFileName. $_"
+            }            
+        } catch {
+            Write-Error -Message "Oper-LogFile had an unexpected error. File: $logFileName. Error: $_"
         }
-    } catch {
-
     }
-            
-        $global:logFilePath = $logFilePath
-        $global:logFileName = $logFileName
-        $global:LogOneFile = $LogOneFile
-        $global:logFileNameFull = $logFileNameFull
-}
-    catch {
-        Write-Error "Oper-LogFile had an error."
-        Write-Error "$_"
-    }
-}
     end {
         # Write-Host "Returning: $logFileNameFull"
         # POWERSHELL ERROR. This cannot be return as a string.
         # Weird bug. It becomes duplicated in an array [0] [1]
         # Fix:
         $global:logFileNameFull = $logFileNameFull
-        # return $logFileNameFull
+        return $logFileNameFull
     }
 }
+#endregion
 # ShowData.psm1**
-#############################
+#region HTML
 function Write-HtlmData {
     <#
     .SYNOPSIS
@@ -1131,49 +1173,25 @@ function Test-HtmlData {
     }
     end { }
 }
-# Search
-# ###############################
-function Search-Directory {
-    <#
-    .SYNOPSIS
-        TODO Search a folder for files or something else.
-    .DESCRIPTION
-        Currently just outputs the folder list to a CSV file.
-    .PARAMETER inputObjects
-        This is a ValueFromPipeline and can be used with one or more objects.
-    .PARAMETER dir
-        This defaults to "$global:projectRootPath\src\Modules".
-    .PARAMETER folder
-        Defaults to (Get-Item $dir).Parent.
-    .PARAMETER folderName
-        Defaults to folder.Name.
-    .PARAMETER folderPath
-        Defaults to folder.FullName.
-    .OUTPUTS
-        Export-Csv '.\output.csv'.
-    .EXAMPLE
-        Search-Directory "G:\Script\Powershell\".
-#>
-
-
-    [CmdletBinding()]
-    param(
-        [parameter(ValueFromPipeline)]$inputObjects,
-        $dir = "$global:projectRootPath\src\Modules",
-        $folder = (Get-Item $dir).Parent,
-        $folderName = $folder.Name,
-        $folderPath = $folder.FullName    
-    )
-    begin { [Collections.ArrayList]$inputObjects = @() }
-    process { [void]$inputObjects.Add($_) }
-    end {
-        $inputObjects | `
-                ForEach-Object -Parallel {
-                Get-ChildItem $dir | 
-                    >> Select-Object Name, FullName, +
-                    >>  @{n = 'FolderName'; e = { $folderName } }, +
-                    >>  @{n = 'Folder'; e = { $folderPath } } | 
-                        Export-Csv '.\output.csv' -Encoding UTF8 -NoType
-                    }
+#endregion
+#region Robocopy
+function Get-RobocopyExitMessage {
+    param ( 
+        [int]$exitCode,
+        [switch]$IsError
+        )
+    switch ($exitCode) {
+        0 { if ($IsError) { return $false } else { return "No errors occurred, no files copied" } }
+        1 { if ($IsError) { return $false } else { return "All files copied successfully" } }
+        2 { if ($IsError) { return $false } else { return "Some files copied successfully" } }
+        3 { if ($IsError) { return $false } else { return "Some files copied successfully, some skipped" } }
+        5 { if ($IsError) { return $true } else { return "Access denied" } }
+        6 { if ($IsError) { return $true } else { return "Source and destination are the same" } }
+        7 { if ($IsError) { return $true } else { return "Destination path is invalid" } }
+        8 { if ($IsError) { return $true } else { return "Some files or directories could not be copied" } }
+        16 { if ($IsError) { return $true } else { return "Serious error occurred" } }
+        default { if ($IsError) { return $true } else { return "An unknown error occurred. Exit code: $exitCode" } }
     }
 }
+
+#endregion

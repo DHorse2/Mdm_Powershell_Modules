@@ -167,23 +167,23 @@ if ($PSCmdlet.ParameterSetName -eq 'Path') {
 	$writer = New-Object System.IO.StreamWriter ($PSCmdlet.GetUnresolvedProviderPathFromPSPath($Path)), $true
 	$writer.AutoFlush = $true
 	$_Debugger.Writer = $writer
-	function global:Write-Debugger($Data)
+	function global:Write-Debugger(data)
 	{
-		$_Debugger.Writer.WriteLine($Data)
+		$_Debugger.Writer.WriteLine(data)
 	}
 }
 elseif ($Host.Name -eq 'ConsoleHost') {
 	$_Debugger.Writer = $null
-	function global:Write-Debugger($Data)
+	function global:Write-Debugger(data)
 	{
-		Write-Host $Data -ForegroundColor $Host.PrivateData.DebugForegroundColor
+		Write-Host data -ForegroundColor $Host.PrivateData.DebugForegroundColor
 	}
 }
 else {
 	$_Debugger.Writer = $null
-	function global:Write-Debugger($Data)
+	function global:Write-Debugger(data)
 	{
-		Write-Host $Data
+		Write-Host data
 	}
 }
 

@@ -33,7 +33,7 @@ function Install-DevEnvIdeWin {
 #>
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
-    Initialize-Std -$DoPause -$DoVerbose
+    Initialize-Std -$DoPause -$DoVerbose -$DoDebug
 
     Wait-AnyKey
 
@@ -44,7 +44,7 @@ function Install-DevEnvIdeWin {
 
     # Ensure the script is running as administrator
     if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-        Write-Error "This script must be run as an Administrator. Please restart PowerShell with elevated privileges."
+        Write-Error -Message "This script must be run as an Administrator. Please restart PowerShell with elevated privileges."
         exit
     }
 

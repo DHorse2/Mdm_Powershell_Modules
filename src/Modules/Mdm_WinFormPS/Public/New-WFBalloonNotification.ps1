@@ -35,7 +35,7 @@
 	[CmdletBinding(SupportsShouldProcess = $true)]
 	param
 	(
-		[String]$CustomIconPath = "C:\Windows\WinSxS\amd64_microsoft-windows-dxp-deviceexperience_31bf3856ad364e35_10.0.9926.0_none_220133b3b110f55a\sync.ico",
+		[string]$CustomIconPath = "C:\Windows\WinSxS\amd64_microsoft-windows-dxp-deviceexperience_31bf3856ad364e35_10.0.9926.0_none_220133b3b110f55a\sync.ico",
 		
 		[int]$TimeOut = "10000",
 		

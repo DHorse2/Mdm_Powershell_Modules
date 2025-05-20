@@ -55,7 +55,7 @@
 		
 		[Parameter(ParameterSetName = 'Row',
 				   Mandatory = $true)]
-		[String]$Title,
+		[string]$Title,
 		
 		[Parameter(ParameterSetName = 'Row')]
 		[Array]$Values,

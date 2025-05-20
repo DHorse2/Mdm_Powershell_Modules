@@ -145,3 +145,158 @@ function Find-File {
         return $CurrentPath
     }
 }
+function Search-StringInFiles {
+    <#
+ This accepts a ";" delimited path like $env:PSModulePath, 
+ a ";" separated list of file extensions (incl wildcards), 
+ and a search string. 
+ It recursively searches each directory for the search string.
+ It displays the line and line number of each occurence within each file,
+ and totoal occurence counts.
+ #>
+    param (
+        [string]$Path,
+        [string]$Extensions = "txt;ps1*;psm1;psd1;md;json;csv;xml*;html;css",
+        [string]$FileNames = "*",
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
+        [string]$SearchString,
+        [switch]$SkipLineDetail,
+        [switch]$DoLog,
+        [string]$resultFileNameFull
+    )
+    begin {
+        $output = @()
+        $Message = "Seaching for $SearchString"
+        if (-not $Path) { 
+            $Path = $env:PSModulePath 
+            $Message += " (Using default powershell path)"
+        }
+        Write-Host $Message -ForegroundColor DarkYellow
+        $output += $Message
+        $Message = "  Extensions: $Extensions"
+        $pathContainsString = $false
+        $count = 0
+        Write-Host $Message -ForegroundColor DarkYellow
+        $output += $Message
+        $directories = $Path -split ';'
+        $extensionArray = $Extensions -split ';'
+        $fileNamesArray = $FileNames -split ";"
+    }
+    process {
+        for ($directoryIndex = 0; $directoryIndex -lt $directories.Count; $directoryIndex++) {
+            $directory = $directories[$directoryIndex]
+            $directoryContainsString = $false
+            $countDirectory = 0
+            if (Test-Path $directory) {
+                # $directoryName = Split-Path -Path $directory -Leaf
+                Write-Host "Folder [$directoryIndex] $directory" -ForegroundColor DarkYellow
+                $output += $Message
+                # Get all files with the specified extensions recursively
+                # Get all files recursively
+                $files = Get-ChildItem -Path $directory -Recurse -File
+                foreach ($file in $files) {
+                    $fileName = Split-Path -Path $file -Leaf
+                    # Check if the file extension matches any of the specified patterns
+                    $fileExamined = $false
+                    $fileContainsString = $false
+                    $countFile = 0
+                    foreach ($fileNameMatch in $fileNamesArray) {
+                        if ($fileName -like $fileNameMatch) {
+                            # Check if the file extension matches any of the specified patterns
+                            foreach ($extension in $extensionArray) {
+                                if ($file.Extension -like ".$extension") {
+                                    $fileExamined = $true
+                                    Write-Debug "Check: $($fileName)"
+                                    # Read the file line by line
+                                    $lines = Get-Content -Path $file.FullName
+                                    for ($lineNumber = 0; $lineNumber -lt $lines.Count; $lineNumber++) {
+                                        if ($lines[$lineNumber] -like "*$SearchString*") {
+                                            $countFile++
+                                            if (-not $fileContainsString) {
+                                                # if (-not $SkipLineDetail) {
+                                                #     Write-Host "  File: $($file.FullName)"
+                                                # }
+                                                $output += $Message
+                                                $fileContainsString = $true
+                                                $directoryContainsString = $true
+                                                $pathContainsString = $true
+                                            }
+                                            if (-not $SkipLineDetail) {
+                                                $line = $lines[$lineNumber]
+                                                # $Message = $line
+                                                # Format Clickable link
+                                                # Local link
+                                                # $MessageLink = "$(Split-Path -Path $($frame.ScriptName) -Leaf):$($frame.ScriptLineNumber):"
+                                                # Link using full name 
+                                                $sliceLen = [Math]::Min(30, $line.Length)
+                                                $Message = "$($line.Substring(0,$sliceLen)) :: Link: $($file):$($lineNumber):"
+                                                # $Message = " $($file):$($lineNumber):"
+                                                Write-Host $Message
+                                                $output += $Message
+
+                                                # line number and the line content
+                                                # Format 1
+                                                # $Message = "    [Line $($lineNumber + 1)]: $($lines[$lineNumber])"
+                                                # Format 2 Wide
+                                                # $MessageLine = "Directory[$directoryIndex]: $($directoryName), File: $($fileName), line $($lineNumber)."
+                                            }
+                                        }
+                                    }
+                                    break # Exit the Extensions loop if a match is found
+                                }
+                                if (-not $SkipLineDetail -and $fileContainsString -and $countFile -ge 7) {
+                                    # line number and the line content
+                                    Write-Host "        Found $countFile."
+                                    $output += $Message
+                                }
+                                $countDirectory += $countFile
+                            }
+                            # finished matching extension
+                        }
+                        # Exit the fileNameMatch loop if the file was examined
+                        if ($fileExamined) { break }
+                    }
+                    # finshed matching file names
+                    if ($fileContainsString) {
+                        # The string was found in the file
+                    } else {
+                        # String missing from file
+                    }
+                }
+                # finished looking in directory $directoryContainsString
+                if ($directoryContainsString) {
+                    # The string was found in the directory
+                    if (-not $SkipLineDetail -and $countDirectory -gt 7) {
+                        Write-Host "  Found $countDirectory."
+                        $output += $Message
+                    }
+                } else {
+                    # String missing from directory
+                }
+            } else {
+                Write-Host "Directory not found [$directoryIndex] $directory"
+                $output += $Message
+            }
+            $count += $countDirectory
+        }
+        if (-not $SkipLineDetail -and $count -gt 7) {
+            Write-Host "Total count: $count."
+            $output += $Message
+        }
+    }
+    end {
+        # finshed matching file names
+        if ($pathContainsString) {
+            # The string was found
+        } else {
+            # String missing
+        }
+        if ($DoLog) {
+            if (-not $resultFileNameFull) { $resultFileNameFull = ".\SearchResults.txt" }
+            $output | Out-File -FilePath $resultFileNameFull -Encoding utf8
+        }
+    }
+    # Example usage:
+    # Search-StringInFiles -Path $env:PSModulePath -Extensions "ps1;txt" -SearchString "your_search_string"
+}

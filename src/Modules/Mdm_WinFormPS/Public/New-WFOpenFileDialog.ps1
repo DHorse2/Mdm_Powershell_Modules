@@ -39,10 +39,10 @@
 	(
 		[Parameter(Mandatory = $true)]
 		[Alias('Title')]
-		[String]$WindowsTitle,
+		[string]$WindowsTitle,
 		[Parameter(Mandatory = $true)]
-		[String]$Path,
-		[String]$Filter = "All files (*.*)|*.*",
+		[string]$Path,
+		[string]$Filter = "All files (*.*)|*.*",
 		[switch]$AllowMultiSelect,
 		[switch]$CheckPathExists,
 		[switch]$CheckFileExists,

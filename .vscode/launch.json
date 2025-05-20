@@ -6,15 +6,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Bootstrap PowerShell Function (current file)",
+            "name": "Script Verbose",
             "type": "PowerShell",
             "request": "launch",
-            "script": "${fileBasenameNoExtension}",
+            "script": " . .\\${fileBasename} -Verbose",
             "args": [],
             "cwd": "${file}"
         },
         {
-            "name": "Script Launch PowerShell (current)",
+            "name": "Script (current)",
             "type": "PowerShell",
             "request": "launch",
             "script": " . .\\${fileBasenameNoExtension}.ps1",
@@ -22,7 +22,15 @@
             "cwd": "${file}"
         },
         {
-            "name": "Function Launch PowerShell (current file)",
+            "name": "Function Verbose",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${fileBasenameNoExtension} -Verbose",
+            "args": [],
+            "cwd": "${file}"
+        },
+        {
+            "name": "Function (current file)",
             "type": "PowerShell",
             "request": "launch",
             "script": "${fileBasenameNoExtension}",
@@ -30,10 +38,10 @@
             "cwd": "${file}"
         },
         {
-            "name": "Prompt for Launch Script PowerShell",
+            "name": "Launch Functioh set in config",
             "type": "PowerShell",
             "request": "launch",
-            "script": "Enter path or command to execute, for example, ${workspaceFolder}/src/foo.ps1 or Invoke-Pester",
+            "script": "Search-StringInFiles -SearchString 'Author'",
             "cwd": "${cwd}"
         },
         {

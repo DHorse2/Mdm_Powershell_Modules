@@ -25,7 +25,7 @@ function New-WFMenuStrip {
         # if (-not $form) {
         #     $form = New-WFForm
         # }
-        $menuMain = New-Object System.Windows.Forms.MenuStrip
+        $menuMainStrip = New-Object System.Windows.Forms.MenuStrip
         $mainToolStrip = New-Object System.Windows.Forms.ToolStrip
         $menuFile = New-Object System.Windows.Forms.ToolStripMenuItem
         $menuSave = New-Object System.Windows.Forms.ToolStripMenuItem
@@ -54,7 +54,7 @@ function New-WFMenuStrip {
 
             # Menu: File -> *
             $menuFile.Text = "File"
-            [void]$menuMain.Items.Add($menuFile)
+            [void]$menuMainStrip.Items.Add($menuFile)
 
             # Help
             # Menu: Help
@@ -64,22 +64,28 @@ function New-WFMenuStrip {
             [void]$menuHelp.DropDownItems.Add($menuAbout)        
 
             $menuHelp.Text = "Help"
-            [void]$menuMain.Items.Add($menuHelp)
+            [void]$menuMainStrip.Items.Add($menuHelp)
         } catch {
-            Add-LogError -IsError -ErrorPSItem $ErrorPSItem "New-WFMenuStrip Failed to create menu strip. $_"
+            Add-LogText -IsError -ErrorPSItem $_ "New-WFMenuStrip Failed to create menu strip. $_"
         }
     }
     end {
         try {
             if ($form) {
-                $form.MainMenuStrip = [System.Windows.Forms.MenuStrip]$menuMain
+                $form.MainMenuStrip = [System.Windows.Forms.MenuStrip]$menuMainStrip
                 $form.Controls.Add([System.Windows.Forms.ToolStrip]$mainToolStrip)
-                $form.Controls.Add([System.Windows.Forms.MenuStrip]$menuMain)
+                $form.Controls.Add([System.Windows.Forms.MenuStrip]$menuMainStrip)
             }
         } catch {
-            Add-LogError -IsError -ErrorPSItem $ErrorPSItem "New-WFMenuStrip Failed to add menu strip to form. $_"
+            Add-LogText -IsError -ErrorPSItem $_ "New-WFMenuStrip Failed to add menu strip to form. $_"
         }
-        return ( [System.Windows.Forms.MenuStrip]$menuMain, [System.Windows.Forms.ToolStrip]$mainToolStrip )
+        # things are valid by now
+        $result = [MenuBar]::new()
+        $result.MenuStrip = $menuMainStrip
+        $result.ToolStrip = $mainToolStrip
+        return $result
+        # return [MenuBar]::new([System.Windows.Forms.MenuStrip]$menuMainStrip, [System.Windows.Forms.ToolStrip]$mainToolStrip)
+        # return ( [System.Windows.Forms.MenuStrip]$menuMainStrip, [System.Windows.Forms.ToolStrip]$mainToolStrip )
     }
 }
 

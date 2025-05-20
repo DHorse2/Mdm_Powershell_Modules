@@ -41,12 +41,12 @@
 		[System.Windows.Forms.Form]$form,
 		
 		[Alias('Title')]
-		[String]$Text = "Hello World",
+		[string]$Text = "Hello World",
 		
 		[ValidateSet('Maximized', 'Minimized', 'Normal')]
-		[String]$WindowState,
+		[string]$WindowState,
 		
-		[Switch]$BringToFront
+		[switch]$BringToFront
 	)
 	
 	BEGIN

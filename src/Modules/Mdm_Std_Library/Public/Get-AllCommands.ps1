@@ -5,7 +5,10 @@ function Get-AllCommands {
         $moduleRootPath = ""
     )
     process {
-        Get-ModuleRootPath
+        # Project settings and paths
+        # Get-ModuleRootPath
+        $path = "$($(get-item $PSScriptRoot).Parent.Parent.FullName)\Mdm_Modules\Project.ps1"
+        . "$path"
         if (-not $moduleRootPath) { $moduleRootPath = $global:moduleRootPath }
         
         # Collect all Cmdlets to a text file

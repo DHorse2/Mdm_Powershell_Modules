@@ -32,7 +32,7 @@ function Install-DevEnvIdeWin {
         A log of the installed modules
 #>
     [CmdletBinding()]
-    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
     Initialize-Std -$DoPause -$DoVerbose -$DoDebug
 
     Wait-AnyKey

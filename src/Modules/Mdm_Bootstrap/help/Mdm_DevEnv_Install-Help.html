@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_DevEnv_Install Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="05/04/2025 14:44:44">
-    <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
+    <meta name="date" content="05/18/2025 22:21:50">
+    <meta name="copyright" content="&Copy-Item; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
         html,
@@ -213,51 +213,69 @@ Exported functions from Bootstrap, Standard Library, Development Environment Ins
 
 <p><strong>Type:</strong> Alias. Command: Get-DevEnvVersions  Type:Function</p>
 <p><strong>Synopsis:</strong> List current versions.</p>
-<p><strong>Detailed Description:</strong> Cycles through components and display the current version.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch to pause at each step/page.
+<p><strong>Detailed Description:</strong> Cycles through components and display the current version.
+</p>
+<p><strong>Syntax:</strong> <pre>DoPause
+ description: Switch to pause at each step/page.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Provide detailed information.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Provide detailed information.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Debug this script.
 
- DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoForce
  required: false, globbing: false, pipelineInput: false, position: named Get-DevEnvVersions
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
-<p>  - <strong>DoVerbose</strong>: Provide detailed information.</p>
-<p>  - <strong>DoDebug</strong>: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.
+</p>
+<p>  - <strong>DoVerbose</strong>: Provide detailed information.
+</p>
+<p>  - <strong>DoDebug</strong>: Debug this script.
+</p>
+<p>  - <strong>DoForce</strong></p>
 <p></p>
-<p><strong>Return: </strong> Should output a file and display.</p>
+<p><strong>Return: </strong> Should output a file and display.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Get-DevEnvVersions -DoVerbose
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>DevEnvGui</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> A short one-line action-based description, e.g. &apos;Tests if a function is valid&apos;</p>
-<p><strong>Detailed Description:</strong> A longer description of the function, its purpose, common use cases, etc.</p>
+<p><strong>Detailed Description:</strong> A longer description of the function, its purpose, common use cases, etc.
+</p>
 <p><strong>Syntax:</strong> <pre>fileNameFull
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 ResetSettings
- required: false, globbing: false, pipelineInput: false, position: named DevEnvGui
+ required: false, globbing: false, pipelineInput: false, position: named logFilePath
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 logFileName
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 LogOneFile
+ required: false, globbing: false, pipelineInput: false, position: named companyName
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 4 title
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 DevEnvGui
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>fileNameFull</strong></p>
 <p>  - <strong>ResetSettings</strong></p>
+<p>  - <strong>logFilePath</strong></p>
+<p>  - <strong>logFileName</strong></p>
+<p>  - <strong>LogOneFile</strong></p>
+<p>  - <strong>companyName</strong></p>
+<p>  - <strong>title</strong></p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Test-MyTestFunction -Verbose
 Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Get-DevEnvVersions</h2>
 
@@ -265,31 +283,38 @@ Explanation of the function or its result. You can include multiple examples wit
 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> List current versions.</p>
-<p><strong>Detailed Description:</strong> Cycles through components and display the current version.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch to pause at each step/page.
+<p><strong>Detailed Description:</strong> Cycles through components and display the current version.
+</p>
+<p><strong>Syntax:</strong> <pre>DoPause
+ description: Switch to pause at each step/page.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Provide detailed information.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Provide detailed information.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Debug this script.
 
- DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoForce
  required: false, globbing: false, pipelineInput: false, position: named Get-DevEnvVersions
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
-<p>  - <strong>DoVerbose</strong>: Provide detailed information.</p>
-<p>  - <strong>DoDebug</strong>: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.
+</p>
+<p>  - <strong>DoVerbose</strong>: Provide detailed information.
+</p>
+<p>  - <strong>DoDebug</strong>: Debug this script.
+</p>
+<p>  - <strong>DoForce</strong></p>
 <p></p>
-<p><strong>Return: </strong> Should output a file and display.</p>
+<p><strong>Return: </strong> Should output a file and display.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Get-DevEnvVersions -DoVerbose
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Install-DevEnv</h2>
 
@@ -301,29 +326,35 @@ Introduction: @{Text=PS &gt; }
     Install-DevEnvIdeWin
     Install-DevEnvLlmWin
     Install-DevEnvWhisperWin
-When complete it displays current version for the environment.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+When complete it displays current version for the environment.
+</p>
+<p><strong>Syntax:</strong> <pre>DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
  required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoForce
  required: false, globbing: false, pipelineInput: false, position: named Install-DevEnv
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.
+</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.
+</p>
 <p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoForce</strong></p>
 <p></p>
-<p><strong>Return: </strong> Install the development components.</p>
+<p><strong>Return: </strong> Install the development components.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvWin -DoPause -UpdatePath
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Install-DevEnvIdeWin</h2>
 
@@ -334,31 +365,38 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Detailed Description:</strong> This script sets up a Windows development environment for neural network projects.
 It installs Chocolatey (if not already installed), Python, Git, VSCode,
 creates a project directory and a Python virtual environment,
-and then installs TensorFlow, Keras, and PyTorch.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+and then installs TensorFlow, Keras, and PyTorch.
+</p>
+<p><strong>Syntax:</strong> <pre>DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
 
- DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoForce
  required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvIdeWin
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.
+</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.
+</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.
+</p>
+<p>  - <strong>DoForce</strong></p>
 <p></p>
-<p><strong>Return: </strong> A log of the installed modules</p>
+<p><strong>Return: </strong> A log of the installed modules
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvIdeWin -DoVerbose
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Install-DevEnvLlmWin</h2>
 
@@ -369,34 +407,40 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Detailed Description:</strong> Install the LLM (NN or AI).
 Create Python virtual environment. Activates it.
 Upgrades pip and installs neural network libraries.
-Libraries: TensorFlow, Keras, PyTorch.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+Libraries: TensorFlow, Keras, PyTorch.
+</p>
+<p><strong>Syntax:</strong> <pre>DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
 
- DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoForce
  required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvLlmWin
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.
+</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.
+</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.
+</p>
+<p>  - <strong>DoForce</strong></p>
 <p></p>
-<p><strong>Return: </strong> none.</p>
+<p><strong>Return: </strong> none.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvLlmWin
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Install-DevEnvModules</h2>
-
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Install these modules on the local system.</p>
 <p><strong>Detailed Description:</strong> NOT IN USE. Performs an .Add(<!-- fullHtml = @" -->
@@ -408,8 +452,8 @@ Introduction: @{Text=PS &gt; }
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_DevEnv_Install Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="05/04/2025 14:44:44">
-    <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
+    <meta name="date" content="05/18/2025 22:21:50">
+    <meta name="copyright" content="&Copy-Item; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
         html,
@@ -518,25 +562,25 @@ Introduction: @{Text=PS &gt; }
         <h1>Help for Module: Mdm_DevEnv_Install</h1>
     </div>
     {{TemplateContent}}
-    <!-- <footer><p>{{Footer}}&copy; David G. Horsman. All rights reserved.</p></footer> -->
+    <!-- <footer><p>{{Footer}}&Copy-Item; David G. Horsman. All rights reserved.</p></footer> -->
 </body>
-</html>) for each object</p>
-<p><strong>Syntax:</strong> <pre>description: .
-
- inputObjects
+</html>) for each object
+</p>
+<p><strong>Syntax:</strong> <pre>inputObject
  parameterValue: Object, required: false, globbing: false, pipelineInput: true (ByValue), position: 1 Install-DevEnvModules
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>inputObjects</strong>: .</p>
+<p>  - <strong>inputObject</strong></p>
 <p></p>
-<p><strong>Return: </strong> .</p>
+<p><strong>Return: </strong> .
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvModules
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Install-DevEnvOsWin</h2>
 
@@ -547,31 +591,38 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Detailed Description:</strong> This script sets up a Windows OS for the development environment.
 It installs Chocolatey (if not already installed).
 It will update PowerShell (from vs 5 to 7).
-TODO: sed, win linux, other tools?</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+TODO: sed, win linux, other tools?
+</p>
+<p><strong>Syntax:</strong> <pre>DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
 
- DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoForce
  required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvOsWin
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.
+</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.
+</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.
+</p>
+<p>  - <strong>DoForce</strong></p>
 <p></p>
-<p><strong>Return: </strong> none.</p>
+<p><strong>Return: </strong> none.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvOsWin -DoPause
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Install-DevEnvWhisperWin</h2>
 
@@ -579,31 +630,38 @@ Introduction: @{Text=PS &gt; }
 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Install local voice recognition (Whisper).</p>
-<p><strong>Detailed Description:</strong> Whisper is models designed to run voice recognition locally.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+<p><strong>Detailed Description:</strong> Whisper is models designed to run voice recognition locally.
+</p>
+<p><strong>Syntax:</strong> <pre>DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
 
- DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoForce
  required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvWhisperWin
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.
+</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.
+</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.
+</p>
+<p>  - <strong>DoForce</strong></p>
 <p></p>
-<p><strong>Return: </strong> none.</p>
+<p><strong>Return: </strong> none.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvWhisperWin
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Install-DevEnvWin</h2>
 
@@ -615,31 +673,37 @@ Introduction: @{Text=PS &gt; }
     Install-DevEnvIdeWin
     Install-DevEnvLlmWin
     Install-DevEnvWhisperWin
-When complete it displays current version for the environment.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+When complete it displays current version for the environment.
+</p>
+<p><strong>Syntax:</strong> <pre>DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
  required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoForce
  required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvWin
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.
+</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.
+</p>
 <p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoForce</strong></p>
 <p></p>
-<p><strong>Return: </strong> Install the development components.</p>
+<p><strong>Return: </strong> Install the development components.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvWin -DoPause -UpdatePath
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
-<footer><p>&copy; David G. Horsman. All rights reserved.</p></footer>
-    <!-- <footer><p>{{Footer}}&copy; David G. Horsman. All rights reserved.</p></footer> -->
+<footer><p>&Copy-Item; David G. Horsman. All rights reserved.</p></footer>
+    <!-- <footer><p>{{Footer}}&Copy-Item; David G. Horsman. All rights reserved.</p></footer> -->
 </body>
 </html>

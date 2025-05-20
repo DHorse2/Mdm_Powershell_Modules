@@ -54,15 +54,15 @@
 		$Value,
 		
 		[Parameter(ParameterSetName = "Cell")]
-		[Switch]$SelectCell,
+		[switch]$SelectCell,
 		
 		[Parameter(ParameterSetName = "Row")]
-		[Switch]$SelectRow,
+		[switch]$SelectRow,
 		
 		#[Parameter(ParameterSetName = "Column")]
 
 		
-		#[Switch]$SelectColumn,
+		#[switch]$SelectColumn,
 
 		
 		[Parameter(ParameterSetName = "RowColor")]

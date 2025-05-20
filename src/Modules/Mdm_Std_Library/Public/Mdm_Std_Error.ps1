@@ -1,18 +1,36 @@
 
+function Write-IndexOutOfBounds {
+    [CmdletBinding()]
+    param (
+        $Name,
+        $IndexCurr,
+        $IndexMax,
+        [switch]$DoLog,
+        [switch]$errorOutput
+    )
+    begin { }
+    process {
+        $Message = "$Name form index is out of range ($IndexCurr vs. $IndexMax)"
+        if ($errorOutput) {
+            Write-Error $Message
+        }
+        if ($DoLog) {
+            Add-LogText -Message $Message -IsError
+        }
+    }
+    end { }
+}
 function Assert-Debug {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $false)]
         [switch]$IgnorePSBoundParameters,
-        [Parameter(Mandatory = $false)]
         [switch]$IgnoreDebugPreference,
-        [Parameter(Mandatory = $false)]
         [switch]$IgnorePSDebugContext
     )
     process {
-        ((-not $IgnoreDebugPreference.IsPresent) -and ($DebugPreference -ne "SilentlyContinue")) -or
-        ((-not $IgnorePSBoundParameters.IsPresent) -and $PSBoundParameters.Debug.IsPresent) -or
-        ((-not $IgnorePSDebugContext.IsPresent) -and ($PSDebugContext))
+        ((-not $IgnoreDebugPreference) -and ($DebugPreference -ne "SilentlyContinue")) -or
+        ((-not $IgnorePSBoundParameters) -and $PSBoundParameters.Debug.IsPresent) -or
+        ((-not $IgnorePSDebugContext) -and ($PSDebugContext))
     }
 }
 function Get-ErrorNew {
@@ -45,7 +63,10 @@ function Get-ErrorNew {
     (
         [Exception]$Message,
         [Management.Automation.ErrorCategory]$ErrorCategory = "NotSpecified",
-        [switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug
+        [switch]$DoForce,
+        [switch]$DoVerbose,
+        [switch]$DoDebug,
+        [switch]$DoPause
     )
     begin {
         $arguments = @(
@@ -166,21 +187,25 @@ function Get-CallStackFormatted {
     process {
         $i = 0
         foreach ($frame in $callStack) {
-            if ($frame.ScriptName.Length -gt 1 -and $frame.Command -ne "<ScriptBlock>") {
-                $MessageLine = "Frame[$i]: $($frame.Command), line $($frame.ScriptLineNumber)."
-                $MessageLink = "$(Split-Path -Path $($frame.ScriptName) -Leaf):$($frame.ScriptLineNumber):"
+            if ($frame.Command -notlike "*-Log*" `
+                    -and $frame.Command -notlike "Debug-*" `
+                    -and $frame.Command -notlike "Wait-*") {
+                            if ($frame.ScriptName.Length -gt 1 -and $frame.Command -ne "<ScriptBlock>") {
+                    $MessageLine = "Frame[$i]: $($frame.Command), line $($frame.ScriptLineNumber)."
+                    $MessageLink = "$(Split-Path -Path $($frame.ScriptName) -Leaf):$($frame.ScriptLineNumber):"
                 
-                if ($frame.InvocationInfo.ScriptName) {
-                    $MessageCaller = "$(Split-Path -Path $($frame.InvocationInfo.ScriptName) -Leaf) at line $($frame.InvocationInfo.ScriptLineNumber)"
-                } else {
-                    $MessageCaller = "None"
+                    if ($frame.InvocationInfo.ScriptName) {
+                        $MessageCaller = "$(Split-Path -Path $($frame.InvocationInfo.ScriptName) -Leaf) at line $($frame.InvocationInfo.ScriptLineNumber)"
+                    } else {
+                        $MessageCaller = "None"
+                    }
+                    # Add a hashtable to the array
+                    $MessageLines += [PSCustomObject]@{
+                        Function_Name    = $MessageLine
+                        Link             = $MessageLink
+                        Calling_Function = "$MessageCaller$separator"
+                    }                
                 }
-                # Add a hashtable to the array
-                $MessageLines += [PSCustomObject]@{
-                    Function_Name    = $MessageLine
-                    Link             = $MessageLink
-                    Calling_Function = "$MessageCaller$separator"
-                }                
             }
             $i++
         }
@@ -188,29 +213,6 @@ function Get-CallStackFormatted {
     end {
         # Output the formatted table
         return ($MessageLines | Format-Table -AutoSize | Out-String)
-    }
-}
-function Get-VariableScoped {
-    [CmdletBinding()]
-    param (
-        [string]$variableName,
-        [string]$scope = "Global"
-    )
-    process {
-        if ($variableName) {
-            # Get the variable from the scope
-            $variable = Get-Variable -Name $variableName -Scope $scope -ErrorAction SilentlyContinue
-        } else {
-            $variableName = "result for $scope"
-            $variable = Get-Variable -Scope $scope -ErrorAction SilentlyContinue
-        }
-        
-        if ($null -ne $variable) {
-            return $variable.Value
-        } else {
-            Write-Warning -Message "Get-VariableScoped: Variable $variableName does not exist in the global scope."
-            return $null
-        }
     }
 }
 function Debug-Script {
@@ -331,14 +333,14 @@ function Debug-Script {
                     if ($commandValid) {
                         $commandNext = "Set-PSDebug -$PsDebug"
                         $Message = "Attempt: $commandNext"
-                        # Add-LogText -Message $commandLine -IsWarning -logFileNameFull $global:logFileNameFull
+                        # Add-LogText -Message $commandLine -IsWarning
                         Add-LogText -Message $Message `
                             -foregroundColor Green `
-                            -logFileNameFull $global:logFileNameFull 
+                            
                         Invoke-Expression $commandNext 
                     } else {
                         $DoPromptError = $true
-                        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -logFileNameFull $global:logFileNameFull
+                        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay
                     }
                 }
             } catch {
@@ -351,7 +353,7 @@ function Debug-Script {
                 if ($commandLine.Length -ge 1) {
                     $Message = "Command: $commandLine"
                     $commandNext = $commandLine
-                    Add-LogText -Message $Message -IsWarning -logFileNameFull $global:logFileNameFull
+                    Add-LogText -Message $Message -IsWarning
                     Invoke-Expression $commandLine 
                 }
             } catch {
@@ -407,10 +409,10 @@ function Debug-SubmitFunction {
         $Message = "Debug $invocationFunctionName for $($functionName)"
         Add-LogText -Message $Message `
             -IsWarning -DoTraceWarningDetails `
-            -logFileNameFull $global:logFileNameFull
+           
         $null = Debug-Script -DoPause $pauseSeconds -functionName $functionName -logFileNameFull $logFileNameFull
         return $true
     }
     return $false
 }
-# See Add-LogError
+# See Add-LogText

@@ -94,7 +94,7 @@ Mdm_Std_Library              Function Set-ErrorBreakOnFunction
 Mdm_Std_Library              Function Get-AllCommands
 Mdm_Std_Library              Function Add-LogText
 Mdm_Std_Library              Function Set-DirectoryToScriptRoot
-Mdm_Std_Library              Function Get-DirectoryNameFromSaved
+Mdm_Std_Library              Function Get-SavedDirectoryName
 Mdm_Std_Library              Function Wait-CheckDoPause
 Mdm_Std_Library              Function Get-MyCommand_Definition
 Mdm_Std_Library              Function Get-ModuleProperty
@@ -110,7 +110,7 @@ Mdm_Std_Library              Function Get-ModuleStatus
 Mdm_Std_Library              Function Push-ShellPwsh
 Mdm_Std_Library              Function Build-HelpHtml
 Mdm_Std_Library              Function Resolve-Variables
-Mdm_Std_Library              Function Assert-SecElevated
+Mdm_Std_Library              Function Confirm-SecElevated
 Mdm_Std_Library              Function Search-Directory
 Mdm_Std_Library              Function Set-ModuleConfig
 Mdm_Std_Library              Function Get-Invocation_PSCommandPath
@@ -135,9 +135,9 @@ Mdm_Std_Library              Function Get-MyCommand_InvocationName
 Mdm_Std_Library              Function Get-ErrorNew
 Mdm_Std_Library              Function Export-Help
 Mdm_Std_Library              Function Wait-AnyKey
-Mdm_Std_Library              Function Assert-Verbose
+Mdm_Std_Library              Function Confirm-Verbose
 Mdm_Std_Library              Function Import-These
-Mdm_Std_Library              Function Set-SavedToDirectoryName
+Mdm_Std_Library              Function Set-SavedDirectoryName
 Mdm_Std_Library              Function Set-DisplayColors
 Mdm_Std_Library              Function Write-Mdm_Help
 Mdm_Std_Library              Function Get-FileNamesFromPath
@@ -153,7 +153,7 @@ Mdm_Std_Library              Function Set-LocationToPath
 Module        PSEdition CommandType Name
 ------        --------- ----------- ----
 Mdm_Bootstrap              Function Add-RegistryPath
-Mdm_Bootstrap              Function Enter-Bootstrap
+Mdm_Bootstrap              Function Enter-GoToBootstrap
 Mdm_Bootstrap              Function Initialize-Dev_Env_Win
 Mdm_Bootstrap              Function Enter-ProjectRoot
 Mdm_Bootstrap              Function Get-ModuleRootPath

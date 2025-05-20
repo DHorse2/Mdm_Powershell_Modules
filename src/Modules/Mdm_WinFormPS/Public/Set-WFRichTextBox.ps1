@@ -28,7 +28,7 @@
 	(
 		[System.Windows.Forms.RichTextBox]$RichTextBox,
 		
-		[Switch]$ScrollToCaret
+		[switch]$ScrollToCaret
 	)
 	
 	BEGIN

@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_Modules Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="05/04/2025 14:44:51">
-    <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
+    <meta name="date" content="05/18/2025 22:22:34">
+    <meta name="copyright" content="&Copy-Item; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
         html,
@@ -145,67 +145,143 @@ Exported functions from Bootstrap, Standard Library, Development Environment Ins
 
 <p><strong>Type:</strong> Alias. Command: Get-DevEnvVersions  Type:Function</p>
 <p><strong>Synopsis:</strong> List current versions.</p>
-<p><strong>Detailed Description:</strong> Cycles through components and display the current version.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch to pause at each step/page.
+<p><strong>Detailed Description:</strong> Cycles through components and display the current version.
+</p>
+<p><strong>Syntax:</strong> <pre>DoPause
+ description: Switch to pause at each step/page.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Provide detailed information.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Provide detailed information.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Debug this script.
 
- DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoForce
  required: false, globbing: false, pipelineInput: false, position: named Get-DevEnvVersions
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
-<p>  - <strong>DoVerbose</strong>: Provide detailed information.</p>
-<p>  - <strong>DoDebug</strong>: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.
+</p>
+<p>  - <strong>DoVerbose</strong>: Provide detailed information.
+</p>
+<p>  - <strong>DoDebug</strong>: Debug this script.
+</p>
+<p>  - <strong>DoForce</strong></p>
 <p></p>
-<p><strong>Return: </strong> Should output a file and display.</p>
+<p><strong>Return: </strong> Should output a file and display.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Get-DevEnvVersions -DoVerbose
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
-<h2>Load-DataGridView</h2>
-<p><strong>Type:</strong> Alias. Command: Import-WFDataGridViewItem  Type:Alias Function</p>
-<p><strong>Synopsis:</strong> Import-WFDataGridViewItem</p>
-<p><strong>Synopsis:</strong> 
-Load-DataGridView</p>
-<p><strong>Syntax:</strong> <pre>name: Load-DataGridView
-CommonParameters: False
-parameter:</pre></p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p></p>
-<p><strong>Return: </strong> System.Object</p>
-<p></p>
-<p></p>
-<h2>Load-ListBox</h2>
-<p><strong>Type:</strong> Alias. Command: Import-WFListBoxItem  Type:Alias Function</p>
-<p><strong>Synopsis:</strong> Import-WFListBoxItem</p>
-<p><strong>Synopsis:</strong> 
-Load-ListBox</p>
-<p><strong>Syntax:</strong> <pre>name: Load-ListBox
-CommonParameters: False
-parameter:</pre></p>
+<h2>Load-WFDataGridView</h2>
+
+
+
+<p><strong>Type:</strong> Alias. Command: Import-WFDataGridView  Type:Function</p>
+<p><strong>Synopsis:</strong> This functions helps you load items into a DataGridView.</p>
+<p><strong>Detailed Description:</strong> Use this function to dynamically load items into the DataGridView control.
+</p>
+<p><strong>Syntax:</strong> <pre>description: The ComboBox control you want to add items to.
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: 1 description: The object or objects you wish to load into the ComboBox's items collection.
+
+ Item
+ parameterValue: Object, required: true, globbing: false, pipelineInput: false, position: 2 description: Sets the name of the list or table in the data source for which the DataGridView is displaying data.
+
+ DataMember
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 Import-WFDataGridView
+</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>DataGridView</strong>: The ComboBox control you want to add items to.
+</p>
+<p>  - <strong>Item</strong>: The object or objects you wish to load into the ComboBox&apos;s items collection.
+</p>
+<p>  - <strong>DataMember</strong>: Sets the name of the list or table in the data source for which the DataGridView is displaying data.
+</p>
 <p></p>
-<p><strong>Return: </strong> System.Object</p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Import-WFDataGridView -DataGridView $DataGridView1 -Item (Get-Process)
+     Remarks:    </pre>
+<p></p>
+<h2>Load-WFListBox</h2>
+
+
+
+
+<p><strong>Type:</strong> Alias. Command: Import-WFListBox  Type:Function</p>
+<p><strong>Synopsis:</strong> This functions helps you load items into a ListBox or CheckedListBox.</p>
+<p><strong>Detailed Description:</strong> Use this function to dynamically load items into the ListBox control.
+</p>
+<p><strong>Syntax:</strong> <pre>description: The ListBox control you want to add items to.
+
+ ListBox
+ parameterValue: ListBox, required: true, globbing: false, pipelineInput: false, position: 1 description: The object or objects you wish to load into the ListBox's Items collection.
+
+ Items
+ parameterValue: Object, required: true, globbing: false, pipelineInput: false, position: 2 description: Indicates the property to display for the items in this control.
+
+ DisplayMember
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 Append
+ description: Adds the item(s) to the ListBox without clearing the Items collection.
+
+ required: false, globbing: false, pipelineInput: false, position: named Import-WFListBox
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>ListBox</strong>: The ListBox control you want to add items to.
+</p>
+<p>  - <strong>Items</strong>: The object or objects you wish to load into the ListBox&apos;s Items collection.
+</p>
+<p>  - <strong>DisplayMember</strong>: Indicates the property to display for the items in this control.
+</p>
+<p>  - <strong>Append</strong>: Adds the item(s) to the ListBox without clearing the Items collection.
+</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- -------------------------- EXAMPLE 2 -------------------------- -------------------------- EXAMPLE 3 --------------------------
+       Label:   
+Introduction:   
+      Syntax: Import-WFListBox $ListBox1 &quot;Red&quot;, &quot;White&quot;, &quot;Blue&quot; Import-WFListBox $listBox1 &quot;Red&quot; -Append
+Import-WFListBox $listBox1 &quot;White&quot; -Append
+Import-WFListBox $listBox1 &quot;Blue&quot; -Append Import-WFListBox $listBox1 (Get-Process) &quot;ProcessName&quot;
+     Remarks:              </pre>
+<p></p>
+<h2>Refresh-WFDataGridView</h2>
+
+<p><strong>Type:</strong> Alias. Command: Update-WFDataGridView  Type:Function</p>
+<p><strong>Synopsis:</strong> Function to refresh the content of a DataGridView control</p>
+<p><strong>Detailed Description:</strong> Function to refresh the content of a DataGridView control
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the DataGridView control to update
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Update-WFDataGridView
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DataGridView</strong>: Specifies the DataGridView control to update
+</p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
 <p></p>
 <p></p>
-<h2>Refresh-DataGridView</h2>
-<p><strong>There is no help for function: Refresh-DataGridView.</strong></p>
 <h2>Add-RegistryPath</h2>
 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Add to HKLM Environtment Path</p>
-<p><strong>Detailed Description:</strong> This loads the specifiect Path key (PATH by default) and adds the new path to it.</p>
+<p><strong>Detailed Description:</strong> This loads the specifiect Path key (PATH by default) and adds the new path to it.
+</p>
 <p><strong>Syntax:</strong> <pre>description: The Path key to use.
 
  envPathToUpdate
@@ -213,65 +289,397 @@ parameter:</pre></p>
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>envPathToUpdate</strong>: The Path key to use.</p>
+<p>  - <strong>envPathToUpdate</strong>: The Path key to use.
+</p>
 <p></p>
-<p><strong>Return: </strong> none.</p>
+<p><strong>Return: </strong> none.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Add-RegistryPath &quot;PATH&quot; &quot;c:\SOMEWHERER&quot;
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Add-WFDataGridViewColumn</h2>
-<p><strong>There is no help for function: Add-WFDataGridViewColumn.</strong></p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> This function add a column to a DataGridView</p>
+<p><strong>Detailed Description:</strong> This function add a column to a DataGridView
+</p>
+<p><strong>Syntax:</strong> <pre>DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: 1 ColumnName
+ parameterValue: String[], required: false, globbing: false, pipelineInput: false, position: 2 Add-WFDataGridViewColumn
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DataGridView</strong></p>
+<p>  - <strong>ColumnName</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- -------------------------- EXAMPLE 2 --------------------------
+       Label:  
+Introduction:  
+      Syntax: Add-WFDataGridViewColumn -DataGridView $datagridview1 -ColumnName $($textbox1.Text -split &quot;,&quot; -replace &apos;^\s+&apos;, &apos;&apos; -replace &apos;\s+{{TemplateContent}}apos;, &apos;&apos;) Add-WFDataGridViewColumn -DataGridView $datagridview1 -ColumnName &quot;First Name&quot;,&quot;Last Name&quot;,&quot;SamAccountName&quot;,&quot;Description&quot;
+     Remarks:         </pre>
+<p></p>
 <h2>Add-WFDataGridViewRow</h2>
-<p><strong>There is no help for function: Add-WFDataGridViewRow.</strong></p>
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> This function add a row to a DataGridView</p>
+<p><strong>Detailed Description:</strong> This function add a row to a DataGridView
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the DataGridView Control to use
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named Add-WFDataGridViewRow
+ description: Specifies the DataGridView Control to use
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named description: Specifies the Title to set on the new row
+
+ Title
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: named description: Specities the values to add
+
+ Values
+ parameterValue: Array, required: false, globbing: false, pipelineInput: false, position: named Add-WFDataGridViewRow
+ description: Specifies the DataGridView Control to use
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named description: Specifies the number of column to add
+
+ Collection
+ parameterValue: Int32, required: true, globbing: false, pipelineInput: false, position: named Add-WFDataGridViewRow
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DataGridView</strong>: Specifies the DataGridView Control to use
+</p>
+<p>  - <strong>Title</strong>: Specifies the Title to set on the new row
+</p>
+<p>  - <strong>Values</strong>: Specities the values to add
+</p>
+<p>  - <strong>Collection</strong>: Specifies the number of column to add
+</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- -------------------------- EXAMPLE 2 -------------------------- -------------------------- EXAMPLE 3 -------------------------- -------------------------- EXAMPLE 4 --------------------------
+       Label:    
+Introduction:    
+      Syntax: Add-WFDataGridViewRow -DataGridView $datagridview1 -Title &quot;Name1&quot; -Values ($textbox1.Text -split &quot;,&quot;) Add-WFDataGridViewRow -DataGridView $datagridview1 Add-WFDataGridViewRow -DataGridView $datagridview1 -Collection 3 Add-WFDataGridViewRow -DataGridView $datagridview1 -Values &quot;Francois-Xavier&quot;,&quot;Cat&quot;,&quot;fxcat&quot;
+     Remarks:                   </pre>
+<p></p>
 <h2>Add-WFListViewItem</h2>
-<p><strong>There is no help for function: Add-WFListViewItem.</strong></p>
+
+
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Adds the item(s) to the ListView and stores the object in the ListViewItem&apos;s Tag property.</p>
+<p><strong>Detailed Description:</strong> Adds the item(s) to the ListView and stores the object in the ListViewItem&apos;s Tag property.
+</p>
+<p><strong>Syntax:</strong> <pre>description: The ListView control to add the items to.
+
+ ListView
+ parameterValue: ListView, required: true, globbing: false, pipelineInput: false, position: 1 description: The object or objects you wish to load into the ListView's Items collection.
+
+ Items
+ parameterValue: Object, required: true, globbing: false, pipelineInput: false, position: 2 description: The index of a predefined image in the ListView's ImageList.
+
+ ImageIndex
+ parameterValue: Int32, required: false, globbing: false, pipelineInput: false, position: 3 description: List of strings to add as Subitems.
+
+ SubItems
+ parameterValue: String[], required: false, globbing: false, pipelineInput: false, position: 4 description: The group to place the item(s) in.
+
+ Group
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 5 Clear
+ description: This switch clears the ListView's Items before adding the new item(s).
+
+ required: false, globbing: false, pipelineInput: false, position: named Add-WFListViewItem
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>ListView</strong>: The ListView control to add the items to.
+</p>
+<p>  - <strong>Items</strong>: The object or objects you wish to load into the ListView&apos;s Items collection.
+</p>
+<p>  - <strong>ImageIndex</strong>: The index of a predefined image in the ListView&apos;s ImageList.
+</p>
+<p>  - <strong>SubItems</strong>: List of strings to add as Subitems.
+</p>
+<p>  - <strong>Group</strong>: The group to place the item(s) in.
+</p>
+<p>  - <strong>Clear</strong>: This switch clears the ListView&apos;s Items before adding the new item(s).
+</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Add-WFListViewItem -ListView $listview1 -Items &quot;Test&quot; -Group $listview1.Groups[0] -ImageIndex 0 -SubItems &quot;Installed&quot;
+     Remarks:    </pre>
+<p></p>
 <h2>Add-WFRichTextBoxText</h2>
-<p><strong>There is no help for function: Add-WFRichTextBoxText.</strong></p>
+
+
+
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> This function Append text to a RichTextBox</p>
+<p><strong>Detailed Description:</strong> This function Append text to a RichTextBox
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specify the RichTextBox Control to use
+
+ RichTextBox
+ parameterValue: RichTextBox, required: true, globbing: false, pipelineInput: false, position: 1 description: Specify a name that will help the user to identify the item
+
+ ItemName
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 description: Specify a color for the ItemName. Default is Blue.
+
+ ItemColor
+ parameterValue: Color, required: false, globbing: false, pipelineInput: false, position: 3 description: Specify the Message to show
+
+ Message
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 4 description: Specify the Color to use for the Message. Default is DarkGreen.
+
+ MessageColor
+ parameterValue: Color, required: false, globbing: false, pipelineInput: false, position: 5 description: Specify the Source type of the Message
+
+ Source
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 6 description: Specify the Source type color to use. Default is Gray.
+
+ SourceColor
+ parameterValue: Color, required: false, globbing: false, pipelineInput: false, position: 7 IncludeDateTime
+ required: false, globbing: false, pipelineInput: false, position: named DateTimeColor
+ parameterValue: Color, required: false, globbing: false, pipelineInput: false, position: 8 Add-WFRichTextBoxText
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>RichTextBox</strong>: Specify the RichTextBox Control to use
+</p>
+<p>  - <strong>ItemName</strong>: Specify a name that will help the user to identify the item
+</p>
+<p>  - <strong>ItemColor</strong>: Specify a color for the ItemName. Default is Blue.
+</p>
+<p>  - <strong>Message</strong>: Specify the Message to show
+</p>
+<p>  - <strong>MessageColor</strong>: Specify the Color to use for the Message. Default is DarkGreen.
+</p>
+<p>  - <strong>Source</strong>: Specify the Source type of the Message
+</p>
+<p>  - <strong>SourceColor</strong>: Specify the Source type color to use. Default is Gray.
+</p>
+<p>  - <strong>IncludeDateTime</strong></p>
+<p>  - <strong>DateTimeColor</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- -------------------------- EXAMPLE 2 --------------------------
+       Label:  
+Introduction:  
+      Syntax: Add-WFRichTextBoxText -RichTextBox $RichTextBox1 -Message &quot;Hello World&quot; Add-WFRichTextBoxText -RichTextBox $RichTextBox1 -Message &quot;Some info&quot; -Source &quot;Get-TSSession&quot; -ComputerName &quot;RemoteServe01&quot;
+     Remarks:         </pre>
+<p></p>
 <h2>Assert-RegistryValue</h2>
 
 
 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Return true if Registry Value exists.</p>
-<p><strong>Detailed Description:</strong> Check the registry path &amp; value. Asserts it exists.</p>
+<p><strong>Detailed Description:</strong> Check the registry path &amp; value. Asserts it exists.
+</p>
 <p><strong>Syntax:</strong> <pre>description: The Registry Path to check.
 
  Path
  parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 description: The Registry Key name (Value) to access.
 
  Name
- parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2 description: If true this outputs an ItemProperty otherwise true/false
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2 PassThru
+ description: If true this outputs an ItemProperty otherwise true/false
 
- PassThru
  required: false, globbing: false, pipelineInput: false, position: named Assert-RegistryValue
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>Path</strong>: The Registry Path to check.</p>
-<p>  - <strong>Name</strong>: The Registry Key name (Value) to access.</p>
-<p>  - <strong>PassThru</strong>: If true this outputs an ItemProperty otherwise true/false</p>
+<p>  - <strong>Path</strong>: The Registry Path to check.
+</p>
+<p>  - <strong>Name</strong>: The Registry Key name (Value) to access.
+</p>
+<p>  - <strong>PassThru</strong>: If true this outputs an ItemProperty otherwise true/false
+</p>
 <p></p>
 <p><strong>Return: </strong> True/Fale if the key exists.
-null/ItemProperty if PassThur switch is present.</p>
+null/ItemProperty if PassThur switch is present.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Assert-RegistryValue &quot;PATH&quot;
-     Remarks:</pre>
+     Remarks:    </pre>
+<p></p>
+<h2>Build-WFCheckBoxList</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Build-WFCheckBoxList [-jsonData] &lt;psobject&gt; [[-form] &lt;Form&gt;] [[-groupBox] &lt;GroupBox&gt;] [[-groupBoxLabel] &lt;string&gt;] [[-xPos] &lt;int&gt;] [[-yPos] &lt;int&gt;] [[-xWidth] &lt;int&gt;] [[-yHeight] &lt;int&gt;] [[-groupHeightMax] &lt;int&gt;] [-NotDialog] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Build-WFCheckBoxList
+CommonParameters: True
+parameter:          </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>NotDialog</strong></p>
+<p>  - <strong>form</strong></p>
+<p>  - <strong>groupBox</strong></p>
+<p>  - <strong>groupBoxLabel</strong></p>
+<p>  - <strong>groupHeightMax</strong></p>
+<p>  - <strong>jsonData</strong></p>
+<p>  - <strong>xPos</strong></p>
+<p>  - <strong>xWidth</strong></p>
+<p>  - <strong>yHeight</strong></p>
+<p>  - <strong>yPos</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Build-WFFormControls</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Build-WFFormControls [[-Target] &lt;string&gt;] [[-window] &lt;WFWindow&gt;] [[-form] &lt;Form&gt;] [[-formIndex] &lt;int&gt;] [[-tabPage] &lt;TabPage&gt;] [[-tabIndex] &lt;int&gt;] [[-groupBox] &lt;GroupBox&gt;] [[-groupBoxLabel] &lt;string&gt;] [[-jsonData] &lt;hashtable&gt;] [[-margins] &lt;Margins&gt;] [[-Title] &lt;string&gt;] [[-TextInput] &lt;string&gt;] [[-OkButton] &lt;string&gt;] [[-CancelButton] &lt;string&gt;] [[-state] &lt;Object&gt;] [-DoMenuBar] [-DoControls] [-DoTabIndex] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Build-WFFormControls
+CommonParameters: True
+parameter:                  </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>CancelButton</strong></p>
+<p>  - <strong>DoControls</strong></p>
+<p>  - <strong>DoMenuBar</strong></p>
+<p>  - <strong>DoTabIndex</strong></p>
+<p>  - <strong>OkButton</strong></p>
+<p>  - <strong>Target</strong></p>
+<p>  - <strong>TextInput</strong></p>
+<p>  - <strong>Title</strong></p>
+<p>  - <strong>form</strong></p>
+<p>  - <strong>formIndex</strong></p>
+<p>  - <strong>groupBox</strong></p>
+<p>  - <strong>groupBoxLabel</strong></p>
+<p>  - <strong>jsonData</strong></p>
+<p>  - <strong>margins</strong></p>
+<p>  - <strong>state</strong></p>
+<p>  - <strong>tabIndex</strong></p>
+<p>  - <strong>tabPage</strong></p>
+<p>  - <strong>window</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
 <p></p>
 <h2>Clear-WFDataGridViewSelection</h2>
-<p><strong>There is no help for function: Clear-WFDataGridViewSelection.</strong></p>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> The Clear-WFDataGridViewSelection function will deselect any cell, row, column selection.</p>
+<p><strong>Detailed Description:</strong> The Clear-WFDataGridViewSelection function will deselect any cell, row, column selection.
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the DataGridView Control to clear
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: 1 Clear-WFDataGridViewSelection
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DataGridView</strong>: Specifies the DataGridView Control to clear
+</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS C:\&gt;}
+      Syntax: Clear-WFDataGridViewSelection -DataGridView $datagridviewOutput
+     Remarks:    </pre>
+<p></p>
 <h2>Clear-WFErrorProvider</h2>
-<p><strong>There is no help for function: Clear-WFErrorProvider.</strong></p>
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> The Clear-WFErrorProvider function will clear the error message on the Winforms control specified</p>
+<p><strong>Detailed Description:</strong> The Clear-WFErrorProvider function will clear the error message on the Winforms control specified
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the ErrorProvider Control
+
+ ErrorProvider
+ parameterValue: ErrorProvider, required: true, globbing: false, pipelineInput: false, position: 1 description: Specifies the Control on which the error message will be cleared
+
+ Control
+ parameterValue: Object, required: true, globbing: false, pipelineInput: false, position: 2 Clear-WFErrorProvider
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>ErrorProvider</strong>: Specifies the ErrorProvider Control
+</p>
+<p>  - <strong>Control</strong>: Specifies the Control on which the error message will be cleared
+</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS C:\&gt;}
+      Syntax: Clear-WFErrorProvider -$ErrorProvider $ErrorProvider1 -Control $TextBox1
+     Remarks:    </pre>
+<p></p>
 <h2>Clear-WFListBox</h2>
-<p><strong>There is no help for function: Clear-WFListBox.</strong></p>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> This function will clear the content of a listbox control</p>
+<p><strong>Detailed Description:</strong> This function will clear the content of a listbox control
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the ListBox control to clear
+
+ ListBox
+ parameterValue: ListBox, required: true, globbing: false, pipelineInput: false, position: 1 Clear-WFListBox
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>ListBox</strong>: Specifies the ListBox control to clear
+</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Clear-WFListBox -ListBox $ListBox
+     Remarks:    </pre>
+<p></p>
 <h2>Clear-WFRichTextBox</h2>
-<p><strong>There is no help for function: Clear-WFRichTextBox.</strong></p>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> This function will clear the content of a richtextbox control</p>
+<p><strong>Detailed Description:</strong> A detailed description of the Clear-WFRichTextBox function.
+</p>
+<p><strong>Syntax:</strong> <pre>description: A description of the RichTextBox parameter.
+
+ RichTextBox
+ parameterValue: RichTextBox, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Clear-WFRichTextBox
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>RichTextBox</strong>: A description of the RichTextBox parameter.
+</p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Clear-WFRichTextBox -RichTextBox $RichTextBox
+     Remarks:    </pre>
+<p></p>
 <h2>ConvertTo-WFDataTable</h2>
 
 
@@ -279,55 +687,72 @@ Introduction: @{Text=PS &gt; }
 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Converts objects into a DataTable.</p>
-<p><strong>Detailed Description:</strong> Converts objects into a DataTable, which are used for DataBinding.</p>
+<p><strong>Detailed Description:</strong> Converts objects into a DataTable, which are used for DataBinding.
+</p>
 <p><strong>Syntax:</strong> <pre>description: The input to convert into a DataTable.
 
  InputObject
  parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 1 description: The DataTable you wish to load the input into.
 
  Table
- parameterValue: DataTable, required: false, globbing: false, pipelineInput: false, position: 2 description: This switch tells the function to keep the DataTable's existing columns.
+ parameterValue: DataTable, required: false, globbing: false, pipelineInput: false, position: 2 RetainColumns
+ description: This switch tells the function to keep the DataTable's existing columns.
 
- RetainColumns
- required: false, globbing: false, pipelineInput: false, position: named description: This switch removes WMI properties that start with an underline.
+ required: false, globbing: false, pipelineInput: false, position: named FilterWMIProperties
+ description: This switch removes WMI properties that start with an underline.
 
- FilterWMIProperties
  required: false, globbing: false, pipelineInput: false, position: named ConvertTo-WFDataTable
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>InputObject</strong>: The input to convert into a DataTable.</p>
-<p>  - <strong>Table</strong>: The DataTable you wish to load the input into.</p>
-<p>  - <strong>RetainColumns</strong>: This switch tells the function to keep the DataTable&apos;s existing columns.</p>
-<p>  - <strong>FilterWMIProperties</strong>: This switch removes WMI properties that start with an underline.</p>
+<p>  - <strong>InputObject</strong>: The input to convert into a DataTable.
+</p>
+<p>  - <strong>Table</strong>: The DataTable you wish to load the input into.
+</p>
+<p>  - <strong>RetainColumns</strong>: This switch tells the function to keep the DataTable&apos;s existing columns.
+</p>
+<p>  - <strong>FilterWMIProperties</strong>: This switch removes WMI properties that start with an underline.
+</p>
 <p></p>
-<p><strong>Return: </strong> System.Data.DataTable</p>
+<p><strong>Return: </strong> System.Data.DataTable
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: $DataTable = ConvertTo-WFDataTable -InputObject (Get-Process)
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>DevEnvGui</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> A short one-line action-based description, e.g. &apos;Tests if a function is valid&apos;</p>
-<p><strong>Detailed Description:</strong> A longer description of the function, its purpose, common use cases, etc.</p>
+<p><strong>Detailed Description:</strong> A longer description of the function, its purpose, common use cases, etc.
+</p>
 <p><strong>Syntax:</strong> <pre>fileNameFull
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 ResetSettings
- required: false, globbing: false, pipelineInput: false, position: named DevEnvGui
+ required: false, globbing: false, pipelineInput: false, position: named logFilePath
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 logFileName
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 LogOneFile
+ required: false, globbing: false, pipelineInput: false, position: named companyName
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 4 title
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 DevEnvGui
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>fileNameFull</strong></p>
 <p>  - <strong>ResetSettings</strong></p>
+<p>  - <strong>logFilePath</strong></p>
+<p>  - <strong>logFileName</strong></p>
+<p>  - <strong>LogOneFile</strong></p>
+<p>  - <strong>companyName</strong></p>
+<p>  - <strong>title</strong></p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Test-MyTestFunction -Verbose
 Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>DevEnv_Install_Modules_Win</h2>
 
@@ -344,16 +769,18 @@ Explanation of the function or its result. You can include multiple examples wit
 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Install or update Mdm Modules.</p>
-<p><strong>Detailed Description:</strong> This installs the libraries to the live system using Robocopy.</p>
-<p><strong>Syntax:</strong> <pre>description: Provide detailed information.
+<p><strong>Detailed Description:</strong> This installs the libraries to the live system using Robocopy.
+</p>
+<p><strong>Syntax:</strong> <pre>DoForce
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Provide detailed information.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch to pause at each step/page.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Debug this script.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoPause
+ description: Switch to pause at each step/page.
 
- DoDebug
  required: false, globbing: false, pipelineInput: false, position: named description: default: "$global:projectRootPath\src\Modules"
 
  source
@@ -368,9 +795,9 @@ Explanation of the function or its result. You can include multiple examples wit
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 description: default: "Mdm_Installation_Log.txt"
 
  logFileName
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 6 description: Switch to not create separate file with the date in the file name.
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 6 LogOneFile
+ description: Switch to not create separate file with the date in the file name.
 
- LogOneFile
  required: false, globbing: false, pipelineInput: false, position: named description: Default is "Mmd_*". IE. These modules.
 You could override it if you had other local modules to install
 
@@ -378,9 +805,9 @@ You could override it if you had other local modules to install
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 7 SkipHelp
  required: false, globbing: false, pipelineInput: false, position: named SkipRegistry
  required: false, globbing: false, pipelineInput: false, position: named SkipCopy
- required: false, globbing: false, pipelineInput: false, position: named description: Switch to execute copy commands in a separate shell window.
+ required: false, globbing: false, pipelineInput: false, position: named DoNewWindow
+ description: Switch to execute copy commands in a separate shell window.
 
- DoNewWindow
  required: false, globbing: false, pipelineInput: false, position: named description: MacroDM currently. It's optional.
 
  companyName
@@ -392,36 +819,50 @@ Currently: "/E /FP /nc /ns /np /TEE"
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoVerbose</strong>: Provide detailed information.</p>
-<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
-<p>  - <strong>DoDebug</strong>: Debug this script.</p>
-<p>  - <strong>source</strong>: default: &quot;$global:projectRootPath\src\Modules&quot;</p>
-<p>  - <strong>destination</strong>: default: &quot;$env:PROGRAMFILES\\WindowsPowerShell\Modules&quot;</p>
+<p>  - <strong>DoForce</strong></p>
+<p>  - <strong>DoVerbose</strong>: Provide detailed information.
+</p>
+<p>  - <strong>DoDebug</strong>: Debug this script.
+</p>
+<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.
+</p>
+<p>  - <strong>source</strong>: default: &quot;$global:projectRootPath\src\Modules&quot;
+</p>
+<p>  - <strong>destination</strong>: default: &quot;$env:PROGRAMFILES\\WindowsPowerShell\Modules&quot;
+</p>
 <p>  - <strong>projectRootPath</strong></p>
 <p>  - <strong>moduleRootPath</strong></p>
-<p>  - <strong>logFilePath</strong>: default: &quot;$global:projectRootPath\log\&quot;</p>
-<p>  - <strong>logFileName</strong>: default: &quot;Mdm_Installation_Log.txt&quot;</p>
-<p>  - <strong>LogOneFile</strong>: Switch to not create separate file with the date in the file name.</p>
+<p>  - <strong>logFilePath</strong>: default: &quot;$global:projectRootPath\log\&quot;
+</p>
+<p>  - <strong>logFileName</strong>: default: &quot;Mdm_Installation_Log.txt&quot;
+</p>
+<p>  - <strong>LogOneFile</strong>: Switch to not create separate file with the date in the file name.
+</p>
 <p>  - <strong>nameFilter</strong>: Default is &quot;Mmd_*&quot;. IE. These modules.
-You could override it if you had other local modules to install</p>
+You could override it if you had other local modules to install
+</p>
 <p>  - <strong>SkipHelp</strong></p>
 <p>  - <strong>SkipRegistry</strong></p>
 <p>  - <strong>SkipCopy</strong></p>
-<p>  - <strong>DoNewWindow</strong>: Switch to execute copy commands in a separate shell window.</p>
-<p>  - <strong>companyName</strong>: MacroDM currently. It&apos;s optional.</p>
+<p>  - <strong>DoNewWindow</strong>: Switch to execute copy commands in a separate shell window.
+</p>
+<p>  - <strong>companyName</strong>: MacroDM currently. It&apos;s optional.
+</p>
 <p>  - <strong>copyOptions</strong>: These are RoboCopy options.
-Currently: &quot;/E /FP /nc /ns /np /TEE&quot;</p>
+Currently: &quot;/E /FP /nc /ns /np /TEE&quot;
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: DevEnv_Install_Modules_Win
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>DevEnv_LanguageMode</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-DevEnv_LanguageMode [[-languageMode] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+DevEnv_LanguageMode [[-languageMode] &lt;Object&gt;] [&lt;CommonParameters&gt;]
+</p>
 <p><strong>Syntax:</strong> <pre>name: DevEnv_LanguageMode
 CommonParameters: True
 parameter: @{name=languageMode; required=false; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
@@ -429,140 +870,631 @@ parameter: @{name=languageMode; required=false; pipelineInput=false; isDynamic=f
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>languageMode</strong></p>
 <p></p>
-<p><strong>Return: </strong> System.Object</p>
-<p></p>
-<p></p>
-<h2>DevEnv_Module_Reset_Func</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> 
-DevEnv_Module_Reset_Func [&lt;CommonParameters&gt;]</p>
-<p><strong>Syntax:</strong> <pre>name: DevEnv_Module_Reset_Func
-CommonParameters: True
-parameter:</pre></p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p></p>
-<p><strong>Return: </strong> System.Object</p>
+<p><strong>Return: </strong> System.Object
+</p>
 <p></p>
 <p></p>
 <h2>Disable-WFButton</h2>
-<p><strong>There is no help for function: Disable-WFButton.</strong></p>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> This function will disable a button control</p>
+<p><strong>Detailed Description:</strong> This function will disable a button control
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the Button Control to disable
+
+ Button
+ parameterValue: Button[], required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Disable-WFButton
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Button</strong>: Specifies the Button Control to disable
+</p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Disable-WFButton -Button $Button
+     Remarks:    </pre>
+<p></p>
 <h2>Disable-WFRichTextBox</h2>
-<p><strong>There is no help for function: Disable-WFRichTextBox.</strong></p>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> This function will disable a RichTextBox control</p>
+<p><strong>Detailed Description:</strong> A detailed description of the Disable-WFRichTextBox function.
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the RichTextBox control to disable
+
+ RichTextBox
+ parameterValue: RichTextBox, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Disable-WFRichTextBox
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>RichTextBox</strong>: Specifies the RichTextBox control to disable
+</p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Disable-WFRichTextBox -RichTextBox $RichTextBox
+     Remarks:    </pre>
+<p></p>
 <h2>Disable-WFTabControl</h2>
-<p><strong>There is no help for function: Disable-WFTabControl.</strong></p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> This function will disable a tab control</p>
+<p><strong>Detailed Description:</strong> A detailed description of the Disable-WFTabControl function.
+</p>
+<p><strong>Syntax:</strong> <pre>tabControls
+ parameterValue: TabControl, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Disable-WFTabControl
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>tabControls</strong></p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Disable-WFTabControl -TabControl $tabControls
+     Remarks:    </pre>
+<p></p>
 <h2>Disable-WFTextBox</h2>
-<p><strong>There is no help for function: Disable-WFTextBox.</strong></p>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> This function will disable a TextBox control</p>
+<p><strong>Detailed Description:</strong> A detailed description of the Disable-WFTextBox function.
+</p>
+<p><strong>Syntax:</strong> <pre>description: A description of the TextBox parameter.
+
+ TextBox
+ parameterValue: TextBox, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Disable-WFTextBox
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>TextBox</strong>: A description of the TextBox parameter.
+</p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Disable-WFTextBox -TextBox $TextBox
+     Remarks:    </pre>
+<p></p>
 <h2>Enable-WFButton</h2>
-<p><strong>There is no help for function: Enable-WFButton.</strong></p>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> This function will enable a button control</p>
+<p><strong>Detailed Description:</strong> A detailed description of the Enable-WFButton function.
+</p>
+<p><strong>Syntax:</strong> <pre>description: A description of the Button parameter.
+
+ Button
+ parameterValue: Button[], required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Enable-WFButton
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Button</strong>: A description of the Button parameter.
+</p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Enable-WFButton -Button $Button
+     Remarks:    </pre>
+<p></p>
 <h2>Enable-WFRichTextBox</h2>
-<p><strong>There is no help for function: Enable-WFRichTextBox.</strong></p>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> This function will enable a RichTextBox control</p>
+<p><strong>Detailed Description:</strong> A detailed description of the Enable-WFRichTextBox function.
+</p>
+<p><strong>Syntax:</strong> <pre>description: A description of the RichTextBox parameter.
+
+ RichTextBox
+ parameterValue: RichTextBox, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Enable-WFRichTextBox
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>RichTextBox</strong>: A description of the RichTextBox parameter.
+</p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Enable-WFRichTextBox -RichTextBox $RichTextBox
+     Remarks:    </pre>
+<p></p>
 <h2>Enable-WFTabControl</h2>
-<p><strong>There is no help for function: Enable-WFTabControl.</strong></p>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> This function will enable a TabControl control</p>
+<p><strong>Detailed Description:</strong> This function will enable a TabControl control
+</p>
+<p><strong>Syntax:</strong> <pre>tabControls
+ parameterValue: TabControl, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Enable-WFTabControl
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>tabControls</strong></p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Enable-WFTabControl -TabControl $tabControls
+     Remarks:    </pre>
+<p></p>
 <h2>Enable-WFTextBox</h2>
-<p><strong>There is no help for function: Enable-WFTextBox.</strong></p>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> This function will enable a TextBox control</p>
+<p><strong>Detailed Description:</strong> This function will enable a TextBox control
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the TextBox control to enable
+
+ TextBox
+ parameterValue: TextBox, required: true, globbing: false, pipelineInput: false, position: 1 Enable-WFTextBox
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>TextBox</strong>: Specifies the TextBox control to enable
+</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Enable-WFTextBox -TextBox $TextBox
+     Remarks:    </pre>
+<p></p>
+<h2>Enter-DevEnv_Module_Reset</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Enter-DevEnv_Module_Reset [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Enter-DevEnv_Module_Reset
+CommonParameters: True
+parameter: </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Enter-ModuleRoot</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Enter-ModuleRoot [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Enter-ModuleRoot
+CommonParameters: True
+parameter: </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Enter-ProjectRoot</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Enter-ProjectRoot [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Enter-ProjectRoot
+CommonParameters: True
+parameter: </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
 <h2>Find-WFDataGridViewValue</h2>
-<p><strong>There is no help for function: Find-WFDataGridViewValue.</strong></p>
+
+
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> The Find-WFDataGridViewValue function helps you to find a specific value and select the cell, row or to set a fore and back color.</p>
+<p><strong>Detailed Description:</strong> The Find-WFDataGridViewValue function helps you to find a specific value and select the cell, row or to set a fore and back color.
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the DataGridView Control to use
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named description: Specifies the value to search
+
+ Value
+ parameterValue: Object, required: true, globbing: false, pipelineInput: false, position: named SelectCell
+ description: Specifies to select only the cell when the value is found
+
+ required: false, globbing: false, pipelineInput: false, position: named Find-WFDataGridViewValue
+ description: Specifies the DataGridView Control to use
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named description: Specifies the value to search
+
+ Value
+ parameterValue: Object, required: true, globbing: false, pipelineInput: false, position: named SelectRow
+ description: Specifies to select the entire row when the value is found
+
+ required: false, globbing: false, pipelineInput: false, position: named Find-WFDataGridViewValue
+ description: Specifies the DataGridView Control to use
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named description: Specifies the value to search
+
+ Value
+ parameterValue: Object, required: true, globbing: false, pipelineInput: false, position: named description: Specifies the fore color of the row to use
+
+ RowForeColor
+ parameterValue: Color, required: false, globbing: false, pipelineInput: false, position: named description: Specifies the back color of the row to use
+
+ RowBackColor
+ parameterValue: Color, required: false, globbing: false, pipelineInput: false, position: named Find-WFDataGridViewValue
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DataGridView</strong>: Specifies the DataGridView Control to use
+</p>
+<p>  - <strong>Value</strong>: Specifies the value to search
+</p>
+<p>  - <strong>SelectCell</strong>: Specifies to select only the cell when the value is found
+</p>
+<p>  - <strong>SelectRow</strong>: Specifies to select the entire row when the value is found
+</p>
+<p>  - <strong>RowForeColor</strong>: Specifies the fore color of the row to use
+</p>
+<p>  - <strong>RowBackColor</strong>: Specifies the back color of the row to use
+</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- -------------------------- EXAMPLE 2 -------------------------- -------------------------- EXAMPLE 3 --------------------------
+       Label:   
+Introduction:   
+      Syntax: Find-WFDataGridViewValue -DataGridView $datagridview1 -Value $textbox1.Text Find-WFDataGridViewValue -DataGridView $datagridview1 -Value $textbox1.Text -RowForeColor &apos;Red&apos; -RowBackColor &apos;Black&apos; Find-WFDataGridViewValue -DataGridView $datagridview1 -Value $textbox1.Text -SelectRow
+     Remarks:              </pre>
+<p></p>
 <h2>Get-DevEnvVersions</h2>
 
 
 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> List current versions.</p>
-<p><strong>Detailed Description:</strong> Cycles through components and display the current version.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch to pause at each step/page.
+<p><strong>Detailed Description:</strong> Cycles through components and display the current version.
+</p>
+<p><strong>Syntax:</strong> <pre>DoPause
+ description: Switch to pause at each step/page.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Provide detailed information.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Provide detailed information.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Debug this script.
 
- DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoForce
  required: false, globbing: false, pipelineInput: false, position: named Get-DevEnvVersions
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
-<p>  - <strong>DoVerbose</strong>: Provide detailed information.</p>
-<p>  - <strong>DoDebug</strong>: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.
+</p>
+<p>  - <strong>DoVerbose</strong>: Provide detailed information.
+</p>
+<p>  - <strong>DoDebug</strong>: Debug this script.
+</p>
+<p>  - <strong>DoForce</strong></p>
 <p></p>
-<p><strong>Return: </strong> Should output a file and display.</p>
+<p><strong>Return: </strong> Should output a file and display.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Get-DevEnvVersions -DoVerbose
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Get-ModuleRootPath</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Get-ModuleRootPath [[-folderPath] &lt;Object&gt;] [-DoClear] [&lt;CommonParameters&gt;]</p>
+Get-ModuleRootPath [[-folderPath] &lt;Object&gt;] [-DoClear] [&lt;CommonParameters&gt;]
+</p>
 <p><strong>Syntax:</strong> <pre>name: Get-ModuleRootPath
 CommonParameters: True
-parameter:</pre></p>
+parameter:  </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoClear</strong></p>
 <p>  - <strong>folderPath</strong></p>
 <p></p>
-<p><strong>Return: </strong> System.Object</p>
+<p><strong>Return: </strong> System.Object
+</p>
 <p></p>
 <p></p>
 <h2>Get-WFCheckedListBoxItem</h2>
-<p><strong>There is no help for function: Get-WFCheckedListBoxItem.</strong></p>
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Function to get item(s) from a CheckedListBox Control</p>
+<p><strong>Detailed Description:</strong> Function to get item(s) from a CheckedListBox Control
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the CheckedListBox control
+
+ CheckedListBox
+ parameterValue: CheckedListBox, required: false, globbing: false, pipelineInput: false, position: named All
+ description: Specifies that the function returns all the items
+
+ required: false, globbing: false, pipelineInput: false, position: named Get-WFCheckedListBoxItem
+ description: Specifies the CheckedListBox control
+
+ CheckedListBox
+ parameterValue: CheckedListBox, required: false, globbing: false, pipelineInput: false, position: named CheckedItem
+ description: Specifies that the function returns only the checked items
+
+ required: false, globbing: false, pipelineInput: false, position: named Get-WFCheckedListBoxItem
+ description: Specifies the CheckedListBox control
+
+ CheckedListBox
+ parameterValue: CheckedListBox, required: false, globbing: false, pipelineInput: false, position: named SelectedItem
+ description: Specifies that the function returns only the selected item (highlighted)
+
+ required: false, globbing: false, pipelineInput: false, position: named Get-WFCheckedListBoxItem
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>CheckedListBox</strong>: Specifies the CheckedListBox control
+</p>
+<p>  - <strong>SelectedItem</strong>: Specifies that the function returns only the selected item (highlighted)
+</p>
+<p>  - <strong>All</strong>: Specifies that the function returns all the items
+</p>
+<p>  - <strong>CheckedItem</strong>: Specifies that the function returns only the checked items
+</p>
+<p></p>
+<p></p>
 <h2>Get-WFComboboxItem</h2>
-<p><strong>There is no help for function: Get-WFComboboxItem.</strong></p>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Function to get item(s) from a Combobox Control</p>
+<p><strong>Detailed Description:</strong> Function to get item(s) from a Combobox Control
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the Combobox control to
+
+ ComboBox
+ parameterValue: ComboBox, required: false, globbing: false, pipelineInput: false, position: named All
+ description: A description of the All parameter.
+
+ required: false, globbing: false, pipelineInput: false, position: named Get-WFComboboxItem
+ description: Specifies the Combobox control to
+
+ ComboBox
+ parameterValue: ComboBox, required: false, globbing: false, pipelineInput: false, position: named SelectedItem
+ description: A description of the SelectedItem parameter.
+
+ required: false, globbing: false, pipelineInput: false, position: named Get-WFComboboxItem
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>ComboBox</strong>: Specifies the Combobox control to
+</p>
+<p>  - <strong>SelectedItem</strong>: A description of the SelectedItem parameter.
+</p>
+<p>  - <strong>All</strong>: A description of the All parameter.
+</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- -------------------------- EXAMPLE 2 -------------------------- -------------------------- EXAMPLE 3 --------------------------
+       Label:   
+Introduction:   
+      Syntax: Get-WFComboboxItem -ComboBox $Combobox -SelectedItem Get-WFComboboxItem -ComboBox $Combobox Get-WFComboboxItem -ComboBox $Combobox -all
+     Remarks:              </pre>
+<p></p>
 <h2>Get-WFForm</h2>
-<p><strong>There is no help for function: Get-WFForm.</strong></p>
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Function to retrieve information about the a Form</p>
+<p><strong>Detailed Description:</strong> Function to retrieve information about the a Form
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the Form
+
+ form
+ parameterValue: Form, required: false, globbing: false, pipelineInput: false, position: 1 Controls
+ description: Specifies that you want to see all the controls in the form
+
+ required: false, globbing: false, pipelineInput: false, position: named TabIndex
+ description: Specifies that you want to see the tab index
+
+ required: false, globbing: false, pipelineInput: false, position: named Text
+ description: Specifies that you want to see the Title of the form
+
+ required: false, globbing: false, pipelineInput: false, position: named Get-WFForm
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>form</strong>: Specifies the Form
+</p>
+<p>  - <strong>Controls</strong>: Specifies that you want to see all the controls in the form
+</p>
+<p>  - <strong>TabIndex</strong>: Specifies that you want to see the tab index
+</p>
+<p>  - <strong>Text</strong>: Specifies that you want to see the Title of the form
+</p>
+<p></p>
+<p></p>
 <h2>Get-WFListBoxItem</h2>
-<p><strong>There is no help for function: Get-WFListBoxItem.</strong></p>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Function to get item(s) from a ListBox Control</p>
+<p><strong>Detailed Description:</strong> Function to get item(s) from a ListBox Control
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the ListBox control to get
+
+ ListBox
+ parameterValue: ListBox, required: false, globbing: false, pipelineInput: false, position: named All
+ description: Show all the item
+
+ required: false, globbing: false, pipelineInput: false, position: named Get-WFListBoxItem
+ description: Specifies the ListBox control to get
+
+ ListBox
+ parameterValue: ListBox, required: false, globbing: false, pipelineInput: false, position: named SelectedItem
+ description: Show only the selected Item
+
+ required: false, globbing: false, pipelineInput: false, position: named Get-WFListBoxItem
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>ListBox</strong>: Specifies the ListBox control to get
+</p>
+<p>  - <strong>SelectedItem</strong>: Show only the selected Item
+</p>
+<p>  - <strong>All</strong>: Show all the item
+</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- -------------------------- EXAMPLE 2 --------------------------
+       Label:  
+Introduction:  
+      Syntax: Get-WFListBoxItem -ListBox $ListBox1 Get-WFListBoxItem -ListBox $ListBox1 -selectedItem
+     Remarks:         </pre>
+<p></p>
 <h2>Get-WFListViewItem</h2>
-<p><strong>There is no help for function: Get-WFListViewItem.</strong></p>
-<h2>GoToBootstrap_Func</h2>
 <p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> 
-GoToBootstrap_Func [&lt;CommonParameters&gt;]</p>
-<p><strong>Syntax:</strong> <pre>name: GoToBootstrap_Func
-CommonParameters: True
-parameter:</pre></p>
+<p><strong>Synopsis:</strong> Function to get item(s) from a ListView Control</p>
+<p><strong>Detailed Description:</strong> Function to get item(s) from a ListView Control
+</p>
+<p><strong>Syntax:</strong> <pre>ListView
+ parameterValue: ListView, required: true, globbing: false, pipelineInput: false, position: named SelectedItem
+ required: true, globbing: false, pipelineInput: false, position: named Get-WFListViewItem
+ ListView
+ parameterValue: ListView, required: true, globbing: false, pipelineInput: false, position: named All
+ required: true, globbing: false, pipelineInput: false, position: named Get-WFListViewItem
+</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>ListView</strong></p>
+<p>  - <strong>SelectedItem</strong></p>
+<p>  - <strong>All</strong></p>
 <p></p>
-<p><strong>Return: </strong> System.Object</p>
-<p></p>
-<p></p>
-<h2>GoToModuleRoot_Func</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> 
-GoToModuleRoot_Func [&lt;CommonParameters&gt;]</p>
-<p><strong>Syntax:</strong> <pre>name: GoToModuleRoot_Func
-CommonParameters: True
-parameter:</pre></p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p></p>
-<p><strong>Return: </strong> System.Object</p>
-<p></p>
-<p></p>
-<h2>GoToProjectRoot_Func</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> 
-GoToProjectRoot_Func [&lt;CommonParameters&gt;]</p>
-<p><strong>Syntax:</strong> <pre>name: GoToProjectRoot_Func
-CommonParameters: True
-parameter:</pre></p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p></p>
-<p><strong>Return: </strong> System.Object</p>
-<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Get-WFListViewItem -ListView $ListView1 -SelectedItem
+     Remarks:    </pre>
 <p></p>
 <h2>Import-WFDataGridView</h2>
-<p><strong>There is no help for function: Import-WFDataGridView.</strong></p>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> This functions helps you load items into a DataGridView.</p>
+<p><strong>Detailed Description:</strong> Use this function to dynamically load items into the DataGridView control.
+</p>
+<p><strong>Syntax:</strong> <pre>description: The ComboBox control you want to add items to.
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: 1 description: The object or objects you wish to load into the ComboBox's items collection.
+
+ Item
+ parameterValue: Object, required: true, globbing: false, pipelineInput: false, position: 2 description: Sets the name of the list or table in the data source for which the DataGridView is displaying data.
+
+ DataMember
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 Import-WFDataGridView
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DataGridView</strong>: The ComboBox control you want to add items to.
+</p>
+<p>  - <strong>Item</strong>: The object or objects you wish to load into the ComboBox&apos;s items collection.
+</p>
+<p>  - <strong>DataMember</strong>: Sets the name of the list or table in the data source for which the DataGridView is displaying data.
+</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Import-WFDataGridView -DataGridView $DataGridView1 -Item (Get-Process)
+     Remarks:    </pre>
+<p></p>
 <h2>Import-WFListBox</h2>
-<p><strong>There is no help for function: Import-WFListBox.</strong></p>
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> This functions helps you load items into a ListBox or CheckedListBox.</p>
+<p><strong>Detailed Description:</strong> Use this function to dynamically load items into the ListBox control.
+</p>
+<p><strong>Syntax:</strong> <pre>description: The ListBox control you want to add items to.
+
+ ListBox
+ parameterValue: ListBox, required: true, globbing: false, pipelineInput: false, position: 1 description: The object or objects you wish to load into the ListBox's Items collection.
+
+ Items
+ parameterValue: Object, required: true, globbing: false, pipelineInput: false, position: 2 description: Indicates the property to display for the items in this control.
+
+ DisplayMember
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 Append
+ description: Adds the item(s) to the ListBox without clearing the Items collection.
+
+ required: false, globbing: false, pipelineInput: false, position: named Import-WFListBox
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>ListBox</strong>: The ListBox control you want to add items to.
+</p>
+<p>  - <strong>Items</strong>: The object or objects you wish to load into the ListBox&apos;s Items collection.
+</p>
+<p>  - <strong>DisplayMember</strong>: Indicates the property to display for the items in this control.
+</p>
+<p>  - <strong>Append</strong>: Adds the item(s) to the ListBox without clearing the Items collection.
+</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- -------------------------- EXAMPLE 2 -------------------------- -------------------------- EXAMPLE 3 --------------------------
+       Label:   
+Introduction:   
+      Syntax: Import-WFListBox $ListBox1 &quot;Red&quot;, &quot;White&quot;, &quot;Blue&quot; Import-WFListBox $listBox1 &quot;Red&quot; -Append
+Import-WFListBox $listBox1 &quot;White&quot; -Append
+Import-WFListBox $listBox1 &quot;Blue&quot; -Append Import-WFListBox $listBox1 (Get-Process) &quot;ProcessName&quot;
+     Remarks:              </pre>
+<p></p>
 <h2>Initialize-Dev_Env_Win</h2>
 
 
@@ -574,31 +1506,36 @@ This updates the Windows Environment variables.
 It installs these powershell modules to the system&apos;s directories.
 Set registry, Path and load PowerShell modules.
 $source = &quot;$global:moduleRootPath\&quot;
-$destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: A switch to indicate the path should be checked/updated.
+$destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;
+</p>
+<p><strong>Syntax:</strong> <pre>UpdatePath
+ description: Switch: A switch to indicate the path should be checked/updated.
 
- UpdatePath
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Pause between steps.
+ required: false, globbing: false, pipelineInput: false, position: named DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
  required: false, globbing: false, pipelineInput: false, position: named Initialize-Dev_Env_Win
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>UpdatePath</strong>: Switch: A switch to indicate the path should be checked/updated.</p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>UpdatePath</strong>: Switch: A switch to indicate the path should be checked/updated.
+</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.
+</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.
+</p>
 <p></p>
-<p><strong>Return: </strong> Preparse the Windows OS for development.</p>
+<p><strong>Return: </strong> Preparse the Windows OS for development.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Initialize-Dev_Env_Win -SilentMode -UpdatePath
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Install-DevEnv</h2>
 
@@ -610,29 +1547,35 @@ Introduction: @{Text=PS &gt; }
     Install-DevEnvIdeWin
     Install-DevEnvLlmWin
     Install-DevEnvWhisperWin
-When complete it displays current version for the environment.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+When complete it displays current version for the environment.
+</p>
+<p><strong>Syntax:</strong> <pre>DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
  required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoForce
  required: false, globbing: false, pipelineInput: false, position: named Install-DevEnv
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.
+</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.
+</p>
 <p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoForce</strong></p>
 <p></p>
-<p><strong>Return: </strong> Install the development components.</p>
+<p><strong>Return: </strong> Install the development components.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvWin -DoPause -UpdatePath
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Install-DevEnvIdeWin</h2>
 
@@ -643,31 +1586,38 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Detailed Description:</strong> This script sets up a Windows development environment for neural network projects.
 It installs Chocolatey (if not already installed), Python, Git, VSCode,
 creates a project directory and a Python virtual environment,
-and then installs TensorFlow, Keras, and PyTorch.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+and then installs TensorFlow, Keras, and PyTorch.
+</p>
+<p><strong>Syntax:</strong> <pre>DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
 
- DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoForce
  required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvIdeWin
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.
+</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.
+</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.
+</p>
+<p>  - <strong>DoForce</strong></p>
 <p></p>
-<p><strong>Return: </strong> A log of the installed modules</p>
+<p><strong>Return: </strong> A log of the installed modules
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvIdeWin -DoVerbose
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Install-DevEnvLlmWin</h2>
 
@@ -678,34 +1628,40 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Detailed Description:</strong> Install the LLM (NN or AI).
 Create Python virtual environment. Activates it.
 Upgrades pip and installs neural network libraries.
-Libraries: TensorFlow, Keras, PyTorch.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+Libraries: TensorFlow, Keras, PyTorch.
+</p>
+<p><strong>Syntax:</strong> <pre>DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
 
- DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoForce
  required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvLlmWin
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.
+</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.
+</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.
+</p>
+<p>  - <strong>DoForce</strong></p>
 <p></p>
-<p><strong>Return: </strong> none.</p>
+<p><strong>Return: </strong> none.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvLlmWin
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Install-DevEnvModules</h2>
-
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Install these modules on the local system.</p>
 <p><strong>Detailed Description:</strong> NOT IN USE. Performs an .Add(<!-- fullHtml = @" -->
@@ -717,8 +1673,8 @@ Introduction: @{Text=PS &gt; }
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_Modules Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="05/04/2025 14:44:51">
-    <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
+    <meta name="date" content="05/18/2025 22:22:34">
+    <meta name="copyright" content="&Copy-Item; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
         html,
@@ -827,25 +1783,25 @@ Introduction: @{Text=PS &gt; }
         <h1>Help for Module: Mdm_Modules</h1>
     </div>
     {{TemplateContent}}
-    <!-- <footer><p>{{Footer}}&copy; David G. Horsman. All rights reserved.</p></footer> -->
+    <!-- <footer><p>{{Footer}}&Copy-Item; David G. Horsman. All rights reserved.</p></footer> -->
 </body>
-</html>) for each object</p>
-<p><strong>Syntax:</strong> <pre>description: .
-
- inputObjects
+</html>) for each object
+</p>
+<p><strong>Syntax:</strong> <pre>inputObject
  parameterValue: Object, required: false, globbing: false, pipelineInput: true (ByValue), position: 1 Install-DevEnvModules
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>inputObjects</strong>: .</p>
+<p>  - <strong>inputObject</strong></p>
 <p></p>
-<p><strong>Return: </strong> .</p>
+<p><strong>Return: </strong> .
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvModules
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Install-DevEnvOsWin</h2>
 
@@ -856,31 +1812,38 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Detailed Description:</strong> This script sets up a Windows OS for the development environment.
 It installs Chocolatey (if not already installed).
 It will update PowerShell (from vs 5 to 7).
-TODO: sed, win linux, other tools?</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+TODO: sed, win linux, other tools?
+</p>
+<p><strong>Syntax:</strong> <pre>DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
 
- DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoForce
  required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvOsWin
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.
+</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.
+</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.
+</p>
+<p>  - <strong>DoForce</strong></p>
 <p></p>
-<p><strong>Return: </strong> none.</p>
+<p><strong>Return: </strong> none.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvOsWin -DoPause
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Install-DevEnvWhisperWin</h2>
 
@@ -888,31 +1851,38 @@ Introduction: @{Text=PS &gt; }
 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Install local voice recognition (Whisper).</p>
-<p><strong>Detailed Description:</strong> Whisper is models designed to run voice recognition locally.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+<p><strong>Detailed Description:</strong> Whisper is models designed to run voice recognition locally.
+</p>
+<p><strong>Syntax:</strong> <pre>DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Switch: Debug this script.
 
- DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoForce
  required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvWhisperWin
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
-<p>  - <strong>DoDebug</strong>: Switch: Debug this script.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.
+</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.
+</p>
+<p>  - <strong>DoDebug</strong>: Switch: Debug this script.
+</p>
+<p>  - <strong>DoForce</strong></p>
 <p></p>
-<p><strong>Return: </strong> none.</p>
+<p><strong>Return: </strong> none.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvWhisperWin
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Install-DevEnvWin</h2>
 
@@ -924,29 +1894,80 @@ Introduction: @{Text=PS &gt; }
     Install-DevEnvIdeWin
     Install-DevEnvLlmWin
     Install-DevEnvWhisperWin
-When complete it displays current version for the environment.</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: Pause between steps.
+When complete it displays current version for the environment.
+</p>
+<p><strong>Syntax:</strong> <pre>DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
  required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoForce
  required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvWin
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.
+</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.
+</p>
 <p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoForce</strong></p>
 <p></p>
-<p><strong>Return: </strong> Install the development components.</p>
+<p><strong>Return: </strong> Install the development components.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Install-DevEnvWin -DoPause -UpdatePath
-     Remarks:</pre>
+     Remarks:    </pre>
+<p></p>
+<h2>Invoke-Build</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Invoke-Build [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Invoke-Build
+CommonParameters: True
+parameter: </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Invoke-GoToBootstrap</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Invoke-GoToBootstrap [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Invoke-GoToBootstrap
+CommonParameters: True
+parameter: </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Invoke-Update</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Invoke-Update [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Invoke-Update
+CommonParameters: True
+parameter: </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
 <p></p>
 <h2>New-WFBalloonNotification</h2>
 
@@ -956,7 +1977,8 @@ Introduction: @{Text=PS &gt; }
 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> The New-WFBalloonNotification function will show a message to the user in the notification area of Windows.</p>
-<p><strong>Detailed Description:</strong> The New-WFBalloonNotification function will show a message to the user in the notification area of Windows.</p>
+<p><strong>Detailed Description:</strong> The New-WFBalloonNotification function will show a message to the user in the notification area of Windows.
+</p>
 <p><strong>Syntax:</strong> <pre>description: Specifies the custom icon literal path to use. Default will use the PowerShell icon.
 
  CustomIconPath
@@ -978,11 +2000,16 @@ Introduction: @{Text=PS &gt; }
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>CustomIconPath</strong>: Specifies the custom icon literal path to use. Default will use the PowerShell icon.</p>
-<p>  - <strong>TimeOut</strong>: Specifies the display duration of the message. Default is 10000 milliseconds</p>
-<p>  - <strong>BalloonIcon</strong>: Specifies the Icon to show. Default is None</p>
-<p>  - <strong>BalloonTipText</strong>: Specifies the Message to show.</p>
-<p>  - <strong>BalloonTipTitle</strong>: Specifies the Title to show.</p>
+<p>  - <strong>CustomIconPath</strong>: Specifies the custom icon literal path to use. Default will use the PowerShell icon.
+</p>
+<p>  - <strong>TimeOut</strong>: Specifies the display duration of the message. Default is 10000 milliseconds
+</p>
+<p>  - <strong>BalloonIcon</strong>: Specifies the Icon to show. Default is None
+</p>
+<p>  - <strong>BalloonTipText</strong>: Specifies the Message to show.
+</p>
+<p>  - <strong>BalloonTipTitle</strong>: Specifies the Title to show.
+</p>
 <p>  - <strong>WhatIf</strong></p>
 <p>  - <strong>Confirm</strong></p>
 <p></p>
@@ -990,17 +2017,59 @@ Introduction: @{Text=PS &gt; }
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS C:\&gt;}
       Syntax: New-WFBalloonNotification -BalloonTipText &quot;test&quot; -BalloonTipTitle &quot;Title&quot; -BalloonIcon Error
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>New-WFForm</h2>
-<p><strong>There is no help for function: New-WFForm.</strong></p>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Function to create a Form</p>
+<p><strong>Detailed Description:</strong> Function to create a Form
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the Form. A new forw is returned if null.
+
+ form
+ parameterValue: Form, required: false, globbing: false, pipelineInput: false, position: 1 description: Specifies that you want to set the Title of the form
+
+ Title
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 TextInput
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 OkButton
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 4 CancelButton
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 DoMenuBar
+ required: false, globbing: false, pipelineInput: false, position: named DoControls
+ required: false, globbing: false, pipelineInput: false, position: named DoTabIndex
+ description: TODO Specifies that you want to create the tab index.
+
+ required: false, globbing: false, pipelineInput: false, position: named Inquire
+ required: false, globbing: false, pipelineInput: false, position: named state
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 6 New-WFForm
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>form</strong>: Specifies the Form. A new forw is returned if null.
+</p>
+<p>  - <strong>Title</strong>: Specifies that you want to set the Title of the form
+</p>
+<p>  - <strong>TextInput</strong></p>
+<p>  - <strong>OkButton</strong></p>
+<p>  - <strong>CancelButton</strong></p>
+<p>  - <strong>DoMenuBar</strong></p>
+<p>  - <strong>DoControls</strong></p>
+<p>  - <strong>DoTabIndex</strong>: TODO Specifies that you want to create the tab index.
+</p>
+<p>  - <strong>Inquire</strong></p>
+<p>  - <strong>state</strong></p>
+<p></p>
+<p></p>
 <h2>New-WFInputBox</h2>
 
 
 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> The New-WFInputBox function will prompt the user for input in a window.</p>
-<p><strong>Detailed Description:</strong> The New-WFInputBox function will prompt the user for input in a window.</p>
+<p><strong>Detailed Description:</strong> The New-WFInputBox function will prompt the user for input in a window.
+</p>
 <p><strong>Syntax:</strong> <pre>description: Specifies the question you want to ask to the user.
 
  Message
@@ -1016,9 +2085,12 @@ Introduction: @{Text=PS C:\&gt;}
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>Message</strong>: Specifies the question you want to ask to the user.</p>
-<p>  - <strong>Title</strong>: Specifies the title of the window.</p>
-<p>  - <strong>DefaultInputText</strong>: Specifies the default answer text.</p>
+<p>  - <strong>Message</strong>: Specifies the question you want to ask to the user.
+</p>
+<p>  - <strong>Title</strong>: Specifies the title of the window.
+</p>
+<p>  - <strong>DefaultInputText</strong>: Specifies the default answer text.
+</p>
 <p>  - <strong>WhatIf</strong></p>
 <p>  - <strong>Confirm</strong></p>
 <p></p>
@@ -1026,14 +2098,15 @@ Introduction: @{Text=PS C:\&gt;}
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS C:\&gt;}
       Syntax: New-WFInputBox -Message &apos;What is your computer name&apos; -Title &apos;Computer&apos; -DefaultInputText &quot;$env:ComputerName&quot;
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>New-WFMenuStrip</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> A short one-line action-based description, e.g. &apos;Tests if a function is valid&apos;</p>
-<p><strong>Detailed Description:</strong> Source: https://theitbros.com/powershell-gui-for-scripts/</p>
+<p><strong>Detailed Description:</strong> Source: https://theitbros.com/powershell-gui-for-scripts/
+</p>
 <p><strong>Syntax:</strong> <pre>form
- parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 1 New-WFMenuStrip
+ parameterValue: Form, required: false, globbing: false, pipelineInput: false, position: 1 New-WFMenuStrip
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -1044,10 +2117,55 @@ Introduction: @{Text=PS C:\&gt;}
 Introduction: @{Text=PS &gt; }
       Syntax: Test-MyTestFunction -Verbose
 Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>New-WFMessageBox</h2>
-<p><strong>There is no help for function: New-WFMessageBox.</strong></p>
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> The New-WFMessageBox functio will show a message box to the user</p>
+<p><strong>Detailed Description:</strong> The New-WFMessageBox functio will show a message box to the user
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the message to show
+
+ Message
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 description: Specifies the title of the message box
+
+ Title
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 description: Specifies which button to add. Just press tab to see the choices
+
+ Buttons
+ parameterValueGroup: @{parameterValue=System.Management.Automation.PSObject[]}, required: false, globbing: false, pipelineInput: false, position: 3 description: Specifies the icon to show. Just press tab to see the choices
+
+ Icon
+ parameterValueGroup: @{parameterValue=System.Management.Automation.PSObject[]}, required: false, globbing: false, pipelineInput: false, position: 4 WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named New-WFMessageBox
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Message</strong>: Specifies the message to show
+</p>
+<p>  - <strong>Title</strong>: Specifies the title of the message box
+</p>
+<p>  - <strong>Buttons</strong>: Specifies which button to add. Just press tab to see the choices
+</p>
+<p>  - <strong>Icon</strong>: Specifies the icon to show. Just press tab to see the choices
+</p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Windows.Forms.DialogResult
+</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS C:\&gt;}
+      Syntax: New-WFMessageBox -Message &quot;Hello World&quot; -Title &quot;First Message&quot; -Buttons &quot;RetryCancel&quot; -Icon &quot;Asterix&quot;
+     Remarks:    </pre>
+<p></p>
 <h2>New-WFOpenFileDialog</h2>
 
 
@@ -1057,7 +2175,8 @@ Explanation of the function or its result. You can include multiple examples wit
 <p><strong>Synopsis:</strong> The New-WFOpenFileDialog function will ask the user to select one of multiple files.
 The function will return the literal path of the file(s) selected</p>
 <p><strong>Detailed Description:</strong> The New-WFOpenFileDialog function will ask the user to select one of multiple files.
-The function will return the literal path of the file(s) selected</p>
+The function will return the literal path of the file(s) selected
+</p>
 <p><strong>Syntax:</strong> <pre>description: Specifies the Title of the window.
 
  WindowsTitle
@@ -1070,9 +2189,9 @@ The function will return the literal path of the file(s) selected</p>
               "Photos files (*.jpg)|*.png|All files (*.*)|*.*";
 
  Filter
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 description: Allow the user to select multiple files.
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 AllowMultiSelect
+ description: Allow the user to select multiple files.
 
- AllowMultiSelect
  required: false, globbing: false, pipelineInput: false, position: named CheckPathExists
  required: false, globbing: false, pipelineInput: false, position: named CheckFileExists
  required: false, globbing: false, pipelineInput: false, position: named ShowHelp
@@ -1082,13 +2201,17 @@ The function will return the literal path of the file(s) selected</p>
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>WindowsTitle</strong>: Specifies the Title of the window.</p>
-<p>  - <strong>Path</strong>: Specifies the Path where the dialog will open.</p>
+<p>  - <strong>WindowsTitle</strong>: Specifies the Title of the window.
+</p>
+<p>  - <strong>Path</strong>: Specifies the Path where the dialog will open.
+</p>
 <p>  - <strong>Filter</strong>: Specifies the extension filter.Default is &quot;All files (*.*)|*.*&quot;
           Other example: 
               &quot;Text files (*.txt)|*.txt|All files (*.*)|*.*&quot;;
-              &quot;Photos files (*.jpg)|*.png|All files (*.*)|*.*&quot;;</p>
-<p>  - <strong>AllowMultiSelect</strong>: Allow the user to select multiple files.</p>
+              &quot;Photos files (*.jpg)|*.png|All files (*.*)|*.*&quot;;
+</p>
+<p>  - <strong>AllowMultiSelect</strong>: Allow the user to select multiple files.
+</p>
 <p>  - <strong>CheckPathExists</strong></p>
 <p>  - <strong>CheckFileExists</strong></p>
 <p>  - <strong>ShowHelp</strong></p>
@@ -1099,7 +2222,7 @@ The function will return the literal path of the file(s) selected</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS C:\&gt;}
       Syntax: New-WFOpenFileDialog -WindowsTitle &apos;Upload&apos; -Path &apos;c:\&quot;
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>New-WFOpenFolderDialog</h2>
 
@@ -1107,7 +2230,8 @@ Introduction: @{Text=PS C:\&gt;}
 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> The New-WFOpenFolderDialog function will ask the user to select one folder.</p>
-<p><strong>Detailed Description:</strong> The New-WFOpenFolderDialog function will ask the user to select one folder.</p>
+<p><strong>Detailed Description:</strong> The New-WFOpenFolderDialog function will ask the user to select one folder.
+</p>
 <p><strong>Syntax:</strong> <pre>description: Specifies a message to help the user select a folder
 
  Description
@@ -1123,9 +2247,12 @@ Introduction: @{Text=PS C:\&gt;}
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>Description</strong>: Specifies a message to help the user select a folder</p>
-<p>  - <strong>RootFolder</strong>: Specifies the folder where to look. All the SpecialFolder are listed using tab. Default is &quot;Desktop&quot;.</p>
-<p>  - <strong>ShowNewFolderButton</strong>: Specifies if the &quot;New Folder&quot; button should be displayed. Default is True.</p>
+<p>  - <strong>Description</strong>: Specifies a message to help the user select a folder
+</p>
+<p>  - <strong>RootFolder</strong>: Specifies the folder where to look. All the SpecialFolder are listed using tab. Default is &quot;Desktop&quot;.
+</p>
+<p>  - <strong>ShowNewFolderButton</strong>: Specifies if the &quot;New Folder&quot; button should be displayed. Default is True.
+</p>
 <p>  - <strong>WhatIf</strong></p>
 <p>  - <strong>Confirm</strong></p>
 <p></p>
@@ -1133,14 +2260,15 @@ Introduction: @{Text=PS C:\&gt;}
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS C:\&gt;}
       Syntax: New-WFOpenFolderDialog -Description &quot;Please select a folder&quot; -RootFolder &quot;Desktop&quot;
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>New-WFSpeakerBeep</h2>
 
 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> The New-WFSpeakerBeep function plays the sound of a beep of a specified frequency and duration through the console speaker.</p>
-<p><strong>Detailed Description:</strong> The New-WFSpeakerBeep function plays the sound of a beep of a specified frequency and duration through the console speaker.</p>
+<p><strong>Detailed Description:</strong> The New-WFSpeakerBeep function plays the sound of a beep of a specified frequency and duration through the console speaker.
+</p>
 <p><strong>Syntax:</strong> <pre>description: The frequency of the beep, ranging from 37 to 32767 hertz.
 
  Frequency
@@ -1153,8 +2281,10 @@ Introduction: @{Text=PS C:\&gt;}
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>Frequency</strong>: The frequency of the beep, ranging from 37 to 32767 hertz.</p>
-<p>  - <strong>Duration</strong>: The duration of the beep measured in milliseconds.</p>
+<p>  - <strong>Frequency</strong>: The frequency of the beep, ranging from 37 to 32767 hertz.
+</p>
+<p>  - <strong>Duration</strong>: The duration of the beep measured in milliseconds.
+</p>
 <p>  - <strong>WhatIf</strong></p>
 <p>  - <strong>Confirm</strong></p>
 <p></p>
@@ -1162,39 +2292,892 @@ Introduction: @{Text=PS C:\&gt;}
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS C:\&gt;}
       Syntax: New-WFSpeakerBeep -Frequency 500 -Duration 300
-     Remarks:</pre>
+     Remarks:    </pre>
+<p></p>
+<h2>New-WFWindow</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+New-WFWindow [[-window] &lt;WFWindow&gt;] [[-formsArray] &lt;Form[]&gt;] [[-menuBarArray] &lt;MenuBar[]&gt;] [[-formIndex] &lt;int&gt;] [[-Title] &lt;string&gt;] [[-TextInput] &lt;string&gt;] [[-OkButton] &lt;string&gt;] [[-CancelButton] &lt;string&gt;] [[-state] &lt;Object&gt;] [-DoMenuBar] [-DoControls] [-DoTabIndex] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: New-WFWindow
+CommonParameters: True
+parameter:            </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>CancelButton</strong></p>
+<p>  - <strong>DoControls</strong></p>
+<p>  - <strong>DoMenuBar</strong></p>
+<p>  - <strong>DoTabIndex</strong></p>
+<p>  - <strong>OkButton</strong></p>
+<p>  - <strong>TextInput</strong></p>
+<p>  - <strong>Title</strong></p>
+<p>  - <strong>formIndex</strong></p>
+<p>  - <strong>formsArray</strong></p>
+<p>  - <strong>menuBarArray</strong></p>
+<p>  - <strong>state</strong></p>
+<p>  - <strong>window</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
 <p></p>
 <h2>Remove-WFListBoxItem</h2>
-<p><strong>There is no help for function: Remove-WFListBoxItem.</strong></p>
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Function to remove item(s) from a ListBox Control</p>
+<p><strong>Detailed Description:</strong> Function to remove item(s) from a ListBox Control
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the ListBox control
+
+ ListBox
+ parameterValue: ListBox, required: true, globbing: false, pipelineInput: false, position: named All
+ description: Specifies that you want to remove all the item
+
+ required: true, globbing: false, pipelineInput: false, position: named WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Remove-WFListBoxItem
+ description: Specifies the ListBox control
+
+ ListBox
+ parameterValue: ListBox, required: true, globbing: false, pipelineInput: false, position: named SelectedItems
+ description: Specifies that you want to remove the selected items
+
+ required: true, globbing: false, pipelineInput: false, position: named WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Remove-WFListBoxItem
+ description: Specifies the ListBox control
+
+ ListBox
+ parameterValue: ListBox, required: true, globbing: false, pipelineInput: false, position: named description: Specifies that you want to remove items with a specific pattern
+
+ Pattern
+ parameterValue: String[], required: true, globbing: false, pipelineInput: false, position: named WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Remove-WFListBoxItem
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>ListBox</strong>: Specifies the ListBox control
+</p>
+<p>  - <strong>All</strong>: Specifies that you want to remove all the item
+</p>
+<p>  - <strong>Pattern</strong>: Specifies that you want to remove items with a specific pattern
+</p>
+<p>  - <strong>SelectedItems</strong>: Specifies that you want to remove the selected items
+</p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p></p>
+<p></p>
 <h2>Reset-WFDataGridViewFormat</h2>
-<p><strong>There is no help for function: Reset-WFDataGridViewFormat.</strong></p>
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> The Reset-DataGridViewFormat function will reset the format of a datagridview control</p>
+<p><strong>Detailed Description:</strong> The Reset-DataGridViewFormat function will reset the format of a datagridview control
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the DataGridView Control.
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Reset-WFDataGridViewFormat
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DataGridView</strong>: Specifies the DataGridView Control.
+</p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS C:\&gt;}
+      Syntax: Reset-DataGridViewFormat -DataGridView $DataGridViewObj
+     Remarks:    </pre>
+<p></p>
 <h2>Set-WFDataGridView</h2>
-<p><strong>There is no help for function: Set-WFDataGridView.</strong></p>
+
+
+
+
+
+
+
+
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> This function helps you edit the datagridview control</p>
+<p><strong>Detailed Description:</strong> This function helps you edit the datagridview control
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the DataGridView Control
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named ShowRowHeader
+ description: Show the Row Header
+
+ required: false, globbing: false, pipelineInput: false, position: named WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Set-WFDataGridView
+ description: Specifies the DataGridView Control
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named AlternativeRowColor
+ description: Specifies the color of the alternative row color
+
+ required: true, globbing: false, pipelineInput: false, position: named description: Specifies the color of the text
+
+ ForeColor
+ parameterValue: Color, required: true, globbing: false, pipelineInput: false, position: named description: Specifies the background color
+
+ BackColor
+ parameterValue: Color, required: true, globbing: false, pipelineInput: false, position: named WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Set-WFDataGridView
+ description: Specifies the DataGridView Control
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named DefaultRowColor
+ description: Specifies the color of the default row color
+
+ required: false, globbing: false, pipelineInput: false, position: named description: Specifies the color of the text
+
+ ForeColor
+ parameterValue: Color, required: false, globbing: false, pipelineInput: false, position: named description: Specifies the background color
+
+ BackColor
+ parameterValue: Color, required: false, globbing: false, pipelineInput: false, position: named WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Set-WFDataGridView
+ description: Specifies the DataGridView Control
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named ProperFormat
+ description: Set the datagirdview to the proper format
+
+ required: true, globbing: false, pipelineInput: false, position: named description: Specifies the the Font family to use
+
+ FontFamily
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: named description: Specifies the Font size
+
+ FontSize
+ parameterValue: Int32, required: false, globbing: false, pipelineInput: false, position: named WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Set-WFDataGridView
+ description: Specifies the DataGridView Control
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named HideRowHeader
+ description: Hide the Row Header
+
+ required: false, globbing: false, pipelineInput: false, position: named WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Set-WFDataGridView
+ description: Specifies the DataGridView Control
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named HideColumnHeader
+ description: Hide the Column Header
+
+ required: false, globbing: false, pipelineInput: false, position: named WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Set-WFDataGridView
+ description: Specifies the DataGridView Control
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named ShowColumnHeader
+ description: Show the Column Header
+
+ required: false, globbing: false, pipelineInput: false, position: named WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Set-WFDataGridView
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DataGridView</strong>: Specifies the DataGridView Control
+</p>
+<p>  - <strong>AlternativeRowColor</strong>: Specifies the color of the alternative row color
+</p>
+<p>  - <strong>DefaultRowColor</strong>: Specifies the color of the default row color
+</p>
+<p>  - <strong>ForeColor</strong>: Specifies the color of the text
+</p>
+<p>  - <strong>BackColor</strong>: Specifies the background color
+</p>
+<p>  - <strong>ProperFormat</strong>: Set the datagirdview to the proper format
+</p>
+<p>  - <strong>FontFamily</strong>: Specifies the the Font family to use
+</p>
+<p>  - <strong>FontSize</strong>: Specifies the Font size
+</p>
+<p>  - <strong>HideRowHeader</strong>: Hide the Row Header
+</p>
+<p>  - <strong>ShowRowHeader</strong>: Show the Row Header
+</p>
+<p>  - <strong>HideColumnHeader</strong>: Hide the Column Header
+</p>
+<p>  - <strong>ShowColumnHeader</strong>: Show the Column Header
+</p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- -------------------------- EXAMPLE 2 -------------------------- -------------------------- EXAMPLE 3 -------------------------- -------------------------- EXAMPLE 4 -------------------------- -------------------------- EXAMPLE 5 -------------------------- -------------------------- EXAMPLE 6 -------------------------- -------------------------- EXAMPLE 7 --------------------------
+       Label:       
+Introduction:       
+      Syntax: Set-WFDataGridView -DataGridView $datagridview1 -ProperFormat -FontFamily $listboxFontFamily.Text -FontSize $listboxFontSize.Text Set-WFDataGridView -DataGridView $datagridview1 -AlternativeRowColor -BackColor &apos;AliceBlue&apos; -ForeColor &apos;Black&apos; Set-WFDataGridView -DataGridView $datagridviewOutput -DefaultRowColor -BackColor &apos;Beige&apos; -ForeColor &apos;Brown&apos; Set-DataGridViewRowHeader -DataGridView $datagridview1 -HideRowHeader Set-DataGridViewRowHeader -DataGridView $datagridview1 -ShowRowHeader Set-DataGridViewRowHeader -DataGridView $datagridview1 -HideColumnHeader Set-DataGridViewRowHeader -DataGridView $datagridview1 -ShowColumnHeader
+     Remarks:                                  </pre>
+<p></p>
 <h2>Set-WFDataGridViewFilter</h2>
-<p><strong>There is no help for function: Set-WFDataGridViewFilter.</strong></p>
+
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> The function Set-WFDataGridViewFilter helps to only show specific entries with a specific value</p>
+<p><strong>Detailed Description:</strong> The function Set-WFDataGridViewFilter helps to only show specific entries with a specific value.
+The data needs to be in a DataTable Object. You can use ConvertTo-DataTable to convert your
+PowerShell object into a DataTable object.
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the DataGridView control where the data will be filtered
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named description: Specifies the DataTable object that is most likely the original source of the DataGridView
+
+ DataTable
+ parameterValue: DataTable, required: true, globbing: false, pipelineInput: false, position: named description: Specifies the string to search
+
+ Filter
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: named AllColumns
+ description: Specifies to search all the column
+
+ required: true, globbing: false, pipelineInput: false, position: named WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Set-WFDataGridViewFilter
+ description: Specifies the DataGridView control where the data will be filtered
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named description: Specifies the DataTable object that is most likely the original source of the DataGridView
+
+ DataTable
+ parameterValue: DataTable, required: true, globbing: false, pipelineInput: false, position: named description: Specifies the string to search
+
+ Filter
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: named description: Specifies to search in a specific column name
+
+ ColumnName
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: named WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Set-WFDataGridViewFilter
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DataGridView</strong>: Specifies the DataGridView control where the data will be filtered
+</p>
+<p>  - <strong>DataTable</strong>: Specifies the DataTable object that is most likely the original source of the DataGridView
+</p>
+<p>  - <strong>Filter</strong>: Specifies the string to search
+</p>
+<p>  - <strong>ColumnName</strong>: Specifies to search in a specific column name
+</p>
+<p>  - <strong>AllColumns</strong>: Specifies to search all the column
+</p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- -------------------------- EXAMPLE 2 --------------------------
+       Label:  
+Introduction:  
+      Syntax: Set-WFDataGridViewFilter -DataGridView $datagridview1 -DataTable $ProcessesDT -AllColumns -Filter $textbox1.Text Set-WFDataGridViewFilter -DataGridView $datagridview1 -DataTable $ProcessesDT -ColumnName &quot;Name&quot; -Filter $textbox1.Text
+     Remarks:         </pre>
+<p></p>
 <h2>Set-WFForm</h2>
-<p><strong>There is no help for function: Set-WFForm.</strong></p>
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> The Set-WFForm function is used to change the properties of a Form or to intract with it</p>
+<p><strong>Detailed Description:</strong> The Set-WFForm function is used to change the properties of a Form or to intract with it
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the Form control
+
+ form
+ parameterValue: Form, required: false, globbing: false, pipelineInput: false, position: 1 description: Specifies the text/Title of the form
+
+ Text
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 description: Set the Window State of the form.
+
+ WindowState
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 BringToFront
+ description: Bring the form to the front of the screen
+
+ required: false, globbing: false, pipelineInput: false, position: named WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Set-WFForm
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>form</strong>: Specifies the Form control
+</p>
+<p>  - <strong>Text</strong>: Specifies the text/Title of the form
+</p>
+<p>  - <strong>WindowState</strong>: Set the Window State of the form.
+</p>
+<p>  - <strong>BringToFront</strong>: Bring the form to the front of the screen
+</p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 -------------------------- -------------------------- EXAMPLE 2 -------------------------- -------------------------- EXAMPLE 3 --------------------------
+       Label:   
+Introduction:   
+      Syntax: Set-WFForm -Form $form1 -BringToFront Set-WFForm -Form $form1 -Text &quot;My GUI&quot; Set-WFForm -Form $form1 -WindowState &quot;Minimized&quot;
+     Remarks:              </pre>
+<p></p>
 <h2>Set-WFListViewColumn</h2>
-<p><strong>There is no help for function: Set-WFListViewColumn.</strong></p>
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Sort the ListView&apos;s item using the specified column.</p>
+<p><strong>Detailed Description:</strong> Sort the ListView&apos;s item using the specified column.
+This function uses Add-Type to define a class that sort the items.
+The ListView&apos;s Tag property is used to keep track of the sorting.
+</p>
+<p><strong>Syntax:</strong> <pre>description: The ListView control to sort.
+
+ ListView
+ parameterValue: ListView, required: true, globbing: false, pipelineInput: false, position: 1 description: The index of the column to use for sorting.
+
+ ColumnIndex
+ parameterValue: Int32, required: true, globbing: false, pipelineInput: false, position: 2 description: The direction to sort the items. If not specified or set to None, it will toggle.
+
+ SortOrder
+ parameterValueGroup: @{parameterValue=System.Management.Automation.PSObject[]}, required: false, globbing: false, pipelineInput: false, position: 3 Set-WFListViewColumn
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>ListView</strong>: The ListView control to sort.
+</p>
+<p>  - <strong>ColumnIndex</strong>: The index of the column to use for sorting.
+</p>
+<p>  - <strong>SortOrder</strong>: The direction to sort the items. If not specified or set to None, it will toggle.
+</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Set-WFListViewColumn -ListView $listview1 -ColumnIndex 0
+     Remarks:    </pre>
+<p></p>
 <h2>Set-WFRichTextBox</h2>
-<p><strong>There is no help for function: Set-WFRichTextBox.</strong></p>
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> The Set-WFRichTextBox function allow you to manage the richtextbox control</p>
+<p><strong>Detailed Description:</strong> The Set-WFRichTextBox function allow you to manage the richtextbox control
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the RichTextBox Control to use
+
+ RichTextBox
+ parameterValue: RichTextBox, required: false, globbing: false, pipelineInput: false, position: 1 ScrollToCaret
+ description: Specifies that the RichTextBox will scroll to the end.
+
+ required: false, globbing: false, pipelineInput: false, position: named WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Set-WFRichTextBox
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>RichTextBox</strong>: Specifies the RichTextBox Control to use
+</p>
+<p>  - <strong>ScrollToCaret</strong>: Specifies that the RichTextBox will scroll to the end.
+</p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS C:\&gt;}
+      Syntax: Set-WFRichTextBox -PipelineVariable $value1 -RichTextBox $value2
+     Remarks:    </pre>
+<p></p>
 <h2>Show-WFForm</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Show-WFForm [[-Forms] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+Show-WFForm [-window] &lt;Form&gt; [-NotDialog] [&lt;CommonParameters&gt;]
+</p>
 <p><strong>Syntax:</strong> <pre>name: Show-WFForm
 CommonParameters: True
-parameter: @{name=Forms; required=false; pipelineInput=true (ByValue); isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
+parameter:  </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>Forms</strong></p>
+<p>  - <strong>NotDialog</strong></p>
+<p>  - <strong>window</strong></p>
 <p></p>
-<p><strong>Return: </strong> System.Object</p>
+<p><strong>Return: </strong> System.Object
+</p>
 <p></p>
 <p></p>
 <h2>Update-WFDataGridView</h2>
-<p><strong>There is no help for function: Update-WFDataGridView.</strong></p>
-<footer><p>&copy; David G. Horsman. All rights reserved.</p></footer>
-    <!-- <footer><p>{{Footer}}&copy; David G. Horsman. All rights reserved.</p></footer> -->
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Function to refresh the content of a DataGridView control</p>
+<p><strong>Detailed Description:</strong> Function to refresh the content of a DataGridView control
+</p>
+<p><strong>Syntax:</strong> <pre>description: Specifies the DataGridView control to update
+
+ DataGridView
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
+ required: false, globbing: false, pipelineInput: false, position: named Confirm
+ required: false, globbing: false, pipelineInput: false, position: named Update-WFDataGridView
+</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DataGridView</strong>: Specifies the DataGridView control to update
+</p>
+<p>  - <strong>WhatIf</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p></p>
+<p></p>
+<h2>ConvertFrom-SecureString</h2>
+<p><strong>Type:</strong> Cmdlet</p>
+<p><strong>Synopsis:</strong> 
+ConvertFrom-SecureString [-SecureString] &lt;securestring&gt; [[-SecureKey] &lt;securestring&gt;] [&lt;CommonParameters&gt;]
+
+ConvertFrom-SecureString [-SecureString] &lt;securestring&gt; [-AsPlainText] [&lt;CommonParameters&gt;]
+
+ConvertFrom-SecureString [-SecureString] &lt;securestring&gt; [-Key &lt;byte[]&gt;] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: ConvertFrom-SecureString
+CommonParameters: True
+parameter:  
+name: ConvertFrom-SecureString
+CommonParameters: True
+parameter:  
+name: ConvertFrom-SecureString
+CommonParameters: True
+parameter:  </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>AsPlainText</strong></p>
+<p>  - <strong>Key</strong></p>
+<p>  - <strong>SecureKey</strong></p>
+<p>  - <strong>SecureString</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.String
+
+</p>
+<p></p>
+<p></p>
+<h2>ConvertTo-SecureString</h2>
+<p><strong>Type:</strong> Cmdlet</p>
+<p><strong>Synopsis:</strong> 
+ConvertTo-SecureString [-String] &lt;string&gt; [[-SecureKey] &lt;securestring&gt;] [&lt;CommonParameters&gt;]
+
+ConvertTo-SecureString [-String] &lt;string&gt; [-AsPlainText] [-Force] [&lt;CommonParameters&gt;]
+
+ConvertTo-SecureString [-String] &lt;string&gt; [-Key &lt;byte[]&gt;] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: ConvertTo-SecureString
+CommonParameters: True
+parameter:  
+name: ConvertTo-SecureString
+CommonParameters: True
+parameter:   
+name: ConvertTo-SecureString
+CommonParameters: True
+parameter:  </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>AsPlainText</strong></p>
+<p>  - <strong>Force</strong></p>
+<p>  - <strong>Key</strong></p>
+<p>  - <strong>SecureKey</strong></p>
+<p>  - <strong>String</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Security.SecureString
+
+</p>
+<p></p>
+<p></p>
+<h2>Get-Acl</h2>
+<p><strong>Type:</strong> Cmdlet</p>
+<p><strong>Synopsis:</strong> 
+Get-Acl [[-Path] &lt;string[]&gt;] [-Audit] [-Filter &lt;string&gt;] [-Include &lt;string[]&gt;] [-Exclude &lt;string[]&gt;] [&lt;CommonParameters&gt;]
+
+Get-Acl -InputObject &lt;psobject&gt; [-Audit] [-Filter &lt;string&gt;] [-Include &lt;string[]&gt;] [-Exclude &lt;string[]&gt;] [&lt;CommonParameters&gt;]
+
+Get-Acl [-LiteralPath &lt;string[]&gt;] [-Audit] [-Filter &lt;string&gt;] [-Include &lt;string[]&gt;] [-Exclude &lt;string[]&gt;] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Get-Acl
+CommonParameters: True
+parameter:     
+name: Get-Acl
+CommonParameters: True
+parameter:     
+name: Get-Acl
+CommonParameters: True
+parameter:     </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Audit</strong></p>
+<p>  - <strong>Exclude</strong></p>
+<p>  - <strong>Filter</strong></p>
+<p>  - <strong>Include</strong></p>
+<p>  - <strong>InputObject</strong></p>
+<p>  - <strong>LiteralPath</strong></p>
+<p>  - <strong>Path</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Security.AccessControl.FileSecurity
+System.Security.AccessControl.DirectorySecurity
+
+</p>
+<p></p>
+<p></p>
+<h2>Get-AuthenticodeSignature</h2>
+<p><strong>Type:</strong> Cmdlet</p>
+<p><strong>Synopsis:</strong> 
+Get-AuthenticodeSignature [-FilePath] &lt;string[]&gt; [&lt;CommonParameters&gt;]
+
+Get-AuthenticodeSignature -LiteralPath &lt;string[]&gt; [&lt;CommonParameters&gt;]
+
+Get-AuthenticodeSignature -SourcePathOrExtension &lt;string[]&gt; -Content &lt;byte[]&gt; [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Get-AuthenticodeSignature
+CommonParameters: True
+parameter: @{name=FilePath; required=true; pipelineInput=true (ByValue, ByPropertyName); isDynamic=false; globbing=false; parameterSetName=ByPath; parameterValue=string[]; type=; position=0; aliases=None}
+name: Get-AuthenticodeSignature
+CommonParameters: True
+parameter: @{name=LiteralPath; required=true; pipelineInput=true (ByPropertyName); isDynamic=false; globbing=false; parameterSetName=ByLiteralPath; parameterValue=string[]; type=; position=Named; aliases=PSPath, LP}
+name: Get-AuthenticodeSignature
+CommonParameters: True
+parameter:  </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Content</strong></p>
+<p>  - <strong>FilePath</strong></p>
+<p>  - <strong>LiteralPath</strong></p>
+<p>  - <strong>SourcePathOrExtension</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Management.Automation.Signature
+
+</p>
+<p></p>
+<p></p>
+<h2>Get-CmsMessage</h2>
+<p><strong>Type:</strong> Cmdlet</p>
+<p><strong>Synopsis:</strong> 
+Get-CmsMessage [-Content] &lt;string&gt; [&lt;CommonParameters&gt;]
+
+Get-CmsMessage [-Path] &lt;string&gt; [&lt;CommonParameters&gt;]
+
+Get-CmsMessage [-LiteralPath] &lt;string&gt; [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Get-CmsMessage
+CommonParameters: True
+parameter: @{name=Content; required=true; pipelineInput=true (ByValue); isDynamic=false; globbing=false; parameterSetName=ByContent; parameterValue=string; type=; position=0; aliases=None}
+name: Get-CmsMessage
+CommonParameters: True
+parameter: @{name=Path; required=true; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=ByPath; parameterValue=string; type=; position=1; aliases=None}
+name: Get-CmsMessage
+CommonParameters: True
+parameter: @{name=LiteralPath; required=true; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=ByLiteralPath; parameterValue=string; type=; position=1; aliases=None}</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Content</strong></p>
+<p>  - <strong>LiteralPath</strong></p>
+<p>  - <strong>Path</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Security.Cryptography.Pkcs.EnvelopedCms
+
+</p>
+<p></p>
+<p></p>
+<h2>Get-Credential</h2>
+<p><strong>Type:</strong> Cmdlet</p>
+<p><strong>Synopsis:</strong> 
+Get-Credential [[-Credential] &lt;pscredential&gt;] [&lt;CommonParameters&gt;]
+
+Get-Credential [[-UserName] &lt;string&gt;] [-Message &lt;string&gt;] [-Title &lt;string&gt;] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Get-Credential
+CommonParameters: True
+parameter: @{name=Credential; required=false; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=CredentialSet; parameterValue=pscredential; type=; position=0; aliases=None}
+name: Get-Credential
+CommonParameters: True
+parameter:   </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Credential</strong></p>
+<p>  - <strong>Message</strong></p>
+<p>  - <strong>Title</strong></p>
+<p>  - <strong>UserName</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Management.Automation.PSCredential
+
+</p>
+<p></p>
+<p></p>
+<h2>Get-ExecutionPolicy</h2>
+<p><strong>Type:</strong> Cmdlet</p>
+<p><strong>Synopsis:</strong> 
+Get-ExecutionPolicy [[-Scope] &lt;ExecutionPolicyScope&gt;] [-List] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Get-ExecutionPolicy
+CommonParameters: True
+parameter:  </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>List</strong></p>
+<p>  - <strong>Scope</strong></p>
+<p></p>
+<p><strong>Return: </strong> Microsoft.PowerShell.ExecutionPolicy
+
+</p>
+<p></p>
+<p></p>
+<h2>Get-PfxCertificate</h2>
+<p><strong>Type:</strong> Cmdlet</p>
+<p><strong>Synopsis:</strong> 
+Get-PfxCertificate [-FilePath] &lt;string[]&gt; [-Password &lt;securestring&gt;] [-NoPromptForPassword] [&lt;CommonParameters&gt;]
+
+Get-PfxCertificate -LiteralPath &lt;string[]&gt; [-Password &lt;securestring&gt;] [-NoPromptForPassword] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Get-PfxCertificate
+CommonParameters: True
+parameter:   
+name: Get-PfxCertificate
+CommonParameters: True
+parameter:   </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>FilePath</strong></p>
+<p>  - <strong>LiteralPath</strong></p>
+<p>  - <strong>NoPromptForPassword</strong></p>
+<p>  - <strong>Password</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Security.Cryptography.X509Certificates.X509Certificate2
+
+</p>
+<p></p>
+<p></p>
+<h2>New-FileCatalog</h2>
+<p><strong>Type:</strong> Cmdlet</p>
+<p><strong>Synopsis:</strong> 
+New-FileCatalog [-CatalogFilePath] &lt;string&gt; [[-Path] &lt;string[]&gt;] [-CatalogVersion &lt;int&gt;] [-WhatIf] [-Confirm] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: New-FileCatalog
+CommonParameters: True
+parameter:     </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>CatalogFilePath</strong></p>
+<p>  - <strong>CatalogVersion</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p>  - <strong>Path</strong></p>
+<p>  - <strong>WhatIf</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.IO.FileInfo
+
+</p>
+<p></p>
+<p></p>
+<h2>Protect-CmsMessage</h2>
+<p><strong>Type:</strong> Cmdlet</p>
+<p><strong>Synopsis:</strong> 
+Protect-CmsMessage [-To] &lt;CmsMessageRecipient[]&gt; [-Content] &lt;psobject&gt; [[-OutFile] &lt;string&gt;] [&lt;CommonParameters&gt;]
+
+Protect-CmsMessage [-To] &lt;CmsMessageRecipient[]&gt; [-Path] &lt;string&gt; [[-OutFile] &lt;string&gt;] [&lt;CommonParameters&gt;]
+
+Protect-CmsMessage [-To] &lt;CmsMessageRecipient[]&gt; [-LiteralPath] &lt;string&gt; [[-OutFile] &lt;string&gt;] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Protect-CmsMessage
+CommonParameters: True
+parameter:   
+name: Protect-CmsMessage
+CommonParameters: True
+parameter:   
+name: Protect-CmsMessage
+CommonParameters: True
+parameter:   </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Content</strong></p>
+<p>  - <strong>LiteralPath</strong></p>
+<p>  - <strong>OutFile</strong></p>
+<p>  - <strong>Path</strong></p>
+<p>  - <strong>To</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.String
+
+</p>
+<p></p>
+<p></p>
+<h2>Set-Acl</h2>
+<p><strong>Type:</strong> Cmdlet</p>
+<p><strong>Synopsis:</strong> 
+Set-Acl [-Path] &lt;string[]&gt; [-AclObject] &lt;Object&gt; [-ClearCentralAccessPolicy] [-Passthru] [-Filter &lt;string&gt;] [-Include &lt;string[]&gt;] [-Exclude &lt;string[]&gt;] [-WhatIf] [-Confirm] [&lt;CommonParameters&gt;]
+
+Set-Acl [-InputObject] &lt;psobject&gt; [-AclObject] &lt;Object&gt; [-Passthru] [-Filter &lt;string&gt;] [-Include &lt;string[]&gt;] [-Exclude &lt;string[]&gt;] [-WhatIf] [-Confirm] [&lt;CommonParameters&gt;]
+
+Set-Acl [-AclObject] &lt;Object&gt; -LiteralPath &lt;string[]&gt; [-ClearCentralAccessPolicy] [-Passthru] [-Filter &lt;string&gt;] [-Include &lt;string[]&gt;] [-Exclude &lt;string[]&gt;] [-WhatIf] [-Confirm] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Set-Acl
+CommonParameters: True
+parameter:         
+name: Set-Acl
+CommonParameters: True
+parameter:        
+name: Set-Acl
+CommonParameters: True
+parameter:         </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>AclObject</strong></p>
+<p>  - <strong>ClearCentralAccessPolicy</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p>  - <strong>Exclude</strong></p>
+<p>  - <strong>Filter</strong></p>
+<p>  - <strong>Include</strong></p>
+<p>  - <strong>InputObject</strong></p>
+<p>  - <strong>LiteralPath</strong></p>
+<p>  - <strong>Passthru</strong></p>
+<p>  - <strong>Path</strong></p>
+<p>  - <strong>WhatIf</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Security.AccessControl.FileSecurity
+
+</p>
+<p></p>
+<p></p>
+<h2>Set-AuthenticodeSignature</h2>
+<p><strong>Type:</strong> Cmdlet</p>
+<p><strong>Synopsis:</strong> 
+Set-AuthenticodeSignature [-FilePath] &lt;string[]&gt; [-Certificate] &lt;X509Certificate2&gt; [-IncludeChain &lt;string&gt;] [-TimestampServer &lt;string&gt;] [-HashAlgorithm &lt;string&gt;] [-Force] [-WhatIf] [-Confirm] [&lt;CommonParameters&gt;]
+
+Set-AuthenticodeSignature [-Certificate] &lt;X509Certificate2&gt; -LiteralPath &lt;string[]&gt; [-IncludeChain &lt;string&gt;] [-TimestampServer &lt;string&gt;] [-HashAlgorithm &lt;string&gt;] [-Force] [-WhatIf] [-Confirm] [&lt;CommonParameters&gt;]
+
+Set-AuthenticodeSignature [-Certificate] &lt;X509Certificate2&gt; -SourcePathOrExtension &lt;string[]&gt; -Content &lt;byte[]&gt; [-IncludeChain &lt;string&gt;] [-TimestampServer &lt;string&gt;] [-HashAlgorithm &lt;string&gt;] [-Force] [-WhatIf] [-Confirm] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Set-AuthenticodeSignature
+CommonParameters: True
+parameter:        
+name: Set-AuthenticodeSignature
+CommonParameters: True
+parameter:        
+name: Set-AuthenticodeSignature
+CommonParameters: True
+parameter:         </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Certificate</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p>  - <strong>Content</strong></p>
+<p>  - <strong>FilePath</strong></p>
+<p>  - <strong>Force</strong></p>
+<p>  - <strong>HashAlgorithm</strong></p>
+<p>  - <strong>IncludeChain</strong></p>
+<p>  - <strong>LiteralPath</strong></p>
+<p>  - <strong>SourcePathOrExtension</strong></p>
+<p>  - <strong>TimestampServer</strong></p>
+<p>  - <strong>WhatIf</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Management.Automation.Signature
+
+</p>
+<p></p>
+<p></p>
+<h2>Set-ExecutionPolicy</h2>
+<p><strong>Type:</strong> Cmdlet</p>
+<p><strong>Synopsis:</strong> 
+Set-ExecutionPolicy [-ExecutionPolicy] &lt;ExecutionPolicy&gt; [[-Scope] &lt;ExecutionPolicyScope&gt;] [-Force] [-WhatIf] [-Confirm] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Set-ExecutionPolicy
+CommonParameters: True
+parameter:     </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p>  - <strong>ExecutionPolicy</strong></p>
+<p>  - <strong>Force</strong></p>
+<p>  - <strong>Scope</strong></p>
+<p>  - <strong>WhatIf</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Test-FileCatalog</h2>
+<p><strong>Type:</strong> Cmdlet</p>
+<p><strong>Synopsis:</strong> 
+Test-FileCatalog [-CatalogFilePath] &lt;string&gt; [[-Path] &lt;string[]&gt;] [-Detailed] [-FilesToSkip &lt;string[]&gt;] [-WhatIf] [-Confirm] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Test-FileCatalog
+CommonParameters: True
+parameter:      </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>CatalogFilePath</strong></p>
+<p>  - <strong>Confirm</strong></p>
+<p>  - <strong>Detailed</strong></p>
+<p>  - <strong>FilesToSkip</strong></p>
+<p>  - <strong>Path</strong></p>
+<p>  - <strong>WhatIf</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Management.Automation.CatalogValidationStatus
+System.Management.Automation.CatalogInformation
+
+</p>
+<p></p>
+<p></p>
+<h2>Unprotect-CmsMessage</h2>
+<p><strong>Type:</strong> Cmdlet</p>
+<p><strong>Synopsis:</strong> 
+Unprotect-CmsMessage [-EventLogRecord] &lt;EventLogRecord&gt; [[-To] &lt;CmsMessageRecipient[]&gt;] [-IncludeContext] [&lt;CommonParameters&gt;]
+
+Unprotect-CmsMessage [-Content] &lt;string&gt; [[-To] &lt;CmsMessageRecipient[]&gt;] [-IncludeContext] [&lt;CommonParameters&gt;]
+
+Unprotect-CmsMessage [-Path] &lt;string&gt; [[-To] &lt;CmsMessageRecipient[]&gt;] [-IncludeContext] [&lt;CommonParameters&gt;]
+
+Unprotect-CmsMessage [-LiteralPath] &lt;string&gt; [[-To] &lt;CmsMessageRecipient[]&gt;] [-IncludeContext] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Unprotect-CmsMessage
+CommonParameters: True
+parameter:   
+name: Unprotect-CmsMessage
+CommonParameters: True
+parameter:   
+name: Unprotect-CmsMessage
+CommonParameters: True
+parameter:   
+name: Unprotect-CmsMessage
+CommonParameters: True
+parameter:   </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Content</strong></p>
+<p>  - <strong>EventLogRecord</strong></p>
+<p>  - <strong>IncludeContext</strong></p>
+<p>  - <strong>LiteralPath</strong></p>
+<p>  - <strong>Path</strong></p>
+<p>  - <strong>To</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.String
+
+</p>
+<p></p>
+<p></p>
+<footer><p>&Copy-Item; David G. Horsman. All rights reserved.</p></footer>
+    <!-- <footer><p>{{Footer}}&Copy-Item; David G. Horsman. All rights reserved.</p></footer> -->
 </body>
 </html>

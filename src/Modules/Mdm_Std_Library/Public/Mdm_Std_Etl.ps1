@@ -1,6 +1,6 @@
 
 #region Path and directory
-function Get-DirectoryNameFromSaved {
+function Get-SavedDirectoryName {
     <#
     .SYNOPSIS
         Get saved directory.
@@ -20,7 +20,7 @@ function Get-DirectoryNameFromSaved {
     .OUTPUTS
         Does a Set-Location to this directory. Rhelpeturns it as a string.
     .EXAMPLE
-        Get-DirectoryNameFromSaved
+        Get-SavedDirectoryName
     .NOTES
         none.
 #>
@@ -33,7 +33,7 @@ function Get-DirectoryNameFromSaved {
         [Parameter(Mandatory = $false)]
         [string]$dirWdPassed
     )
-    # Get-DirectoryNameFromSaved
+    # Get-SavedDirectoryName
     # don't alter the Saved Working Directory
     # when setting to a passed Working Directory
     if ($null -ne $dirWdPassed) { $dirWdTemp = $dirWdPassed } 
@@ -48,7 +48,7 @@ function Get-DirectoryNameFromSaved {
     }
     $dirWdTemp
 }
-function Set-SavedToDirectoryName {
+function Set-SavedDirectoryName {
     <#
     .SYNOPSIS
         Save working directory.
@@ -60,7 +60,7 @@ function Set-SavedToDirectoryName {
     .OUTPUTS
         none.
     .EXAMPLE
-        Set-SavedToDirectoryName "C:\PathToSave"
+        Set-SavedDirectoryName "C:\PathToSave"
 #>
 
 
@@ -70,7 +70,7 @@ function Set-SavedToDirectoryName {
         # [switch]$DoVerbose,
         [Parameter(Mandatory = $false)]
         [string]$dirWdPassed
-    )    # Set-SavedToDirectoryName
+    )    # Set-SavedDirectoryName
     if ($null -ne $dirWdPassed) { 
         $global:dirWdSaved = $dirWdPassed 
     } else {
@@ -142,7 +142,7 @@ function Set-LocationToPath {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [String]$workingDirectory,
+        [string]$workingDirectory,
         [switch]$saveDirectory
     )
     # TODO validate the passed workingDirectory
@@ -151,7 +151,7 @@ function Set-LocationToPath {
     # Note: This shouldn't fail; if it did, it would indicate a
     # serious system-wide problem.
     if ($saveDirectory -and $global:dirWdSaved -ne $PWD.Path) {
-        Set-SavedToDirectoryName($PWD.Path)
+        Set-SavedDirectoryName($PWD.Path)
     }
     if ($PWD -ne $workingDirectory) {
         Set-Location -ErrorAction Stop -LiteralPath $workingDirectory
@@ -289,7 +289,7 @@ function Get-LineFromFile {
     # Check if the file exists
     if (-Not (Test-Path $FileName)) {
         $Message = "The script '$FileName' does not exist."
-        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -logFileNameFull $global:logFileNameFull
+        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_
         return
     }
     # Read the content of the script file
@@ -298,7 +298,7 @@ function Get-LineFromFile {
     # Check if the line number is valid
     if ($FileLineNumber -lt 1 -or $FileLineNumber -gt $scriptContent.Count) {
         $Message = "Line number $FileLineNumber is out of range for the script '$FileName'."
-        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -logFileNameFull $global:logFileNameFull
+        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_
         return
     }
 
@@ -309,296 +309,65 @@ function Get-LineFromFile {
     return $lineText
 }
 #endregion
-#region Convert
-function ConvertFrom-HashValue {
+#region Scope
+function Resolve-Type {
+    param (
+        [string]$TypeName
+    )
+
+    # Initialize a variable to hold the result
+    $typeFound = $false
+
+    # Check all loaded assemblies for the specified type
+    $types = [AppDomain]::CurrentDomain.GetAssemblies() | ForEach-Object {
+        $_.GetTypes() | Where-Object { $_.Name -eq $TypeName }
+    }
+
+    # If the type is found, set the flag to true
+    if ($types) {
+        $typeFound = $true
+        Write-Host "$TypeName type found."
+    } else {
+        Write-Host "$TypeName type not found."
+    }
+
+    # Return the result
+    return $typeFound
+}
+function Get-VariableScoped {
     [CmdletBinding()]
     param (
-        $textIn,
-        $textOut = @(),
-        $textLineBreak = "`n"
+        [string]$variableName,
+        [string]$scope = "Global"
     )
     process {
-        Write-Debug "String"
-        $textOutExtra = @()
-        # $textInType = $textIn.GetType()
-        # Write-Debug " "
-        # Write-Debug "TextIn Name: $($textIn.Name)"
-        # Write-Debug "TextIn Type: $($textInType)"
-        # Write-Debug "TextIn TypeNameOfValue: $($textIn.TypeNameOfValue)"
-        # Write-Debug "TextIn Value: $($textIn.Value)"
-        foreach ($textItem in $textIn.PSObject.Properties) {
-            # $textItem = $textItem.Key
-            # Write-Debug " "
-            # Write-Debug "Object Key: $($textItem.Name)"
-            # Write-Debug "Object Type: $($textItem.TypeNameOfValue)"
-            # Write-Debug "Object Value: $($textItem.Value)"
-            if ($textItem.Name -eq "Name" -or $textItem.Name -eq "name") {
-                Write-Debug "Name"
-                $textOut += "$($textItem.Value)$textLineBreak"
-            } elseif ($textItem.Name -eq "Text" -or $textItem.Name -eq "text") {
-                Write-Debug "Text"
-                $textOut += "$($textItem.Value)$textLineBreak"
-            } elseif ($textItem.Name -eq "Description" -or $textItem.Name -eq "description") {
-                Write-Debug "Description"
-                $textInType = $textItem.Value.GetType().FullName
-                if ($textInType -eq "System.String") { 
-                    Write-Debug "String"
-                    # If it's a string, just use it directly
-                    $textOut += "$($textItem.Name): $($textItem.Value)$textLineBreak"
-                } else {
-                    Write-Debug "Name also"
-                    $textOut += "$($textItem.Name): $(ConvertTo-Text $textItem.Value)$textLineBreak"
-                }
-            } elseif ($textItem.Name -eq "Type" -or $textItem.Name -eq "type") {
-                Write-Debug "Type"
-                $textOut += ConvertTo-Text $textItem.Value
-            } elseif ($textItem.Name -eq "syntaxItem") {
-                Write-Debug "syntaxItem"
-                $textOut += ConvertTo-Text $textItem.Value
-            } elseif ($textItem.Name -eq "returnValue") {
-                Write-Debug "returnValue"
-                $textOut += ConvertTo-Text $textItem.Value
-            } elseif ($textItem.Name -eq "parameter") {
-                Write-Debug "parameter"
-                $textOut += ConvertTo-Text $textItem.Value
-            } elseif ($textItem.Name -eq "textItem") {
-                Write-Debug "textItem"
-                $textOut += ConvertTo-Text $textItem.Value
-            } else {
-                Write-Debug "Other"
-                $textOutExtra += "$($textItem.Name): $($textItem.Value)$textLineBreak"
-            }
+        if ($variableName) {
+            # Get the variable from the scope
+            $variable = Get-Variable -Name $variableName -Scope $scope -ErrorAction SilentlyContinue
+        } else {
+            $variableName = "result for $scope"
+            $variable = Get-Variable -Scope $scope -ErrorAction SilentlyContinue
         }
-        # foreach ($textItem in $textOutExtra) {
-        #     Write-Host "Item: $textItem, Type: $($textItem.GetType().Name)"
-        # }
-        # Write-Host "Contents of textOutExtra:"
-        # $textOutExtra | ForEach-Object { Write-Host $_ }        
-        # $textOutString = $textOutExtra -join ", "
-        $textInType = $textOutExtra.GetType().Name
-        [string]$textOutString = ""
-        foreach ($textItem in $textOutExtra) {
-            $textInType = $textItem.GetType().Name
-            if ($textOutString.Length -ge 1) { $textOutString += ", " }
-            [string]$textOutString += $textItem.Trim()
-        }
-        if ($textOutString.Length -ge 1) { $textOut += $textOutString }
-        return $textOut
-    }
-}
-function ConvertTo-Text {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [ValidateNotNullOrEmpty()]
-        $textIn
-    )
-    Write-Debug "ConvertTo-Text"
-    # Initialize description text
-    $textOut = @()
-    if ($textIn) {
-        $textInType = $textIn.GetType().FullName
-        $properties = $textIn.PSObject.Properties
-        # Output the structure of the detailed description for inspection
-        # $textIn | Get-Member
-        switch ( $textInType ) {
-            "hashtable" {
-                Write-Debug "hashtable"
-                # Access the description property
-                if ($textIn.ContainsKey('Text')) {
-                    if ($textIn.text -is [System.Collections.IEnumerable] `
-                            -and -not ($textIn.text -is [string])) {
-                        # If the description is an array, join it into a single string
-                        # $textOut = $textIn.text -join "`n"
-                        $textOut += $textIn.text
-                    } else {
-                        $textOut += $textIn.text
-                    }
-                }
-            }
-            "System.Object[]" {
-                Write-Debug "Object[]"
-                # Create the output string, including all properties and avoiding empty strings
-                $formattedProperties = @()
-                $textIn | ForEach-Object {
-                    # Create a formatted string for each property
-                    $tmp = $_.PSObject
-                    Write-Debug $tmp
-                    # $formattedProperties += $_
-
-                    # Loop through each property in the object
-                    $properties = $_.PSObject.Properties
-                    if ($properties) {
-                        foreach ($property in $properties) {
-                            if ($property -eq "parameter") {}
-                            if (-not [string]::IsNullOrWhiteSpace($property.Name)) {
-                                $formattedProperties += "$($property.Name): $($property.Value)"
-                            } elseif (-not [string]::IsNullOrWhiteSpace($property.Value)) {
-                                $formattedProperties += "$($property.Value)"
-                            } else {
-                                $formattedProperties += "$property"
-                            }
-                        }
-                    }
-
-                    # # Create a formatted string for each property
-                    # $formattedProperties = $_.GetEnumerator() | Where-Object { -not [string]::IsNullOrWhiteSpace($_.Value) } | 
-                    # ForEach-Object { "$($_.Key): $($_.Value)" }
-
-                    # Join the formatted properties with a comma and space
-                    # $formattedString = $formattedProperties -join ", "
-
-                    # Return the formatted string
-                    # $formattedString
-                }
-                $textOut += $formattedProperties -join "`n"  # Join with new line for better readability            
-            }            
-            "System.Management.Automation.PSObject[]" {
-                Write-Debug "PSObject[]"
-                # If it's an array of PSObjects, join their 'text' properties
-                # Create the output string, including all properties and avoiding empty strings
-                $textIn | ForEach-Object {
-                    ConvertTo-Text $_
-                    # Create a formatted string for each property
-                    # $formattedProperties = @()
-                    # # Loop through each property in the object
-                    # foreach ($property in $_.PSObject.Properties) {
-                    #     if (-not [string]::IsNullOrWhiteSpace($property.Value)) {
-                    #         $formattedProperties += "$($property.Name): $($property.Value)"
-                    #     }
-                    # }
-                    # Join the formatted properties with a comma and space
-                }
-                # $textOut += $formattedProperties -join "`n"  # Join with new line for better readability            
-            }
-            "System.Management.Automation.PSObject" {
-                Write-Debug "PSObject"
-                # Handle the case where $textIn is a single PSObject
-                $properties = $textIn.PSObject.Properties
-                $formattedProperties = @()
-                foreach ($property in $properties) {
-                    $formattedProperties += "$($property.Name): $($property.Value)"
-                }
-                $textOut += $formattedProperties -join "`n"  # Join with new line for better readability            
-            }
-            "System.Collections.IEnumerable" {
-                Write-Debug "IEnumerable"
-                # Access the Text property if it exists
-                $textOut += ($textIn | ForEach-Object {
-                        if ($textIn.PSObject.Properties['Text']) { $textInType.Text } 
-                    }) -join "`n"
-            }
-            "System.Management.Automation.PSCustomObject" {
-                Write-Debug "PSCustomObject"
-                # Create a formatted string of properties
-                $properties = $textIn.PSObject.Properties
-                $textOut += ConvertFrom-HashValue -textIn $textIn -textOut $textOut
-            }
-            "System.String" { 
-                Write-Debug "String"
-                # If it's a string, just use it directly
-                $textOut += $textIn            
-            }
-            default { 
-                Write-Debug "default: $textInType"
-                # Unknow object
-                # TODO throw warning
-                $textOut += $textIn            
-            }
-        }
-    } else { 
-        $textOut += "No detailed description available."
-        Write-Debug $textOut
-    }
-    $textOutType = $textOut.GetType()
-    Write-Debug "Result: $textOut (type: $textOutType)"
-    return $textOut
-}
-function ConvertTo-ObjectArray {
-    [CmdletBinding()]
-    Param(
-        [Parameter(ValueFromPipeline = $True, ValueFromPipelineByPropertyName = $True)]
-        [object[]]$InputObjects
-    )
-    # asked Jun 26, 2014 at 13:43 nlowe's
-    begin {
-        $OutputObjects = New-Object System.Collections.ArrayList($null)
-    }
-    process {
-        $OutputObjects.Add($_) | Out-Null
-    }
-    end {
-        Write-Debug "Passing off $($OutputObjects.Count) objects downstream" 
-        # return ,$OutputObjects.ToArray()
-        @(, $OutputObjects)
-    }
-}
-# escape text
-function ConvertTo-EscapedText {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        $textIn,
-        $logFileNameFull = "",
-        [switch]$KeepWhitespace,
-        [switch]$KeepEscapes
-    )
-    process {
-        Write-Debug "Escape Text"
-        # Initialize description text
-        $textOut = $textIn
-        if ($textOut) {
-            $textInType = $textIn.GetType().FullName
-            switch ( $textInType ) {
-                # Create the output string, including all properties and avoiding empty strings
-                "System.String" { 
-                    Write-Debug "String"
-                    if (-not $KeepWhitespace) { $textOut = $textOut.TrimEnd() }
-                    if (-not $KeepEscapes) {
-                        $textOut = $textOut `
-                            -replace '&', '&amp;' `
-                            -replace '<', '&lt;' `
-                            -replace '>', '&gt;' `
-                            -replace '"', '&quot;' `
-                            -replace "'", '&apos;'    
-                    }
-                }
-                "System.Object[]" {
-                    Write-Debug "Object[]"
-                    # Recursive loop
-                    foreach ($textRow in $textOut) {
-                        <# $textRow is the current item #>
-                        $textRow = ConvertTo-EscapedText $textRow $logFileNameFull `
-                            -KeepEscapes:$KeepEscapes `
-                            -KeepWhitespace:$KeepWhitespace
-                    }
-                }              
-                default { 
-                    Write-Debug "Unknow object"
-                    # TODO throw warning
-                    $textOut += "Error. Cant handle type $textInType for $textIn"
-                    Add-LogText $textOut
-                }
-            }       
+        
+        if ($null -ne $variable) {
+            return $variable.Value
+        } else {
+            Write-Warning -Message "Get-VariableScoped: Variable $variableName does not exist in the global scope."
+            return $null
         }
     }
-    end {
-        return $textOut
+}
+function Test-ResolveType {
+    Example usage
+    $typeToCheck = "WFWindow"
+    $exists = Resolve-Type -TypeName $typeToCheck
+
+    if ($exists) {
+        Write-Host "You can proceed with using the $typeToCheck type."
+    } else {
+        Write-Host "The $typeToCheck type is not available."
     }
 }
-function ConvertTo-TrimmedText {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        $textIn,
-        $logFileNameFull = ""
-    )
-    process {
-        Write-Debug "Trim Text"
-        return ConvertTo-EscapedText $textIn $logFileNameFull -KeepEscapes 
-    }
-}
-#endregion
 function Resolve-Variables {
     [CmdletBinding()]
     param (
@@ -630,7 +399,7 @@ function Resolve-Variables {
                     $resolvedString = $resolvedString -replace [regex]::Escape($match.Value), $varValue
                 } else {
                     $Message = "Resolve-Variables: $varName has a null value."
-                    Add-LogText $Message -IsError -ErrorPSItem $_ -logFileNameFull $global:logFileNameFull
+                    Add-LogText $Message -IsError -ErrorPSItem $_
                 }
             }
             Write-Debug "$i variables found."
@@ -642,440 +411,7 @@ function Resolve-Variables {
 
     } catch {
         $Message = "Resolve-Variables encountered an error."
-        Add-LogText $Message -IsError -ErrorPSItem $_ -logFileNameFull $global:logFileNameFull        
-    }
-}
-function Resolve-Variables3 {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [string]$inputString
-    )
-    # Use a regex to find all variable references in the string
-    try {
-        # $resolvedString = $inputString -replace '\$([a-zA-Z_]\w*|$\$[^$]+\))', {
-        if ($inputString -match '\$(\w+)') {
-            Write-Host "Match found: $($matches[0])"
-            $varTemp = $matches
-            # param($matches)
-            # Check if matches are found
-            if ($matches.Count -gt 0) {
-                # Get the variable name from the match
-                $varName = $matches[1]
-                Write-Host "Variable: $varName"
-                # Use Get-Variable to retrieve the value of the variable
-                $varValue = (Get-Variable -Name $varName `
-                        -ValueOnly `
-                        -ErrorAction SilentlyContinue)
-                Write-Host "Variable value: $varValue"
-                if ($null -ne $varValue) {
-                    $resolvedString = $inputString -replace '\$(\w+)', $varValue       
-                    return $resolvedString
-                } else {
-                    $Message = "Resolve-Variables: $varName has a null value."
-                    Add-LogText $Message `
-                        -IsError -ErrorPSItem $_ `
-                        -logFileNameFull $global:logFileNameFull        
-                }
-            }
-            # Variable not found
-            return $inputString
-        } else {
-            Write-Host "Resolve-Variables, Variables found."
-            return $inputString
-        }
-        
-    } catch {
-        $Message = "Resolve-Variables encountered an error."
-        Add-LogText -Message $Message `
-            -IsError -ErrorPSItem $_ `
-            -logFileNameFull $global:logFileNameFull        
-    }
-    # return $resolvedString
-}
-function Resolve-Variables2 {
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [string]$inputString
-    )
-    # Use a regex to find all variable references in the string
-    # $resolvedString = $inputString -replace '\$([a-zA-Z_]\w*|$\$[^$]+\))', {
-    if ($inputString -match '\$(\w+)') {
-        Write-Host "Match found: $($matches[0])"
-    } else {
-        Write-Host "No match found."
-    }
-        
-    $resolvedString = $inputString -replace '\$(\w+)', {
-        param($matches)
-        # Check if matches are found
-        if ($matches.Count -gt 0) {
-            # Get the variable name from the match
-            $varName = $matches[1]
-            # Use Get-Variable to retrieve the value of the variable
-            $varValue = (Get-Variable -Name $varName -ValueOnly -ErrorAction SilentlyContinue)
-            if ($null -ne $varValue) {
-                return $varValue
-            }
-        }
-        
-        # Return the original if variable not found or no matches
-        return $matches[0]  # Return the original match (e.g., $PSScri        # return $inputString      
-    }
-    return $resolvedString
-}
-#region Logging
-function Add-LogText {
-    # per https://stackoverflow.com/questions/24432190/generic-parameter-in-powershell
-    # TODO: (Inprogress. Implement pipelines)
-    [CmdletBinding()]
-    param (
-        [Parameter(ValueFromPipeline = $True, ValueFromPipelineByPropertyName = $True, Mandatory = $true)]
-        $Message,
-        [Parameter(Mandatory = $false)]
-        [string]$logFileNameFull = "",
-        [switch]$KeepWhitespace,
-        [switch]$KeepEscapes,
-        [switch]$IsError,
-        [switch]$IsWarning,
-        [switch]$DoTraceWarningDetails,
-        [switch]$SkipScriptLineDisplay,
-        [Parameter(Mandatory = $false)]
-        $ForegroundColor,
-        [Parameter(Mandatory = $false)]
-        $BackgroundColor,
-        [Parameter(Mandatory = $false)]
-        [System.Management.Automation.ErrorRecord]$ErrorPSItem
-    )
-    begin {
-        try {
-            # Log File
-            if (-not $logFileNameFull) { $logFileNameFull = $global:logFileNameFull }
-            if (-not $logFileNameFull -or -not(Test-Path $logFileNameFull)) {
-                if (-not $logFileNameFull) { $logFileNameFull = (get-item $PSScriptRoot ).FullName }
-                $logFileNameFull = Open-LogFile -OpenLogFile -logFileNameFull $logFileNameFull
-            }
-            # $logFilePath = Split-Path -Path $logFileNameFull
-            # $logFIleName = Split-Path $logFileNameFull -PathType Leaf
-            # # Check if folder not exists, and create it
-            # if (-not(Test-Path $logFilePath -PathType Container)) {
-            #     New-Item -path $logFilePath -ItemType Directory
-            # }
-            # # Check if file exists, and create it
-            # if (-not(Test-Path $logFileNameFull -PathType Leaf)) {
-            #     New-Item -path $logFileNameFull -ItemType File
-            # }
-        } catch {
-            Write-Error -Message "Add-LogText Log File preparation error. $_"
-        }
-    }
-    process {
-        $MessageIndex = -1
-        foreach ($Message in $Message) {
-            try {
-                $MessageIndex++
-                # pre-process message (for html)
-                # TODO. Should the log be html also?
-                $Message = ConvertTo-EscapedText $Message -KeepEscapes
-                # $Message | Out-File -FilePath $logFileNameFull –Append
-            
-                # Display message to user
-                if ($IsError -or $IsWarning) {
-                    if ($IsError) {
-                        if ($global:UseTrace -and $ErrorPSItem) { 
-                            Add-LogError $Message `
-                                -IsError -ErrorPSItem $ErrorPSItem `
-                                -DoTraceWarningDetails:$DoTraceWarningDetails `
-                                -SkipScriptLineDisplay:$SkipScriptLineDisplay `
-                                -logFileNameFull $logFileNameFull
-                        } else {
-                            Write-Error -Message $Message
-                        }
-                        if ($global:DoDebugPause) {
-                            $null = Debug-Script -DoPause 60 -functionName "Error handling pause for debugger interupt (and step out)." -logFileNameFull $logFileNameFull
-                        }
-                    } elseif ($IsWarning) { 
-                        if ($global:UseTrace -and $global:UseTraceWarning -and $ErrorPSItem) { 
-                            Add-LogError -Message $Message `
-                                -IsWarning -ErrorPSItem $ErrorPSItem `
-                                -DoTraceWarningDetails:$DoTraceWarningDetails `
-                                -SkipScriptLineDisplay:$SkipScriptLineDisplay `
-                                -logFileNameFull $logFileNameFull
-                        } else {
-                            Write-Warning -Message $Message
-                        }
-                    }
-                } else { 
-                    if (-not $ForegroundColor) { $ForegroundColor = $global:messageForegroundColor }
-                    if (-not $ForegroundColor) { $ForegroundColor = [System.ConsoleColor]::White }
-                    if (-not $BackgroundColor) { $BackgroundColor = $global:messageBackgroundColor }
-                    if (-not $BackgroundColor) { $BackgroundColor = [System.ConsoleColor]::Black }
-                    Write-Host -Message $Message `
-                        -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
-                }
-                # Write to storage
-                $Message | Out-File -FilePath $logFileNameFull –Append
-            } catch {
-                Write-Error -Message "Add-LogText LogMessage processing error at index $MessageIndex. $_"
-            }
-        }
-    }
-}
-function Add-LogError {
-    [CmdletBinding()]
-    param (
-        [Parameter(ValueFromPipeline = $True, ValueFromPipelineByPropertyName = $True, Mandatory = $true)]
-        $Message,
-        [Parameter(Mandatory = $false)]
-        [System.Management.Automation.ErrorRecord]$ErrorPSItem,
-        [switch]$IsError,
-        [switch]$IsWarning,
-        [switch]$SkipScriptLineDisplay,
-        [switch]$DoTraceWarningDetails,
-        [Parameter(Mandatory = $false)]
-        $logFileNameFull = "",
-        [Parameter(Mandatory = $false)]
-        $ForegroundColor,
-        [Parameter(Mandatory = $false)]
-        $BackgroundColor
-    )
-    # You can capture both stdout and stderr to separate variables
-    # and then suppress all output:
-    # Invoke-Expression "somecommand.exe" `
-    #   -ErrorVariable errOut `
-    #   -OutVariable succOut 2>&1 >$null
-    # 1 is stdout, 2 is stderr, and 
-    # 2>&1 combines stderr into stdout. 
-    # Then >$null discards stdout
-    # also: $errOutput = $( $output = & $command $params ) 2>&1
-    begin { [string]$newMessage = "" }
-    process {
-        #region Error Objects, debugger, Script and Location of error
-        try {
-            if (-not $DoTraceWarningDetails) { $DoTraceWarningDetails = $global:DoTraceWarningDetails }
-            $callStack = Get-PSCallStack
-            if ($ErrorPSItem) { 
-                $global:lastError = $ErrorPSItem 
-            } else { 
-                $ErrorPSItem = $callStack
-            }
-            $localLastError = $Error
-            $scriptNameFull = $ErrorPSItem.InvocationInfo.ScriptName
-            $scriptName = Split-Path $scriptNameFull -leaf
-            $line = $ErrorPSItem.InvocationInfo.ScriptLineNumber
-            $column = $ErrorPSItem.InvocationInfo.OffsetInLine
-            $functionName = $($helpInfoObject.Name)
-            if (-not $functionName) { $functionName = $scriptName }
-            $null = Debug-SubmitFunction -pauseSeconds 5 -functionName "LogError for $functionName" -invocationFunctionName $($MyInvocation.MyCommand.Name) # Debug-Script
-        } catch {
-            Write-Error -Message "Add-LogError Error Object initialization error. $_"
-        }
-        #endregion
-        try {
-            #region Colors
-            if (-not $ForegroundColor) {
-                if ($IsError) { $ForegroundColor = $messageErrorForegroundColor }
-                elseif ($IsWarning) { $ForegroundColor = $messageWarningForegroundColor }
-                else { $ForegroundColor = $global:messageForegroundColor }
-            }
-            if (-not $BackgroundColor) {
-                if ($IsError) { $BackgroundColor = $messageErrorBackgroundColor }
-                elseif ($IsWarning) { $BackgroundColor = $messageWarningBackgroundColor }
-                else { $BackgroundColor = $global:messageBackgroundColor }
-            }
-            if (-not $ForegroundColor) { $ForegroundColor = [System.ConsoleColor]::Yellow }
-            if (-not $BackgroundColor) { $BackgroundColor = [System.ConsoleColor]::DarkBlue }
-            #endregion
-            #region Output
-            # Category prefix
-            if ($IsError) { $errorTypeText = "Error in " }
-            elseif ($IsWarning) { $errorTypeText = "Warning in " }
-            else { $errorTypeText = "" }
-            # Determine how much detail to output.
-            $traceDetails = $global:UseTraceDetails
-            if ($IsWarning -and -not $DoTraceWarningDetails) {
-                $traceDetails = $false
-            }
-            if ($traceDetails) {        
-                $errorLine = "============================================="
-                Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
-                $newMessage += $errorLine + "`n"
-            }
-            $errorLine = "$($errorTypeText)Script: $scriptName, line $line, column $column"
-            if (-not $SkipScriptLineDisplay) {
-                Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
-                $newMessage += $errorLine + "`n"
-            }
-            # Newlines are required after this line
-            $newMessage += $errorLine
-            #endregion
-            #region Error Detail
-            try {
-                $errorLine = $Message
-                Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
-                $newMessage += "`n" + $errorLine
-                if ($traceDetails) {        
-                    $errorLine = "Details: "
-                    Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
-                    $newMessage += "`n" + $errorLine
-
-                    $errorLine = "$($ErrorPSItem.Exception.Message)"
-                    Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
-                    $newMessage += "`n" + $errorLine
-
-                    $errorLine = "$($ErrorPSItem.CategoryInfo)"
-                    Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
-                    $newMessage += "`n" + $errorLine
-
-                    # Stack trace
-                    if ($global:UseTraceStack) {
-                        $newMessage += "`n"
-                        Write-Host " "
-                        $errorLine = "Stack trace: "
-                        Write-Host $errorLine -ForegroundColor Green -BackgroundColor $BackgroundColor
-                        $newMessage += "`n" + $errorLine
-
-                        $MessageLine = Get-CallStackFormatted $callStack "`n"
-                        $errorLine = $MessageLine.Trim()
-                        Write-Host $errorLine -ForegroundColor Green
-                        $newMessage += "`n" + $errorLine
-
-                        # if ($ErrorPSItem.ScriptStackTrace) {
-                        #     $newMessage += "`n"
-                        #     Write-Host " "
-                        #     $errorLine = "Script stack trace: "
-                        #     Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
-                        #     $newMessage += "`n" + $errorLine
-
-                        #     $errorLine = "$($ErrorPSItem.ScriptStackTrace)"
-                        #     Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
-                        #     $newMessage += "`n" + $errorLine
-                        # }
-                        # $errorLine = "$($ErrorPSItem.ScriptStackTrace)"
-                        # Write-Host $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
-                        # $newMessage += "`n" + $errorLine
-                    }
-                    # Additional details
-                    if ($traceDetails -and $($ErrorPSItem.ErrorDetails)) { 
-                        $newMessage += "`n"
-                        Write-Host " "
-                        $errorLine = "Additional details: "
-                        Write-Host -Message $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
-                        $newMessage += "`n" + $errorLine
-
-                        $errorLine = "$($ErrorPSItem.ErrorDetails)"
-                        Write-Host -Message $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
-                        $newMessage += "`n" + $errorLine
-                    }
-                    $errorLine = "============================================="
-                    Write-Host -Message $errorLine -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
-                    $newMessage += "`n" + $errorLine
-                }
-            } catch {
-                Write-Error -Message "Add-LogError ouput processing Trace Details error. $_"
-            }
-            #endregion
-        } catch {
-            Write-Error -Message "Add-LogError output processing error. $_"
-        }
-    }
-    end { return $newMessage }
-}
-function Open-LogFile {
-    [CmdletBinding()]
-    param (
-        # Does not include the file extension
-        [string]$logFileNameFull,
-        [string]$logFilePath,
-        [string]$logFileName,
-        [string]$logFileExtension = "txt",
-        [switch]$OpenLogFile,
-        [switch]$LogOneFile,
-        [switch]$SkipCreate
-    )
-    begin {
-        try {
-            if ($LogOneFile) { $global:LogOneFile = $LogOneFile }
-            if ($logFileNameFull -and ($logFilePath -or $logFileName)) {
-                Write-Warning -Message "Open-LogFile error, don't specify the Full file name AND a FilePath or FileName."
-                Write-Warning -Message "FileNameFull will be used and parsed."
-            }
-            if ($logFileNameFull) {
-                $logFilePath = Split-Path -Path $logFileNameFull
-                # $logFileNameWithExtension = Split-Path $logFileNameFull -leaf
-                $logFileName = [System.IO.Path]::GetFileName($logFileNameFull)
-                $logFileExtension = [System.IO.Path]::GetFileNameWithoutExtension($logFileNameFull)
-            }
-            if ($logFilePath -or $logFileName) {
-                # Save changes
-                if (-not $logFilePath) { $logFilePath = "$global:projectRootPath\Log" }
-                $global:logFilePath = $logFilePath
-                if (-not $logFileName) { $logFileName = "Mdm_Installation_Log" }
-                $global:logFileName = $logFileName
-                if (-not $logFileNameFull) { $logFileNameFull = "$logFilePath\$logFileName.$logFileExtension" }
-            } else {
-                # Use defaults
-                if (-not $global:logFileNameFull) {
-                    $global:logFileName = "$($global:companyNamePrefix)_Installation_Log"
-                    $global:logFilePath = "$global:projectRootPath\log"
-                    # Use a single log file repeatedly appending to it.
-                    # The date and time will be appended to the name when LogOneFile is false.
-                    [bool]$global:LogOneFile = $LogOneFile
-                }
-                $logFilePath = $global:logFilePath
-                $logFileName = $global:logFileName
-                $LogOneFile = $global:LogOneFile
-            }
-            # Construct the full log file name
-            # $logFileNameFull = Join-Path -Path $logFilePath -ChildPath $logFileName
-            $logFileNameFull = "$logFilePath\$logFileName"
-            if (-not $LogOneFile) { $logFileNameFull = "$($logFileNameFull)_$global:timeStartedFormatted" }
-            $logFileNameFull = "$logFileNameFull.$logFileExtension"
-            $global:logFileNameFull = $logFileNameFull
-        } catch {
-            Write-Error -Message "Open-LogFile error processing file name information. $_"
-        }
-    }
-    process {
-        try {
-            # Log folder
-            try {
-                # Check if folder not exists, and create it
-                if (-not(Test-Path $logFilePath -PathType Container)) {
-                    if (-not $SkipCreate) { New-Item -path $logFilePath -ItemType Directory }
-                }
-                $logFilePath = Convert-Path $logFilePath
-            } catch {
-                Write-Error -Message "Open-LogFile error processing file path $logFilePath. $_"
-            }
-    
-            try {
-                # Check if file exists, and create it
-                if (-not(Test-Path $logFileNameFull -PathType Leaf)) {
-                    if (-not $SkipCreate) { New-Item -path $logFileNameFull -ItemType File }
-                }
-                if ($LogOneFile) { 
-                    try {
-                        $logFileNameFull = Convert-Path $logFileNameFull
-                    } catch {
-                        Write-Warning -Message "Open-LogFile didn't find file $logFileNameFull."
-                    }
-                }
-            } catch {
-                Write-Error -Message "Open-LogFile error creating file $logFileName. $_"
-            }            
-        } catch {
-            Write-Error -Message "Oper-LogFile had an unexpected error. File: $logFileName. Error: $_"
-        }
-    }
-    end {
-        # Write-Host "Returning: $logFileNameFull"
-        # POWERSHELL ERROR. This cannot be return as a string.
-        # Weird bug. It becomes duplicated in an array [0] [1]
-        # Fix:
-        $global:logFileNameFull = $logFileNameFull
-        return $logFileNameFull
+        Add-LogText $Message -IsError -ErrorPSItem $_        
     }
 }
 #endregion
@@ -1096,9 +432,9 @@ function Write-HtlmData {
 
     [CmdletBinding()]
     param(
-        [Parameter(mandatory = $true, ValueFromPipeline = $true)]
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
         $InputObject,
-        [Parameter(mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         $FileName,
         $head = "<style></style>",
         $header = "<H1>Test Results</H1>",
@@ -1156,8 +492,8 @@ function Test-HtmlData {
 
     [CmdletBinding()]
     param (
-        [Parameter(mandatory = $true, ValueFromPipeline = $true)]$InputObject,
-        [Parameter(mandatory = $false)]$fileName = ""
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]$InputObject,
+        [Parameter(Mandatory = $false)]$fileName = ""
     )
     begin { }
     process { 
@@ -1179,7 +515,7 @@ function Get-RobocopyExitMessage {
     param ( 
         [int]$exitCode,
         [switch]$IsError
-        )
+    )
     switch ($exitCode) {
         0 { if ($IsError) { return $false } else { return "No errors occurred, no files copied" } }
         1 { if ($IsError) { return $false } else { return "All files copied successfully" } }

@@ -30,7 +30,7 @@
 	param
 	(
 		[Alias('Message')]
-		[String]$Description = "Please select a folder",
+		[string]$Description = "Please select a folder",
 		
 		[Alias('Path')]
 		[Environment+SpecialFolder]$RootFolder = "Desktop",

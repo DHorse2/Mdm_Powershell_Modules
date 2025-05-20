@@ -6,6 +6,6 @@ if (-not $global:DebugInScriptDebugger `
     $Message = "Debug $($MyInvocation.MyCommand.Name) for $($functionName)"
     Add-LogText -Message $Message `
         -IsWarning -DoTraceWarningDetails `
-        -logFileNameFull $global:logFileNameFull
+       
     $null = Debug-Script -DoPause 5 -functionName $functionName -logFileNameFull $logFileNameFull
 }

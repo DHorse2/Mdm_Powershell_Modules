@@ -29,15 +29,28 @@ Function Export-ModuleMemberScan {
     param (
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        [String]$moduleRootPath,
-        [Parameter(Mandatory = $false)]
-        [string]$modulePublic = "",
-        [Parameter(Mandatory = $false)]
-        [string]$modulePrivate = ""
+        [string]$moduleRootPath,
+        [string]$modulePublicFolder,
+        [string]$modulePrivateFolder,
+        [switch]$DoForce,
+        [switch]$DoVerbose,
+        [switch]$DoDebug,
+        [switch]$DoPause
     )
     begin {
-        if (-not $modulePublic) { $modulePublic = "$moduleRootPath\Public" }
-        if (-not $modulePrivate) { $modulePrivate = "$moduleRootPath\Private" }
+        if (-not $modulePublicFolder) { $modulePublic = "$moduleRootPath\Public" }
+        else { $modulePublic = "$moduleRootPath\$modulePublicFolder" }
+        if (-not $modulePrivateFolder) { $modulePrivate = "$moduleRootPath\Private" }
+        else { $modulePrivate = "$moduleRootPath\$modulePrivateFolder" }
+
+        # Create a new module object
+        $module = New-Object PSObject -Property @{
+            Name             = [System.IO.Path]::GetFileName($moduleRootPath)
+            Path             = $moduleRootPath
+            PublicFunctions  = @()
+            PrivateFunctions = @()
+            Scripts          = @()
+        }
     }
     process {
         # Export-ModuleMemberScan
@@ -45,47 +58,86 @@ Function Export-ModuleMemberScan {
         $Flat = @( Get-ChildItem -Path "$moduleRootPath\*.ps1" -ErrorAction SilentlyContinue )
         $Public = @( Get-ChildItem -Path "$modulePublic\*.ps1" -ErrorAction SilentlyContinue )
         $Private = @( Get-ChildItem -Path "$modulePrivate\*.ps1" -ErrorAction SilentlyContinue )
-        Write-Host "Loading... $moduleRootPath"
+        if ($DoVerbose) {
+            $Message = "ModuleMemberScan Module: $moduleRootPath"
+            Add-LogText -Message $Message
+        }
+        $traceDetails = $false
         # Dot source the files
         Foreach ($import in @($Public + $Private + $Flat)) {
             Try {
-                Write-Host -Message "Module Component: $($import.FullName) with functions: $($functions.Name -join ', ')"
-                # Check if the script contains any functions
-                $functions = Get-Command -Name * -CommandType Function | Where-Object { $_.Source -eq $import.FullName }
+                # $fileName = Split-Path $import -leaf
+                $functionName = $fileName = [System.IO.Path]::GetFileNameWithoutExtension($import.FullName)
+                # Get functions defined in the script
+                $functions = Get-Command -Name * -CommandType Function | Where-Object { $_.Source -eq $import.FullName } -ErrorAction Continue
+                if ($functions) {
+                    $functionsString = $($functions | ForEach-Object { $_.Name } -join ', ')
+                } else { $functionsString = "$($functionName)_Func" }
+                if ($traceDetails) {
+                    if ($Verbose -or $DoVerbose) {
+                        $Message = "   Component: $($functionName) with functions: $functionsString"
+                        Add-LogText -Message $Message
+                    } else {
+                        $Message = "$functionName "
+                        Add-LogText -Message $Message -NoNewline
+                    }
+                }
                 if ($functions) {
                     # If functions are found, dot-source the file
                     . $import.FullName
-                    
-                    # Export Public functions
-                    if ($import.FullName.IndexOf("Private") -lt 0) {
-                        Export-ModuleMember -Function $functions.Name
-                        Write-Host -Message "    Public Component: $($import.FullName) with functions: $($functions.Name -join ', ')"
-                    } else { 
-                        Write-Host -Message "    Private Component: $($import.FullName) skipped."
+                    if ($traceDetails -and ($Verbose -or $DoVerbose)) {
+                        $Message = "        Function imported: $($import.FullName)" 
+                        Add-LogText -Message $Message -ForegroundColor Green 
                     }
                 } else {
-                    # If no functions are found, execute the script directly
-                    & $import.FullName
-                    Write-Host -Message "    Executable Script: $($import.FullName)"
                     # If no functions are found, create a wrapper function
-                    $scriptName = [System.IO.Path]::GetFileNameWithoutExtension($import.FullName) + "_Func"
+                    if ($traceDetails -and ($Verbose -or $DoVerbose)) {
+                        $Message = "        Executable Script: $($import.FullName)" 
+                        Add-LogText -Message $Message -ForegroundColor Green 
+                    }
+                    $scriptNameFull = $import.FullName
+                    $scriptName = "$($functionName)_Func"
+                    $functionsString = $scriptName
                     $wrapperFunction = @"
 function $scriptName {
     & `"$($import.FullName)`"
 }
 "@
                     # Use Invoke-Expression to define the wrapper function
-                    $null = Invoke-Expression $wrapperFunction
-                    Export-ModuleMember -Function $scriptName
-                    # Export-ModuleMember -Function $functions.Name
-                    # (You could prompt to execute here. Don't.)
-                    Write-Host -Message "Created wrapper function: $scriptName for script: $($import.FullName)"                    
+                    Invoke-Expression $wrapperFunction
+                    if ($traceDetails -and ($Verbose -or $DoVerbose)) {
+                        $Message = " Created wrapper function: $scriptName." # Script: $scriptNameFull"
+                        Add-LogText -Message $Message -ForegroundColor Green 
+                    }
                 }
-            } Catch {
-                Add-LogError -IsError -ErrorPSItem $ErrorPSItem -Message "Failed to import component $($import.FullName): $_"
+                if ($import.FullName.IndexOf("Private") -lt 0) {
+                    # Public and Common (Root)
+                    Export-ModuleMember -Function $functionsString
+                    $module.PublicFunctions += $functionsString
+                    if ($traceDetails -and ($Verbose -or $DoVerbose)) {
+                        $Message = "         Public Component: $($import.FullName) with functions: $($functions.Name -join ', ')"
+                        Add-LogText -Message $Message -ForegroundColor Green 
+                    }
+                } else { 
+                    # Private
+                    $module.PrivateFunctions += $functionsString
+                    if ($traceDetails -and ($Verbose -or $DoVerbose)) {
+                        $Message = "         Private Component: $($import.FullName) skipped." 
+                        Add-LogText -Message $Message -ForegroundColor Green 
+                    }
+                }
+            } catch {
+                $Message = "Failed to import component $($import.FullName):"
+                Add-LogText -IsWarning -ErrorPSItem $_ -Message $Message
+                # Add-LogText -Message $Message
             }
         }
+        if ($traceDetails -and -not($Verbose -or $DoVerbose)) {
+            $Message = " " 
+            Add-LogText -Message $Message
+        }
     }
+    end { return $module }
 }
 function Import-These {
     <#
@@ -108,7 +160,7 @@ Import-These -moduleRootPath "C:\Path\To\Module" -functionNames "Function1", "Fu
     param (
         [Parameter(Mandatory = $false)]
         [ValidateNotNullOrEmpty()]
-        [String]$moduleRootPath,
+        [string]$moduleRootPath,
         [Parameter(Mandatory = $false)]
         [ValidateNotNullOrEmpty()]
         $moduleComponent,
@@ -130,15 +182,17 @@ Import-These -moduleRootPath "C:\Path\To\Module" -functionNames "Function1", "Fu
     
     process {
         $importFound = $false
+        $functionFound = $false
         try {
+            # $moduleComponent not done. IE "Mdm_Std_Errors.ps1" TODO
             if (-not $functionNames) {
                 Write-Verbose "Importing entire module: $moduleFileNameFull"
                 Import-Module $moduleFileNameFull -Force -Verbose -ErrorAction Stop
+                $importFound = $true
                 return $true
-            } else {
+            } elseif ($functionNames) {
                 # Read the content of the script file
                 $content = Get-Content -Path $moduleFileNameFull -ErrorAction Stop
-
                 # Loop through each line in the content
                 foreach ($line in $content) {
                     # Use a regex to match function definitions
@@ -153,6 +207,7 @@ Import-These -moduleRootPath "C:\Path\To\Module" -functionNames "Function1", "Fu
                         $functionNameNext = $matches[1]
                         if ($functionNames -contains $functionNameNext) {
                             # Found a/the function
+                            $functionFound = $true
                             Write-Verbose "Found function: $functionNameNext"
                             if (-not $importFound) {
                                 $importFound = $true
@@ -164,14 +219,21 @@ Import-These -moduleRootPath "C:\Path\To\Module" -functionNames "Function1", "Fu
                         }
                     }
                 }
-            }
-            if (-not $importFound) { 
-                Write-Verbose "No specified functions found in the module."
-                return $false 
+            } else {
+                Throw "No module or functions specified."
             }
         } catch {
             Write-Error -Message "An error occurred: $_"
             return $false
+        }
+        if (-not $importFound -and -not $functionFound) {
+            if (-not $importFound) {
+                Write-Verbose "No import of the module $moduleFileNameFull."
+            }
+            if ($functionNames -and -not $functionFound) { 
+                Write-Verbose "No specified functions found in the module $moduleFileNameFull."
+            }
+            return $false 
         }
     }
     
@@ -181,7 +243,29 @@ Import-These -moduleRootPath "C:\Path\To\Module" -functionNames "Function1", "Fu
 }
 #endregion
 #region Module State
-
+function Confirm-Module {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [ValidateNotNullOrEmpty()]
+        [string]$Name,
+        [string]$modulePath,
+        [switch]$DoForce,
+        [switch]$DoVerbose,
+        [switch]$DoDebug,
+        [switch]$DoPause
+    )
+    process {
+        if (-not $modulePath) {
+            $modulePath = "$global:moduleRootPath\$Name"
+        }
+        if ($DoVerbose) { Write-Output "Exists: $(Test-Path "$modulePath"): $modulePath" }
+        if (-not(Test-Path "$modulePath\$Name.psm1") -and -not(Test-Path "$modulePath\$Name.psd1")) {
+            $moduleValid = $false
+        } else { $moduleValid = $true }
+    }
+    end { $moduleValid }
+}
 function Get-ModuleProperty {
     <#
     .SYNOPSIS

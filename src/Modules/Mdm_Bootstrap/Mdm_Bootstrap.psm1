@@ -1,11 +1,12 @@
+Using module "..\Mdm_Std_Library\Mdm_Std_Library.psm1"
 
 Write-Host "Mdm_Bootstrap.psm1"
 $now = Get-Date -UFormat '%Y%m%d%R%z'
-#region functions
+#region function Wrappers
 # Build and Update
 function Invoke-Build {
     [CmdletBinding()]
-    param ()
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
     process {
         $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Build.ps1"
         . "$path"
@@ -14,18 +15,27 @@ function Invoke-Build {
 }
 function Invoke-Update {
     [CmdletBinding()]
-    param ()
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
     process {
         $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Update.ps1"
         . "$path"
         # . "$global:moduleRootPath\Update.ps1"
     }
 }
-
+# Environment
+function Invoke-DevEnv_Module_Reset {
+    [CmdletBinding()]
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
+    process {
+        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Bootstrap\DevEnv_Module_Reset.ps1"
+        . "$path"
+        # . "$global:moduleRootPath\Mdm_Bootstrap\DevEnv_Module_Reset.ps1"
+    }
+}
 # Go To Locations
 function Enter-ProjectRoot {
     [CmdletBinding()]
-    param ()
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
     process {
         $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Bootstrap\Public\GoToProjectRoot.ps1"
         . "$path"
@@ -34,30 +44,20 @@ function Enter-ProjectRoot {
 }
 function Enter-ModuleRoot {
     [CmdletBinding()]
-    param ()
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
     process {
         $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Bootstrap\Public\GoToModuleRoot.ps1"
         . "$path"
         # . "$global:moduleRootPath\Mdm_Bootstrap\Public\GoToModuleRoot.ps1"
     }
 }
-function Enter-Bootstrap {
+function Enter-GoToBootstrap {
     [CmdletBinding()]
-    param ()
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
     process {
         $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Bootstrap\Public\GoToBootstrap.ps1"
         . "$path"
         # . "$global:moduleRootPath\Mdm_Bootstrap\Public\GoToBootstrap.ps1"
-    }
-}
-# Environment
-function DevEnv_Module_Reset_Func {
-    [CmdletBinding()]
-    param ()
-    process {
-        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Bootstrap\DevEnv_Module_Reset.ps1"
-        . "$path"
-        # . "$global:moduleRootPath\Mdm_Bootstrap\DevEnv_Module_Reset.ps1"
     }
 }
 # MAIN
@@ -136,7 +136,10 @@ function Initialize-Dev_Env_Win {
         Set-SecElevated
     
         # CONTINUE
-        Get-ModuleRootPath
+        # Project settings and paths
+        # Get-ModuleRootPath
+        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Modules\Project.ps1"
+        . "$path"
         $scriptDrive = Split-Path -Path "$global:moduleRootPath" -Qualifier
         Set-Location $scriptDrive
         Set-Location -Path "$global:moduleRootPath"
@@ -172,7 +175,7 @@ function Initialize-Dev_Env_Win {
         
     }
     # process { Copy-Item -Path $source -Destination $destination -Force -Recurse -PassThru | if ($DoVerbose) { ForEach-Object { Write-Verbose $_.FullName } } }
-    process { Write-Error -Message "This is not currently used. No robocopy"}
+    process { Write-Error -Message "This is not currently used. No robocopy" }
     end { Write-Verbose "Done " }
 }
 # Components:
@@ -256,7 +259,6 @@ function Add-RegistryPath {
     }
     end {}
 }
-# Source: https://stackoverflow.com/questions/5648931/test-if-registry-value-exists
 Function Assert-RegistryValue {
     <#
     .SYNOPSIS
@@ -272,7 +274,7 @@ Function Assert-RegistryValue {
     .EXAMPLE
         Assert-RegistryValue "PATH" 
     .NOTES
-        none.
+        Source: https://stackoverflow.com/questions/5648931/test-if-registry-value-exists
     .OUTPUTS
         True/Fale if the key exists.
         null/ItemProperty if PassThur switch is present.
@@ -280,10 +282,10 @@ Function Assert-RegistryValue {
     param(
         [Alias("PSPathTest")]
         [Parameter(Position = 0, Mandatory = $true)]
-        [String]$Path,
+        [string]$Path,
         [Parameter(Position = 1, Mandatory = $true)]
-        [String]$Name,
-        [Switch]$PassThru
+        [string]$Name,
+        [switch]$PassThru
     ) 
     begin {}
     process {
@@ -304,7 +306,6 @@ Function Assert-RegistryValue {
     }
     end {}
 }
-
 function Get-ModuleRootPath {
     [CmdletBinding()]
     param (
@@ -318,9 +319,10 @@ function Get-ModuleRootPath {
         }
     }
     process {
+        # Project settings and paths
+        # Get-ModuleRootPath
         $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Modules\Project.ps1"
         . "$path"
-
         # if (-not $global:moduleRootPath) {
         #     if (-not $folderPath) { $folderPath = (get-item $PSScriptRoot).FullName }
         #     $folderName = Split-Path $folderPath -Leaf 
@@ -333,15 +335,14 @@ function Get-ModuleRootPath {
     end { }
 }
 #endregion
-#region Main
+#region Main Components and functions
 # Imports
 # This works with uninstalled Modules (both)
-$importName = "Mdm_Std_Library"
-Get-ModuleRootPath
-# if (-not (Get-Module -Name $importName)) {
-Import-Module -Name "$global:moduleRootPath\$importName" -Force -ErrorAction Inquire
+# $importName = "Mdm_Std_Library"
+# Get-ModuleRootPath
+# # if (-not (Get-Module -Name $importName)) {
+# Import-Module -Name "$global:moduleRootPath\$importName" -Force -ErrorAction Inquire
 # }
-
 . "$global:moduleRootPath\Mdm_Bootstrap\Public\DevEnv_Install_Modules_Win.ps1"
 # function DevEnv_LanguageMode {
 #     [CmdletBinding()]
@@ -364,18 +365,18 @@ Import-Module -Name "$global:moduleRootPath\$importName" -Force -ErrorAction Inq
 #region Exports
 Export-ModuleMember -Function `
     DevEnv_Install_Modules_Win, `
+    Initialize-Dev_Env_Win, `
     # Reset `
-    DevEnv_Module_Reset_Func, `
+    Invoke-DevEnv_Module_Reset, `
     # Utils `
     DevEnv_LanguageMode, `
-    Initialize-Dev_Env_Win, `
     Assert-RegistryValue, `
     Add-RegistryPath, `
     Get-ModuleRootPath, `
     # GoTo Location `
     Enter-ProjectRoot, `
     Enter-ModuleRoot, `
-    Enter-Bootstrap, `
+    Enter-GoToBootstrap, `
     # Build `
     Invoke-Build, `
     Invoke-Update
@@ -385,9 +386,9 @@ Set-Alias -Name Update -Value Invoke-Update
 
 Set-Alias -Name GoProject -Value Enter-ProjectRoot
 Set-Alias -Name GoModule -Value Enter-ModuleRoot
-Set-Alias -Name GoBootstrap -Value Enter-Bootstrap
+Set-Alias -Name GoBootstrap -Value Enter-GoToBootstrap
 
-Set-Alias -Name DevEnvReset -Value DevEnv_Module_Reset_Func
+Set-Alias -Name DevEnvReset -Value Invoke-DevEnv_Module_Reset
 Set-Alias -Name IDevEnvModules -Value DevEnv_Install_Modules_Win
 # Export the aliases
 Export-ModuleMember -Alias `

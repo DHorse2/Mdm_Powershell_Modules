@@ -11,7 +11,7 @@
 		Specifies the TabControl control to disable
 	
 	.EXAMPLE
-		Disable-WFTabControl -TabControl $TabControl
+		Disable-WFTabControl -TabControl $tabControls
 	
 	.NOTES
 		Francois-Xavier Cat
@@ -25,7 +25,7 @@
 	(
 		[Parameter(Mandatory = $true)]
 		[ValidateNotNull()]
-		[System.Windows.Forms.TabControl]$TabControl
+		[System.Windows.Forms.TabControl]$tabControls
 	)
 	
 	BEGIN
@@ -34,9 +34,9 @@
 	}
 	PROCESS
 	{
-		IF ($PSCmdlet.ShouldProcess($TabControl, "Disable the TabControl control"))
+		IF ($PSCmdlet.ShouldProcess($tabControls, "Disable the TabControl control"))
 		{
-			$TabControl.Enabled = $false
+			$tabControls.Enabled = $false
 		}
 	}
 } #Disable-TabControl

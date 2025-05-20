@@ -31,12 +31,12 @@
 	(
 		[System.Windows.Forms.Form]$form,
 		
-		[Switch]$Controls,
+		[switch]$Controls,
 		
-		[Switch]$TabIndex,
+		[switch]$TabIndex,
 		
 		[Alias('Title')]
-		[Switch]$Text
+		[switch]$Text
 	)
 	
 	BEGIN

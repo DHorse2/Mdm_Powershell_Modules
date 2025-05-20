@@ -89,10 +89,10 @@
 		
 		[Parameter(ParameterSetName = 'AlternativeRowColor',
 				   Mandatory = $true)]
-		[Switch]$AlternativeRowColor,
+		[switch]$AlternativeRowColor,
 		
 		[Parameter(ParameterSetName = 'DefaultRowColor')]
-		[Switch]$DefaultRowColor,
+		[switch]$DefaultRowColor,
 		
 		[Parameter(ParameterSetName = 'AlternativeRowColor',
 				   Mandatory = $true)]
@@ -106,25 +106,25 @@
 		
 		[Parameter(ParameterSetName = 'Proper',
 				   Mandatory = $true)]
-		[Switch]$ProperFormat,
+		[switch]$ProperFormat,
 		
 		[Parameter(ParameterSetName = 'Proper')]
-		[String]$FontFamily = "Consolas",
+		[string]$FontFamily = "Consolas",
 		
 		[Parameter(ParameterSetName = 'Proper')]
 		[Int]$FontSize = 10,
 		
 		[Parameter(ParameterSetName = 'HideRowHeader')]
-		[Switch]$HideRowHeader,
+		[switch]$HideRowHeader,
 		
 		[Parameter(ParameterSetName = 'ShowRowHeader')]
-		[Switch]$ShowRowHeader,
+		[switch]$ShowRowHeader,
 		
 		[Parameter(ParameterSetName = 'HideColumnHeader')]
-		[Switch]$HideColumnHeader,
+		[switch]$HideColumnHeader,
 		
 		[Parameter(ParameterSetName = 'ShowColumnHeader')]
-		[Switch]$ShowColumnHeader
+		[switch]$ShowColumnHeader
 
 	)
 	

@@ -2,49 +2,77 @@
 function Get-JsonData {
     [CmdletBinding()]
     param(
-        [parameter(ValueFromPipeline)]
-        $inputObject,
-        # Parameter help description
-        $parentObject
+        [parameter(Mandatory = $true, ValueFromPipeline)]
+        [string]$jsonObject,
+        [hashtable]$parentObject  
     )
 
     begin {
-        [Collections.ArrayList]$inputObjects = @()
-        # Path to the JSON file
-        $jsonFilePath = "path\to\your\file.json"
-        $dataOut = @{}
-
+        [Collections.ArrayList]$jsonObjects = @()
+        [hashtable]$dataOut = New-Object System.Collections.Hashtable
     }
     process {
-        [void]$inputObjects.Add($_)
+        [void]$jsonObjects.Add($jsonObject)
     }
     end {
-        $inputObjects | ForEach-Object {
+        ForEach ($JsonItem in $jsonObjects) {
             try {
-                $filePath = $_
-                # Read the JSON file
-                $jsonContent = Get-Content -Path $_ -Raw
-                # Convert the JSON string to a PowerShell object
-                # const $data = JSON.parse(jsonContent);
-                $data = $jsonContent | ConvertFrom-Json
-                # Access the properties of the object
-                if ($parentObject) {
-                    if ($data.name) {
-                        $parentObject[$data.name] = $data
-                    } else { $parentObject += $data }
-                } else {
-                    $dataOut += $data
+                # Check if the JSON file exists
+                if (-Not (Test-Path $JsonItem)) {
+                    $Message = "Get-JsonData: The specified JSON file does not exist: $jsonFileName"
+                    Add-LogText -IsError -Message $Message
+                    return $false
                 }
-                Write-Verbose "Data: $data"
+                # Read the JSON file
+                $jsonContent = Get-Content -Path $JsonItem -Raw -ErrorAction Stop
+                try {
+                    # Parse the content.
+                    # (also) Convert the JSON string to a PowerShell object
+                    # JSON.parse() is a JavaScript function for parsing JSON strings into JavaScript objects.
+                    # const $data = JSON.parse(jsonContent);
+                    # ConvertFrom-Json is for converting JSON strings into PowerShell objects.
+                    $data = $jsonContent | ConvertFrom-Json -ErrorAction Stop
+                    if ($data) {
+                        foreach ($property in $data.PSObject.Properties) {
+                            if ($global:DoVerbose) {
+                                Write-Host "prop: $($property.Name)"
+                            }
+                            if ($parentObject) {
+                                # Update existing fields
+                                $parentObject[$property.Name] = $property.Value
+                            } else {
+                                # If no parentObject, collect results in dataOut
+                                $dataOut[$property.Name] = $property.Value
+                                # (also) could build a property list:
+                                # $dataOut += $property
+                            }
+                        }
+                    } else {
+                        Add-LogText -IsWarning "Get-JsonDate Json item is empty: $($JsonItem)"
+                    }
+                    if ($global:DoDebug) {
+                        $Message = "Data: $($data | ConvertTo-Json -Depth 10)"
+                        Add-LogText $Message -ForegroundColor Blue
+                    }
+                } catch {
+                    Add-LogText -IsError -ErrorPSItem $_ "Get-JsonDate Error processing json item: $($JsonItem)"
+                }
             } catch {
-                Add-LogError -IsError -ErrorPSItem $ErrorPSItem "Error processing file $($filePath): $_"
+                Add-LogText -IsError -ErrorPSItem $_ "Get-JsonDate Json item doesn't exist: $($JsonItem)"
             }
+        }
+        if ($DoDebug) {
+            $Message = "JsonContent: $jsonContent Count($($jsonData.items.Count))"
+            Add-LogText -Message $Message -ForegroundColor Blue
+            $Message = "JsonData: $($jsonData | Format-List -Property *)"
+            Add-LogText -Message $Message -ForegroundColor Blue
         }
         # Collect results if not using parentObject
         if ($parentObject) {
-            Write-Output $parentObject
+            # Write-Output $parentObject
         } else {
-            Write-Output $dataOut
+            # Write-Output $dataOut
+            return $dataOut
         }
     }
 }

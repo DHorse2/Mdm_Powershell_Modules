@@ -28,24 +28,13 @@ function Install-DevEnvOsWin {
         Uses Security.Principal.WindowsPrincipal
 #>
     [CmdletBinding()]
-    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
     Initialize-Std -$DoPause -$DoVerbose -$DoDebug
     # Ensure the script is running as administrator
     if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
         Write-Error -Message "This script must be run as an Administrator. Please restart PowerShell with elevated privileges."
         exit
     }
-    # Install Chocolatey if it is not installed
-    if (!(Get-Command choco -ErrorAction SilentlyContinue)) {
-        Write-Host "Chocolatey not found. Installing Chocolatey..."
-        Set-ExecutionPolicy Bypass -Scope Process -Force
-        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
-        Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-    }
-    else {
-        Write-Verbose "Chocolatey is already installed."
-    }
-
     # Refresh environment PATH for the current session
     $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine")
 
@@ -56,7 +45,5 @@ function Install-DevEnvOsWin {
 
     # Update PowerShell (from vs 5 to 7)
     winget install --id Microsoft.PowerShell --source winget
-
-    # ?
     Wait-AnyKey
 }

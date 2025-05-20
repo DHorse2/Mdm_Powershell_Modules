@@ -1,5 +1,5 @@
 
-function Assert-SecElevated() {
+function Confirm-SecElevated() {
     <#
     .SYNOPSIS
         Elevate script to Administrator.
@@ -27,7 +27,7 @@ function Assert-SecElevated() {
         # [switch]$DoVerbose
     )
     process {
-        # Assert-SecElevated
+        # Confirm-SecElevated
         # Self-elevate the script if required
         if (-Not ([Security.Principal.WindowsPrincipal] `
                     [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole( `
@@ -151,9 +151,9 @@ function Invoke-ProcessWithTimeout {
 
     [CmdletBinding()]
     param(
-        [Parameter(mandatory = $false)]
+        [Parameter(Mandatory = $false)]
         [string]$command = "",
-        [Parameter(mandatory = $false)]
+        [Parameter(Mandatory = $false)]
         [int]$timeout = 10
     )
     process {
@@ -179,14 +179,15 @@ function Invoke-Invoke {
 
         [string]$Options,
         [switch]$DoNewWindow,
+        [switch]$DoForce,
         [switch]$DoVerbose,
-        [switch]$DoPause,
         [switch]$DoDebug,
+        [switch]$DoPause,
         [switch]$HandleError
     )
 
     begin {
-        $null = Debug-Script -DoPause 60 -functionName "Invoke-Invoke pause for interupt" -logFileNameFull $logFileNameFull
+        # $null = Debug-Script -DoPause 60 -functionName "Invoke-Invoke pause for interupt" -logFileNameFull $logFileNameFull
         [Collections.ArrayList]$CommandLines = @()
         [Collections.ArrayList]$CommandResults = @()
         if (-not $Options) { $Options = "" }
@@ -202,12 +203,12 @@ function Invoke-Invoke {
                 if (-not $Command.ContainsKey('CommandLine') -or -not $Command.ContainsKey('CommandName')) {
                     Write-Verbose " Bad Keys"
                     $Message = "The hashtable does not contain the required keys."
-                    Add-LogText -Message $Message -IsError -logFileNameFull $global:logFileNameFull
+                    Add-LogText -Message $Message -IsError
                     return
                 }
             } else {
                 $Message = "The variable `Command` is not a hashtable."
-                Add-LogText -Message $Message -IsError -logFileNameFull $global:logFileNameFull
+                Add-LogText -Message $Message -IsError
                 return
             }
             $CommandLine = $Command['CommandLine']
@@ -222,15 +223,15 @@ function Invoke-Invoke {
         }
         if (-not $Command['CommandLine'] -or -not $Command['CommandName']) {
             $Message = "The hashtable must contain both 'CommandLine' and 'CommandName' keys. `nCommand: $Command"
-            Add-LogText -Message $Message -IsError -logFileNameFull $global:logFileNameFull
+            Add-LogText -Message $Message -IsError
             return
         }            
         if ($DoVerbose) {
-            Add-LogText -Message "Received Command: $($Command | Out-String)" -logFileNameFull $global:logFileNameFull -ForegroundColor Red
+            Add-LogText -Message "Received Command: $($Command | Out-String)" -ForegroundColor Red
         }
         if (-not $CommandLine -or -not $CommandName) {
             $Message = "Both CommandLine and CommandName must be provided. `nCommandName($CommandName)- CommandLine($CommandLine)"
-            Add-LogText -Message $Message -IsError -logFileNameFull $global:logFileNameFull
+            Add-LogText -Message $Message -IsError
             return
         }
         [void]$CommandLines.Add( @{
@@ -259,7 +260,7 @@ function Invoke-Invoke {
                 # $installProcess = 
                 if ($DoVerbose) { 
                     Add-LogText -Message "NOTE: Opening new window..." `
-                        -logFileNameFull $global:logFileNameFull `
+                        `
                         -ForegroundColor Red
                 }
                 # Create a new process
@@ -293,12 +294,12 @@ function Invoke-Invoke {
                 if ($exitCode -ne 1 -or $errorOutput) {
                     $Message = "$CommandName error $exitCode - $(Get-RobocopyExitMessage($exitCode))."
                     if ($errorOutput) { $Message += "`nDetails: $errorOutput" }
-                    Add-LogText -Message $Message -IsError -logFileNameFull $global:logFileNameFull
+                    Add-LogText -Message $Message -IsError
                 } elseif ($standardOutput) {
                     if ($DoVerbose) { 
-                        Add-LogText -Message "Output from $($CommandName): `n$standardOutput" -IsError -logFileNameFull $global:logFileNameFull
+                        Add-LogText -Message "Output from $($CommandName): `n$standardOutput" -IsError
                     } else {
-                        Add-LogText -Message "Ok" -logFileNameFull $global:logFileNameFull
+                        Add-LogText -Message "Ok"
                     }
                 }
             }
@@ -387,250 +388,15 @@ function Push-ShellPwsh {
     }
 }
 # ###############################
-function Initialize-Std {
-    <#
-    .SYNOPSIS
-        Initializes a script..
-    .DESCRIPTION
-        This processes switches, automatic variables, state.
-    .PARAMETER DoPause
-        Switch: Pause between steps.
-    .PARAMETER DoVerbose
-        Switch: Verbose output and prompts.
-    .PARAMETER DoDebug
-        Switch: Debug this script.
-    .OUTPUTS
-        Global variables are set.
-    .EXAMPLE
-        Initialize-Std -DoPause:$DoPause -DoVerbose:$DoVerbose
-    .EXAMPLE
-        Reset-StdGlobals
-        Initialize-Std -DoPause:$DoPause -DoVerbose:$DoVerbose
-    .NOTES
-        none.
-#>
-
-
-    [CmdletBinding()]
-    param (
-        [switch]$DoPause, 
-        [switch]$DoVerbose, 
-        [switch]$DoDebug,
-        [string]$errorActionValue,
-        [string]$debugPreference
-    )
-    process {
-        # Write-Verbose "Init Local Pause: $local:DoPause, Verbose: $local:DoVerbose, Debug: $local:DoDebug"
-        # Show-StdGlobals
-        Write-Verbose "Initialize-Std"
-        if (-not $global:InitStdDone) {
-            Write-Verbose " initializing..."
-            # $global:DoPause = $local:DoPause; $global:DoVerbose = $local:DoVerbose
-            $global:InitStdDone = $true
-            # Validation
-            # Default messages
-            if ($global:msgAnykey.Length -le 0) { 
-                $global:msgAnykey = "Press any key to continue" 
-                Write-Debug "Anykey: $global:msgAnykey"
-            }
-            if ($global:msgYorN.Length -le 0) { 
-                $global:msgYorN = "Enter Y to continue, Q to quit or N to exit" 
-                Write-Debug "YorN: $global:msgYorN"
-            }
-
-            # Pause
-            if ($local:DoPause) { $global:DoPause = $true } else { $global:DoPause = $false }
-            Write-Debug "Global pause: $global:DoPause"
-
-            # Debug
-            if ($local:DoDebug) { $global:DoDebug = $true } else { $global:DoDebug = $false }
-            # TODO PowerShell setting for -Debug (Issue 2: doesn't work)
-            if ($DebugPreference -ne 'SilentlyContinue') { $global:DoDebug = $true } else {
-                if ($local:DoDebug) {
-                    $global:DoDebug = $true
-                    $DebugPreference = 'Continue'
-                    if ($global:DoPause) { $DebugPreference = 'Inquire' }
-                } else { $global:DoDebug = $false }
-            }
-            if ($global:DoDebug) { Write-Host "Debugging." } else { Write-Verbose "Debug off." }
-
-            # Verbosity TODO syntax errors
-            if ($local:DoVerbose) {
-                $global:DoVerbose = $true 
-                $VerbosePreference = $true
-            } else {
-                $global:DoVerbose = $false
-                $VerbosePreference = $false
-            }
-
-            # Error Action
-            # could check PS values. debugPreference
-            # The possible values for $PSDebugPreference are:
-            $debugPreferenceSet = $true
-            switch ($PSDebugPreference) {
-                "Continue" { 
-                    # This is the default value. 
-                    # It allows the script to continue running even if there are errors. 
-                    # It will display error messages in the console. 
-                }
-                "Stop" { 
-                    # Will stop execution when an error occurs. 
-                }
-                "SilentlyContinue" { 
-                    # Suppresses (ignore) error messages.
-                    # Allows the script to continue running without interruption.
-                    # It is useful when you want to ignore errors. 
-                }
-                "Inquire" { 
-                    # When set to Inquire, PowerShell will prompt the user for input when an error occurs, allowing the user to decide how to proceed. 
-                }
-                "Ignore" { 
-                    # This value ignores errors and continues execution without displaying any messages. 
-                }
-                Default {
-                    # Continue
-                    $debugPreferenceSet = $false
-                    $debugPreference = $PSDebugPreference
-                }
-            }
-            if ($debugPreferenceSet) { 
-                $PSDebugPreference = $debugPreference
-                $global:errorActionValue = $debugPreference
-            }
-            if ($errorActionValue) { $global:errorActionValue = $errorActionValue }
-
-            # Check automatice parameters 
-            # TODO Write-Host "PSBoundParameters: $PSBoundParameters" (Issue 1: doesn't work)
-            # TODO Write-Host "PSBoundParameters Verbose: $($PSCmdlet.Get-Invocation.BoundParameters['Verbose'])" (Issue 1: doesn't work)
-            # TODO Write-Host "VerbosePreference: $VerbosePreference" # (Issue 1: doesn't work)
-
-            # PowerShell setting
-            # return [bool]$VerbosePreference -ne [System.Management.Automation.ActionPreference]::SilentlyContinue    
-            if ($PSBoundParameters.ContainsKey('Verbose')) { 
-                # $PSCmdlet.Get-Invocation.BoundParameters["Verbose"]
-                # VerbosePreference
-                # Command line specifies -Verbose
-                $b = $PsBoundParameters.Get_Item('Verbose')
-                $global:DoVerbose = $b
-                Write-Host "Bound Param Verbose $b"
-                # $global:DoVerbose = $false
-                if ($null -eq $b) { $global:DoVerbose = $false }
-                Write-Debug "Verbose from Bound Param: $global:DoVerbose"
-            } else { 
-                Write-Host "Verbose key not present."
-            }
-            # Verbosity via -verbose produces output.
-            $output = ""
-            Write-Verbose "Verbose" > $output
-            if ($output.Length -gt 0) { $global:DoVerbose = $true }
-            if ($global:DoVerbose) {
-                Write-Verbose "Verbose."
-            } else { Write-Verbose "Shhhhh..... conflicting setting." }
-
-            # ??? Maybe
-            # Set-prompt
-        }
-        if ($global:DoVerbose) {
-            Write-Host ""
-            Write-Host "Init end  Local Pause: $local:DoPause, Verbose: $local:DoVerbose, Debug: $local:DoDebug"
-            Write-Host "Init end Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug, Force: $global:DoForce Init: $global:InitStdDone"
-        }
-        $null = Set-CommonParametersGlobal
-
-        # $importName = "Mdm_Std_Library"
-        # $modulePath = "$global:moduleRootPath\$importName"
-        # if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
-        #     Import-Module -Name $modulePath @global:commonParametersStd
-        # }
-    }
-}
-function Reset-StdGlobals {
-    <#
-    .SYNOPSIS
-        Resets the global state.
-    .DESCRIPTION
-        This equates to, and uses, 
-            automatic variables, 
-            $PS variables, 
-            module metadata and
-            state.
-    .PARAMETER msgAnykey
-        The prompt for "Enter any key".
-    .PARAMETER msgYorN
-        The prompt for "Enter Y, N, or Q to quit".
-    .PARAMETER DoPause
-        Switch: Pause between steps.
-    .PARAMETER DoVerbose
-        Switch: Verbose output and prompts.
-    .PARAMETER DoDebug
-        Switch: Debug this script.
-    .PARAMETER initDone
-        Switch: indicates initialization is done.
-    .OUTPUTS
-        none.
-    .EXAMPLE
-        Reset-StdGlobals
-#>
-
-
-    [CmdletBinding()]
-    param (
-        [switch]$DoVerbose,
-        [switch]$DoPause,
-        [switch]$DoDebug,
-        [string]$msgAnykey = "",
-        [string]$msgYorN = "",
-        [switch]$initDone
-    )
-    process {
-        $global:msgAnykey = $msgAnykey
-        $global:msgYorN = $msgYorN
-        $global:InitStdDone = $initDone
-        Set-DebugVerbose -DoDebug $DoDebug -DoVerbose $DoVerbose -DoPause $DoPause
-    }
-}
-function Set-CommonParametersGlobal {
-    [CmdletBinding()]
-    param(
-        [parameter(ValueFromPipeline)]
-        [hashtable]$commonParameters = @{}
-    )
-    begin {
-        # Initialize outputParams as a hashtable
-        [hashtable]$outputParams = @{}
-        if (-not $commonParameters) { $commonParameters = $PSBoundParameters }
-    }
-    process {
-        # Copy each key-value pair from the incoming hashtable
-        foreach ($key in $commonParameters.Keys) {
-            $outputParams[$key] = $commonParameters[$key]
-        }
-    }
-    end {
-        # Add global parameters based on conditions
-        if ($global:DoForce) { $outputParams['Force'] = $true }
-        if ($global:DoVerbose) { $outputParams['Verbose'] = $true }
-        if ($global:DoDebug) { $outputParams['Debug'] = $true }
-        if ($global:DoPause) { $outputParams['Pause'] = $true }
-        $outputParams['ErrorAction'] = if ($global:errorActionValue) { $global:errorActionValue } else { 'Continue' }
-
-        # Combine with global prelude
-        [hashtable]$global:commonParameters = @{}
-        $global:commonParameters += $global:commonParametersPrelude
-        $global:commonParameters += $outputParams
-
-        # Return the combined parameters
-        return [hashtable]$global:commonParameters
-    }
-}
 function Set-CommonParameters {
     [CmdletBinding()]
     param(
         [parameter(ValueFromPipeline)]
         [hashtable]$commonParameters = @{},
+        [switch]$DoForce,
         [switch]$DoVerbose,
-        [switch]$DoPause,
-        [switch]$DoDebug
+        [switch]$DoDebug,
+        [switch]$DoPause
     )
     begin {
         #  if (-not $outputParams) { $outputParams = New-Object System.Collections.ArrayList($null) }
@@ -645,61 +411,12 @@ function Set-CommonParameters {
         # if ($DoDebug -or $PSBoundParameters['Debug']) { $outputParams['Debug'] = $true; Write-Verbose "Debug" }
         if (Assert-Debug) { $outputParams['Debug'] = $true; Write-Verbose "Debug" }
         $outputParams['ErrorAction'] = if ($errorActionValue) { $errorActionValue } else { 'Continue' }
-        # $outputParams += $global:commonParametersPrelude
+        # $outputParams += $global:commonParamsPrelude
         return $outputParams
     }
 }
 
 
-function Set-DebugVerbose {
-    # Set Debug Preference
-    # Set Verbose Preference
-    [CmdletBinding()]
-    param (
-        [bool]$DoDebug,
-        [bool]$DoVerbose,
-        [bool]$DoPause,
-        [bool]$DoForce
-    )
-    if ($DoDebug) { $DebugPreference = "Continue" } 
-    else { $DebugPreference = "SilentlyContinue" }
-    if ($DoVerbose) { $VerbosePreference = "Continue" } 
-    else { $VerbosePreference = "SilentlyContinue" }
-    $global:DoForce = $DoForce
-    $global:DoDebug = $DoDebug
-    $global:DoVerbose = $DoVerbose
-    $global:DoPause = $DoPause
-    # params
-    $null = Set-CommonParametersGlobal
-
-    # Output the current settings
-    Write-Debug "Debug Mode: $DoDebug. Preference: $DebugPreference"
-    Write-Verbose "Verbose Mode: $DoVerbose. Preference: $VerbosePreference"
-}
-function Show-StdGlobals {
-    <#
-    .SYNOPSIS
-        Display global state.
-    .DESCRIPTION
-        Display global and automatic state variables.
-    .EXAMPLE
-        Show-StdGlobals
-#>
-
-
-    [CmdletBinding()]
-    param ()
-    process {
-        Write-Host "Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug, Force: $global:DoForce Init: $global:InitStdDone"
-        if ($global:msgAnykey.Lenth -gt 0) {
-            Write-Host "Anykey prompt: $global:msgAnykey"
-        }
-        if ($global:msgYorN.Lenth -gt 0) {
-            Write-Host "Y,Q or N prompt: $global:msgYorN"
-        }
-        Write-Host "Auto Params: $global:commonParametersStd"
-    }
-}
 function Get-ScriptName { 
     <#
     .SYNOPSIS
@@ -716,42 +433,6 @@ function Get-ScriptName {
     [CmdletBinding()]
     param()
     process { return $MyInvocation.Script_Name }
-}
-function Start-Std {
-    <#
-    .SYNOPSIS
-        Reset and initialize.
-    .DESCRIPTION
-        This resets the global values and call the initializations.
-    .PARAMETER DoPause
-        Switch: Pause between steps.
-    .PARAMETER DoVerbose
-        Switch: Verbose output and prompts.
-    .PARAMETER DoDebug
-        Switch: Debug this script.
-    .OUTPUTS
-        none.
-    .EXAMPLE
-        Start-Std -DoVerbose
-    .NOTES
-        This serves little purpose.
-#>
-
-
-    [CmdletBinding()]
-    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
-    process {
-        # Import-Module Mdm_Std_Library -Force
-        Reset-StdGlobals  `
-            -DoPause:$DoPause `
-            -DoVerbose:$DoVerbose `
-            -DoDebug:$DoDebug
-        Initialize-Std `
-            -DoPause:$DoPause `
-            -DoVerbose:$DoVerbose `
-            -DoDebug:$DoDebug
-        if ($global:DoVerbose) { Write-Host "Script Started." }
-    }
 }
 function Get-ScriptPositionalParameters {
     <#

@@ -40,13 +40,15 @@
 
     # Functions to export from this module
     FunctionsToExport    = @(
-        'Load-DataGridView',
-        'Load-ListBox',
-        'Refresh-DataGridView',
+        'Load-WFDataGridView',
+        'Load-WFListBox',
+        'Refresh-WFDataGridView',
         'Add-WFDataGridViewColumn',
         'Add-WFDataGridViewRow',
         'Add-WFListViewItem',
         'Add-WFRichTextBoxText',
+        'Build-WFFormControls',
+        'Build-WFCheckBoxList',
         'Clear-WFDataGridViewSelection',
         'Clear-WFErrorProvider',
         'Clear-WFListBox',

@@ -51,15 +51,15 @@
 		[System.Data.DataTable]$DataTable,
 		
 		[Parameter(Mandatory = $true)]
-		[String]$Filter,
+		[string]$Filter,
 		
 		[Parameter(ParameterSetName = 'OneColumn',
 				   Mandatory = $true)]
-		[String]$ColumnName,
+		[string]$ColumnName,
 		
 		[Parameter(ParameterSetName = 'AllColumns',
 				   Mandatory = $true)]
-		[Switch]$AllColumns
+		[switch]$AllColumns
 	)
 	
 	BEGIN
@@ -86,7 +86,7 @@
 		IF ($PSCmdlet.ShouldProcess($DataGridView, "Filter the content on $filter"))
 		{
 			$DataTable.defaultview.rowfilter = $RowFilter
-			Import-WFDataGridViewItem -DataGridView $DataGridView -Item $DataTable
+			Import-WFDataGridView -DataGridView $DataGridView -Item $DataTable
 		}
 	}
 	END { Remove-Variable -Name $RowFilter -ErrorAction 'SilentlyContinue' | Out-Null }

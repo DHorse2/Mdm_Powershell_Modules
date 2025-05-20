@@ -98,8 +98,8 @@
 		}
 		CATCH
 		{
-			Add-LogError -IsError -ErrorPSItem $ErrorPSItem -Message "PROCESS - Error while writing inside the RichTextBox"
-			Add-LogError -IsError -ErrorPSItem $ErrorPSItem -Message "PROCESS - $($Error[0].Exception.message)"
+			Add-LogText -IsError -ErrorPSItem $_ -Message "PROCESS - Error while writing inside the RichTextBox"
+			Add-LogText -IsError -ErrorPSItem $_ -Message "PROCESS - $($Error[0].Exception.message)"
 		}
 	}
 	END

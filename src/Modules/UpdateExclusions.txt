@@ -1,4 +1,7 @@
 Build.ps1
+commands.txt
+GoToBootstrap.ps1
+GoToRoot.ps1
 Update.ps1
 UpdateExclusions.txt
 UpdateExclusionsTemp.txt

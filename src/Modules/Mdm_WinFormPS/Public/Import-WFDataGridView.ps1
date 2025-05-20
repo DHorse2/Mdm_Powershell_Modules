@@ -20,7 +20,7 @@
 		Import-WFDataGridView -DataGridView $DataGridView1 -Item (Get-Process)
 	
 	.NOTES
-		Based on Load-DataGridView function from:
+		Based on Load-WFDataGridView function from:
 		SAPIEN Technologies, Inc.
 		http://www.sapien.com/
 		

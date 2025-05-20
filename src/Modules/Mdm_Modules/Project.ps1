@@ -45,3 +45,15 @@ if (-not $global:developerModePathSet) {
 
 $path = "$($PSScriptRoot)\ProjectRunSettings.ps1"
 . "$path"
+
+# Per: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath?view=powershell-7.4#module-search-behavior
+# HKLM
+# $key = (Get-Item 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Environment')
+# $path = $key.GetValue('PSModulePath','','DoNotExpandEnvironmentNames')
+# $path += ';%ProgramFiles%\MyCo\MyModules'
+# $key.SetValue('PSModulePath',$path,[Microsoft.Win32.RegistryValueKind]::ExpandString)
+# HKCU
+# $key = (Get-Item 'HKCU:\Environment')
+# $path = $key.GetValue('PSModulePath','','DoNotExpandEnvironmentNames')
+# $path += ';%ProgramFiles%\MyCo\MyModules'
+# $key.SetValue('PSModulePath',$path,[Microsoft.Win32.RegistryValueKind]::ExpandString)

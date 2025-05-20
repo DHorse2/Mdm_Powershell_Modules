@@ -1,4 +1,33 @@
+
 {
-    "VsCodium": "State",
-    "NodeJs": "State"
+    "description": "DevEnvComponents",
+    "items": [
+        { "label": "Pip", "required": true, "component": "Repository", "checked": false, "Description": "xxx" },
+        { "label": "Chocolatey", "required": true, "component": "Repository", "checked": false, "Description": "xxx" },
+        { "label": "winget", "required": true, "component": "Repository", "checked": false, "Description": "xxx" },
+        { "label": "GetVersions", "required": true, "component": "Repository", "checked": true, "Description": "List the version of components" },
+
+        { "label": "OsWin","required": false, "component": "OsWin", "checked": true, "Description": "xxx" },
+        { "label": "Ide", "required": false, "component": "Ide", "checked": true, "Description": "Windows development environment for neural network projects." },
+        { "label": "Llm", "required": false, "component": "Llm", "checked": true, "Description": "Large Language Model (LLM)" },
+        { "label": "Whisper", "required": false, "component": "Whisper", "checked": true, "Description": "Whisper is designed to run voice recognition locally." },
+
+        { "label": "VsCodium", "required": false, "component": "Ide", "checked": true, "Description": "VS Codium IDE" },
+        { "label": "VsCode", "required": false, "component": "Ide", "checked": true, "Description": "Visual Studio Code IDE" },
+        { "label": "NodeJs", "required": false, "component": "Ide", "checked": true, "Description": "NodeJS" },
+        { "label": "Python", "required": false, "component": "Ide", "checked": false, "Description": "Python language" },
+        { "label": "MSTools", "required": false, "component": "Ide", "checked": false, "Description": "Micrsoft toolchain" },
+        { "label": "Rust`", "required": false, "component": "Ide", "checked": false, "Description": "Rust language" },
+
+        { "label": "PowerShell", "required": false, "component": "OsWin", "checked": false, "Description": "Windows Powershell Scripting Environment" },
+
+        { "label": "tensorflow", "required": false, "component": "Llm", "checked": false, "Description": "Python neural network libraries (TensorFlow, Keras, PyTorch)" },
+        { "label": "keras", "required": false, "component": "Llm", "checked": false, "Description": "Python neural network libraries (TensorFlow, Keras, PyTorch)" },
+        { "label": "torch", "required": false, "component": "Llm", "checked": false, "Description": "Python neural network libraries (TensorFlow, Keras, PyTorch)" },
+        { "label": "torchvision", "required": false, "component": "Llm", "checked": false, "Description": "Python neural network libraries (TensorFlow, Keras, PyTorch)" },
+
+        { "label": "whisper", "required": false, "component": "whisper", "checked": false, "Description": "xxx" },
+        { "label": "virtualenv", "required": false, "component": "Whisper", "checked": false, "Description": "xxx" }
+
+    ]
 }

@@ -11,7 +11,7 @@
 		Specifies the TabControl Control to enable.
 	
 	.EXAMPLE
-		Enable-WFTabControl -TabControl $TabControl
+		Enable-WFTabControl -TabControl $tabControls
 	
 	.NOTES
 		Francois-Xavier Cat
@@ -25,7 +25,7 @@
 	(
 		[Parameter(Mandatory = $true)]
 		[ValidateNotNull()]
-		[System.Windows.Forms.TabControl]$TabControl
+		[System.Windows.Forms.TabControl]$tabControls
 	)
 	
 	BEGIN
@@ -34,9 +34,9 @@
 	}
 	PROCESS
 	{
-		IF ($PSCmdlet.ShouldProcess($TabControl, "Enable the TabControl control"))
+		IF ($PSCmdlet.ShouldProcess($tabControls, "Enable the TabControl control"))
 		{
-			$TabControl.Enabled = $true
+			$tabControls.Enabled = $true
 		}
 	}
 }

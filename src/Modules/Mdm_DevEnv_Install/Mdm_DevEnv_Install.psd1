@@ -26,7 +26,6 @@
         "Install-DevEnvWin",
         "Install-DevEnv",
         "DevEnvGui",
-        "Get-Assembly",
         "Get-JsonData"
     CmdletsToExport         = @()
     VariablesToExport       = @()

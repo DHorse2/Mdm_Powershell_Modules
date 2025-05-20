@@ -11,8 +11,10 @@ param (
     [switch]$SkipScriptLineDisplay,
     [switch]$DoTraceWarningDetails,
     [switch]$DoVerbose,
-    [switch]$DoPause,
-    [switch]$DoDebug
+    [switch]$DoForce,
+    [switch]$DoVerbose,
+    [switch]$DoDebug,
+    [switch]$DoPause
 )
 # DevEnv_Module_Reset
 Write-Host "Show-Error"

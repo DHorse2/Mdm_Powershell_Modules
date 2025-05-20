@@ -1,120 +1,29 @@
-# Define a wrapper class
 
-Add-Type -AssemblyName "System.Windows.Forms" -ErrorAction 'SilentlyContinue' -ErrorVariable ErrorBeginAddType
 Get-Assembly -AssemblyName "System.Windows.Forms"
+# Import-Module Mdm_Std_Library
 
-function WindowStateDefault() {
-    return @{
-        Package            = "MacroDM"
-        Module             = ""
-        ScriptName         = ""
-        Version            = ""
-        FunctionName       = ""
-        ScriptLineNumber   = 0
-        ScriptColumnNumber = 0
-        FormName           = ""
-        Options            = [PSCustomObject]@{
-            Options = $false
-        }
-    }
-}
-class WindowState {
-    [hashtable]$data
+# WindowClass
+# $path = "$global:moduleRootPath\Mdm_WinFormPS\Public\WindowClass.psm1"
+# $path = "$($(Get-Item $PSScriptRoot).FullName)\WindowClass.psm1"
+# . "$path"
+# $path = "$global:moduleRootPath\Mdm_WinFormPS\Public\WindowClass.psm1"
+# Import-Module -Name $path
 
-    WindowState() {
-        Write-Host "WindowState Warning, default constructor invoked."
-        $this.data = WindowStateDefault
-    }
-    WindowState([hashtable]$data = $null) {
-        # Initialize Data with default values if no data is provided
-        if ($null -eq $data) {
-            $this.data = WindowStateDefault
-        } else {
-            $this.data = $data
-        }
-    }
-}
-class WFWindow {
-    [System.Windows.Forms.Form[]]$forms
-    [WindowState]$state
-
-    # Constructor that accepts a form and optional data
-    WFWindow() {
-        Write-Host "WFWindow Warning, default constructor invoked."
-        $this.forms = @()
-        $this.state = [WindowState]::new()
-    }
-    # Constructor that accepts a form and optional data
-    WFWindow([System.Windows.Forms.Form[]]$forms, [hashtable]$state = $null) {
-        $this.Forms = $forms
-        
-        # Initialize State with default values if no State is provided
-        if ($null -eq $state) {
-            $this.State = [WindowState]::new()
-        } else {
-            $this.State = $state
-        }
-    }
-    Show() {
-        foreach ($form in $this.forms) {
-            Show-WFForm([System.Windows.Forms.Form]$form)
-        }
-    }
-}
-
-function Test-WFWindow {
-    param (
-        $window
-    )
-    process {
-        # Usage example
-        $form1 = New-Object System.Windows.Forms.Form
-        $form2 = New-Object System.Windows.Forms.Form
-
-        # Create an array of forms
-        $formsArray = @($form1, $form2)
-
-        # Create a new WFWindow instance with the array of forms and default data
-        if (-not $window) { $window = [WFWindow]::new($formsArray) }
-
-        # Accessing the forms and default data
-        $window.forms[0].Text = "Form 1"
-        $window.forms[1].Text = "Form 2"
-        Write-Output $window.Data.Package  # Output: MacroDM
-
-        # Create a new WFWindow instance with custom data
-        $customData = @{
-            Package    = "CustomPackage"
-            Module     = "CustomModule"
-            ScriptName = "CustomScript"
-            FormName   = "CustomForm"
-            Options    = [PSCustomObject]@{
-                Options = $true
-            }
-        }
-        $stateData = [WindowState]::new($customData)
-        $stateData1 = [WindowState]::new(@{
-                Package    = "CustomPackage"
-                Module     = "CustomModule"
-                ScriptName = "CustomScript"
-                FormName   = "CustomForm"
-                Options    = [PSCustomObject]@{
-                    Options = $true
-                }
-            })
-
-        $windowWithCustomData = [WFWindow]::new($formsArray, $stateData)
-
-        # Accessing the forms and custom data
-        Write-Output $windowWithCustomData.state.data.Package  # Output: CustomPackage    }
-    }
-}
 function New-WFWindow {
     [CmdletBinding()]
     param (
         [WFWindow]$window = $null,
         [System.Windows.Forms.Form[]]$formsArray = $null,
-        [WindowState]$state = $null
+        [MenuBar[]]$menuBarArray = $null,
+        [int]$formIndex = 0,
+        [string]$Title,
+        [string]$TextInput,
+        [string]$OkButton,
+        [string]$CancelButton,
+        [switch]$DoMenuBar,
+        [switch]$DoControls,
+        [switch]$DoTabIndex,
+        $state = $null
     )
     begin {
         Get-Assembly -AssemblyName "System.Windows.Forms"
@@ -122,19 +31,43 @@ function New-WFWindow {
     process {
         try {
             if (-not $formsArray) {
-                [System.Windows.Forms.Form]$form1 = New-WFForm -OkButton -CancelButton
+                [System.Windows.Forms.Form]$form1 = New-WFForm -Title:$Title `
+                    -OkButton:$OkButton -CancelButton:$CancelButton `
+                    -DoMenuBar:$DoMenuBar -state $state
                 [System.Windows.Forms.Form[]]$formsArray = [System.Windows.Forms.Form[]] @([System.Windows.Forms.Form]$form1)
-            }
-            if (-not $window) {
-                $window = [WFWindow]::new($formsArray, $state)
-            } else {
-                $window.forms = $formsArray
-                if ($state) {
-                    $window.state = $state
+                if ($DoMenuBar) {
+                    if (-not $menuBarArray) {
+                        # [MenuBar[]]$menuBarArray = @([MenuBar]::new((New-Object System.Windows.Forms.MenuStrip), (New-Object System.Windows.Forms.ToolStrip)))
+                        [MenuBar[]]$menuBarArray = [MenuBar]::new()
+                        $menuBarArray[0].MenuStrip = (New-Object System.Windows.Forms.MenuStrip)
+                        $menuBarArray[0].ToolStrip = (New-Object System.Windows.Forms.ToolStrip)
+                    }
                 }
             }
+            if (-not $window) {
+                # $window = [WFWindow]::new($formsArray)
+                $window = [WFWindow]::new(
+                    [System.Windows.Forms.Form[]]$formsArray, 
+                    [MenuBar[]]$menuBarArray,
+                    $null,
+                    $formIndex, 
+                    0,
+                    $null, 
+                    $null, 
+                    $state
+                )
+                
+            } else {
+                $window.Forms = $formsArray
+                $window.MenuBar = $menuBarArray
+            }
+            if ($state -and $state -is [WindowState]) {
+                $window.state = $state
+            } elseif ($null -eq $window.state) {
+                $window.state = [System.Windows.WindowState]::new()
+            }
         } catch {
-            Add-LogError -IsError -ErrorPSItem $ErrorPSItem "New-WFWindow unable to create window. $_"
+            Add-LogText -IsError -ErrorPSItem $_ -Message "New-WFWindow: Unable to create window."
         }
     }
     end {

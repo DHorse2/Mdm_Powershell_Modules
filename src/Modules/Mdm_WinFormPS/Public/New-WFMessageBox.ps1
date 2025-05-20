@@ -34,9 +34,9 @@
 	param
 	(
 		[Parameter(Mandatory = $true)]
-		[String]$Message,
+		[string]$Message,
 		
-		[String]$Title,
+		[string]$Title,
 		
 		[System.Windows.Forms.MessageBoxButtons]$Buttons = "OK",
 		

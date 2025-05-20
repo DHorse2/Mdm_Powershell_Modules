@@ -23,7 +23,7 @@ function Install-DevEnvLlmWin {
         none.
 #>
     [CmdletBinding()]
-    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
     Initialize-Std -$DoPause -$DoVerbose -$DoDebug
     Write-Verbose "######################"
     Write-Verbose  "Copying PowerShell modules to System32 PowerShell modules directory..."

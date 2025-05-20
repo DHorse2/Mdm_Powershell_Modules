@@ -20,18 +20,17 @@ function Install-DevEnvWhisperWin {
         none.
 #>
     [CmdletBinding()]
-    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
+    # Install Whisper on Windows
     Initialize-Std -$DoPause -$DoVerbose -$DoDebug
-    # PowerShell Script to Install Whisper on Windows
-
-    # Check for Administrator Privileges
+    # Check Administrator Privileges
     $adminCheck = [Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()
     if (-not $adminCheck.IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
         Write-Error -Message "Please run this script as an Administrator." -ForegroundColor Red
         exit
     }
 
-    # Check if Python is installed
+    # Python
     $python = Get-Command python -ErrorAction SilentlyContinue
     if (-not $python) {
         Write-Verbose "Python is not installed. Downloading and installing Python..." -ForegroundColor Yellow
@@ -42,20 +41,20 @@ function Install-DevEnvWhisperWin {
         Write-Verbose "Python installed successfully." -ForegroundColor Green
     }
 
-    # Ensure pip is up to date
+    # pip install/update
     Write-Verbose "Updating pip..." -ForegroundColor Cyan
     python -m ensurepip
     python -m pip install --upgrade pip
 
-    # Install virtualenv if not installed
+    # virtualenv install
     Write-Verbose "Installing virtualenv..." -ForegroundColor Cyan
     python -m pip install --user virtualenv
+    #endregion
 
     # Create a virtual environment
     $venvPath = "$env:USERPROFILE\whisper_env"
     Write-Verbose "Creating a virtual environment at $venvPath" -ForegroundColor Cyan
     python -m virtualenv $venvPath
-
     # Activate the virtual environment
     Write-Verbose "Activating the virtual environment..." -ForegroundColor Cyan
     $venvActivate = "$venvPath\Scripts\Activate.ps1"
@@ -64,7 +63,6 @@ function Install-DevEnvWhisperWin {
     # Install Whisper
     Write-Verbose "Installing Whisper and dependencies..." -ForegroundColor Cyan
     pip install git+https://github.com/openai/whisper.git
-
     # Verify Installation
     Write-Verbose "Verifying installation..." -ForegroundColor Cyan
     whisper --help
@@ -72,6 +70,5 @@ function Install-DevEnvWhisperWin {
     Write-Verbose "Whisper installation is complete. To activate the environment in the future, run:"
     Write-Verbose "`"$venvPath\Scripts\Activate.ps1`""
     Write-Verbose "To transcribe audio, use: `whisper your_audio_file.mp3 --model small`""
-
     Wait-AnyKey
 }

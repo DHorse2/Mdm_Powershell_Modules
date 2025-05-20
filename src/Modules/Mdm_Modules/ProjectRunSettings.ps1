@@ -9,7 +9,7 @@
 # $global:DoDebug = $DoDebug
 # $global:DoVerbose = $DoVerbose
 # $global:DoPause = $DoPause
-$global:DoDebugPause = $false
+# $global:DoPause = $false
 
 # $global:moduleRootPath = "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules"
 # $global:projectRootPath = (get-item $global:moduleRootPath).Parent.Parent.FullName
@@ -34,7 +34,7 @@ else { $DebugPreference = "SilentlyContinue" }
 if ($DoVerbose -or $global:DoVerbose) { $VerbosePreference = "Continue" } 
 else { $VerbosePreference = "SilentlyContinue" }
 if ($DoPause -or $global:DoPause) {
-    #     # possible location for prompt.
+    # possible location for prompt.
     # Check if running PowerShell ISE
     if ($psISE) {
         $Message = 'Enter any key to continue: '

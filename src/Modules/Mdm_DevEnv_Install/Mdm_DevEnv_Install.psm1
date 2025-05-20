@@ -1,38 +1,41 @@
+Using module "..\Mdm_Std_Library\Mdm_Std_Library.psm1"
+Using module "..\Mdm_Bootstrap\Mdm_Bootstrap.psm1"
+Using module "..\Mdm_WinFormPS\Mdm_WinFormPS.psm1"
 
 Write-Host "Mdm_DevEnv_Install.psm1"
 # Script Path
+# Get-ModuleRootPath
 if (-not $global:moduleRootPath) {
     $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Modules\Project.ps1"
     . "$path"
 }
-
+# Params
 $path = "$global:moduleRootPath\Mdm_Std_Library\Public\Get-Parameters.ps1"
 . "$path"
 
 # Imports Import-Module
-$importName = "Mdm_Bootstrap"
-if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
-    $modulePath = "$global:moduleRootPath\$importName"
-    Import-Module -Name $modulePath @commonParameters
-}
+# $importName = "Mdm_Bootstrap"
+# if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
+#     $modulePath = "$global:moduleRootPath\$importName"
+#     Import-Module -Name $modulePath @global:commonParams
+# }
+# # $null = Get-Import -Name "$global:moduleRootPath\$importName" `
+# #     -CheckImported -ErrorAction Continue
+# $importName = "Mdm_Std_Library"
+# if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
+#     $modulePath = "$global:moduleRootPath\$importName"
+#     Import-Module -Name $modulePath @global:commonParams
+# }
 # $null = Get-Import -Name "$global:moduleRootPath\$importName" `
 #     -CheckImported -ErrorAction Continue
-$importName = "Mdm_Std_Library"
-if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
-    $modulePath = "$global:moduleRootPath\$importName"
-    Import-Module -Name $modulePath @commonParameters
-}
-# $null = Get-Import -Name "$global:moduleRootPath\$importName" `
-#     -CheckImported -ErrorAction Continue
-$importName = "Mdm_WinFormPS"
-if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
-    $modulePath = "$global:moduleRootPath\$importName"
-    Import-Module -Name $modulePath @commonParameters
-}
+# $importName = "Mdm_WinFormPS"
+# if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
+#     $modulePath = "$global:moduleRootPath\$importName"
+#     Import-Module -Name $modulePath @global:commonParams
+# }
 # $null = Get-Import -Name "$global:moduleRootPath\$importName" `
 #     -CheckImported -ErrorAction Continue
 
-# Get-ModuleRootPath
 # Components installed: 
 . "$global:moduleRootPath\Mdm_DevEnv_Install\Public\Install-DevEnvOsWin.ps1"
 . "$global:moduleRootPath\Mdm_DevEnv_Install\Public\Install-DevEnvIdeWin.ps1"
@@ -75,15 +78,17 @@ Function Get-DevEnvVersions {
         Should output a file and display.
 #>
     [CmdletBinding()]
-    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
     Reset-StdGlobals `
         -DoPause:$DoPause `
         -DoVerbose:$DoVerbose `
-        -DoDebug:$DoDebug
+        -DoDebug:$DoDebug `
+        -DoForce:$DoForce
     Initialize-Std `
         -DoPause:$DoPause `
         -DoVerbose:$DoVerbose `
-        -DoDebug:$DoDebug
+        -DoDebug:$DoDebug `
+        -DoForce:$DoForce
     # Language mode: FullLanguage needed, Add cert
     # Set-ExecutionPolicy Unrestricted
     # $ExecutionContext.SessionState.LanguageMode = “FullLanguage”
@@ -104,8 +109,8 @@ Function Get-DevEnvVersions {
         if (Test-Path $stdLibraryPath) {
             if ($global:DoVerbose) { Write-Host "Loading Std_Library.ps1..." -ForegroundColor Cyan }
             # . $stdLibraryPath
-            # Import-Module -Name $stdLibraryPath
-            $null = Get-Import -Name $stdLibraryPath -DoVerbose
+            Import-Module -Name $stdLibraryPath -Force
+            # $null = Get-Import -Name $stdLibraryPath -DoVerbose
         } else {
             Write-Error -Message "Mdm_Std_Library.psm1 NOT FOUND at $stdLibraryPath"
             exit
@@ -179,11 +184,12 @@ Function Get-DevEnvVersions {
         node -v | Write-Host
         Write-Verbose "################################################################################"
 
-        if ($global:DoDebug -or $global:DoVerbose) {
+        if (($global:DoPause -or $global:DoVerbose -or $global:DoDebug -or $global:DoForce) `
+                -or ($local:DoPause -or $local:DoVerbose -or $local:DoDebug -or $local:DoForce)) {
+            Write-Host " "
             Write-Host " Local Pause: $local:DoPause, Verbose: $local:DoVerbose, Debug: $local:DoDebug, Force: $local:DoForce"
             Write-Host "Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug, Force: $global:DoForce"
-    
-            Write-Host "$global:msgAnykey Pause: $global:DoPause"
+            Write-Host "Default prompt: $global:msgAnykey"
             if ($global:DoPause) { Wait-AnyKey }
         }
     }

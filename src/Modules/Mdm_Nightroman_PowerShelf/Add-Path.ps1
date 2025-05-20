@@ -35,6 +35,7 @@
 	https://github.com/nightroman/PowerShelf
 #>
 
+[CmdletBinding()]
 param(
 	[Parameter()]
 	[string[]]$Path = '.',

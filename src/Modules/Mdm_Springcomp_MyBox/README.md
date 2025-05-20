@@ -8,7 +8,7 @@ My development environment is heavily centered around using the terminal.
 From a Windows PowerShell prompt, run the following command:
 
 ```pwsh
-iex "& { $(irm 'https://raw.githubusercontent.com/springcomp/my-box/main/bootstrap/powershell.ps1') }"
+iex "& { $(irm 'https://raw.githubusercontent.com/springcomp/my-box/main/bootstrap/Install-Powershell.ps1') }"
 ```
 
 This will install:

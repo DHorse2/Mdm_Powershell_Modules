@@ -1,0 +1,13 @@
+{
+    "description": "Modules",
+    "items": [
+        { "label": "Mdm_Std_Library", "required": true, "component": "Std, Core", "checked": true, "memberScan": false, "Description": "Mdm_Std_Library" },
+        { "label": "Mdm_Bootstrap", "required": true, "component": "Bootstrap", "checked": true, "memberScan": false, "Description": "Mdm_Bootstrap" },
+        { "label": "Mdm_WinFormPS", "required": true, "component": "Gui", "checked": true, "memberScan": false, "Description": "Mdm_WinFormPS" },
+        { "label": "Mdm_DevEnv_Install", "required": false, "component": "Ide", "checked": true, "memberScan": false, "Description": "Mdm_DevEnv_Install" },
+        { "label": "Mdm_Springcomp_MyBox", "required": false, "component": "Gui", "checked": true, "memberScan": true, "Description": "Mdm_Springcomp_MyBox" },
+        { "label": "Mdm_Nightroman_PowerShelf", "required": false, "component": "Tools", "checked": true, "memberScan": true, "Description": "Mdm_Nightroman_PowerShelf" },
+        { "label": "Mdm_PoshFunctions", "required": false, "component": "Tools", "checked": false, "memberScan": false, "Description": "Mdm_PoshFunctions" },
+        { "label": "Newtonsoft.Json_Newtonsoft", "required": false, "component": "Tools", "checked": true, "memberScan": false, "Description": "Newtonsoft.Json_Newtonsoft" }
+    ]
+}

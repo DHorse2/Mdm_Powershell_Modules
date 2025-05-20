@@ -1,0 +1,26 @@
+{
+    "description": "Categories",
+    "items": [
+        { "label": "Core", "Description": "Core functionalities.", "checked": true },
+        { "label": "StandardFunctions", "Description": "Standard functions for common tasks. (Std extends Common)", "checked": true },
+        { "label": "Common", "Description": "General resource management tasks, focusing on actions like creating, modifying, and retrieving resources.", "checked": true },
+        { "label": "Automation", "Description": "Verbs that facilitate the automation of tasks and processes.", "checked": true },
+        { "label": "Cleanup", "Description": "Verbs that deal with the removal of unnecessary or temporary resources.", "checked": true },
+        { "label": "Communications", "Description": "Data transmission and communication, facilitating the exchange of information between sources and destinations.", "checked": true },
+        { "label": "Configuration", "Description": "Verbs related to setting up and managing configurations for resources.", "checked": true },
+        { "label": "Data", "Description": "Data manipulation and management, including actions for storing, transforming, and organizing data.", "checked": true },
+        { "label": "Devices", "Description": "Managing and inspecting devices.", "checked": true },
+        { "label": "Diagnostic", "Description": "Troubleshooting and diagnostics, aimed at examining resources to identify and resolve issues.", "checked": true },
+        { "label": "Forms", "Description": "Windows Systems Forms and related functionalities.", "checked": true },
+        { "label": "FileSystem", "Description": "File system (FS), storage, and I/O operations.", "checked": true },
+        { "label": "Lifecycle", "Description": "Management of resources throughout their lifecycle, covering actions related to deployment, approval, and state changes.", "checked": true },
+        { "label": "Monitoring", "Description": "Verbs focused on observing and tracking the performance or status of resources.", "checked": true },
+        { "label": "Network", "Description": "Anything network-related.", "checked": true },
+        { "label": "Remote", "Description": "Anything related to remote access and invocation.", "checked": true },
+        { "label": "Reporting", "Description": "Verbs related to generating reports or summaries of resource states and activities.", "checked": true },
+        { "label": "Security", "Description": "Access control and protection of resources, including actions for granting, blocking, and safeguarding access.", "checked": true },
+        { "label": "Shell", "Description": "Shell, process, invocation, command (cmd), and related verbs.", "checked": true },
+        { "label": "Validation", "Description": "Verbs that ensure the correctness or compliance of resources.", "checked": true },
+        { "label": "Other", "Description": "Other and special types.", "checked": true }
+    ]
+}

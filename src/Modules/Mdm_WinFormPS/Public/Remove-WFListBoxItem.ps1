@@ -41,7 +41,7 @@
 		
 		[Parameter(ParameterSetName = 'All',
 				   Mandatory = $true)]
-		[Switch]$All,
+		[switch]$All,
 		
 		[Parameter(ParameterSetName = 'Pattern',
 				   Mandatory = $true)]
@@ -49,7 +49,7 @@
 		
 		[Parameter(ParameterSetName = 'Selected',
 				   Mandatory = $true)]
-		[Switch]$SelectedItems
+		[switch]$SelectedItems
 	)
 	
 	#Requires -Version 3

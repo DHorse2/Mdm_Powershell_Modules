@@ -27,7 +27,7 @@ function Install-DevEnvWin {
 
 
     [CmdletBinding()]
-    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug)
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
     # $IsMacOS
     # $IsLinux
     if ($IsWindows) {
@@ -53,6 +53,6 @@ function Install-DevEnvWin {
         }
     } else {
         $Message = "This script is only run on the Windows OS."
-        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -logFileNameFull $global:logFileNameFull
+        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay
     }
 }

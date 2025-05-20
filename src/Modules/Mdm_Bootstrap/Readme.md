@@ -110,7 +110,7 @@ These are found at the top of the Mdm_Std_Library.psm1 file after the module mem
     $messageErrorForegroundColor = [System.ConsoleColor]::Red
 
     $global:timeStarted = Get-Date
-    $global:timeStartedFormatted = "{0:yyyymmdd_hhmmss}" -f ($global:timeStarted)
+    $global:timeStartedFormatted = "{0:yyyyMMdd_HHmmss}" -f $global:timeStarted
     $global:timeCompleted = $null
     $global:lastError = $null
     ```

@@ -17,8 +17,8 @@ function Get-Assembly {
             return $assembly
         } catch {
             Write-Warning -Message "Get-Assembly: Something went wrong while loading assembly $assemblyName. $_"
-            Add-LogError -IsError -ErrorPSItem $ErrorPSItem -Message $_.Exception.Message
-            # Add-LogError -IsError -ErrorPSItem $ErrorPSItem
+            Add-LogText -IsError -ErrorPSItem $_ -Message $_.Exception.Message
+            # Add-LogText -IsError -ErrorPSItem $_
 
         }
     }

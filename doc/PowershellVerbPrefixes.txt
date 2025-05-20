@@ -115,3 +115,110 @@ Protect     pt          Security       Safeguards a resource from attack or loss
 Revoke      rk          Security       Specifies an action that does not allow access to a resource
 Unblock     ul          Security       Removes restrictions to a resource
 Unprotect   up          Security       Removes safeguards from a resource that were added to prevent it from attack or loss
+
+======================================================================
+Common
+
+This group contains verbs that are frequently used for general resource management tasks.
+
+    Add: Adds a resource to a container.
+    Clear: Removes all resources from a container without deleting the container.
+    Close: Makes a resource inaccessible.
+    Copy: Duplicates a resource.
+    Enter: Moves into a resource.
+    Exit: Returns to the previous context.
+    Find: Searches for an object in a container.
+    Format: Arranges objects in a specified layout.
+    Get: Retrieves a resource.
+    Hide: Makes a resource undetectable.
+    Join: Combines resources.
+    Lock: Secures a resource.
+    Move: Relocates a resource.
+    New: Creates a new resource.
+    Open: Makes a resource accessible.
+    Optimize: Enhances the effectiveness of a resource.
+    Push: Adds an item to a stack.
+    Pop: Removes an item from a stack.
+    Redo: Resets a resource to the state that was undone.
+    Remove: Deletes a resource.
+    Rename: Changes a resource's name.
+    Reset: Restores a resource to its original state.
+    Resize: Changes the size of a resource.
+    Search: References a resource in a container.
+    Select: Locates a resource.
+    Set: Updates or creates a resource with data.
+    Show: Makes a resource visible.
+    Skip: Bypasses resources in a sequence.
+    Split: Separates parts of a resource.
+    Step: Moves to the next resource in a sequence.
+    Switch: Alternates between two resources.
+    Undo: Reverts a resource to a previous state.
+    Unlock: Releases a locked resource.
+    Watch: Monitors a resource for changes.
+
+Communications
+
+This group focuses on actions related to data transmission and communication.
+
+    Connect: Establishes a link between sources.
+    Disconnect: Breaks a link between sources.
+    Read: Acquires information from a source.
+    Receive: Accepts information from a source.
+    Send: Delivers information to a destination.
+    Write: Adds information to a target.
+
+Data
+
+This group encompasses verbs related to data manipulation and management.
+
+    Backup: Replicates data for storage.
+    Checkpoint: Creates a snapshot of data.
+    Compare: Evaluates data between resources.
+    Compress: Reduces data size.
+    Convert: Changes data representation.
+    ConvertFrom: Converts input to supported output types.
+    ConvertTo: Converts input types to a primary output type.
+    Dismount: Detaches an entity from a location.
+    Edit: Modifies existing data.
+    Expand: Restores compressed data.
+    Export: Encapsulates data into a persistent store.
+    Group: Associates resources.
+    Import: Creates a resource from stored data.
+    Initialize: Prepares a resource for use.
+    Limit: Applies constraints to a resource.
+    Merge: Combines multiple resources into one.
+    Mount: Attaches an entity to a location.
+    Out: Sends data out of the environment.
+    Publish: Makes a resource available.
+    Restore: Sets a resource to a predefined state.
+    Save: Preserves data.
+    Sync: Ensures resources are in the same state.
+    Unpublish: Makes a resource unavailable.
+    Update: Brings a resource up-to-date.
+
+Diagnostic
+
+This group includes verbs for troubleshooting and diagnostics.
+
+    Debug: Examines resources for problems.
+    Measure: Retrieves statistics about resources.
+    Ping: Tests connectivity (similar to the Test verb).
+    Repair: Restores a resource to usability.
+    Resolve: Maps shorthand representations to complete ones.
+    Test: Verifies resource operation.
+    Trace: Tracks resource activities.
+
+Lifecycle
+
+This group pertains to the management of resources throughout their lifecycle.
+
+    Approve: Confirms the status of a resource.
+    Assert: Affirms a resource's state.
+    Build: Creates an artifact from input files.
+    Complete: Concludes an operation.
+    Confirm: Validates a resource's state.
+    Deny: Refuses the state of a resource.
+    Deploy: Sends a solution to a target.
+    Disable: Makes a resource inactive
+
+=======================================================================

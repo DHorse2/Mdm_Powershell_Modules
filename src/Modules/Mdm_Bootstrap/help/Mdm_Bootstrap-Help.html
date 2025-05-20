@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_Bootstrap Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="05/04/2025 14:44:31">
-    <meta name="copyright" content="&copy; David G. Horsman. All rights reserved.">
+    <meta name="date" content="05/18/2025 22:20:17">
+    <meta name="copyright" content="&Copy-Item; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
         html,
@@ -186,7 +186,8 @@ NOTES
 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Add to HKLM Environtment Path</p>
-<p><strong>Detailed Description:</strong> This loads the specifiect Path key (PATH by default) and adds the new path to it.</p>
+<p><strong>Detailed Description:</strong> This loads the specifiect Path key (PATH by default) and adds the new path to it.
+</p>
 <p><strong>Syntax:</strong> <pre>description: The Path key to use.
 
  envPathToUpdate
@@ -194,15 +195,17 @@ NOTES
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>envPathToUpdate</strong>: The Path key to use.</p>
+<p>  - <strong>envPathToUpdate</strong>: The Path key to use.
+</p>
 <p></p>
-<p><strong>Return: </strong> none.</p>
+<p><strong>Return: </strong> none.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Add-RegistryPath &quot;PATH&quot; &quot;c:\SOMEWHERER&quot;
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>Assert-RegistryValue</h2>
 
@@ -210,32 +213,37 @@ Introduction: @{Text=PS &gt; }
 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Return true if Registry Value exists.</p>
-<p><strong>Detailed Description:</strong> Check the registry path &amp; value. Asserts it exists.</p>
+<p><strong>Detailed Description:</strong> Check the registry path &amp; value. Asserts it exists.
+</p>
 <p><strong>Syntax:</strong> <pre>description: The Registry Path to check.
 
  Path
  parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 description: The Registry Key name (Value) to access.
 
  Name
- parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2 description: If true this outputs an ItemProperty otherwise true/false
+ parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2 PassThru
+ description: If true this outputs an ItemProperty otherwise true/false
 
- PassThru
  required: false, globbing: false, pipelineInput: false, position: named Assert-RegistryValue
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>Path</strong>: The Registry Path to check.</p>
-<p>  - <strong>Name</strong>: The Registry Key name (Value) to access.</p>
-<p>  - <strong>PassThru</strong>: If true this outputs an ItemProperty otherwise true/false</p>
+<p>  - <strong>Path</strong>: The Registry Path to check.
+</p>
+<p>  - <strong>Name</strong>: The Registry Key name (Value) to access.
+</p>
+<p>  - <strong>PassThru</strong>: If true this outputs an ItemProperty otherwise true/false
+</p>
 <p></p>
 <p><strong>Return: </strong> True/Fale if the key exists.
-null/ItemProperty if PassThur switch is present.</p>
+null/ItemProperty if PassThur switch is present.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Assert-RegistryValue &quot;PATH&quot;
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>DevEnv_Install_Modules_Win</h2>
 
@@ -252,16 +260,18 @@ Introduction: @{Text=PS &gt; }
 
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> Install or update Mdm Modules.</p>
-<p><strong>Detailed Description:</strong> This installs the libraries to the live system using Robocopy.</p>
-<p><strong>Syntax:</strong> <pre>description: Provide detailed information.
+<p><strong>Detailed Description:</strong> This installs the libraries to the live system using Robocopy.
+</p>
+<p><strong>Syntax:</strong> <pre>DoForce
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Provide detailed information.
 
- DoVerbose
- required: false, globbing: false, pipelineInput: false, position: named description: Switch to pause at each step/page.
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ description: Debug this script.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Debug this script.
+ required: false, globbing: false, pipelineInput: false, position: named DoPause
+ description: Switch to pause at each step/page.
 
- DoDebug
  required: false, globbing: false, pipelineInput: false, position: named description: default: "$global:projectRootPath\src\Modules"
 
  source
@@ -276,9 +286,9 @@ Introduction: @{Text=PS &gt; }
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 description: default: "Mdm_Installation_Log.txt"
 
  logFileName
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 6 description: Switch to not create separate file with the date in the file name.
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 6 LogOneFile
+ description: Switch to not create separate file with the date in the file name.
 
- LogOneFile
  required: false, globbing: false, pipelineInput: false, position: named description: Default is "Mmd_*". IE. These modules.
 You could override it if you had other local modules to install
 
@@ -286,9 +296,9 @@ You could override it if you had other local modules to install
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 7 SkipHelp
  required: false, globbing: false, pipelineInput: false, position: named SkipRegistry
  required: false, globbing: false, pipelineInput: false, position: named SkipCopy
- required: false, globbing: false, pipelineInput: false, position: named description: Switch to execute copy commands in a separate shell window.
+ required: false, globbing: false, pipelineInput: false, position: named DoNewWindow
+ description: Switch to execute copy commands in a separate shell window.
 
- DoNewWindow
  required: false, globbing: false, pipelineInput: false, position: named description: MacroDM currently. It's optional.
 
  companyName
@@ -300,36 +310,50 @@ Currently: "/E /FP /nc /ns /np /TEE"
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>DoVerbose</strong>: Provide detailed information.</p>
-<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.</p>
-<p>  - <strong>DoDebug</strong>: Debug this script.</p>
-<p>  - <strong>source</strong>: default: &quot;$global:projectRootPath\src\Modules&quot;</p>
-<p>  - <strong>destination</strong>: default: &quot;$env:PROGRAMFILES\\WindowsPowerShell\Modules&quot;</p>
+<p>  - <strong>DoForce</strong></p>
+<p>  - <strong>DoVerbose</strong>: Provide detailed information.
+</p>
+<p>  - <strong>DoDebug</strong>: Debug this script.
+</p>
+<p>  - <strong>DoPause</strong>: Switch to pause at each step/page.
+</p>
+<p>  - <strong>source</strong>: default: &quot;$global:projectRootPath\src\Modules&quot;
+</p>
+<p>  - <strong>destination</strong>: default: &quot;$env:PROGRAMFILES\\WindowsPowerShell\Modules&quot;
+</p>
 <p>  - <strong>projectRootPath</strong></p>
 <p>  - <strong>moduleRootPath</strong></p>
-<p>  - <strong>logFilePath</strong>: default: &quot;$global:projectRootPath\log\&quot;</p>
-<p>  - <strong>logFileName</strong>: default: &quot;Mdm_Installation_Log.txt&quot;</p>
-<p>  - <strong>LogOneFile</strong>: Switch to not create separate file with the date in the file name.</p>
+<p>  - <strong>logFilePath</strong>: default: &quot;$global:projectRootPath\log\&quot;
+</p>
+<p>  - <strong>logFileName</strong>: default: &quot;Mdm_Installation_Log.txt&quot;
+</p>
+<p>  - <strong>LogOneFile</strong>: Switch to not create separate file with the date in the file name.
+</p>
 <p>  - <strong>nameFilter</strong>: Default is &quot;Mmd_*&quot;. IE. These modules.
-You could override it if you had other local modules to install</p>
+You could override it if you had other local modules to install
+</p>
 <p>  - <strong>SkipHelp</strong></p>
 <p>  - <strong>SkipRegistry</strong></p>
 <p>  - <strong>SkipCopy</strong></p>
-<p>  - <strong>DoNewWindow</strong>: Switch to execute copy commands in a separate shell window.</p>
-<p>  - <strong>companyName</strong>: MacroDM currently. It&apos;s optional.</p>
+<p>  - <strong>DoNewWindow</strong>: Switch to execute copy commands in a separate shell window.
+</p>
+<p>  - <strong>companyName</strong>: MacroDM currently. It&apos;s optional.
+</p>
 <p>  - <strong>copyOptions</strong>: These are RoboCopy options.
-Currently: &quot;/E /FP /nc /ns /np /TEE&quot;</p>
+Currently: &quot;/E /FP /nc /ns /np /TEE&quot;
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: DevEnv_Install_Modules_Win
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
 <h2>DevEnv_LanguageMode</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-DevEnv_LanguageMode [[-languageMode] &lt;Object&gt;] [&lt;CommonParameters&gt;]</p>
+DevEnv_LanguageMode [[-languageMode] &lt;Object&gt;] [&lt;CommonParameters&gt;]
+</p>
 <p><strong>Syntax:</strong> <pre>name: DevEnv_LanguageMode
 CommonParameters: True
 parameter: @{name=languageMode; required=false; pipelineInput=false; isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
@@ -337,74 +361,70 @@ parameter: @{name=languageMode; required=false; pipelineInput=false; isDynamic=f
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>languageMode</strong></p>
 <p></p>
-<p><strong>Return: </strong> System.Object</p>
+<p><strong>Return: </strong> System.Object
+</p>
 <p></p>
 <p></p>
-<h2>DevEnv_Module_Reset_Func</h2>
+<h2>Enter-DevEnv_Module_Reset</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-DevEnv_Module_Reset_Func [&lt;CommonParameters&gt;]</p>
-<p><strong>Syntax:</strong> <pre>name: DevEnv_Module_Reset_Func
+Enter-DevEnv_Module_Reset [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Enter-DevEnv_Module_Reset
 CommonParameters: True
-parameter:</pre></p>
+parameter: </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p></p>
-<p><strong>Return: </strong> System.Object</p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Enter-ModuleRoot</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Enter-ModuleRoot [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Enter-ModuleRoot
+CommonParameters: True
+parameter: </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Enter-ProjectRoot</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Enter-ProjectRoot [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Enter-ProjectRoot
+CommonParameters: True
+parameter: </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
 <p></p>
 <p></p>
 <h2>Get-ModuleRootPath</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Get-ModuleRootPath [[-folderPath] &lt;Object&gt;] [-DoClear] [&lt;CommonParameters&gt;]</p>
+Get-ModuleRootPath [[-folderPath] &lt;Object&gt;] [-DoClear] [&lt;CommonParameters&gt;]
+</p>
 <p><strong>Syntax:</strong> <pre>name: Get-ModuleRootPath
 CommonParameters: True
-parameter:</pre></p>
+parameter:  </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoClear</strong></p>
 <p>  - <strong>folderPath</strong></p>
 <p></p>
-<p><strong>Return: </strong> System.Object</p>
-<p></p>
-<p></p>
-<h2>GoToBootstrap_Func</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> 
-GoToBootstrap_Func [&lt;CommonParameters&gt;]</p>
-<p><strong>Syntax:</strong> <pre>name: GoToBootstrap_Func
-CommonParameters: True
-parameter:</pre></p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p></p>
-<p><strong>Return: </strong> System.Object</p>
-<p></p>
-<p></p>
-<h2>GoToModuleRoot_Func</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> 
-GoToModuleRoot_Func [&lt;CommonParameters&gt;]</p>
-<p><strong>Syntax:</strong> <pre>name: GoToModuleRoot_Func
-CommonParameters: True
-parameter:</pre></p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p></p>
-<p><strong>Return: </strong> System.Object</p>
-<p></p>
-<p></p>
-<h2>GoToProjectRoot_Func</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> 
-GoToProjectRoot_Func [&lt;CommonParameters&gt;]</p>
-<p><strong>Syntax:</strong> <pre>name: GoToProjectRoot_Func
-CommonParameters: True
-parameter:</pre></p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p></p>
-<p><strong>Return: </strong> System.Object</p>
+<p><strong>Return: </strong> System.Object
+</p>
 <p></p>
 <p></p>
 <h2>Initialize-Dev_Env_Win</h2>
@@ -418,33 +438,83 @@ This updates the Windows Environment variables.
 It installs these powershell modules to the system&apos;s directories.
 Set registry, Path and load PowerShell modules.
 $source = &quot;$global:moduleRootPath\&quot;
-$destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;</p>
-<p><strong>Syntax:</strong> <pre>description: Switch: A switch to indicate the path should be checked/updated.
+$destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;
+</p>
+<p><strong>Syntax:</strong> <pre>UpdatePath
+ description: Switch: A switch to indicate the path should be checked/updated.
 
- UpdatePath
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Pause between steps.
+ required: false, globbing: false, pipelineInput: false, position: named DoPause
+ description: Switch: Pause between steps.
 
- DoPause
- required: false, globbing: false, pipelineInput: false, position: named description: Switch: Verbose output and prompts.
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ description: Switch: Verbose output and prompts.
 
- DoVerbose
  required: false, globbing: false, pipelineInput: false, position: named Initialize-Dev_Env_Win
 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>UpdatePath</strong>: Switch: A switch to indicate the path should be checked/updated.</p>
-<p>  - <strong>DoPause</strong>: Switch: Pause between steps.</p>
-<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.</p>
+<p>  - <strong>UpdatePath</strong>: Switch: A switch to indicate the path should be checked/updated.
+</p>
+<p>  - <strong>DoPause</strong>: Switch: Pause between steps.
+</p>
+<p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.
+</p>
 <p></p>
-<p><strong>Return: </strong> Preparse the Windows OS for development.</p>
+<p><strong>Return: </strong> Preparse the Windows OS for development.
+</p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
 Introduction: @{Text=PS &gt; }
       Syntax: Initialize-Dev_Env_Win -SilentMode -UpdatePath
-     Remarks:</pre>
+     Remarks:    </pre>
 <p></p>
-<footer><p>&copy; David G. Horsman. All rights reserved.</p></footer>
-    <!-- <footer><p>{{Footer}}&copy; David G. Horsman. All rights reserved.</p></footer> -->
+<h2>Invoke-Build</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Invoke-Build [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Invoke-Build
+CommonParameters: True
+parameter: </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Invoke-GoToBootstrap</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Invoke-GoToBootstrap [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Invoke-GoToBootstrap
+CommonParameters: True
+parameter: </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Invoke-Update</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Invoke-Update [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Invoke-Update
+CommonParameters: True
+parameter: </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<footer><p>&Copy-Item; David G. Horsman. All rights reserved.</p></footer>
+    <!-- <footer><p>{{Footer}}&Copy-Item; David G. Horsman. All rights reserved.</p></footer> -->
 </body>
 </html>

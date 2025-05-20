@@ -4,5 +4,5 @@ $path = "$($PSScriptRoot)\Mdm_Modules\Project.ps1"
 . "$path"
 
 Set-Location -Path "$global:moduleRootPath\Mdm_Bootstrap"
-Write-Host "Reset the environment"
-Write-Host ". .\DevEnv_Module_Reset.ps1"
+# Write-Host "Reset the environment"
+# Write-Host ". .\DevEnv_Module_Reset.ps1"

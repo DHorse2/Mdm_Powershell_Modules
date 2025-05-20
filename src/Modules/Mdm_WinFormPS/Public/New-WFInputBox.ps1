@@ -47,7 +47,7 @@
 		{
 			Write-Warning -Message "New-WFInputBox: Something wrong happened during assembly loading."
 			IF ($ErrorBeginAddType) { Write-Warning -Message "[BEGIN] Error while loading assembly Microsoft.VisualBasic" }
-			Add-LogError -IsError -ErrorPSItem $ErrorPSItem -Message $Error[0].Exception.Message
+			Add-LogText -IsError -ErrorPSItem $_ -Message $Error[0].Exception.Message
 		}
 	}
 	PROCESS

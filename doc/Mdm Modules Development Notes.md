@@ -1,8 +1,26 @@
 
 # More Commands
 
+Start-Transcript -Path ".\transcript.txt"
+
+G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules
+Search-StringInFiles -SearchString 'Author' -Path "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules"
+
+Search-StringInFiles -SearchString 'David G' -Path "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules" -Extensions "txt;ps1*;psm1;psd1;md;json;csv;xml*"
+
+# Excluded from search
+
+help*,log*,.inactive*,doc*, en-US, commands.txt, *.html
+help*,log*,.inactive*,doc*, en-US, commands.txt, *.html, Mdm_Posh*
+help*,log*,.inactive*,doc*, en-US, commands.txt, *.html, Mdm_Posh*, Mdm_Night*
+
+# Addons
+
+Install-Module -Name ISEScriptAnalyzerAddOn 
+
 # ############################################################################################
 
+Start-Transcript -Path ".\transcript.txt"
 Get-Module -ListAvailable
 get-command | Out-File "commands.txt"
 Import-Module -name .\Mdm_Modules -force -verbose
@@ -21,6 +39,11 @@ G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Mdm_WinFormPS
 .\src\Modules
 
 # ############################################################################################
+
+# Per PoshFunctions:
+### CommonParameters
+
+This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
 
 # View State
 

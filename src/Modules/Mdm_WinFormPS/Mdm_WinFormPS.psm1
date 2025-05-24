@@ -1,9 +1,9 @@
-﻿Using module "..\Mdm_Std_Library\Mdm_Std_Library.psm1"
-Using namespace Microsoft.VisualBasic
+﻿Using namespace Microsoft.VisualBasic
 Using namespace PresentationFramework
 Using namespace System.Drawing
 Using namespace System.Windows.Forms
 Using namespace System.Web
+Using module "..\Mdm_Std_Library\Mdm_Std_Library.psm1"
 
 Write-Host "Mdm_WinFormPS_FrancoisXavierCat.psm1"
 Add-Type -AssemblyName Microsoft.VisualBasic
@@ -18,8 +18,23 @@ if (-not $global:moduleRootPath) {
 }
 #region Classes - Margin, WFWindow, WindowState
 $global:displayWindow = [DisplayElement]::new(10, 10, 50, 50)
-$global:displayMargins = [DisplayElement]::new(10, 10, 10, 10)
+$global:displayMargins = [DisplayElement]::new(20, 20, 20, 20)
+$global:displayPadding = [DisplayElement]::new(10, 10, 10, 10)
 $global:displaySizeMax = [DisplayElement]::new(10, 10, 2000, 2000)
+$global:displayButtonSize = [DisplayElement]::new(0, 0, 75, 23)
+[hashtable]$global:moduleDataArray = New-Object System.Collections.Hashtable
+[string]$global:appName = "default"
+[string]$global:dataSourceName = "default"
+[bool]$global:moduleDataChanged = $false
+[bool]$global:DoButtonBar = $false
+[array]$global:buttonArray = @(
+	"ButtonBar",
+	"OkButton",
+	"CancelButton",
+	"ApllyButton",
+	"ResetButton",
+	"NextButton"
+)
 class DisplayElement {
 	[string]$Name
 	[string]$Position
@@ -91,19 +106,19 @@ function DisplayElementTest () {
 	$customElement = [DisplayElement]::new("absolute", "100px", "150px", "200px", "100px", "lightblue")
 	$customElement.Display()
 }
-class Margins {
+class MarginClass {
 	[int]$Top
 	[int]$Bottom
 	[int]$Left
 	[int]$Right
 
-	Margins() {
+	MarginClass() {
 		$this.Top = $global:displayWindow.Top
 		$this.Bottom = $global:displayWindow.Bottom
 		$this.Left = $global:displayWindow.Top
 		$this.Right = $global:displayWindow.Right
 	}
-	Margins([int]$top = 0, [int]$bottom = 0, [int]$left = 0, [int]$right = 0) {
+	MarginClass([int]$top = 0, [int]$bottom = 0, [int]$left = 0, [int]$right = 0) {
 		$this.Top = $top
 		$this.Bottom = $bottom
 		$this.Left = $left
@@ -130,7 +145,7 @@ class WFWindow {
 	[int]$FormIndex
 	[int]$TabIndex
 	[hashtable]$Components
-	[Margins]$Margins
+	[MarginClass]$Margins
 	[WindowState]$State
 
 	# Default constructor
@@ -160,7 +175,7 @@ class WFWindow {
 		[System.Windows.Forms.TabControl[]]$TabPage = $null,
 		[int]$inputFormIndex = 0, 
 		[int]$inputTabIndex = 0,
-		[Margins]$inputMargins = $null, 
+		[MarginClass]$inputMargins = $null, 
 		[hashtable]$inputComponents = $null, 
 		[WindowState]$inputState = $null
 	) {
@@ -175,7 +190,7 @@ class WFWindow {
 		[System.Windows.Forms.TabControl[]]$inputTabPage = $null, 
 		[int]$inputFormIndex = 0, 
 		[int]$inputTabIndex = 0,
-		[Margins]$inputMargins = $null, 
+		[MarginClass]$inputMargins = $null, 
 		[hashtable]$inputComponents = $null, 
 		[WindowState]$inputState = $null
 	) {
@@ -215,11 +230,11 @@ class WFWindow {
 				$this.TabIndex = 0
 			}
 			# Margins
-			if ($inputMargins -and $inputMargins -is [Margins]) {
+			if ($inputMargins -and $inputMargins -is [MarginClass]) {
 				$this.Margins = $inputMargins
 			} else {
-				if (-not $this.Margins -or -not $this.Margins -is [Margins]) {
-					$this.Margins = [Margins]::new()
+				if (-not $this.Margins -or -not $this.Margins -is [MarginClass]) {
+					$this.Margins = [MarginClass]::new()
 				}
 			}
 			# Components
@@ -447,4 +462,9 @@ New-Alias -Name Load-WFDataGridView -value Import-WFDataGridView -Description "S
 New-Alias -Name Refresh-WFDataGridView -value Update-WFDataGridView -Description "SAPIEN Name"
 # Export all the functions
 Export-ModuleMember -Function $Public.Basename -Alias *
-# Export-ModuleMember -Class WFWindow, WindowState, MarginClass
+Export-ModuleMember -Variable @(
+	"DisplayElement"
+    "WFWindow", 
+	"WindowState", 
+	"MarginClass"
+)

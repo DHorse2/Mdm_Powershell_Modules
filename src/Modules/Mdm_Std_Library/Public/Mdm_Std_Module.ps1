@@ -32,6 +32,7 @@ Function Export-ModuleMemberScan {
         [string]$moduleRootPath,
         [string]$modulePublicFolder,
         [string]$modulePrivateFolder,
+        [switch]$TraceDetails,
         [switch]$DoForce,
         [switch]$DoVerbose,
         [switch]$DoDebug,
@@ -43,6 +44,8 @@ Function Export-ModuleMemberScan {
         if (-not $modulePrivateFolder) { $modulePrivate = "$moduleRootPath\Private" }
         else { $modulePrivate = "$moduleRootPath\$modulePrivateFolder" }
 
+        # $moduleName = Split-Path ((get-item $moduleRootPath ).FullName) -leaf
+        $moduleName = [System.IO.Path]::GetFileName($moduleRootPath)
         # Create a new module object
         $module = New-Object PSObject -Property @{
             Name             = [System.IO.Path]::GetFileName($moduleRootPath)
@@ -51,7 +54,8 @@ Function Export-ModuleMemberScan {
             PrivateFunctions = @()
             Scripts          = @()
         }
-    }
+        $moduleNameDisplayed = $false
+}
     process {
         # Export-ModuleMemberScan
         #Get public and private function definition files.
@@ -59,21 +63,27 @@ Function Export-ModuleMemberScan {
         $Public = @( Get-ChildItem -Path "$modulePublic\*.ps1" -ErrorAction SilentlyContinue )
         $Private = @( Get-ChildItem -Path "$modulePrivate\*.ps1" -ErrorAction SilentlyContinue )
         if ($DoVerbose) {
-            $Message = "ModuleMemberScan Module: $moduleRootPath"
+            $Message = "ModuleMemberScan Module: $($module.Name)"
             Add-LogText -Message $Message
+            $moduleNameDisplayed = $true
         }
-        $traceDetails = $false
+        # $TraceDetails = $false
         # Dot source the files
         Foreach ($import in @($Public + $Private + $Flat)) {
             Try {
                 # $fileName = Split-Path $import -leaf
-                $functionName = $fileName = [System.IO.Path]::GetFileNameWithoutExtension($import.FullName)
+                $functionName = [System.IO.Path]::GetFileNameWithoutExtension($import.FullName)
                 # Get functions defined in the script
                 $functions = Get-Command -Name * -CommandType Function | Where-Object { $_.Source -eq $import.FullName } -ErrorAction Continue
                 if ($functions) {
                     $functionsString = $($functions | ForEach-Object { $_.Name } -join ', ')
                 } else { $functionsString = "$($functionName)_Func" }
-                if ($traceDetails) {
+                if ($TraceDetails -or ($Verbose -or $DoVerbose)) {
+                    if (-not $moduleNameDisplayed) { 
+                        $moduleNameDisplayed = $true
+                        $Message = "Scan Module $($module.Name): "
+                        Add-LogText -Message $Message -NoNewLine
+                    }
                     if ($Verbose -or $DoVerbose) {
                         $Message = "   Component: $($functionName) with functions: $functionsString"
                         Add-LogText -Message $Message
@@ -85,13 +95,13 @@ Function Export-ModuleMemberScan {
                 if ($functions) {
                     # If functions are found, dot-source the file
                     . $import.FullName
-                    if ($traceDetails -and ($Verbose -or $DoVerbose)) {
+                    if ($TraceDetails -and ($Verbose -or $DoVerbose)) {
                         $Message = "        Function imported: $($import.FullName)" 
                         Add-LogText -Message $Message -ForegroundColor Green 
                     }
                 } else {
                     # If no functions are found, create a wrapper function
-                    if ($traceDetails -and ($Verbose -or $DoVerbose)) {
+                    if ($TraceDetails -and ($Verbose -or $DoVerbose)) {
                         $Message = "        Executable Script: $($import.FullName)" 
                         Add-LogText -Message $Message -ForegroundColor Green 
                     }
@@ -105,7 +115,7 @@ function $scriptName {
 "@
                     # Use Invoke-Expression to define the wrapper function
                     Invoke-Expression $wrapperFunction
-                    if ($traceDetails -and ($Verbose -or $DoVerbose)) {
+                    if ($TraceDetails -and ($Verbose -or $DoVerbose)) {
                         $Message = " Created wrapper function: $scriptName." # Script: $scriptNameFull"
                         Add-LogText -Message $Message -ForegroundColor Green 
                     }
@@ -114,14 +124,14 @@ function $scriptName {
                     # Public and Common (Root)
                     Export-ModuleMember -Function $functionsString
                     $module.PublicFunctions += $functionsString
-                    if ($traceDetails -and ($Verbose -or $DoVerbose)) {
+                    if ($TraceDetails -and ($Verbose -or $DoVerbose)) {
                         $Message = "         Public Component: $($import.FullName) with functions: $($functions.Name -join ', ')"
                         Add-LogText -Message $Message -ForegroundColor Green 
                     }
                 } else { 
                     # Private
                     $module.PrivateFunctions += $functionsString
-                    if ($traceDetails -and ($Verbose -or $DoVerbose)) {
+                    if ($TraceDetails -and ($Verbose -or $DoVerbose)) {
                         $Message = "         Private Component: $($import.FullName) skipped." 
                         Add-LogText -Message $Message -ForegroundColor Green 
                     }
@@ -132,7 +142,7 @@ function $scriptName {
                 # Add-LogText -Message $Message
             }
         }
-        if ($traceDetails -and -not($Verbose -or $DoVerbose)) {
+        if ($TraceDetails -and -not($Verbose -or $DoVerbose)) {
             $Message = " " 
             Add-LogText -Message $Message
         }

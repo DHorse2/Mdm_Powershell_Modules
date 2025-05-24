@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_Modules Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="05/18/2025 22:22:34">
+    <meta name="date" content="05/21/2025 18:20:14">
     <meta name="copyright" content="&Copy-Item; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -147,7 +147,8 @@ Exported functions from Bootstrap, Standard Library, Development Environment Ins
 <p><strong>Synopsis:</strong> List current versions.</p>
 <p><strong>Detailed Description:</strong> Cycles through components and display the current version.
 </p>
-<p><strong>Syntax:</strong> <pre>DoPause
+<p><strong>Syntax:</strong> <pre>Get-DevEnvVersions
+ DoPause
  description: Switch to pause at each step/page.
 
  required: false, globbing: false, pipelineInput: false, position: named DoVerbose
@@ -157,8 +158,7 @@ Exported functions from Bootstrap, Standard Library, Development Environment Ins
  description: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
- required: false, globbing: false, pipelineInput: false, position: named Get-DevEnvVersions
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch to pause at each step/page.
@@ -186,7 +186,8 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> This functions helps you load items into a DataGridView.</p>
 <p><strong>Detailed Description:</strong> Use this function to dynamically load items into the DataGridView control.
 </p>
-<p><strong>Syntax:</strong> <pre>description: The ComboBox control you want to add items to.
+<p><strong>Syntax:</strong> <pre>Import-WFDataGridView
+ description: The ComboBox control you want to add items to.
 
  DataGridView
  parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: 1 description: The object or objects you wish to load into the ComboBox's items collection.
@@ -195,8 +196,7 @@ Introduction: @{Text=PS &gt; }
  parameterValue: Object, required: true, globbing: false, pipelineInput: false, position: 2 description: Sets the name of the list or table in the data source for which the DataGridView is displaying data.
 
  DataMember
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 Import-WFDataGridView
-</pre></p>
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DataGridView</strong>: The ComboBox control you want to add items to.
@@ -221,7 +221,8 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> This functions helps you load items into a ListBox or CheckedListBox.</p>
 <p><strong>Detailed Description:</strong> Use this function to dynamically load items into the ListBox control.
 </p>
-<p><strong>Syntax:</strong> <pre>description: The ListBox control you want to add items to.
+<p><strong>Syntax:</strong> <pre>Import-WFListBox
+ description: The ListBox control you want to add items to.
 
  ListBox
  parameterValue: ListBox, required: true, globbing: false, pipelineInput: false, position: 1 description: The object or objects you wish to load into the ListBox's Items collection.
@@ -233,8 +234,7 @@ Introduction: @{Text=PS &gt; }
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 Append
  description: Adds the item(s) to the ListBox without clearing the Items collection.
 
- required: false, globbing: false, pipelineInput: false, position: named Import-WFListBox
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>ListBox</strong>: The ListBox control you want to add items to.
@@ -261,13 +261,13 @@ Import-WFListBox $listBox1 &quot;Blue&quot; -Append Import-WFListBox $listBox1 (
 <p><strong>Synopsis:</strong> Function to refresh the content of a DataGridView control</p>
 <p><strong>Detailed Description:</strong> Function to refresh the content of a DataGridView control
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the DataGridView control to update
+<p><strong>Syntax:</strong> <pre>Update-WFDataGridView
+ description: Specifies the DataGridView control to update
 
  DataGridView
  parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named Update-WFDataGridView
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DataGridView</strong>: Specifies the DataGridView control to update
@@ -282,11 +282,11 @@ Import-WFListBox $listBox1 &quot;Blue&quot; -Append Import-WFListBox $listBox1 (
 <p><strong>Synopsis:</strong> Add to HKLM Environtment Path</p>
 <p><strong>Detailed Description:</strong> This loads the specifiect Path key (PATH by default) and adds the new path to it.
 </p>
-<p><strong>Syntax:</strong> <pre>description: The Path key to use.
+<p><strong>Syntax:</strong> <pre>Add-RegistryPath
+ description: The Path key to use.
 
  envPathToUpdate
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 Add-RegistryPath
-</pre></p>
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>envPathToUpdate</strong>: The Path key to use.
@@ -306,10 +306,10 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> This function add a column to a DataGridView</p>
 <p><strong>Detailed Description:</strong> This function add a column to a DataGridView
 </p>
-<p><strong>Syntax:</strong> <pre>DataGridView
+<p><strong>Syntax:</strong> <pre>Add-WFDataGridViewColumn
+ DataGridView
  parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: 1 ColumnName
- parameterValue: String[], required: false, globbing: false, pipelineInput: false, position: 2 Add-WFDataGridViewColumn
-</pre></p>
+ parameterValue: String[], required: false, globbing: false, pipelineInput: false, position: 2</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DataGridView</strong></p>
@@ -331,7 +331,8 @@ Introduction:
 <p><strong>Synopsis:</strong> This function add a row to a DataGridView</p>
 <p><strong>Detailed Description:</strong> This function add a row to a DataGridView
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the DataGridView Control to use
+<p><strong>Syntax:</strong> <pre>Add-WFDataGridViewRow
+ description: Specifies the DataGridView Control to use
 
  DataGridView
  parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named Add-WFDataGridViewRow
@@ -351,8 +352,7 @@ Introduction:
  parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named description: Specifies the number of column to add
 
  Collection
- parameterValue: Int32, required: true, globbing: false, pipelineInput: false, position: named Add-WFDataGridViewRow
-</pre></p>
+ parameterValue: Int32, required: true, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DataGridView</strong>: Specifies the DataGridView Control to use
@@ -382,7 +382,8 @@ Introduction:
 <p><strong>Synopsis:</strong> Adds the item(s) to the ListView and stores the object in the ListViewItem&apos;s Tag property.</p>
 <p><strong>Detailed Description:</strong> Adds the item(s) to the ListView and stores the object in the ListViewItem&apos;s Tag property.
 </p>
-<p><strong>Syntax:</strong> <pre>description: The ListView control to add the items to.
+<p><strong>Syntax:</strong> <pre>Add-WFListViewItem
+ description: The ListView control to add the items to.
 
  ListView
  parameterValue: ListView, required: true, globbing: false, pipelineInput: false, position: 1 description: The object or objects you wish to load into the ListView's Items collection.
@@ -400,8 +401,7 @@ Introduction:
  parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 5 Clear
  description: This switch clears the ListView's Items before adding the new item(s).
 
- required: false, globbing: false, pipelineInput: false, position: named Add-WFListViewItem
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>ListView</strong>: The ListView control to add the items to.
@@ -435,7 +435,8 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> This function Append text to a RichTextBox</p>
 <p><strong>Detailed Description:</strong> This function Append text to a RichTextBox
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specify the RichTextBox Control to use
+<p><strong>Syntax:</strong> <pre>Add-WFRichTextBoxText
+ description: Specify the RichTextBox Control to use
 
  RichTextBox
  parameterValue: RichTextBox, required: true, globbing: false, pipelineInput: false, position: 1 description: Specify a name that will help the user to identify the item
@@ -458,8 +459,7 @@ Introduction: @{Text=PS &gt; }
  SourceColor
  parameterValue: Color, required: false, globbing: false, pipelineInput: false, position: 7 IncludeDateTime
  required: false, globbing: false, pipelineInput: false, position: named DateTimeColor
- parameterValue: Color, required: false, globbing: false, pipelineInput: false, position: 8 Add-WFRichTextBoxText
-</pre></p>
+ parameterValue: Color, required: false, globbing: false, pipelineInput: false, position: 8</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>RichTextBox</strong>: Specify the RichTextBox Control to use
@@ -494,7 +494,8 @@ Introduction:
 <p><strong>Synopsis:</strong> Return true if Registry Value exists.</p>
 <p><strong>Detailed Description:</strong> Check the registry path &amp; value. Asserts it exists.
 </p>
-<p><strong>Syntax:</strong> <pre>description: The Registry Path to check.
+<p><strong>Syntax:</strong> <pre>Assert-RegistryValue
+ description: The Registry Path to check.
 
  Path
  parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 description: The Registry Key name (Value) to access.
@@ -503,8 +504,7 @@ Introduction:
  parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2 PassThru
  description: If true this outputs an ItemProperty otherwise true/false
 
- required: false, globbing: false, pipelineInput: false, position: named Assert-RegistryValue
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Path</strong>: The Registry Path to check.
@@ -527,11 +527,11 @@ Introduction: @{Text=PS &gt; }
 <h2>Build-WFCheckBoxList</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Build-WFCheckBoxList [-jsonData] &lt;psobject&gt; [[-form] &lt;Form&gt;] [[-groupBox] &lt;GroupBox&gt;] [[-groupBoxLabel] &lt;string&gt;] [[-xPos] &lt;int&gt;] [[-yPos] &lt;int&gt;] [[-xWidth] &lt;int&gt;] [[-yHeight] &lt;int&gt;] [[-groupHeightMax] &lt;int&gt;] [-NotDialog] [&lt;CommonParameters&gt;]
+Build-WFCheckBoxList [-jsonData] &lt;psobject&gt; [-form] &lt;Form&gt; [[-margins] &lt;Margins&gt;] [[-groupBox] &lt;GroupBox&gt;] [[-groupBoxLabel] &lt;string&gt;] [[-xPos] &lt;int&gt;] [[-yPos] &lt;int&gt;] [[-xWidth] &lt;int&gt;] [[-yHeight] &lt;int&gt;] [[-groupHeightMax] &lt;int&gt;] [-NotDialog] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Build-WFCheckBoxList
 CommonParameters: True
-parameter:          </pre></p>
+parameter:           </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>NotDialog</strong></p>
@@ -540,6 +540,7 @@ parameter:          </pre></p>
 <p>  - <strong>groupBoxLabel</strong></p>
 <p>  - <strong>groupHeightMax</strong></p>
 <p>  - <strong>jsonData</strong></p>
+<p>  - <strong>margins</strong></p>
 <p>  - <strong>xPos</strong></p>
 <p>  - <strong>xWidth</strong></p>
 <p>  - <strong>yHeight</strong></p>
@@ -552,15 +553,16 @@ parameter:          </pre></p>
 <h2>Build-WFFormControls</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Build-WFFormControls [[-Target] &lt;string&gt;] [[-window] &lt;WFWindow&gt;] [[-form] &lt;Form&gt;] [[-formIndex] &lt;int&gt;] [[-tabPage] &lt;TabPage&gt;] [[-tabIndex] &lt;int&gt;] [[-groupBox] &lt;GroupBox&gt;] [[-groupBoxLabel] &lt;string&gt;] [[-jsonData] &lt;hashtable&gt;] [[-margins] &lt;Margins&gt;] [[-Title] &lt;string&gt;] [[-TextInput] &lt;string&gt;] [[-OkButton] &lt;string&gt;] [[-CancelButton] &lt;string&gt;] [[-state] &lt;Object&gt;] [-DoMenuBar] [-DoControls] [-DoTabIndex] [&lt;CommonParameters&gt;]
+Build-WFFormControls [[-Target] &lt;string&gt;] [[-window] &lt;WFWindow&gt;] [[-form] &lt;Form&gt;] [[-formIndex] &lt;int&gt;] [[-tabPage] &lt;TabPage&gt;] [[-tabIndex] &lt;int&gt;] [[-groupBox] &lt;GroupBox&gt;] [[-groupBoxLabel] &lt;string&gt;] [[-jsonData] &lt;hashtable&gt;] [[-margins] &lt;Margins&gt;] [[-Title] &lt;string&gt;] [[-TextInput] &lt;string&gt;] [[-OkButton] &lt;string&gt;] [[-CancelButton] &lt;string&gt;] [[-state] &lt;Object&gt;] [-DoMenuBar] [-DoControls] [-DoEvents] [-DoTabIndex] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Build-WFFormControls
 CommonParameters: True
-parameter:                  </pre></p>
+parameter:                   </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>CancelButton</strong></p>
 <p>  - <strong>DoControls</strong></p>
+<p>  - <strong>DoEvents</strong></p>
 <p>  - <strong>DoMenuBar</strong></p>
 <p>  - <strong>DoTabIndex</strong></p>
 <p>  - <strong>OkButton</strong></p>
@@ -588,11 +590,11 @@ parameter:                  </pre></p>
 <p><strong>Synopsis:</strong> The Clear-WFDataGridViewSelection function will deselect any cell, row, column selection.</p>
 <p><strong>Detailed Description:</strong> The Clear-WFDataGridViewSelection function will deselect any cell, row, column selection.
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the DataGridView Control to clear
+<p><strong>Syntax:</strong> <pre>Clear-WFDataGridViewSelection
+ description: Specifies the DataGridView Control to clear
 
  DataGridView
- parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: 1 Clear-WFDataGridViewSelection
-</pre></p>
+ parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DataGridView</strong>: Specifies the DataGridView Control to clear
@@ -611,14 +613,14 @@ Introduction: @{Text=PS C:\&gt;}
 <p><strong>Synopsis:</strong> The Clear-WFErrorProvider function will clear the error message on the Winforms control specified</p>
 <p><strong>Detailed Description:</strong> The Clear-WFErrorProvider function will clear the error message on the Winforms control specified
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the ErrorProvider Control
+<p><strong>Syntax:</strong> <pre>Clear-WFErrorProvider
+ description: Specifies the ErrorProvider Control
 
  ErrorProvider
  parameterValue: ErrorProvider, required: true, globbing: false, pipelineInput: false, position: 1 description: Specifies the Control on which the error message will be cleared
 
  Control
- parameterValue: Object, required: true, globbing: false, pipelineInput: false, position: 2 Clear-WFErrorProvider
-</pre></p>
+ parameterValue: Object, required: true, globbing: false, pipelineInput: false, position: 2</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>ErrorProvider</strong>: Specifies the ErrorProvider Control
@@ -638,11 +640,11 @@ Introduction: @{Text=PS C:\&gt;}
 <p><strong>Synopsis:</strong> This function will clear the content of a listbox control</p>
 <p><strong>Detailed Description:</strong> This function will clear the content of a listbox control
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the ListBox control to clear
+<p><strong>Syntax:</strong> <pre>Clear-WFListBox
+ description: Specifies the ListBox control to clear
 
  ListBox
- parameterValue: ListBox, required: true, globbing: false, pipelineInput: false, position: 1 Clear-WFListBox
-</pre></p>
+ parameterValue: ListBox, required: true, globbing: false, pipelineInput: false, position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>ListBox</strong>: Specifies the ListBox control to clear
@@ -660,13 +662,13 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> This function will clear the content of a richtextbox control</p>
 <p><strong>Detailed Description:</strong> A detailed description of the Clear-WFRichTextBox function.
 </p>
-<p><strong>Syntax:</strong> <pre>description: A description of the RichTextBox parameter.
+<p><strong>Syntax:</strong> <pre>Clear-WFRichTextBox
+ description: A description of the RichTextBox parameter.
 
  RichTextBox
  parameterValue: RichTextBox, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named Clear-WFRichTextBox
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>RichTextBox</strong>: A description of the RichTextBox parameter.
@@ -689,7 +691,8 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> Converts objects into a DataTable.</p>
 <p><strong>Detailed Description:</strong> Converts objects into a DataTable, which are used for DataBinding.
 </p>
-<p><strong>Syntax:</strong> <pre>description: The input to convert into a DataTable.
+<p><strong>Syntax:</strong> <pre>ConvertTo-WFDataTable
+ description: The input to convert into a DataTable.
 
  InputObject
  parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 1 description: The DataTable you wish to load the input into.
@@ -701,8 +704,7 @@ Introduction: @{Text=PS &gt; }
  required: false, globbing: false, pipelineInput: false, position: named FilterWMIProperties
  description: This switch removes WMI properties that start with an underline.
 
- required: false, globbing: false, pipelineInput: false, position: named ConvertTo-WFDataTable
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>InputObject</strong>: The input to convert into a DataTable.
@@ -728,15 +730,19 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> A short one-line action-based description, e.g. &apos;Tests if a function is valid&apos;</p>
 <p><strong>Detailed Description:</strong> A longer description of the function, its purpose, common use cases, etc.
 </p>
-<p><strong>Syntax:</strong> <pre>fileNameFull
+<p><strong>Syntax:</strong> <pre>DevEnvGui
+ fileNameFull
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 ResetSettings
  required: false, globbing: false, pipelineInput: false, position: named logFilePath
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 logFileName
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 LogOneFile
  required: false, globbing: false, pipelineInput: false, position: named companyName
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 4 title
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 DevEnvGui
-</pre></p>
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 4 Title
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 DoForce
+ required: false, globbing: false, pipelineInput: false, position: named DoVerbose
+ required: false, globbing: false, pipelineInput: false, position: named DoDebug
+ required: false, globbing: false, pipelineInput: false, position: named DoPause
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>fileNameFull</strong></p>
@@ -745,7 +751,11 @@ Introduction: @{Text=PS &gt; }
 <p>  - <strong>logFileName</strong></p>
 <p>  - <strong>LogOneFile</strong></p>
 <p>  - <strong>companyName</strong></p>
-<p>  - <strong>title</strong></p>
+<p>  - <strong>Title</strong></p>
+<p>  - <strong>DoForce</strong></p>
+<p>  - <strong>DoVerbose</strong></p>
+<p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoPause</strong></p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
@@ -771,7 +781,8 @@ Explanation of the function or its result. You can include multiple examples wit
 <p><strong>Synopsis:</strong> Install or update Mdm Modules.</p>
 <p><strong>Detailed Description:</strong> This installs the libraries to the live system using Robocopy.
 </p>
-<p><strong>Syntax:</strong> <pre>DoForce
+<p><strong>Syntax:</strong> <pre>DevEnv_Install_Modules_Win
+ DoForce
  required: false, globbing: false, pipelineInput: false, position: named DoVerbose
  description: Provide detailed information.
 
@@ -815,8 +826,7 @@ You could override it if you had other local modules to install
 Currently: "/E /FP /nc /ns /np /TEE"
 
  copyOptions
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 9 DevEnv_Install_Modules_Win
-</pre></p>
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 9</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoForce</strong></p>
@@ -880,13 +890,13 @@ parameter: @{name=languageMode; required=false; pipelineInput=false; isDynamic=f
 <p><strong>Synopsis:</strong> This function will disable a button control</p>
 <p><strong>Detailed Description:</strong> This function will disable a button control
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the Button Control to disable
+<p><strong>Syntax:</strong> <pre>Disable-WFButton
+ description: Specifies the Button Control to disable
 
  Button
  parameterValue: Button[], required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named Disable-WFButton
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Button</strong>: Specifies the Button Control to disable
@@ -906,13 +916,13 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> This function will disable a RichTextBox control</p>
 <p><strong>Detailed Description:</strong> A detailed description of the Disable-WFRichTextBox function.
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the RichTextBox control to disable
+<p><strong>Syntax:</strong> <pre>Disable-WFRichTextBox
+ description: Specifies the RichTextBox control to disable
 
  RichTextBox
  parameterValue: RichTextBox, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named Disable-WFRichTextBox
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>RichTextBox</strong>: Specifies the RichTextBox control to disable
@@ -931,11 +941,11 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> This function will disable a tab control</p>
 <p><strong>Detailed Description:</strong> A detailed description of the Disable-WFTabControl function.
 </p>
-<p><strong>Syntax:</strong> <pre>tabControls
+<p><strong>Syntax:</strong> <pre>Disable-WFTabControl
+ tabControls
  parameterValue: TabControl, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named Disable-WFTabControl
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>tabControls</strong></p>
@@ -954,13 +964,13 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> This function will disable a TextBox control</p>
 <p><strong>Detailed Description:</strong> A detailed description of the Disable-WFTextBox function.
 </p>
-<p><strong>Syntax:</strong> <pre>description: A description of the TextBox parameter.
+<p><strong>Syntax:</strong> <pre>Disable-WFTextBox
+ description: A description of the TextBox parameter.
 
  TextBox
  parameterValue: TextBox, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named Disable-WFTextBox
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>TextBox</strong>: A description of the TextBox parameter.
@@ -980,13 +990,13 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> This function will enable a button control</p>
 <p><strong>Detailed Description:</strong> A detailed description of the Enable-WFButton function.
 </p>
-<p><strong>Syntax:</strong> <pre>description: A description of the Button parameter.
+<p><strong>Syntax:</strong> <pre>Enable-WFButton
+ description: A description of the Button parameter.
 
  Button
  parameterValue: Button[], required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named Enable-WFButton
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Button</strong>: A description of the Button parameter.
@@ -1006,13 +1016,13 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> This function will enable a RichTextBox control</p>
 <p><strong>Detailed Description:</strong> A detailed description of the Enable-WFRichTextBox function.
 </p>
-<p><strong>Syntax:</strong> <pre>description: A description of the RichTextBox parameter.
+<p><strong>Syntax:</strong> <pre>Enable-WFRichTextBox
+ description: A description of the RichTextBox parameter.
 
  RichTextBox
  parameterValue: RichTextBox, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named Enable-WFRichTextBox
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>RichTextBox</strong>: A description of the RichTextBox parameter.
@@ -1031,11 +1041,11 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> This function will enable a TabControl control</p>
 <p><strong>Detailed Description:</strong> This function will enable a TabControl control
 </p>
-<p><strong>Syntax:</strong> <pre>tabControls
+<p><strong>Syntax:</strong> <pre>Enable-WFTabControl
+ tabControls
  parameterValue: TabControl, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named Enable-WFTabControl
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>tabControls</strong></p>
@@ -1054,11 +1064,11 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> This function will enable a TextBox control</p>
 <p><strong>Detailed Description:</strong> This function will enable a TextBox control
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the TextBox control to enable
+<p><strong>Syntax:</strong> <pre>Enable-WFTextBox
+ description: Specifies the TextBox control to enable
 
  TextBox
- parameterValue: TextBox, required: true, globbing: false, pipelineInput: false, position: 1 Enable-WFTextBox
-</pre></p>
+ parameterValue: TextBox, required: true, globbing: false, pipelineInput: false, position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>TextBox</strong>: Specifies the TextBox control to enable
@@ -1070,16 +1080,20 @@ Introduction: @{Text=PS &gt; }
       Syntax: Enable-WFTextBox -TextBox $TextBox
      Remarks:    </pre>
 <p></p>
-<h2>Enter-DevEnv_Module_Reset</h2>
+<h2>Enter-GoToBootstrap</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Enter-DevEnv_Module_Reset [&lt;CommonParameters&gt;]
+Enter-GoToBootstrap [-DoPause] [-DoVerbose] [-DoDebug] [-DoForce] [&lt;CommonParameters&gt;]
 </p>
-<p><strong>Syntax:</strong> <pre>name: Enter-DevEnv_Module_Reset
+<p><strong>Syntax:</strong> <pre>name: Enter-GoToBootstrap
 CommonParameters: True
-parameter: </pre></p>
+parameter:    </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoForce</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoVerbose</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
 </p>
@@ -1088,13 +1102,17 @@ parameter: </pre></p>
 <h2>Enter-ModuleRoot</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Enter-ModuleRoot [&lt;CommonParameters&gt;]
+Enter-ModuleRoot [-DoPause] [-DoVerbose] [-DoDebug] [-DoForce] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Enter-ModuleRoot
 CommonParameters: True
-parameter: </pre></p>
+parameter:    </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoForce</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoVerbose</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
 </p>
@@ -1103,13 +1121,17 @@ parameter: </pre></p>
 <h2>Enter-ProjectRoot</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Enter-ProjectRoot [&lt;CommonParameters&gt;]
+Enter-ProjectRoot [-DoPause] [-DoVerbose] [-DoDebug] [-DoForce] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Enter-ProjectRoot
 CommonParameters: True
-parameter: </pre></p>
+parameter:    </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoForce</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoVerbose</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
 </p>
@@ -1126,7 +1148,8 @@ parameter: </pre></p>
 <p><strong>Synopsis:</strong> The Find-WFDataGridViewValue function helps you to find a specific value and select the cell, row or to set a fore and back color.</p>
 <p><strong>Detailed Description:</strong> The Find-WFDataGridViewValue function helps you to find a specific value and select the cell, row or to set a fore and back color.
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the DataGridView Control to use
+<p><strong>Syntax:</strong> <pre>Find-WFDataGridViewValue
+ description: Specifies the DataGridView Control to use
 
  DataGridView
  parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named description: Specifies the value to search
@@ -1158,8 +1181,7 @@ parameter: </pre></p>
  parameterValue: Color, required: false, globbing: false, pipelineInput: false, position: named description: Specifies the back color of the row to use
 
  RowBackColor
- parameterValue: Color, required: false, globbing: false, pipelineInput: false, position: named Find-WFDataGridViewValue
-</pre></p>
+ parameterValue: Color, required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DataGridView</strong>: Specifies the DataGridView Control to use
@@ -1190,7 +1212,8 @@ Introduction:
 <p><strong>Synopsis:</strong> List current versions.</p>
 <p><strong>Detailed Description:</strong> Cycles through components and display the current version.
 </p>
-<p><strong>Syntax:</strong> <pre>DoPause
+<p><strong>Syntax:</strong> <pre>Get-DevEnvVersions
+ DoPause
  description: Switch to pause at each step/page.
 
  required: false, globbing: false, pipelineInput: false, position: named DoVerbose
@@ -1200,8 +1223,7 @@ Introduction:
  description: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
- required: false, globbing: false, pipelineInput: false, position: named Get-DevEnvVersions
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch to pause at each step/page.
@@ -1247,7 +1269,8 @@ parameter:  </pre></p>
 <p><strong>Synopsis:</strong> Function to get item(s) from a CheckedListBox Control</p>
 <p><strong>Detailed Description:</strong> Function to get item(s) from a CheckedListBox Control
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the CheckedListBox control
+<p><strong>Syntax:</strong> <pre>Get-WFCheckedListBoxItem
+ description: Specifies the CheckedListBox control
 
  CheckedListBox
  parameterValue: CheckedListBox, required: false, globbing: false, pipelineInput: false, position: named All
@@ -1267,8 +1290,7 @@ parameter:  </pre></p>
  parameterValue: CheckedListBox, required: false, globbing: false, pipelineInput: false, position: named SelectedItem
  description: Specifies that the function returns only the selected item (highlighted)
 
- required: false, globbing: false, pipelineInput: false, position: named Get-WFCheckedListBoxItem
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>CheckedListBox</strong>: Specifies the CheckedListBox control
@@ -1289,7 +1311,8 @@ parameter:  </pre></p>
 <p><strong>Synopsis:</strong> Function to get item(s) from a Combobox Control</p>
 <p><strong>Detailed Description:</strong> Function to get item(s) from a Combobox Control
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the Combobox control to
+<p><strong>Syntax:</strong> <pre>Get-WFComboboxItem
+ description: Specifies the Combobox control to
 
  ComboBox
  parameterValue: ComboBox, required: false, globbing: false, pipelineInput: false, position: named All
@@ -1302,8 +1325,7 @@ parameter:  </pre></p>
  parameterValue: ComboBox, required: false, globbing: false, pipelineInput: false, position: named SelectedItem
  description: A description of the SelectedItem parameter.
 
- required: false, globbing: false, pipelineInput: false, position: named Get-WFComboboxItem
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>ComboBox</strong>: Specifies the Combobox control to
@@ -1329,7 +1351,8 @@ Introduction:
 <p><strong>Synopsis:</strong> Function to retrieve information about the a Form</p>
 <p><strong>Detailed Description:</strong> Function to retrieve information about the a Form
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the Form
+<p><strong>Syntax:</strong> <pre>Get-WFForm
+ description: Specifies the Form
 
  form
  parameterValue: Form, required: false, globbing: false, pipelineInput: false, position: 1 Controls
@@ -1341,8 +1364,7 @@ Introduction:
  required: false, globbing: false, pipelineInput: false, position: named Text
  description: Specifies that you want to see the Title of the form
 
- required: false, globbing: false, pipelineInput: false, position: named Get-WFForm
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>form</strong>: Specifies the Form
@@ -1363,7 +1385,8 @@ Introduction:
 <p><strong>Synopsis:</strong> Function to get item(s) from a ListBox Control</p>
 <p><strong>Detailed Description:</strong> Function to get item(s) from a ListBox Control
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the ListBox control to get
+<p><strong>Syntax:</strong> <pre>Get-WFListBoxItem
+ description: Specifies the ListBox control to get
 
  ListBox
  parameterValue: ListBox, required: false, globbing: false, pipelineInput: false, position: named All
@@ -1376,8 +1399,7 @@ Introduction:
  parameterValue: ListBox, required: false, globbing: false, pipelineInput: false, position: named SelectedItem
  description: Show only the selected Item
 
- required: false, globbing: false, pipelineInput: false, position: named Get-WFListBoxItem
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>ListBox</strong>: Specifies the ListBox control to get
@@ -1399,13 +1421,13 @@ Introduction:
 <p><strong>Synopsis:</strong> Function to get item(s) from a ListView Control</p>
 <p><strong>Detailed Description:</strong> Function to get item(s) from a ListView Control
 </p>
-<p><strong>Syntax:</strong> <pre>ListView
+<p><strong>Syntax:</strong> <pre>Get-WFListViewItem
+ ListView
  parameterValue: ListView, required: true, globbing: false, pipelineInput: false, position: named SelectedItem
  required: true, globbing: false, pipelineInput: false, position: named Get-WFListViewItem
  ListView
  parameterValue: ListView, required: true, globbing: false, pipelineInput: false, position: named All
- required: true, globbing: false, pipelineInput: false, position: named Get-WFListViewItem
-</pre></p>
+ required: true, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>ListView</strong></p>
@@ -1426,7 +1448,8 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> This functions helps you load items into a DataGridView.</p>
 <p><strong>Detailed Description:</strong> Use this function to dynamically load items into the DataGridView control.
 </p>
-<p><strong>Syntax:</strong> <pre>description: The ComboBox control you want to add items to.
+<p><strong>Syntax:</strong> <pre>Import-WFDataGridView
+ description: The ComboBox control you want to add items to.
 
  DataGridView
  parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: 1 description: The object or objects you wish to load into the ComboBox's items collection.
@@ -1435,8 +1458,7 @@ Introduction: @{Text=PS &gt; }
  parameterValue: Object, required: true, globbing: false, pipelineInput: false, position: 2 description: Sets the name of the list or table in the data source for which the DataGridView is displaying data.
 
  DataMember
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 Import-WFDataGridView
-</pre></p>
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DataGridView</strong>: The ComboBox control you want to add items to.
@@ -1461,7 +1483,8 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> This functions helps you load items into a ListBox or CheckedListBox.</p>
 <p><strong>Detailed Description:</strong> Use this function to dynamically load items into the ListBox control.
 </p>
-<p><strong>Syntax:</strong> <pre>description: The ListBox control you want to add items to.
+<p><strong>Syntax:</strong> <pre>Import-WFListBox
+ description: The ListBox control you want to add items to.
 
  ListBox
  parameterValue: ListBox, required: true, globbing: false, pipelineInput: false, position: 1 description: The object or objects you wish to load into the ListBox's Items collection.
@@ -1473,8 +1496,7 @@ Introduction: @{Text=PS &gt; }
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 Append
  description: Adds the item(s) to the ListBox without clearing the Items collection.
 
- required: false, globbing: false, pipelineInput: false, position: named Import-WFListBox
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>ListBox</strong>: The ListBox control you want to add items to.
@@ -1508,7 +1530,8 @@ Set registry, Path and load PowerShell modules.
 $source = &quot;$global:moduleRootPath\&quot;
 $destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;
 </p>
-<p><strong>Syntax:</strong> <pre>UpdatePath
+<p><strong>Syntax:</strong> <pre>Initialize-Dev_Env_Win
+ UpdatePath
  description: Switch: A switch to indicate the path should be checked/updated.
 
  required: false, globbing: false, pipelineInput: false, position: named DoPause
@@ -1517,8 +1540,7 @@ $destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;
  required: false, globbing: false, pipelineInput: false, position: named DoVerbose
  description: Switch: Verbose output and prompts.
 
- required: false, globbing: false, pipelineInput: false, position: named Initialize-Dev_Env_Win
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>UpdatePath</strong>: Switch: A switch to indicate the path should be checked/updated.
@@ -1549,7 +1571,8 @@ Introduction: @{Text=PS &gt; }
     Install-DevEnvWhisperWin
 When complete it displays current version for the environment.
 </p>
-<p><strong>Syntax:</strong> <pre>DoPause
+<p><strong>Syntax:</strong> <pre>Install-DevEnv
+ DoPause
  description: Switch: Pause between steps.
 
  required: false, globbing: false, pipelineInput: false, position: named DoVerbose
@@ -1557,8 +1580,7 @@ When complete it displays current version for the environment.
 
  required: false, globbing: false, pipelineInput: false, position: named DoDebug
  required: false, globbing: false, pipelineInput: false, position: named DoForce
- required: false, globbing: false, pipelineInput: false, position: named Install-DevEnv
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.
@@ -1588,7 +1610,8 @@ It installs Chocolatey (if not already installed), Python, Git, VSCode,
 creates a project directory and a Python virtual environment,
 and then installs TensorFlow, Keras, and PyTorch.
 </p>
-<p><strong>Syntax:</strong> <pre>DoPause
+<p><strong>Syntax:</strong> <pre>Install-DevEnvIdeWin
+ DoPause
  description: Switch: Pause between steps.
 
  required: false, globbing: false, pipelineInput: false, position: named DoVerbose
@@ -1598,8 +1621,7 @@ and then installs TensorFlow, Keras, and PyTorch.
  description: Switch: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
- required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvIdeWin
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.
@@ -1630,7 +1652,8 @@ Create Python virtual environment. Activates it.
 Upgrades pip and installs neural network libraries.
 Libraries: TensorFlow, Keras, PyTorch.
 </p>
-<p><strong>Syntax:</strong> <pre>DoPause
+<p><strong>Syntax:</strong> <pre>Install-DevEnvLlmWin
+ DoPause
  description: Switch: Pause between steps.
 
  required: false, globbing: false, pipelineInput: false, position: named DoVerbose
@@ -1640,8 +1663,7 @@ Libraries: TensorFlow, Keras, PyTorch.
  description: Switch: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
- required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvLlmWin
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.
@@ -1673,7 +1695,7 @@ Introduction: @{Text=PS &gt; }
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_Modules Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="05/18/2025 22:22:34">
+    <meta name="date" content="05/21/2025 18:20:14">
     <meta name="copyright" content="&Copy-Item; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -1787,9 +1809,9 @@ Introduction: @{Text=PS &gt; }
 </body>
 </html>) for each object
 </p>
-<p><strong>Syntax:</strong> <pre>inputObject
- parameterValue: Object, required: false, globbing: false, pipelineInput: true (ByValue), position: 1 Install-DevEnvModules
-</pre></p>
+<p><strong>Syntax:</strong> <pre>Install-DevEnvModules
+ inputObject
+ parameterValue: Object, required: false, globbing: false, pipelineInput: true (ByValue), position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>inputObject</strong></p>
@@ -1814,7 +1836,8 @@ It installs Chocolatey (if not already installed).
 It will update PowerShell (from vs 5 to 7).
 TODO: sed, win linux, other tools?
 </p>
-<p><strong>Syntax:</strong> <pre>DoPause
+<p><strong>Syntax:</strong> <pre>Install-DevEnvOsWin
+ DoPause
  description: Switch: Pause between steps.
 
  required: false, globbing: false, pipelineInput: false, position: named DoVerbose
@@ -1824,8 +1847,7 @@ TODO: sed, win linux, other tools?
  description: Switch: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
- required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvOsWin
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.
@@ -1853,7 +1875,8 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> Install local voice recognition (Whisper).</p>
 <p><strong>Detailed Description:</strong> Whisper is models designed to run voice recognition locally.
 </p>
-<p><strong>Syntax:</strong> <pre>DoPause
+<p><strong>Syntax:</strong> <pre>Install-DevEnvWhisperWin
+ DoPause
  description: Switch: Pause between steps.
 
  required: false, globbing: false, pipelineInput: false, position: named DoVerbose
@@ -1863,8 +1886,7 @@ Introduction: @{Text=PS &gt; }
  description: Switch: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
- required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvWhisperWin
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.
@@ -1896,7 +1918,8 @@ Introduction: @{Text=PS &gt; }
     Install-DevEnvWhisperWin
 When complete it displays current version for the environment.
 </p>
-<p><strong>Syntax:</strong> <pre>DoPause
+<p><strong>Syntax:</strong> <pre>Install-DevEnvWin
+ DoPause
  description: Switch: Pause between steps.
 
  required: false, globbing: false, pipelineInput: false, position: named DoVerbose
@@ -1904,8 +1927,7 @@ When complete it displays current version for the environment.
 
  required: false, globbing: false, pipelineInput: false, position: named DoDebug
  required: false, globbing: false, pipelineInput: false, position: named DoForce
- required: false, globbing: false, pipelineInput: false, position: named Install-DevEnvWin
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoPause</strong>: Switch: Pause between steps.
@@ -1927,28 +1949,36 @@ Introduction: @{Text=PS &gt; }
 <h2>Invoke-Build</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Invoke-Build [&lt;CommonParameters&gt;]
+Invoke-Build [-DoPause] [-DoVerbose] [-DoDebug] [-DoForce] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Invoke-Build
 CommonParameters: True
-parameter: </pre></p>
+parameter:    </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoForce</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoVerbose</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
 </p>
 <p></p>
 <p></p>
-<h2>Invoke-GoToBootstrap</h2>
+<h2>Invoke-DevEnv_Module_Reset</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Invoke-GoToBootstrap [&lt;CommonParameters&gt;]
+Invoke-DevEnv_Module_Reset [-DoPause] [-DoVerbose] [-DoDebug] [-DoForce] [&lt;CommonParameters&gt;]
 </p>
-<p><strong>Syntax:</strong> <pre>name: Invoke-GoToBootstrap
+<p><strong>Syntax:</strong> <pre>name: Invoke-DevEnv_Module_Reset
 CommonParameters: True
-parameter: </pre></p>
+parameter:    </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoForce</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoVerbose</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
 </p>
@@ -1957,13 +1987,17 @@ parameter: </pre></p>
 <h2>Invoke-Update</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Invoke-Update [&lt;CommonParameters&gt;]
+Invoke-Update [-DoPause] [-DoVerbose] [-DoDebug] [-DoForce] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Invoke-Update
 CommonParameters: True
-parameter: </pre></p>
+parameter:    </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoForce</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoVerbose</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
 </p>
@@ -1979,7 +2013,8 @@ parameter: </pre></p>
 <p><strong>Synopsis:</strong> The New-WFBalloonNotification function will show a message to the user in the notification area of Windows.</p>
 <p><strong>Detailed Description:</strong> The New-WFBalloonNotification function will show a message to the user in the notification area of Windows.
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the custom icon literal path to use. Default will use the PowerShell icon.
+<p><strong>Syntax:</strong> <pre>New-WFBalloonNotification
+ description: Specifies the custom icon literal path to use. Default will use the PowerShell icon.
 
  CustomIconPath
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 description: Specifies the display duration of the message. Default is 10000 milliseconds
@@ -1996,8 +2031,7 @@ parameter: </pre></p>
  BalloonTipTitle
  parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 5 WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named New-WFBalloonNotification
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>CustomIconPath</strong>: Specifies the custom icon literal path to use. Default will use the PowerShell icon.
@@ -2027,38 +2061,42 @@ Introduction: @{Text=PS C:\&gt;}
 <p><strong>Synopsis:</strong> Function to create a Form</p>
 <p><strong>Detailed Description:</strong> Function to create a Form
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the Form. A new forw is returned if null.
+<p><strong>Syntax:</strong> <pre>New-WFForm
+ description: Specifies the Form. A new forw is returned if null.
 
  form
  parameterValue: Form, required: false, globbing: false, pipelineInput: false, position: 1 description: Specifies that you want to set the Title of the form
 
  Title
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 TextInput
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 OkButton
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 4 CancelButton
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 DoMenuBar
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 menuBar
+ parameterValue: MenuBar, required: false, globbing: false, pipelineInput: false, position: 3 margins
+ parameterValue: Margins, required: false, globbing: false, pipelineInput: false, position: 4 TextInput
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 OkButton
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 6 CancelButton
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 7 DoMenuBar
  required: false, globbing: false, pipelineInput: false, position: named DoControls
- required: false, globbing: false, pipelineInput: false, position: named DoTabIndex
- description: TODO Specifies that you want to create the tab index.
-
+ required: false, globbing: false, pipelineInput: false, position: named DoEvents
  required: false, globbing: false, pipelineInput: false, position: named Inquire
+ description: [switch]$DoTabIndex,
+
  required: false, globbing: false, pipelineInput: false, position: named state
- parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 6 New-WFForm
-</pre></p>
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 8</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>form</strong>: Specifies the Form. A new forw is returned if null.
 </p>
 <p>  - <strong>Title</strong>: Specifies that you want to set the Title of the form
 </p>
+<p>  - <strong>menuBar</strong></p>
+<p>  - <strong>margins</strong></p>
 <p>  - <strong>TextInput</strong></p>
 <p>  - <strong>OkButton</strong></p>
 <p>  - <strong>CancelButton</strong></p>
 <p>  - <strong>DoMenuBar</strong></p>
 <p>  - <strong>DoControls</strong></p>
-<p>  - <strong>DoTabIndex</strong>: TODO Specifies that you want to create the tab index.
+<p>  - <strong>DoEvents</strong></p>
+<p>  - <strong>Inquire</strong>: [switch]$DoTabIndex,
 </p>
-<p>  - <strong>Inquire</strong></p>
 <p>  - <strong>state</strong></p>
 <p></p>
 <p></p>
@@ -2070,7 +2108,8 @@ Introduction: @{Text=PS C:\&gt;}
 <p><strong>Synopsis:</strong> The New-WFInputBox function will prompt the user for input in a window.</p>
 <p><strong>Detailed Description:</strong> The New-WFInputBox function will prompt the user for input in a window.
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the question you want to ask to the user.
+<p><strong>Syntax:</strong> <pre>New-WFInputBox
+ description: Specifies the question you want to ask to the user.
 
  Message
  parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 description: Specifies the title of the window.
@@ -2081,8 +2120,7 @@ Introduction: @{Text=PS C:\&gt;}
  DefaultInputText
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named New-WFInputBox
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Message</strong>: Specifies the question you want to ask to the user.
@@ -2105,9 +2143,9 @@ Introduction: @{Text=PS C:\&gt;}
 <p><strong>Synopsis:</strong> A short one-line action-based description, e.g. &apos;Tests if a function is valid&apos;</p>
 <p><strong>Detailed Description:</strong> Source: https://theitbros.com/powershell-gui-for-scripts/
 </p>
-<p><strong>Syntax:</strong> <pre>form
- parameterValue: Form, required: false, globbing: false, pipelineInput: false, position: 1 New-WFMenuStrip
-</pre></p>
+<p><strong>Syntax:</strong> <pre>New-WFMenuStrip
+ form
+ parameterValue: Form, required: false, globbing: false, pipelineInput: false, position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>form</strong></p>
@@ -2128,7 +2166,8 @@ Explanation of the function or its result. You can include multiple examples wit
 <p><strong>Synopsis:</strong> The New-WFMessageBox functio will show a message box to the user</p>
 <p><strong>Detailed Description:</strong> The New-WFMessageBox functio will show a message box to the user
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the message to show
+<p><strong>Syntax:</strong> <pre>New-WFMessageBox
+ description: Specifies the message to show
 
  Message
  parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 description: Specifies the title of the message box
@@ -2142,8 +2181,7 @@ Explanation of the function or its result. You can include multiple examples wit
  Icon
  parameterValueGroup: @{parameterValue=System.Management.Automation.PSObject[]}, required: false, globbing: false, pipelineInput: false, position: 4 WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named New-WFMessageBox
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Message</strong>: Specifies the message to show
@@ -2177,7 +2215,8 @@ The function will return the literal path of the file(s) selected</p>
 <p><strong>Detailed Description:</strong> The New-WFOpenFileDialog function will ask the user to select one of multiple files.
 The function will return the literal path of the file(s) selected
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the Title of the window.
+<p><strong>Syntax:</strong> <pre>New-WFOpenFileDialog
+ description: Specifies the Title of the window.
 
  WindowsTitle
  parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 description: Specifies the Path where the dialog will open.
@@ -2197,8 +2236,7 @@ The function will return the literal path of the file(s) selected
  required: false, globbing: false, pipelineInput: false, position: named ShowHelp
  required: false, globbing: false, pipelineInput: false, position: named WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named New-WFOpenFileDialog
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>WindowsTitle</strong>: Specifies the Title of the window.
@@ -2232,7 +2270,8 @@ Introduction: @{Text=PS C:\&gt;}
 <p><strong>Synopsis:</strong> The New-WFOpenFolderDialog function will ask the user to select one folder.</p>
 <p><strong>Detailed Description:</strong> The New-WFOpenFolderDialog function will ask the user to select one folder.
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies a message to help the user select a folder
+<p><strong>Syntax:</strong> <pre>New-WFOpenFolderDialog
+ description: Specifies a message to help the user select a folder
 
  Description
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 description: Specifies the folder where to look. All the SpecialFolder are listed using tab. Default is "Desktop".
@@ -2243,8 +2282,7 @@ Introduction: @{Text=PS C:\&gt;}
  ShowNewFolderButton
  parameterValue: Boolean, required: false, globbing: false, pipelineInput: false, position: 3 WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named New-WFOpenFolderDialog
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Description</strong>: Specifies a message to help the user select a folder
@@ -2269,7 +2307,8 @@ Introduction: @{Text=PS C:\&gt;}
 <p><strong>Synopsis:</strong> The New-WFSpeakerBeep function plays the sound of a beep of a specified frequency and duration through the console speaker.</p>
 <p><strong>Detailed Description:</strong> The New-WFSpeakerBeep function plays the sound of a beep of a specified frequency and duration through the console speaker.
 </p>
-<p><strong>Syntax:</strong> <pre>description: The frequency of the beep, ranging from 37 to 32767 hertz.
+<p><strong>Syntax:</strong> <pre>New-WFSpeakerBeep
+ description: The frequency of the beep, ranging from 37 to 32767 hertz.
 
  Frequency
  parameterValue: Int32, required: false, globbing: false, pipelineInput: false, position: 1 description: The duration of the beep measured in milliseconds.
@@ -2277,8 +2316,7 @@ Introduction: @{Text=PS C:\&gt;}
  Duration
  parameterValue: Int32, required: false, globbing: false, pipelineInput: false, position: 2 WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named New-WFSpeakerBeep
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Frequency</strong>: The frequency of the beep, ranging from 37 to 32767 hertz.
@@ -2297,22 +2335,23 @@ Introduction: @{Text=PS C:\&gt;}
 <h2>New-WFWindow</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-New-WFWindow [[-window] &lt;WFWindow&gt;] [[-formsArray] &lt;Form[]&gt;] [[-menuBarArray] &lt;MenuBar[]&gt;] [[-formIndex] &lt;int&gt;] [[-Title] &lt;string&gt;] [[-TextInput] &lt;string&gt;] [[-OkButton] &lt;string&gt;] [[-CancelButton] &lt;string&gt;] [[-state] &lt;Object&gt;] [-DoMenuBar] [-DoControls] [-DoTabIndex] [&lt;CommonParameters&gt;]
+New-WFWindow [[-window] &lt;WFWindow&gt;] [[-formsArray] &lt;Form[]&gt;] [[-menuBarArray] &lt;MenuBar[]&gt;] [[-formIndex] &lt;int&gt;] [[-margins] &lt;Margins&gt;] [[-Title] &lt;string&gt;] [[-TextInput] &lt;string&gt;] [[-OkButton] &lt;string&gt;] [[-CancelButton] &lt;string&gt;] [[-state] &lt;Object&gt;] [-DoMenuBar] [-DoControls] [-DoEvents] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: New-WFWindow
 CommonParameters: True
-parameter:            </pre></p>
+parameter:             </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>CancelButton</strong></p>
 <p>  - <strong>DoControls</strong></p>
+<p>  - <strong>DoEvents</strong></p>
 <p>  - <strong>DoMenuBar</strong></p>
-<p>  - <strong>DoTabIndex</strong></p>
 <p>  - <strong>OkButton</strong></p>
 <p>  - <strong>TextInput</strong></p>
 <p>  - <strong>Title</strong></p>
 <p>  - <strong>formIndex</strong></p>
 <p>  - <strong>formsArray</strong></p>
+<p>  - <strong>margins</strong></p>
 <p>  - <strong>menuBarArray</strong></p>
 <p>  - <strong>state</strong></p>
 <p>  - <strong>window</strong></p>
@@ -2330,7 +2369,8 @@ parameter:            </pre></p>
 <p><strong>Synopsis:</strong> Function to remove item(s) from a ListBox Control</p>
 <p><strong>Detailed Description:</strong> Function to remove item(s) from a ListBox Control
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the ListBox control
+<p><strong>Syntax:</strong> <pre>Remove-WFListBoxItem
+ description: Specifies the ListBox control
 
  ListBox
  parameterValue: ListBox, required: true, globbing: false, pipelineInput: false, position: named All
@@ -2356,8 +2396,7 @@ parameter:            </pre></p>
  Pattern
  parameterValue: String[], required: true, globbing: false, pipelineInput: false, position: named WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named Remove-WFListBoxItem
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>ListBox</strong>: Specifies the ListBox control
@@ -2378,13 +2417,13 @@ parameter:            </pre></p>
 <p><strong>Synopsis:</strong> The Reset-DataGridViewFormat function will reset the format of a datagridview control</p>
 <p><strong>Detailed Description:</strong> The Reset-DataGridViewFormat function will reset the format of a datagridview control
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the DataGridView Control.
+<p><strong>Syntax:</strong> <pre>Reset-WFDataGridViewFormat
+ description: Specifies the DataGridView Control.
 
  DataGridView
  parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named Reset-WFDataGridViewFormat
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DataGridView</strong>: Specifies the DataGridView Control.
@@ -2415,7 +2454,8 @@ Introduction: @{Text=PS C:\&gt;}
 <p><strong>Synopsis:</strong> This function helps you edit the datagridview control</p>
 <p><strong>Detailed Description:</strong> This function helps you edit the datagridview control
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the DataGridView Control
+<p><strong>Syntax:</strong> <pre>Set-WFDataGridView
+ description: Specifies the DataGridView Control
 
  DataGridView
  parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named ShowRowHeader
@@ -2495,8 +2535,7 @@ Introduction: @{Text=PS C:\&gt;}
 
  required: false, globbing: false, pipelineInput: false, position: named WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named Set-WFDataGridView
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DataGridView</strong>: Specifies the DataGridView Control
@@ -2545,7 +2584,8 @@ Introduction:
 The data needs to be in a DataTable Object. You can use ConvertTo-DataTable to convert your
 PowerShell object into a DataTable object.
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the DataGridView control where the data will be filtered
+<p><strong>Syntax:</strong> <pre>Set-WFDataGridViewFilter
+ description: Specifies the DataGridView control where the data will be filtered
 
  DataGridView
  parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: named description: Specifies the DataTable object that is most likely the original source of the DataGridView
@@ -2574,8 +2614,7 @@ PowerShell object into a DataTable object.
  ColumnName
  parameterValue: String, required: true, globbing: false, pipelineInput: false, position: named WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named Set-WFDataGridViewFilter
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DataGridView</strong>: Specifies the DataGridView control where the data will be filtered
@@ -2607,7 +2646,8 @@ Introduction:
 <p><strong>Synopsis:</strong> The Set-WFForm function is used to change the properties of a Form or to intract with it</p>
 <p><strong>Detailed Description:</strong> The Set-WFForm function is used to change the properties of a Form or to intract with it
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the Form control
+<p><strong>Syntax:</strong> <pre>Set-WFForm
+ description: Specifies the Form control
 
  form
  parameterValue: Form, required: false, globbing: false, pipelineInput: false, position: 1 description: Specifies the text/Title of the form
@@ -2621,8 +2661,7 @@ Introduction:
 
  required: false, globbing: false, pipelineInput: false, position: named WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named Set-WFForm
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>form</strong>: Specifies the Form control
@@ -2653,7 +2692,8 @@ Introduction:
 This function uses Add-Type to define a class that sort the items.
 The ListView&apos;s Tag property is used to keep track of the sorting.
 </p>
-<p><strong>Syntax:</strong> <pre>description: The ListView control to sort.
+<p><strong>Syntax:</strong> <pre>Set-WFListViewColumn
+ description: The ListView control to sort.
 
  ListView
  parameterValue: ListView, required: true, globbing: false, pipelineInput: false, position: 1 description: The index of the column to use for sorting.
@@ -2662,8 +2702,7 @@ The ListView&apos;s Tag property is used to keep track of the sorting.
  parameterValue: Int32, required: true, globbing: false, pipelineInput: false, position: 2 description: The direction to sort the items. If not specified or set to None, it will toggle.
 
  SortOrder
- parameterValueGroup: @{parameterValue=System.Management.Automation.PSObject[]}, required: false, globbing: false, pipelineInput: false, position: 3 Set-WFListViewColumn
-</pre></p>
+ parameterValueGroup: @{parameterValue=System.Management.Automation.PSObject[]}, required: false, globbing: false, pipelineInput: false, position: 3</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>ListView</strong>: The ListView control to sort.
@@ -2686,7 +2725,8 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> The Set-WFRichTextBox function allow you to manage the richtextbox control</p>
 <p><strong>Detailed Description:</strong> The Set-WFRichTextBox function allow you to manage the richtextbox control
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the RichTextBox Control to use
+<p><strong>Syntax:</strong> <pre>Set-WFRichTextBox
+ description: Specifies the RichTextBox Control to use
 
  RichTextBox
  parameterValue: RichTextBox, required: false, globbing: false, pipelineInput: false, position: 1 ScrollToCaret
@@ -2694,8 +2734,7 @@ Introduction: @{Text=PS &gt; }
 
  required: false, globbing: false, pipelineInput: false, position: named WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named Set-WFRichTextBox
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>RichTextBox</strong>: Specifies the RichTextBox Control to use
@@ -2734,13 +2773,13 @@ parameter:  </pre></p>
 <p><strong>Synopsis:</strong> Function to refresh the content of a DataGridView control</p>
 <p><strong>Detailed Description:</strong> Function to refresh the content of a DataGridView control
 </p>
-<p><strong>Syntax:</strong> <pre>description: Specifies the DataGridView control to update
+<p><strong>Syntax:</strong> <pre>Update-WFDataGridView
+ description: Specifies the DataGridView control to update
 
  DataGridView
  parameterValue: DataGridView, required: true, globbing: false, pipelineInput: false, position: 1 WhatIf
  required: false, globbing: false, pipelineInput: false, position: named Confirm
- required: false, globbing: false, pipelineInput: false, position: named Update-WFDataGridView
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DataGridView</strong>: Specifies the DataGridView control to update

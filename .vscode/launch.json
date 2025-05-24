@@ -9,8 +9,10 @@
             "name": "Script Verbose",
             "type": "PowerShell",
             "request": "launch",
-            "script": " . .\\${fileBasename} -Verbose",
-            "args": [],
+            "script": " . .\\${fileBasename}",
+            "args": [
+                "-Verbose"
+            ],
             "cwd": "${file}"
         },
         {

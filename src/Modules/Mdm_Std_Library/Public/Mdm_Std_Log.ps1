@@ -21,7 +21,9 @@ function Add-LogText {
         [switch]$DoForce,
         [switch]$DoVerbose,
         [switch]$DoDebug,
-        [switch]$DoPause    
+        [switch]$DoPause,
+        [System.Windows.Forms.Control]$inputEventSender,
+        [System.EventArgs]$inputEventArgs
     )
     begin {
         try {
@@ -164,8 +166,9 @@ function Add-LogError {
         [switch]$DoForce,
         [switch]$DoVerbose,
         [switch]$DoDebug,
-        [switch]$DoPause
-    
+        [switch]$DoPause,
+        [System.Windows.Forms.Control]$inputEventSender,
+        [System.EventArgs]$inputEventArgs
     )
     # You can capture both stdout and stderr to separate variables
     # and then suppress all output:

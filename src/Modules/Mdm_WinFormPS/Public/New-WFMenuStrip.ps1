@@ -73,8 +73,8 @@ function New-WFMenuStrip {
         try {
             if ($form) {
                 $form.MainMenuStrip = [System.Windows.Forms.MenuStrip]$menuMainStrip
-                $form.Controls.Add([System.Windows.Forms.ToolStrip]$mainToolStrip)
                 $form.Controls.Add([System.Windows.Forms.MenuStrip]$menuMainStrip)
+                $form.Controls.Add([System.Windows.Forms.ToolStrip]$mainToolStrip)
             }
         } catch {
             Add-LogText -IsError -ErrorPSItem $_ "New-WFMenuStrip Failed to add menu strip to form. $_"

@@ -16,13 +16,14 @@ function New-WFWindow {
         [System.Windows.Forms.Form[]]$formsArray = $null,
         [MenuBar[]]$menuBarArray = $null,
         [int]$formIndex = 0,
+        [MarginClass]$margins,
         [string]$Title,
         [string]$TextInput,
-        [string]$OkButton,
-        [string]$CancelButton,
+        [array]$Buttons,
         [switch]$DoMenuBar,
         [switch]$DoControls,
-        [switch]$DoTabIndex,
+        [switch]$DoEvents,
+        # [switch]$DoTabIndex,
         $state = $null
     )
     begin {
@@ -31,19 +32,35 @@ function New-WFWindow {
     process {
         try {
             if (-not $formsArray) {
-                [System.Windows.Forms.Form]$form1 = New-WFForm -Title:$Title `
-                    -OkButton:$OkButton -CancelButton:$CancelButton `
-                    -DoMenuBar:$DoMenuBar -state $state
-                [System.Windows.Forms.Form[]]$formsArray = [System.Windows.Forms.Form[]] @([System.Windows.Forms.Form]$form1)
-                if ($DoMenuBar) {
-                    if (-not $menuBarArray) {
-                        # [MenuBar[]]$menuBarArray = @([MenuBar]::new((New-Object System.Windows.Forms.MenuStrip), (New-Object System.Windows.Forms.ToolStrip)))
-                        [MenuBar[]]$menuBarArray = [MenuBar]::new()
-                        $menuBarArray[0].MenuStrip = (New-Object System.Windows.Forms.MenuStrip)
-                        $menuBarArray[0].ToolStrip = (New-Object System.Windows.Forms.ToolStrip)
-                    }
+                $functionParams = @{}
+                if ($DoControls) { $functionParams['DoControls'] = $true }
+                if ($DoEvents) { $functionParams['DoEvents'] = $true }
+                # Menu bar handled in this function
+                if ($DoMenuBar) { 
+                    $functionParams['DoMenuBar'] = $true 
+                    $menuBar = New-WFMenuStrip
+                    $menuBar.MenuStrip = (New-Object System.Windows.Forms.MenuStrip)
+                    $menuBar.ToolStrip = (New-Object System.Windows.Forms.ToolStrip)
+                    $functionParams['menuBar'] = $menuBar 
                 }
+                if ($Title) { $functionParams['Title'] = $Title }
+                if ($margins) { $functionParams['margins'] = $margins }
+                if ($Buttons) { $functionParams['Buttons'] = $Buttons }
+                if ($state) { $functionParams['state'] = $state }
+                [System.Windows.Forms.Form]$form1 = New-WFForm @functionParams
+                # -DoControls:$DoControls `
+                # -Title:$Title -margins:$margins `
+                # -OkButton:$OkButton -CancelButton:$CancelButton `
+                # -DoMenuBar:$DoMenuBar -state $state
+                [System.Windows.Forms.Form[]]$formsArray = [System.Windows.Forms.Form[]] @([System.Windows.Forms.Form]$form1)
             }
+            # if ($DoMenuBar) {
+            if (-not $menuBarArray) {
+                # [MenuBar[]]$menuBarArray = @([MenuBar]::new((New-Object System.Windows.Forms.MenuStrip), (New-Object System.Windows.Forms.ToolStrip)))
+                # [MenuBar[]]$menuBarArray = [MenuBar]::new()
+                [MenuBar[]]$menuBarArray = [MenuBar[]] @([MenuBar]$menuBar)
+            }
+            # }
             if (-not $window) {
                 # $window = [WFWindow]::new($formsArray)
                 $window = [WFWindow]::new(
@@ -53,7 +70,7 @@ function New-WFWindow {
                     $formIndex, 
                     0,
                     $null, 
-                    $null, 
+                    $margins, 
                     $state
                 )
                 
@@ -61,6 +78,16 @@ function New-WFWindow {
                 $window.Forms = $formsArray
                 $window.MenuBar = $menuBarArray
             }
+            # if ($DoMenuBar) {
+                # if (-not $menuBar) { [MenuBar]$menuBar = $window.MenuBar[0] }
+                # if (-not $menuBar) { [MenuBar]$menuBar = New-WFMenuStrip }
+                # $window.MenuBar[0] = [MenuBar]$menuBar
+                #      if ($DoControls) {
+                #         $window.Forms[0].MainMenuStrip = [System.Windows.Forms.MenuStrip]$window.MenuBar[0].MenuStrip
+                #         $window.Forms[0].Controls.Add([System.Windows.Forms.ToolStrip]$window.MenuBar[0].ToolStrip)
+                #         $window.Forms[0].Controls.Add([System.Windows.Forms.MenuStrip]$window.MenuBar[0].MenuStrip)
+                #     }
+            # }
             if ($state -and $state -is [WindowState]) {
                 $window.state = $state
             } elseif ($null -eq $window.state) {

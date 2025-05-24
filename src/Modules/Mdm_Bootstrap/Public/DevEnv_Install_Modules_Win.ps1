@@ -119,7 +119,7 @@ function DevEnv_Install_Modules_Win {
         if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
             $modulePath = "$global:moduleRootPath\$importName"
             if ($DoVerbose) { Write-Output "Exists: $(Test-Path "$modulePath"): $modulePath" }
-            Import-Module -Name $modulePath @global:importParameters
+            Import-Module -Name $modulePath @global:importParams
         }
         
         # Import-All
@@ -339,62 +339,80 @@ function DevEnv_Install_Modules_Win {
             )
             Add-LogText -Message $Message $global:logFileNameFull
             # }
-
+            <# $moduleName is the current item #>
             Add-LogText "Remove modules if they exist..." $global:logFileNameFull
             Remove-Item "$destination\Mdm_*" `
                 -Recurse -Force `
                 -ErrorAction SilentlyContinue
-
-            Add-LogText "Copy modules to destination..." $global:logFileNameFull
-            # Prepare command
-            $commandName = "Robocopy"
-            $roboCopyOptions = @($source, $destination)
-            $optionsArray = $copyOptions.split(" ")
-            foreach ($option in $optionsArray) {
-                $roboCopyOptions += $option
-            }
-            $roboCopyOptions += "/LOG+:$global:logFileNameFull"
-            $commandOptions = $roboCopyOptions -join ' '
-            [hashtable]$Command = @{
-                CommandLine = $commandLine
-                CommandName = $commandName
-            }
-            # -DoNewWindow ` TODO test this
-            # $invokeResult = @()
-            $invokeResult = New-Object System.Collections.ArrayList
-            # ###############################
-            $invokeResult += ($Command | Invoke-Invoke -Options $commandOptions)
-            if ($invokeResult -and $invokeResult.Count -ge 1) {
-                $result = $invokeResult[1]
-            } elseif ($invokeResult) { 
-                $result = $invokeResult[0] 
-            }
-            if ($result -and $result -is [CommandResult]) {
-                # Do relevant processing
-            } else {
-                $resultDefault = New-Object CommandResult
-                $resultDefault.CommandName = $commandName
-                $resultDefault.CommandLine = $commandLine
-                $resultDefault.errorOutPut = "Results are missing or is not a CommandResult."
-                $resultDefault.result = $result
-                $invokeResult = $resultDefault
-            }
-            if (Get-RobocopyExitMessage $result.exitCode -IsError) {
-                # if ($result.exitCode -ne 1 -or $result.errorOutput) {
-                $Message = "Robocopy error in Command $($result.CommandName), Result: $($result.exitCode) - $(Get-RobocopyExitMessage($result.exitCode))."
-                if ($result.errorOutput) { $Message += "`nDetails:`n $($result.errorOutput)" }
-                Add-LogText -Message $Message -IsError
-            } elseif ($result.result) {
-                if ($DoVerbose) {
-                    Add-LogText -Message $result.result -ForegroundColor Blue
-                    # if ($result.errorOutput) { Add-LogText -Message $result.errorOutPut -ForegroundColor Red }
+            # Load Module Config Data
+            $jsonFileName = "$global:moduleRootPath\Mdm_DevEnv_Install\Public\DevEnvModules.json"
+            $jsonData = Get-JsonData -jsonObject $jsonFileName
+            # Active Module process
+            foreach ($moduleName in $global:moduleNames) {
+                $moduleActive = Confirm-ModuleActive -Name $moduleName `
+                    -jsonData $jsonData `
+                    @global:combinedParams
+                if ($moduleActive) {
+                    try {
+                        Add-LogText "Copy Module $moduleName to destination..." $global:logFileNameFull
+                        # Prepare command
+                        $commandName = "Robocopy"
+                        $moduleSource = "$source\$moduleName"
+                        $roboCopyOptions = @($moduleSource, $destination)
+                        $optionsArray = $copyOptions.split(" ")
+                        foreach ($option in $optionsArray) {
+                            $roboCopyOptions += $option
+                        }
+                        $roboCopyOptions += "/LOG+:$global:logFileNameFull"
+                        $commandOptions = $roboCopyOptions -join ' '
+                        [hashtable]$Command = @{
+                            CommandLine = $commandLine
+                            CommandName = $commandName
+                        }
+                        # -DoNewWindow ` TODO test this
+                        # $invokeResult = @()
+                        $invokeResult = New-Object System.Collections.ArrayList
+                        # ###############################
+                        $invokeResult += ($Command | Invoke-Invoke -Options $commandOptions)
+                        if ($invokeResult -and $invokeResult.Count -ge 1) {
+                            $result = $invokeResult[1]
+                        } elseif ($invokeResult) { 
+                            $result = $invokeResult[0] 
+                        }
+                        if ($result -and $result -is [CommandResult]) {
+                            # Do relevant processing
+                        } else {
+                            $resultDefault = New-Object CommandResult
+                            $resultDefault.CommandName = $commandName
+                            $resultDefault.CommandLine = $commandLine
+                            $resultDefault.errorOutPut = "Results are missing or is not a CommandResult."
+                            $resultDefault.result = $result
+                            $invokeResult = $resultDefault
+                        }
+                        if (Get-RobocopyExitMessage $result.exitCode -IsError) {
+                            # if ($result.exitCode -ne 1 -or $result.errorOutput) {
+                            $Message = "Robocopy error in Command $($result.CommandName), Result: $($result.exitCode) - $(Get-RobocopyExitMessage($result.exitCode))."
+                            if ($result.errorOutput) { $Message += "`nDetails:`n $($result.errorOutput)" }
+                            Add-LogText -Message $Message -IsError
+                        } elseif ($result.result) {
+                            if ($DoVerbose) {
+                                Add-LogText -Message $result.result -ForegroundColor Blue
+                                # if ($result.errorOutput) { Add-LogText -Message $result.errorOutPut -ForegroundColor Red }
+                            }
+                        } else {
+                            $Message = "Robocopy completed normally for Command $($result.CommandName), Result: $($result.exitCode) - $(Get-RobocopyExitMessage($result.exitCode))."
+                            if ($result.result) { $Message += "`nDetails:`n $($result.result)" }
+                            Add-LogText -Message $Message -ForegroundColor Blue
+                        }
+                    } catch {
+                        $Message = "DevEnv_Install_Modules_Win: Copy files failure in Module $moduleName."
+                        Add-LogText -Message $Message -IsError -ErrorPSItem $_
+                    }
+                } else {
+                    $Message = "Robocopy skipped Inactive Module $moduleName."
+                    Add-LogText -Message $Message -ForegroundColor Blue
                 }
-            } else {
-                $Message = "Robocopy completed normally for Command $($result.CommandName), Result: $($result.exitCode) - $(Get-RobocopyExitMessage($result.exitCode))."
-                if ($result.result) { $Message += "`nDetails:`n $($result.result)" }
-                Add-LogText -Message $Message -ForegroundColor Blue
             }
-
         } catch {
             $Message = "DevEnv_Install_Modules_Win: Copy files failure."
             Add-LogText -Message $Message -IsError -ErrorPSItem $_
@@ -560,11 +578,12 @@ function DevEnv_Install_Modules_Win {
     # }
     # Export-ModuleMemberScan
     try {
+        $moduleName = "Mdm_Springcomp_MyBox"
         Add-LogText "==================================================================" $global:logFileNameFull `
             -ForegroundColor Green
         Add-LogText "Automatic Function Imports Test (Export-ModuleMemberScan $moduleName)" $global:logFileNameFull
         Add-LogText "Export-ModuleMemberScan: $moduleRootPath" $global:logFileNameFull
-        $null = Export-ModuleMemberScan "$moduleRootPath\$moduleName"
+        $null = Export-ModuleMemberScan -TraceDetails "$moduleRootPath\$moduleName"
     } catch {
         $Message = "Export-ModuleMemberScan failed."
         Add-LogText -Message $Message -IsError -ErrorPSItem $_

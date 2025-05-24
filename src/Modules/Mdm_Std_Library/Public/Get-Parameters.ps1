@@ -138,9 +138,9 @@ $global:mdmParams.GetEnumerator() | ForEach-Object {
 }
 # Import Module Params
 # Uses common. Mdm DoXxxxx would cause errors
-$global:importParameters = @{}
+$global:importParams = @{}
 $global:commonParams.GetEnumerator() | ForEach-Object {
-    $global:importParameters[$_.Key] = $_.Value
+    $global:importParams[$_.Key] = $_.Value
 }
 # Process resulting settings. Won't turn off anything.
 if ($global:mdmParams['DoVerbose']) { $DoVerbose = $true }

@@ -62,7 +62,7 @@ These are found at the top of the Mdm_Std_Library.psm1 file after the module mem
     [string]$global:license = "MIT"
     [string]$global:title = ""
     # Modules array
-    [array]$global:moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install", "Mdm_Modules")
+    [array]$global:moduleCoreNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install", "Mdm_Modules")
     [array]$global:moduleAddons = @("Mdm_Nightroman_PowerShelf", "Mdm_Springcomp_MyBox", "DevEnv_LanguageMode")
 
     # Error display handling options:

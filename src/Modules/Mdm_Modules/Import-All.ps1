@@ -24,8 +24,8 @@ try {
     # CommandResultClass
     # MarginClass
     # WindowClass
-    # $global:importParameters['Force'] = $true
-    $global:importParameters['ErrorAction'] = 'Continue'
+    # $global:importParams['Force'] = $true
+    $global:importParams['ErrorAction'] = 'Continue'
 
     $importName = "Mdm_Std_Library"
     if ($DoVerbose) { 
@@ -37,7 +37,7 @@ try {
     if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
         $modulePath = "$global:moduleRootPath\$importName"
         if ($DoVerbose) { Write-Output "Exists: $(Test-Path "$modulePath"): $modulePath" }
-        Import-Module -Name $modulePath @global:importParameters
+        Import-Module -Name $modulePath @global:importParams
     } else {
         if ($DoVerbose) { Write-Host "Module already loaded: $importName" }
     }
@@ -45,28 +45,28 @@ try {
     # Get-Import. Not Used, crashes the shell
     # Add $DoXxxxx params
     # $global:MdmParams.GetEnumerator() | ForEach-Object {
-    #     $global:importParameters[$_.Key] = $_.Value
+    #     $global:importParams[$_.Key] = $_.Value
     # }
-    # $global:importParameters['CheckActive'] = $true
-    # $global:importParameters['CheckImported'] = $false
+    # $global:importParams['CheckActive'] = $true
+    # $global:importParams['CheckImported'] = $false
     # $importName = "Mdm_Bootstrap"
     # Import-Module -Name $importName
-    # $null = Get-Import -Name $importName @global:importParameters
+    # $null = Get-Import -Name $importName @global:importParams
     #
     # $importName = "Mdm_WinFormPS"
-    # Get-Import -Name $importName @global:importParameters
+    # Get-Import -Name $importName @global:importParams
     #
     # $importName = "Mdm_Nightroman_PowerShelf"
-    # $null = Get-Import -Name $importName -DoModuleScan @global:importParameters
+    # $null = Get-Import -Name $importName -DoModuleScan @global:importParams
     #
     # $importName = "Mdm_DevEnv_Install"
-    # $null = Get-Import -Name $importName @global:importParameters
+    # $null = Get-Import -Name $importName @global:importParams
     #
     # $importName = "Mdm_PoshFunctions"
-    # $null = Get-Import -Name $importName @global:importParameters
+    # $null = Get-Import -Name $importName @global:importParams
     #
     # $importName = "Mdm_Springcomp_MyBox"
-    # $null = Get-Import -Name $importName -DoModuleScan @global:importParameters
+    # $null = Get-Import -Name $importName -DoModuleScan @global:importParams
 
     $importName = "Mdm_Bootstrap"
     $path = "$($(Get-Item $PSScriptRoot).FullName)\Get-ModuleValidated.ps1"
@@ -82,7 +82,7 @@ try {
     #     if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
     #         $modulePath = "$global:moduleRootPath\$importName"
     #         if ($DoVerbose) { Write-Output "Exists: $(Test-Path "$modulePath"): $modulePath" }
-    #         Import-Module -Name $modulePath @global:importParameters
+    #         Import-Module -Name $modulePath @global:importParams
     #     }
     # }
 
@@ -94,7 +94,7 @@ try {
     $path = "$($(Get-Item $PSScriptRoot).FullName)\Get-ModuleValidated.ps1"
     . $path
     # $null = Get-Import -Name $importName ` !!! This crashed
-    # -CheckActive -CheckImported -ErrorAction Continue  @global:importParameters
+    # -CheckActive -CheckImported -ErrorAction Continue  @global:importParams
     # $moduleActive = Confirm-ModuleActive -Name $importName `
     #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\Public\DevEnvModules.json" `
     #     @global:combinedParams
@@ -105,7 +105,7 @@ try {
     #     if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
     #         $modulePath = "$global:moduleRootPath\$importName"
     #         if ($DoVerbose) { Write-Output "Exists: $(Test-Path "$modulePath"): $modulePath" }
-    #         Import-Module -Name $modulePath @global:importParameters
+    #         Import-Module -Name $modulePath @global:importParams
     #     }
     # }
 
@@ -113,7 +113,7 @@ try {
     $path = "$($(Get-Item $PSScriptRoot).FullName)\Get-ModuleValidated.ps1"
     . $path
     # $null = Get-Import -Name $importName `
-    #     -CheckActive -CheckImported -ErrorAction Continue  @global:importParameters
+    #     -CheckActive -CheckImported -ErrorAction Continue  @global:importParams
     # $moduleActive = Confirm-ModuleActive -Name $importName `
     #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\Public\DevEnvModules.json" `
     #     @global:combinedParams
@@ -124,7 +124,7 @@ try {
     #     if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
     #         $modulePath = "$global:moduleRootPath\$importName"
     #         if ($DoVerbose) { Write-Output "Exists: $(Test-Path "$modulePath"): $modulePath" }
-    #         $null = Export-ModuleMemberScan -moduleRootPath $modulePath @global:importParameters
+    #         $null = Export-ModuleMemberScan -moduleRootPath $modulePath @global:importParams
     #     }
     # }
 
@@ -132,7 +132,7 @@ try {
     $path = "$($(Get-Item $PSScriptRoot).FullName)\Get-ModuleValidated.ps1"
     . $path
     # $null = Get-Import -Name $importName `
-    #     -CheckActive -CheckImported -ErrorAction Continue  @global:importParameters
+    #     -CheckActive -CheckImported -ErrorAction Continue  @global:importParams
     # $moduleActive = Confirm-ModuleActive -Name $importName `
     #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\Public\DevEnvModules.json" `
     #     @global:combinedParams
@@ -143,7 +143,7 @@ try {
     #     if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
     #         $modulePath = "$global:moduleRootPath\$importName"
     #         if ($DoVerbose) { Write-Output "Exists: $(Test-Path "$modulePath"): $modulePath" }
-    #         Import-Module -Name $modulePath @global:importParameters
+    #         Import-Module -Name $modulePath @global:importParams
     #     }
     # }
 
@@ -151,7 +151,7 @@ try {
     $path = "$($(Get-Item $PSScriptRoot).FullName)\Get-ModuleValidated.ps1"
     . $path
     # $null = Get-Import -Name $importName `
-    #     -CheckActive -CheckImported -ErrorAction Continue  @global:importParameters
+    #     -CheckActive -CheckImported -ErrorAction Continue  @global:importParams
     # $moduleActive = Confirm-ModuleActive -Name $importName `
     #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\Public\DevEnvModules.json" `
     #     @global:combinedParams
@@ -162,7 +162,7 @@ try {
     #     if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
     #         $modulePath = "$global:moduleRootPath\$importName"
     #         if ($DoVerbose) { Write-Host "Exists: $(Test-Path "$modulePath"): $modulePath" }
-    #         Import-Module -Name $modulePath @global:importParameters
+    #         Import-Module -Name $modulePath @global:importParams
     #     } else {
     #         if ($DoVerbose) { Write-Host "Module already loaded: $modulePath" }
     #     }
@@ -172,7 +172,7 @@ try {
     $path = "$($(Get-Item $PSScriptRoot).FullName)\Get-ModuleValidated.ps1"
     . $path
     # $null = Get-Import -Name $importName `
-    #     -CheckActive -CheckImported -ErrorAction Continue  @global:importParameters
+    #     -CheckActive -CheckImported -ErrorAction Continue  @global:importParams
     # $moduleActive = Confirm-ModuleActive -Name $importName `
     #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\Public\DevEnvModules.json" `
     #     @global:combinedParams
@@ -183,7 +183,7 @@ try {
     #     if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
     #         $modulePath = "$global:moduleRootPath\$importName"
     #         if ($DoVerbose) { Write-Output "Exists: $(Test-Path "$modulePath"): $modulePath" }
-    #         $null = Export-ModuleMemberScan -moduleRootPath $modulePath -modulePublicFolder "bootstrap" @global:importParameters
+    #         $null = Export-ModuleMemberScan -moduleRootPath $modulePath -modulePublicFolder "bootstrap" @global:importParams
     #     }
     # }
 

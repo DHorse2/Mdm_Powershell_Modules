@@ -47,12 +47,13 @@
         'Add-WFDataGridViewRow',
         'Add-WFListViewItem',
         'Add-WFRichTextBoxText',
-        'Build-WFFormControls',
         'Build-WFCheckBoxList',
+        'Build-WFFormControls',
         'Clear-WFDataGridViewSelection',
         'Clear-WFErrorProvider',
         'Clear-WFListBox',
         'Clear-WFRichTextBox',
+        'Close-WFForm',
         'ConvertTo-WFDataTable',
         'Disable-WFButton',
         'Disable-WFRichTextBox',
@@ -63,9 +64,9 @@
         'Enable-WFTabControl',
         'Enable-WFTextBox',
         'Find-WFDataGridViewValue',
-        'Get-Assembly',
         'Get-WFCheckedListBoxItem',
         'Get-WFComboboxItem',
+        'Get-WFDataSet',
         'Get-WFForm',
         'Get-WFListBoxItem',
         'Get-WFListViewItem',
@@ -80,8 +81,12 @@
         'New-WFOpenFolderDialog',
         'New-WFSpeakerBeep',
         'New-WFWindow',
+        'Read-WFDataSet'
         'Remove-WFListBoxItem',
         'Reset-WFDataGridViewFormat',
+        'Set-WFButtonLocation',
+        'Set-WFButtonLocationBottom',
+        'Set-WFButtonLocationAll',
         'Set-WFDataGridView',
         'Set-WFDataGridViewFilter',
         'Set-WFForm',
@@ -89,7 +94,9 @@
         'Set-WFRichTextBox',
         'Show-WFForm',
         'Update-WFDataGridView',
-        'WindowStateDefault' 
+        'Update-WFDataSet',
+        'WindowStateDefault',
+        'Write-WFDataSet'
         )
 
     # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.

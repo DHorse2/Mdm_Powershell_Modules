@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_Bootstrap Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="05/18/2025 22:20:17">
+    <meta name="date" content="05/21/2025 18:19:50">
     <meta name="copyright" content="&Copy-Item; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -188,11 +188,11 @@ NOTES
 <p><strong>Synopsis:</strong> Add to HKLM Environtment Path</p>
 <p><strong>Detailed Description:</strong> This loads the specifiect Path key (PATH by default) and adds the new path to it.
 </p>
-<p><strong>Syntax:</strong> <pre>description: The Path key to use.
+<p><strong>Syntax:</strong> <pre>Add-RegistryPath
+ description: The Path key to use.
 
  envPathToUpdate
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1 Add-RegistryPath
-</pre></p>
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 1</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>envPathToUpdate</strong>: The Path key to use.
@@ -215,7 +215,8 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> Return true if Registry Value exists.</p>
 <p><strong>Detailed Description:</strong> Check the registry path &amp; value. Asserts it exists.
 </p>
-<p><strong>Syntax:</strong> <pre>description: The Registry Path to check.
+<p><strong>Syntax:</strong> <pre>Assert-RegistryValue
+ description: The Registry Path to check.
 
  Path
  parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 description: The Registry Key name (Value) to access.
@@ -224,8 +225,7 @@ Introduction: @{Text=PS &gt; }
  parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 2 PassThru
  description: If true this outputs an ItemProperty otherwise true/false
 
- required: false, globbing: false, pipelineInput: false, position: named Assert-RegistryValue
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Path</strong>: The Registry Path to check.
@@ -262,7 +262,8 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Synopsis:</strong> Install or update Mdm Modules.</p>
 <p><strong>Detailed Description:</strong> This installs the libraries to the live system using Robocopy.
 </p>
-<p><strong>Syntax:</strong> <pre>DoForce
+<p><strong>Syntax:</strong> <pre>DevEnv_Install_Modules_Win
+ DoForce
  required: false, globbing: false, pipelineInput: false, position: named DoVerbose
  description: Provide detailed information.
 
@@ -306,8 +307,7 @@ You could override it if you had other local modules to install
 Currently: "/E /FP /nc /ns /np /TEE"
 
  copyOptions
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 9 DevEnv_Install_Modules_Win
-</pre></p>
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 9</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>DoForce</strong></p>
@@ -365,16 +365,20 @@ parameter: @{name=languageMode; required=false; pipelineInput=false; isDynamic=f
 </p>
 <p></p>
 <p></p>
-<h2>Enter-DevEnv_Module_Reset</h2>
+<h2>Enter-GoToBootstrap</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Enter-DevEnv_Module_Reset [&lt;CommonParameters&gt;]
+Enter-GoToBootstrap [-DoPause] [-DoVerbose] [-DoDebug] [-DoForce] [&lt;CommonParameters&gt;]
 </p>
-<p><strong>Syntax:</strong> <pre>name: Enter-DevEnv_Module_Reset
+<p><strong>Syntax:</strong> <pre>name: Enter-GoToBootstrap
 CommonParameters: True
-parameter: </pre></p>
+parameter:    </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoForce</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoVerbose</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
 </p>
@@ -383,13 +387,17 @@ parameter: </pre></p>
 <h2>Enter-ModuleRoot</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Enter-ModuleRoot [&lt;CommonParameters&gt;]
+Enter-ModuleRoot [-DoPause] [-DoVerbose] [-DoDebug] [-DoForce] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Enter-ModuleRoot
 CommonParameters: True
-parameter: </pre></p>
+parameter:    </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoForce</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoVerbose</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
 </p>
@@ -398,13 +406,17 @@ parameter: </pre></p>
 <h2>Enter-ProjectRoot</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Enter-ProjectRoot [&lt;CommonParameters&gt;]
+Enter-ProjectRoot [-DoPause] [-DoVerbose] [-DoDebug] [-DoForce] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Enter-ProjectRoot
 CommonParameters: True
-parameter: </pre></p>
+parameter:    </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoForce</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoVerbose</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
 </p>
@@ -440,7 +452,8 @@ Set registry, Path and load PowerShell modules.
 $source = &quot;$global:moduleRootPath\&quot;
 $destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;
 </p>
-<p><strong>Syntax:</strong> <pre>UpdatePath
+<p><strong>Syntax:</strong> <pre>Initialize-Dev_Env_Win
+ UpdatePath
  description: Switch: A switch to indicate the path should be checked/updated.
 
  required: false, globbing: false, pipelineInput: false, position: named DoPause
@@ -449,8 +462,7 @@ $destination = &quot;$Env:ProgramFiles\WindowsPowerShell\Modules&quot;
  required: false, globbing: false, pipelineInput: false, position: named DoVerbose
  description: Switch: Verbose output and prompts.
 
- required: false, globbing: false, pipelineInput: false, position: named Initialize-Dev_Env_Win
-</pre></p>
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>UpdatePath</strong>: Switch: A switch to indicate the path should be checked/updated.
@@ -472,28 +484,36 @@ Introduction: @{Text=PS &gt; }
 <h2>Invoke-Build</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Invoke-Build [&lt;CommonParameters&gt;]
+Invoke-Build [-DoPause] [-DoVerbose] [-DoDebug] [-DoForce] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Invoke-Build
 CommonParameters: True
-parameter: </pre></p>
+parameter:    </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoForce</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoVerbose</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
 </p>
 <p></p>
 <p></p>
-<h2>Invoke-GoToBootstrap</h2>
+<h2>Invoke-DevEnv_Module_Reset</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Invoke-GoToBootstrap [&lt;CommonParameters&gt;]
+Invoke-DevEnv_Module_Reset [-DoPause] [-DoVerbose] [-DoDebug] [-DoForce] [&lt;CommonParameters&gt;]
 </p>
-<p><strong>Syntax:</strong> <pre>name: Invoke-GoToBootstrap
+<p><strong>Syntax:</strong> <pre>name: Invoke-DevEnv_Module_Reset
 CommonParameters: True
-parameter: </pre></p>
+parameter:    </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoForce</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoVerbose</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
 </p>
@@ -502,13 +522,17 @@ parameter: </pre></p>
 <h2>Invoke-Update</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Invoke-Update [&lt;CommonParameters&gt;]
+Invoke-Update [-DoPause] [-DoVerbose] [-DoDebug] [-DoForce] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Invoke-Update
 CommonParameters: True
-parameter: </pre></p>
+parameter:    </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>DoDebug</strong></p>
+<p>  - <strong>DoForce</strong></p>
+<p>  - <strong>DoPause</strong></p>
+<p>  - <strong>DoVerbose</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
 </p>

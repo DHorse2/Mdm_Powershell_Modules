@@ -324,6 +324,9 @@ Export-ModuleMember -Function @(
     "Set-prompt",
     "Confirm-Verbose"
 )
+Export-ModuleMember -Variable @(
+    "CommandResult"
+)
 #endregion
 # MAIN
 #region Globals:

@@ -10,13 +10,14 @@ function Build-WFCheckBoxList {
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [System.Windows.Forms.Form]$form,
-        [Margins]$margins,
+        [string]$Name,
         [System.Windows.Forms.GroupBox]$groupBox,
         [string]$groupBoxLabel = "",
         [switch]$NotDialog,
+        [MarginClass]$margins,
         [int]$xPos = $global:displayWindow.Top,
         [int]$yPos = $global:displayWindow.Top,
-        [int]$xWidth = 200,
+        [int]$xWidth = 100,
         [int]$yHeight = 30,
         [int]$groupHeightMax = 300
     )
@@ -37,9 +38,21 @@ function Build-WFCheckBoxList {
         if ($groupBox.Text) {
             # Actual Size
             $size = $graphics.MeasureString($groupBox.Text, $groupBox.Font)
-            $yPos += [Math]::Max($size.Height, $yPos)
+            # $yPos += [Math]::Max($size.Height, $yPos)
         }
+        if ($Name) { $groupBox.Name = $Name }
         $yPos += 10 # + padding
+        # Common event handler for CheckBox click events
+        $global:checkboxEventHandler = {
+            param($sender, $e)
+            Update-WFDataSet($sender, $e)
+            # $checkBox = $sender
+            # $name = $checkBox.Name
+            # $text = $checkBox.Text
+            # if (-not $text) { $text = $name }
+            # $state = $checkBox.Checked
+            # Update-WFDataSet($name, $text, $state)
+        }    
     }
     process { [void]$checkboxes.Add($jsonData) }
     end {
@@ -63,6 +76,9 @@ function Build-WFCheckBoxList {
             # $xPos = $xTop
             # $yPos = $yTop
             foreach ($jsonCheckboxes in $checkboxes) {
+                $dataType = $jsonCheckboxes.description
+                if (-not $dataType) { $dataType = $Name }
+                if (-not $dataType) { $dataType = "Form" }
                 foreach ($checkboxItem in $jsonCheckboxes.items) {
                     if ($checkboxItem -is [PSCustomObject]) {
                         if ($checkboxItem.label.Length -gt $xWidthMax) { $xWidthMax = $checkboxItem.label.Length }
@@ -74,6 +90,7 @@ function Build-WFCheckBoxList {
                         }
                         $checkbox = New-Object System.Windows.Forms.CheckBox
                         $checkbox.Text = $checkboxItem.label
+                        $checkbox.Name = "$($dataType)_$($checkboxItem.label)"
                         $checkbox.Checked = $checkboxItem.checked
                         if ($checkboxItem.label.Length -gt $xWidthMeasured) {
                             $xWidthMeasured = $checkboxItem.label.Length
@@ -93,8 +110,9 @@ function Build-WFCheckBoxList {
                         # Add Control
                         # if ($form) { $form.Controls.Add($checkbox) }
                         # else { 
-                            $groupBox.Controls.Add($checkbox) 
+                        $groupBox.Controls.Add($checkbox) 
                         # }
+                        $checkbox.Add_Click($global:checkboxEventHandler)
                         $yPos += $yTmp + 10 # + padding
                         # $yPos += $yHeight
                         if ($yPos -ge $yPosMax) { $yPosMax = $yPos }

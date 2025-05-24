@@ -207,10 +207,23 @@ function Initialize-StdGlobals {
             [string]$global:title = ""
 
             # Modules array. These will be auto documented
-            [array]$global:moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install", "Mdm_Modules")
+            [array]$global:moduleCoreNames = @(
+                "Mdm_Bootstrap", 
+                "Mdm_Std_Library", 
+                "Mdm_WinFormPS",
+                "Mdm_DevEnv_Install", 
+                "Mdm_Modules"
+            )
             # Modules array. These are imported external product
-            [array]$global:moduleAddons = @("Mdm_Nightroman_PowerShelf", "Mdm_Springcomp_MyBox")
-        
+            [array]$global:moduleNames = @(
+                "Mdm_Bootstrap", 
+                "Mdm_Std_Library", 
+                "Mdm_WinFormPS",
+                "Mdm_DevEnv_Install", 
+                "Mdm_Modules", 
+                "Mdm_Nightroman_PowerShelf", 
+                "Mdm_Springcomp_MyBox"
+            )
             # Parameters
             [hashtable]$global:commonParamsPrelude = @{}
             [hashtable]$global:commonParams = @{}
@@ -626,3 +639,18 @@ Export-ModuleMember -Function @(
     "Show-StdGlobals",
     "Start-Std"
 )
+function Get-StdStatus {
+    [CmdletBinding()]
+    param (
+        
+    )
+    begin {
+        
+    }
+    process {
+        
+    }
+    end {
+        
+    }
+}

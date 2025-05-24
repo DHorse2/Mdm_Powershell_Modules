@@ -44,7 +44,7 @@ function Export-Mdm_Help {
         Add-LogText -Message $Message -SkipScriptLineDisplay
         if (-not $moduleRootPath) { $moduleRootPath = (get-item $PSScriptRoot).Parent.FullName }
         if (-not $projectRootPath) { $projectRootPath = (get-item $moduleRootPath).Parent.Parent.FullName }
-        if (-not $localModuleNames) { $localModuleNames = $global:moduleNames }
+        if (-not $localModuleNames) { $localModuleNames = $global:moduleCoreNames }
     }
     process {
         #region Process modules
@@ -235,7 +235,7 @@ function Write-Mdm_Help {
         }
         # Process modules
         Write-Host "Generate Mdm_Help help..."
-        foreach ($moduleName in $global:moduleNames) {
+        foreach ($moduleName in $global:moduleCoreNames) {
             # Remove-Module
             try {
                 Write-Host "Generate Help: $moduleName"
@@ -563,7 +563,7 @@ function Export-Help {
         if (-not $nameFilter) { $nameFilter = "*" }
         # Process modules
         try {
-            foreach ($moduleName in $global:moduleNames) {
+            foreach ($moduleName in $global:moduleCoreNames) {
                 # Validate the module folder
                 # Filter for YOUR company name. Default at top.
                 if ($moduleName -like $nameFilter) {
@@ -598,7 +598,7 @@ function Export-Help {
                             # if (-not ((Get-Module -Name $moduleName) -or $global:DoForce)) {
                             #     $modulePath = "$global:moduleRootPath\$moduleName"
                             #     if ($DoVerbose) { Write-Output "Exists: $(Test-Path "$modulePath"): $modulePath" }
-                            #     Import-Module -Name $modulePath @global:importParameters
+                            #     Import-Module -Name $modulePath @global:importParams
                             # }
                             # Import-Module -Name $moduleName `
                             #     -ErrorAction Stop
@@ -658,7 +658,7 @@ function Export-Help {
                                 $modulePath = "$global:moduleRootPath\$moduleName"
                                 if ($DoVerbose) { Write-Output "Exists: $(Test-Path "$modulePath"): $modulePath" }
                                 if ($moduleName -ne "Mdm_Modules") {
-                                    Import-Module -Name $moduleName @global:importParameters
+                                    Import-Module -Name $moduleName @global:importParams
                                 }
                             }
                             $cmdlets = Get-Command -Module $moduleName

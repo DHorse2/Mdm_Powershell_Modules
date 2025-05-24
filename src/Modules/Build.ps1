@@ -33,7 +33,7 @@ $path = "$localPath\Mdm_Bootstrap\DevEnv_Module_Reset.ps1"
 # if (-not ((Get-Module -Name $importName) -or $global:DoForce)) {
 #     $modulePath = "$global:moduleRootPath\$importName"
 #     if ($DoVerbose) { Write-Output "Exists: $(Test-Path "$modulePath"): $modulePath" }
-#     Import-Module -Name $modulePath @global:importParameters
+#     Import-Module -Name $modulePath @global:importParams
 # }
 # $importName = "Mdm_Bootstrap"
 # $path = "$($(Get-Item $PSScriptRoot).FullName)\Mdm_Modules\Get-ModuleValidated.ps1"

@@ -1,12 +1,12 @@
 
 # Get-ModuleValidated
 $moduleGroupName = "Modules"
-$jsonFileName = "$global:moduleRootPath\Mdm_DevEnv_Install\Public\DevEnvModules.json"
+$jsonFileName = "$global:moduleRootPath\Mdm_DevEnv_Install\data\DevEnvModules.json"
 if (-not $global:moduleDataArray) { 
     [hashtable]$global:moduleDataArray = New-Object System.Collections.Hashtable
 }
 if (-not $global:moduleDataArray[$moduleGroupName]) {
-    $jsonData = Get-JsonData -jsonObject $jsonFileName
+    $jsonData = Get-JsonData -jsonItem $jsonFileName
     $global:moduleDataArray[$moduleGroupName] = $jsonData
 } else {
     $jsonData = $global:moduleDataArray[$moduleGroupName]

@@ -16,13 +16,13 @@ function Confirm-ModuleActive {
         if (-not $jsonData) {
             if (-not $global:moduleDataArray[$moduleGroupName]) {
                 if ($jsonFileName) {
-                    $jsonData = Get-JsonData -AddSource -jsonObject $jsonFileName
+                    $jsonData = Get-JsonData -AddSource -jsonItem $jsonFileName
                     $global:moduleDataArray[$moduleGroupName] = $jsonData
                     # $jsonContent = Get-Content -Path $jsonFileName -Raw -ErrorAction Stop
                     # $jsonData = $jsonContent | ConvertFrom-Json -ErrorAction Stop
                     if ($DoDebug) {
                         $Message = "Data: $($jsonData.description) Count($($jsonData.items.Count))"
-                        Add-LogText -Message $Message
+                        Add-LogText -Messages $Message
                     }
                 } else {
                     $Message = "Confirm-ModuleActive: No Module data specified. Can't check module '$Name'."
@@ -38,7 +38,7 @@ function Confirm-ModuleActive {
             $moduleData = $jsonData.items | Where-Object { $_.label.Trim() -eq $Name }
             if ($DoVerbose) {
                 $Message = "moduleData: $moduleData"
-                Add-LogText -Message $Message
+                Add-LogText -Messages $Message
             }
             # Check if the module was found and return its checked status
             if ($moduleData) {

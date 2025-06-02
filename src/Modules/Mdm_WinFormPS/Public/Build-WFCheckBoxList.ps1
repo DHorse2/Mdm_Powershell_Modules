@@ -45,14 +45,22 @@ function Build-WFCheckBoxList {
         # Common event handler for CheckBox click events
         $global:checkboxEventHandler = {
             param($sender, $e)
-            Update-WFDataSet($sender, $e)
-            # $checkBox = $sender
-            # $name = $checkBox.Name
-            # $text = $checkBox.Text
-            # if (-not $text) { $text = $name }
-            # $state = $checkBox.Checked
-            # Update-WFDataSet($name, $text, $state)
-        }    
+            Update-WFDataSet -sender $sender -e $e
+            $global:moduleDataChanged = $true
+            $textOut = "Changed"
+            Set-WFButtonState -sender $sender -e $e -text $textOut
+        }
+        # Common event handler for CheckBox click events
+        # $global:checkboxEventHandler = {
+        #     param($sender, $e)
+        #     Update-WFDataSet($sender, $e)
+        #     # $checkBox = $sender
+        #     # $name = $checkBox.Name
+        #     # $text = $checkBox.Text
+        #     # if (-not $text) { $text = $name }
+        #     # $state = $checkBox.Checked
+        #     # Update-WFDataSet($name, $text, $state)
+        # }    
     }
     process { [void]$checkboxes.Add($jsonData) }
     end {
@@ -125,7 +133,7 @@ function Build-WFCheckBoxList {
             $groupBox.Size = New-Object System.Drawing.Size($xPosMax, $yPosMax)
         } catch {
             $Message = "An error occurred while building the checkbox list ($checkbox)."
-            Add-LogText -Message $Message -IsError -ErrorPSItem $_
+            Add-LogText -Messages $Message -IsError -ErrorPSItem $_
             return $null
         }
         return $groupBox 

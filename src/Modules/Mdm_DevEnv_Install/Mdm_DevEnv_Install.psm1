@@ -78,12 +78,16 @@ Function Get-DevEnvVersions {
         Should output a file and display.
 #>
     [CmdletBinding()]
-    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce,
+        [switch]$KeepOpen,
+        [switch]$Silent
+    )
     Reset-StdGlobals `
         -DoPause:$DoPause `
         -DoVerbose:$DoVerbose `
         -DoDebug:$DoDebug `
         -DoForce:$DoForce
+
     Initialize-Std `
         -DoPause:$DoPause `
         -DoVerbose:$DoVerbose `
@@ -119,7 +123,10 @@ Function Get-DevEnvVersions {
     }
  
     $response = "Y"
-    if ($global:DoVerbose -or $global:DoPause) { $response = Wait-YorNorQ }
+    if ($KeepOpen -and -not $Silent) { 
+        Wait-AnyKey -Message
+        if ($global:DoVerbose -or $global:DoPause) { $response = Wait-YorNorQ  "Get-DevEnvVersions Continue?"}
+    }
     If ($response -eq "Y") {
 
         # Write-Verbose "################################################################################"
@@ -136,7 +143,7 @@ Function Get-DevEnvVersions {
             # Refresh environment PATH for the current session
             $env:Path -split ";" | Write-Host
             Write-Verbose "################################################################################"
-            if ($global:DoPause) { Wait-AnyKey }
+            if ($global:DoPause -and $KeepOpen -and -not $Silent) { Wait-AnyKey }
 
             Write-Verbose "Environment:"
             Get-ChildItem Env: | Write-Host
@@ -147,7 +154,7 @@ Function Get-DevEnvVersions {
             Write-Host "Path:"
             $psPath -split ";" | Write-Host
             Write-Verbose "################################################################################"
-            if ($global:DoPause) { Wait-AnyKey }
+            if ($global:DoPause -and $KeepOpen -and -not $Silent) { Wait-AnyKey }
         }
 
         # PowerShell
@@ -184,13 +191,14 @@ Function Get-DevEnvVersions {
         node -v | Write-Host
         Write-Verbose "################################################################################"
 
-        if (($global:DoPause -or $global:DoVerbose -or $global:DoDebug -or $global:DoForce) `
-                -or ($local:DoPause -or $local:DoVerbose -or $local:DoDebug -or $local:DoForce)) {
+        if ($KeepOpen -or $global:DoPause -or $global:DoVerbose -or $global:DoDebug -or $global:DoForce) {
             Write-Host " "
-            Write-Host " Local Pause: $local:DoPause, Verbose: $local:DoVerbose, Debug: $local:DoDebug, Force: $local:DoForce"
-            Write-Host "Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug, Force: $global:DoForce"
+            Write-Host "   Local Pause: $local:DoPause, Verbose: $local:DoVerbose, Debug: $local:DoDebug, Force: $local:DoForce"
+            Write-Host "  Global Pause: $global:DoPause, Verbose: $global:DoVerbose, Debug: $global:DoDebug, Force: $global:DoForce"
             Write-Host "Default prompt: $global:msgAnykey"
-            if ($global:DoPause) { Wait-AnyKey }
+            Write-Host "   Silent Mode: $Silent"
+            Write-Host "     Keep Open: $Silent"
+            if ($global:DoPause -or ($KeepOpen -and -not $Silent)) { Wait-AnyKey }
         }
     }
 }

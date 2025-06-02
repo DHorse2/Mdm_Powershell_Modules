@@ -388,7 +388,7 @@ function Reset-StdGlobals {
         $global:msgAnykey = $msgAnykey
         $global:msgYorN = $msgYorN
         $global:InitStdDone = $initDone
-        # TODO syntax error with params
+        # TODO: Hold validation syntax error with params
         Set-StdGlobals -DoDebug:$DoDebug -DoVerbose:$DoVerbose -DoPause:$DoPause -DoForce:$DoForce
     }
 }

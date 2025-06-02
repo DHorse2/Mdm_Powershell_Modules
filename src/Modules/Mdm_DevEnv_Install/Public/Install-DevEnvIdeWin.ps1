@@ -23,7 +23,7 @@ function Install-DevEnvIdeWin {
             Python 3
             Git
             Visual Studio Code
-        TODO incomplete. Other toolchain apps.
+        TODO: INST: incomplete. Other toolchain apps.
             Micrsoft toolchain
             VsCode
             VsCodium
@@ -32,10 +32,13 @@ function Install-DevEnvIdeWin {
         A log of the installed modules
 #>
     [CmdletBinding()]
-    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce,
+    [switch]$KeepOpen,
+    [switch]$Silent
+    )
     Initialize-Std -$DoPause -$DoVerbose -$DoDebug
 
-    Wait-AnyKey
+    if ($KeepOpen -and -not $Silent) { Wait-AnyKey -Message "Install-DevEnvIdeWin Setup is starting." }
 
     Write-Verbose "######################"
     Write-Verbose  "Copying PowerShell modules to System32 PowerShell modules directory..."
@@ -83,5 +86,5 @@ function Install-DevEnvIdeWin {
 
     Write-Host  "Rust toolchain"
 
-    Wait-AnyKey
+    if ($KeepOpen -and -not $Silent) { Wait-AnyKey -Message "Install-DevEnvIdeWind Setup is completed." }
 }

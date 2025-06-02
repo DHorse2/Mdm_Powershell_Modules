@@ -4,6 +4,7 @@ Using namespace System.Drawing
 Using namespace System.Windows.Forms
 Using namespace System.Web
 Using module "..\Mdm_Std_Library\Mdm_Std_Library.psm1"
+# Using module Mdm_Std_Library
 
 Write-Host "Mdm_WinFormPS_FrancoisXavierCat.psm1"
 Add-Type -AssemblyName Microsoft.VisualBasic
@@ -17,24 +18,79 @@ if (-not $global:moduleRootPath) {
 	. "$path"
 }
 #region Classes - Margin, WFWindow, WindowState
+$global:window = $null # used to access StatusBar
+$global:form = $null # not used anywhere
+$global:tabControls = $null
 $global:displayWindow = [DisplayElement]::new(10, 10, 50, 50)
 $global:displayMargins = [DisplayElement]::new(20, 20, 20, 20)
 $global:displayPadding = [DisplayElement]::new(10, 10, 10, 10)
 $global:displaySizeMax = [DisplayElement]::new(10, 10, 2000, 2000)
-$global:displayButtonSize = [DisplayElement]::new(0, 0, 75, 23)
+$global:displayButtonSize = [DisplayElement]::new(0, 0, 100, 23)
 [hashtable]$global:moduleDataArray = New-Object System.Collections.Hashtable
 [string]$global:appName = "default"
-[string]$global:dataSourceName = "default"
+[string]$global:appDirectory = "default"
+[string]$global:fileDialogInitialDirectory = "$($global:moduleRootPath)\$global:appName"
+[string]$global:fileDialogFilter = “Json files (*.json)|*.json|Text files (*.txt)|*.txt|All files (*.*)|*.*”
+
 [bool]$global:moduleDataChanged = $false
-[bool]$global:DoButtonBar = $false
-[array]$global:buttonArray = @(
-	"ButtonBar",
-	"OkButton",
-	"CancelButton",
-	"ApllyButton",
-	"ResetButton",
-	"NextButton"
-)
+[array]$global:buttonBarUsed = @("AutoSave", "ButtonBar", "PreviousButton", "OkButton", "CancelButton", "ApplyButton", "ResetButton", "NextButton")
+# Declare the data as a hashtable
+[hashtable]$global:buttonBarArray = @{
+    AutoSave       = $true
+    ButtonBar      = $true
+	ButtonAction   = $true
+    PreviousButton = { DoPrevious }
+    OkButton       = { DoOk }
+    CancelButton   = { DoCancel }
+    ApplyButton    = { DoApply }
+    ResetButton    = { DoReset }
+    NextButton     = { DoNext }
+}
+[hashtable]$global:buttonAction = @{
+	Open = { DoOpenFile }
+	Save = { DoFileSave }
+	SaveAs = { DoFileSaveAs }
+	Close = { DoCloseForm }
+	ShowAbout = { DoShowAbout }
+	ShowHelp = { DoShowHelp }
+}
+[hashtable]$global:buttonText = @{
+	Timer          	= "Timer"
+    ButtonBar      	= "ButtonBar"
+	StatusBar		= "StatusBar"
+	FileMenu		= "File"
+	HelpMenu		= "Help"
+    PreviousButton 	= "Previous"
+    OkButton       	= "Ok"
+    CancelButton   	= "Cancel"
+    ApplyButton    	= "Apply"
+    ResetButton    	= "Reset"
+    NextButton     	= "Next"
+	Open 			= "Open"
+	Save 			= "Save"
+	SaveAs 			= "Save As"
+	Close 			= "Close"
+	ShowAbout 		= "About"
+	ShowHelp 		= "Help"
+}
+[string]$global:dataSourceName = "Application"
+[string]$global:dataSet = "Data"
+[string]$global:dataSetState = "Current"
+[bool]$global:autoSaveActive = $false
+[bool]$global:fileSystemActive = $false
+# AutoSave
+[bool]$global:DoTimer = $true
+[System.Windows.Forms.Timer]$global:autoSaveTimer = $null
+[int]$global:autoSaveTimerInterval = 30000
+[bool]$global:autoSaveTimerBusy = $false
+# Menu Action Output
+$global:outputBuffer = ""
+$global:ActionExecutionMethod = "Start-Process" # vs "Invoke-Command"
+$global:ActionOutputTextBox = $null
+[System.Windows.Forms.Timer]$global:buttonActionTimer = $null
+[int]$global:buttonActionTimerInterval = 1000
+[bool]$global:buttonActionTimerBusy = $false
+
 class DisplayElement {
 	[string]$Name
 	[string]$Position
@@ -128,17 +184,21 @@ class MarginClass {
 class MenuBar {
 	[System.Windows.Forms.MenuStrip]$MenuStrip
 	[System.Windows.Forms.ToolStrip]$ToolStrip
+	[System.Windows.Forms.ToolStrip]$StatusBar
 
 	MenuBar() {
 		$this.MenuStrip = New-Object System.Windows.Forms.MenuStrip
 		$this.ToolStrip = New-Object System.Windows.Forms.ToolStrip
+		$this.StatusBar = New-Object System.Windows.Forms.ToolStrip
 	}
-	MenuBarSet($inputMenuStrip, $inputToolStrip) {
+	MenuBarSet($inputMenuStrip, $inputToolStrip, $inputStatusBar) {
 		$this.MenuStrip = $inputMenuStrip
 		$this.ToolStrip = $inputToolStrip
+		$this.StatusBar = $inputStatusBar
 	}
 }
 class WFWindow {
+	[string]$Name
 	[System.Windows.Forms.Form[]]$Forms
 	[MenuBar[]]$MenuBar
 	[System.Windows.Forms.TabControl[]]$TabPage
@@ -150,7 +210,7 @@ class WFWindow {
 
 	# Default constructor
 	WFWindow() {
-		$this.SetWindow($null, $null, $null, 0, 0, $null, $null, $null)
+		$this.SetWindow($null, $null, $null, $null, 0, 0, $null, $null, $null)
 		Write-Host "WFWindow Warning: Default constructor invoked."
 	}
 
@@ -158,7 +218,7 @@ class WFWindow {
 	WFWindow(
 		[System.Windows.Forms.Form[]]$inputForms
 	) {
-		$this.SetWindow($inputForms, $null, $null, 0, 0, $null, $null, $null)
+		$this.SetWindow($null, $inputForms, $null, $null, 0, 0, $null, $null, $null)
 	}
 	# Constructor that accepts a form and menu strips
 	WFWindow(
@@ -166,44 +226,53 @@ class WFWindow {
 		[MenuBar[]]$inputMenuBar = $null,
 		[System.Windows.Forms.TabControl[]]$TabPage
 	) {
-		$this.SetWindow($inputForms, $inputMenuBar, $TabPage, 0, 0, $null, $null, $null)
+		$this.SetWindow($null, $inputForms, $inputMenuBar, $TabPage, 0, 0, $null, $null, $null)
 	}
 	# Constructor that accepts optional data
 	WFWindow(
+		[string]$inputName = $null,
 		[System.Windows.Forms.Form[]]$inputForms = $null, 
 		[MenuBar[]]$inputMenuBar = $null,
 		[System.Windows.Forms.TabControl[]]$TabPage = $null,
-		[int]$inputFormIndex = 0, 
-		[int]$inputTabIndex = 0,
+		[int]$inputFormIndex = $null, 
+		[int]$inputTabIndex = $null,
 		[MarginClass]$inputMargins = $null, 
 		[hashtable]$inputComponents = $null, 
 		[WindowState]$inputState = $null
 	) {
-		$this.SetWindow($inputForms, $inputMenuBar, $TabPage, $inputFormIndex, 0, $inputMargins, $inputComponents, $inputState)
+		$this.SetWindow($inputName, $inputForms, $inputMenuBar, $TabPage, $inputFormIndex, 0, $inputMargins, $inputComponents, $inputState)
 	}
 			
-	SetWindow(
+	[void] SetWindow(
+		[string]$inputName = $null,
 		[System.Windows.Forms.Form[]]$inputForms = $null,
 		[MenuBar[]]$inputMenuBar = $null, 
-		# [System.Windows.Forms.ToolStrip[]]$inputToolStrip = $null,
-		# [System.Windows.Forms.MenuStrip[]]$inputMenuStrip = $null,
 		[System.Windows.Forms.TabControl[]]$inputTabPage = $null, 
-		[int]$inputFormIndex = 0, 
-		[int]$inputTabIndex = 0,
+		[int]$inputFormIndex = $null, 
+		[int]$inputTabIndex = $null,
 		[MarginClass]$inputMargins = $null, 
 		[hashtable]$inputComponents = $null, 
 		[WindowState]$inputState = $null
 	) {
 		try {
 			# Forms
+			if ($inputName -and $inputName -is [string]) {
+				$this.Name = $inputName
+			} elseif ($inputForms) {
+				$Message = "WFWindow constructor received an invalid Name. String required."
+				Add-LogText -Messages $Message -IsError
+			}
 			if ($inputForms -and $inputForms -is [System.Windows.Forms.Form[]]) {
 				$this.Forms = $inputForms
 				$this.MenuBar = $inputMenuBar
 			} elseif ($inputForms) {
 				$Message = "WFWindow constructor received an invalid Forms array."
-				Add-LogText -Message $Message -IsError
+				Add-LogText -Messages $Message -IsError
 			}
 			if (-not ($this.Forms)) { $this.Forms = @() }
+			if (-not ($this.MenuBar)) {
+				this.MenuBar = @( [MenuBar]::new() )
+			}
 			# Form Index
 			if ($inputFormIndex -ge 0 -and $inputFormIndex -lt $this.Forms.Count) {
 				$this.FormIndex = $inputFormIndex
@@ -218,7 +287,7 @@ class WFWindow {
 				$this.TabPage = $inputTabPage
 			} elseif ($inputTabPage) {
 				$Message = "WFWindow constructor received an invalid Tab Pages array."
-				Add-LogText -Message $Message -IsError
+				Add-LogText -Messages $Message -IsError
 			}
 			# Tab Index
 			if ($inputTabIndex -ge 0 -and $inputTabIndex -lt $this.TabIndex.Count) {
@@ -314,7 +383,7 @@ class WFWindow {
 	}
 }
 class WindowState {
-	[hashtable]$data
+	$data
 	[CommandResult]$CommandResult
 	[DisplayElement]$Display
 	[int]$x
@@ -338,10 +407,10 @@ class WindowState {
 		$this.Display = [DisplayElement]::new()
 		$this.x = -1; $this.y = -1
 	}
-	WindowState([hashtable]$inputData = $null, [CommandResult]$inputCommandResult) {
+	WindowState($inputData = $null, [CommandResult]$inputCommandResult) {
 		# Initialize Data with default values if no data is provided
 		if ($null -eq $inputData) {
-			$this.data = [hashtable]$this.WindowStateDefault()
+			$this.data = $this.WindowStateDefault()
 		} else {
 			$this.data = $inputData
 		}
@@ -353,10 +422,10 @@ class WindowState {
 		$this.Display = [DisplayElement]::new()
 		$this.x = -1; $this.y = -1
 	}
-	WindowState([hashtable]$inputData = $null, [CommandResult]$inputCommandResult, [DisplayElement]$inputDisplayElement) {
+	WindowState($inputData = $null, [CommandResult]$inputCommandResult, [DisplayElement]$inputDisplayElement) {
 		# Initialize Data with default values if no data is provided
 		if ($null -eq $inputData) {
-			$this.data = [hashtable]$this.WindowStateDefault()
+			$this.data = $this.WindowStateDefault()
 		} else {
 			$this.data = $inputData
 		}
@@ -406,8 +475,8 @@ function Test-WFWindow {
 		if (-not $window) { $window = [WFWindow]::new($formsArray) }
 
 		# Accessing the forms and default data
-		$window.forms[0].Text = "Form 1"
-		$window.forms[1].Text = "Form 2"
+		$window.Forms[0].Text = "Form 1"
+		$window.Forms[1].Text = "Form 2"
 		Write-Output $window.Data.Package  # Output: MacroDM
 
 		# Create a new WFWindow instance with custom data

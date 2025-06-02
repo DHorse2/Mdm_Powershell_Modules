@@ -39,7 +39,7 @@
 	(
 		[Parameter(Mandatory = $true)]
 		[Alias('Title')]
-		[string]$WindowsTitle,
+		[string]$Title,
 		[Parameter(Mandatory = $true)]
 		[string]$Path,
 		[string]$Filter = "All files (*.*)|*.*",
@@ -59,7 +59,7 @@
 		$OpenFileDialog.InitialDirectory = $Path
 		$OpenFileDialog.CheckPathExists = $CheckPathExists
 		$OpenFileDialog.CheckFileExists = $CheckFileExists
-		$OpenFileDialog.Title = $WindowTitle
+		$OpenFileDialog.Title = Title
 		
 		IF ($PSBoundParameters["Filter"]) { $OpenFileDialog.Filter = $Filter }
 		IF ($PSBoundParameters["AllowMultiSelect"]) { $OpenFileDialog.MultiSelect = $true }

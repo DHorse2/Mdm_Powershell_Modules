@@ -23,7 +23,10 @@ function Install-DevEnvLlmWin {
         none.
 #>
     [CmdletBinding()]
-    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce,
+    [switch]$KeepOpen,
+    [switch]$Silent
+    )
     Initialize-Std -$DoPause -$DoVerbose -$DoDebug
     Write-Verbose "######################"
     Write-Verbose  "Copying PowerShell modules to System32 PowerShell modules directory..."
@@ -61,5 +64,5 @@ function Install-DevEnvLlmWin {
 
     Write-Host "Development environment setup is complete."
 
-    Wait-AnyKey
+    if ($KeepOpen -and -not $Silent) { Wait-AnyKey -Message "Install-DevEnvLlmWin Setup is completed." }
 }

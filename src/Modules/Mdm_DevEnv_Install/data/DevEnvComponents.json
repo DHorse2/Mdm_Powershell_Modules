@@ -1,6 +1,7 @@
 
 {
-    "description": "DevEnvComponents",
+    "description": "Components",
+    "type": "DataSet",
     "items": [
         { "label": "Pip", "required": true, "component": "Repository", "checked": false, "Description": "xxx" },
         { "label": "Chocolatey", "required": true, "component": "Repository", "checked": false, "Description": "xxx" },

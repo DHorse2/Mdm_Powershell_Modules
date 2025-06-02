@@ -1,5 +1,6 @@
 {
     "description": "Categories",
+    "type": "DataSet",
     "items": [
         { "label": "Core", "Description": "Core functionalities.", "checked": true },
         { "label": "StandardFunctions", "Description": "Standard functions for common tasks. (Std extends Common)", "checked": true },
@@ -7,7 +8,7 @@
         { "label": "Automation", "Description": "Verbs that facilitate the automation of tasks and processes.", "checked": true },
         { "label": "Cleanup", "Description": "Verbs that deal with the removal of unnecessary or temporary resources.", "checked": true },
         { "label": "Communications", "Description": "Data transmission and communication, facilitating the exchange of information between sources and destinations.", "checked": true },
-        { "label": "Control", "Description": "Verbs related to setting up and managing configurations for resources.", "checked": true },
+        { "label": "GuiConfig", "Description": "Verbs related to setting up and managing configurations for resources.", "checked": true },
         { "label": "Data", "Description": "Data manipulation and management, including actions for storing, transforming, and organizing data.", "checked": true },
         { "label": "Devices", "Description": "Managing and inspecting devices.", "checked": true },
         { "label": "Diagnostic", "Description": "Troubleshooting and diagnostics, aimed at examining resources to identify and resolve issues.", "checked": true },

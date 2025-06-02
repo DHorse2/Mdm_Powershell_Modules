@@ -53,7 +53,7 @@ Write-Host "Dev Env Install Modules Win"
 try {
     DevEnv_Install_Modules_Win @global:commonParams
 } catch {
-    Add-LogText -IsError -ErrorPSItem $_ "Dev Env Install Modules Win had and error. $_"
+    Add-LogText -IsError -ErrorPSItem $_ "Dev Env Install Modules Win had and error."
     exit
 }
 

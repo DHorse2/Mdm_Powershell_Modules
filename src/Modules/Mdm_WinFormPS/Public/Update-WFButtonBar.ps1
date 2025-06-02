@@ -15,7 +15,7 @@ function Update-WFButtonBar {
         # $isChecked = $button.Checked
         $isPressed = $true
 
-        # Implement your data update logic here
+        # Implement your data update logic here - NOT USED
         $buttonKeys = $buttonName -split "_"
         # Assign to variables
         $dataSet = $buttonKeys[0]
@@ -28,6 +28,7 @@ function Update-WFButtonBar {
         Write-Host "Update-WFButtonBar Control $buttonName '$buttonText' DataSet: $dataSet, Item: $dataSetItem, Checked: $isChecked."
     }
     process {
+        Update-WFStatusBarStrip -sender $sender -e $e -statusBarLabel 'statusBarActionState' -text $textOut
         switch ($dataSetItem) {
             "PreviousButton" { 
                 # Enable if used
@@ -45,6 +46,12 @@ function Update-WFButtonBar {
                 $form.Close()
             }
             "ApplyButton" {  
+                # Update File
+                # Disable Apply
+                $apply = $form.Controls["ApplyButton"]
+                $apply.Enabled = $false
+            }
+            "ResetButton" {  
                 # Update File
                 # Disable Apply
                 $apply = $form.Controls["ApplyButton"]

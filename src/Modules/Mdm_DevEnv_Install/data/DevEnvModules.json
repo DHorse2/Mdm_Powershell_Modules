@@ -1,5 +1,6 @@
 {
     "description": "Modules",
+    "type": "DataSet",
     "items": [
         { "label": "Mdm_Std_Library", "required": true, "component": "Std, Core", "checked": true, "memberScan": false, "Description": "Mdm_Std_Library" },
         { "label": "Mdm_Bootstrap", "required": true, "component": "Bootstrap", "checked": true, "memberScan": false, "Description": "Mdm_Bootstrap" },

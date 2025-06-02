@@ -32,25 +32,25 @@ function Get-Import {
         # Check if Module is Active (being used)
         if ($CheckActive) {
             $moduleActive = Confirm-ModuleActive -Name $Name `
-                -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\Public\DevEnvModules.json" `
+                -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\data\DevEnvModules.json" `
                 @global:combinedParams
             if (-not $moduleActive) { 
                 if ($DoVerbose) { 
                     $Message = "Get-Import: Module: $Name is not activated."
-                    Add-LogText -Message $Message
+                    Add-LogText -Messages $Message
                 }
                 return $null 
             }
         }
         if ($DoVerbose) { 
-            Add-LogText -Message "Get-Import: Module: $Name"
+            Add-LogText -Messages "Get-Import: Module: $Name"
             if ($DoDebug) {
                 $Message = "Project Root: Exists: $(Test-Path "$global:projectRootPath"): $global:projectRootPath"
-                Add-LogText -Message $Message
+                Add-LogText -Messages $Message
                 $Message = " Module Root: Exists: $(Test-Path "$global:moduleRootPath"): $global:moduleRootPath"
-                Add-LogText -Message $Message
+                Add-LogText -Messages $Message
                 $Message = "Execution at: Exists: $(Test-Path "$global:projectRootPathActual"): $global:projectRootPathActual"
-                Add-LogText -Message $Message
+                Add-LogText -Messages $Message
             }
         }
     }
@@ -107,7 +107,7 @@ function Get-Import {
                         } else {
                             if ($DoDebug -or $DoVerbose) {
                                 $Message = "Get-Import: Module already loaded: $Name."
-                                Add-LogText -Message $Message
+                                Add-LogText -Messages $Message
                             }
                         }
                     }
@@ -124,7 +124,7 @@ function Get-Import {
     ExportedVariables: $($module.ExportedVariables)
     RequiredModules: $($module.RequiredModules)
 "@
-                    Add-LogText -Message $Message -BackgroundColor DarkBlue
+                    Add-LogText -Messages $Message -BackgroundColor DarkBlue
                 }
                 # $folderName = Split-Path ((get-item $PSScriptRoot ).FullName) -Leaf
                 # if ($module.Path -ne "$global:moduleRootPath\$($module.Name)") {

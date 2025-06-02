@@ -44,7 +44,7 @@
 		[string]$Text = "Hello World",
 		
 		[ValidateSet('Maximized', 'Minimized', 'Normal')]
-		[string]$WindowState,
+		[string]$State,
 		
 		[switch]$BringToFront
 	)
@@ -64,9 +64,9 @@
 		}
 		IF ($PSBoundParameters["WindowState"])
 		{
-			IF ($PSCmdlet.ShouldProcess($form, "Set Windows State to $WindowState"))
+			IF ($PSCmdlet.ShouldProcess($form, "Set Windows State to State"))
 			{
-				$form.WindowState = $WindowState
+				$form.WindowState = State
 			}
 		}
 		IF ($PSBoundParameters["BringToFront"])

@@ -10,14 +10,20 @@ function Build-WFFormControls {
         [System.Windows.Forms.GroupBox]$groupBox,
         [string]$groupBoxLabel,
         [hashtable]$jsonData,
+        [System.Windows.Forms.ToolStripMenuItem[]]$formMenuActions,
+        [object[]]$formToolStripActions,
+        [MenuBar]$menuBar,
         [MarginClass]$margins,
+        [string]$Name,
         [string]$Title,
         [string]$TextInput,
         [array]$Buttons,
-        [switch]$DoMenuBar,
+        [switch]$DoMenuBars,
+        [switch]$DoTabIndex,
+        [switch]$DoStatusBar,
+        [switch]$DoAll,
         [switch]$DoControls,
         [switch]$DoEvents,
-        [switch]$DoTabIndex,
         $state = $null
     )
     process {
@@ -25,16 +31,33 @@ function Build-WFFormControls {
             #region Initialize
             $widthMax = 200 # or something
             $yCurr = 10
-            if ($Target -eq "Tabs" -and -not $tabPage -and $DoControls) {
+            if ($Target -eq "Tabs" -and -not $tabPage -and $DoAll -or $DoControls) {
                 $tabControls = New-Object System.Windows.Forms.TabControl
                 $tabPage = New-Object System.Windows.Forms.TabPage
             }
+            # Note Window is mandatory but not marked as such
             if (-not $margins) { $margins = [MarginClass]::new() }
-            $menuBar = $null
             if (-not $form -and $window.Forms.Count -gt 0) {
                 if ($formIndex -and $formIndex -lt $window.Forms.Count) { $window.FormIndex = $formIndex }
                 $form = $window.Forms[$window.FormIndex]
-                $menuBar = $window.MenuBar[$window.FormIndex]
+            }
+            if (-not $menuBar -and $window.Forms.Count -gt 0) {
+                if ($window.MenuBar[$window.FormIndex]) {
+                    $menuBar = $window.MenuBar[$window.FormIndex]
+                } else {
+                    $menuBar = [MenuBar]::new()
+                    if ($formMenuActions) {
+                        [MenuBar]$menuBar.MenuStrip = New-WFMenuStrip `
+                            -formMenuActions $formMenuActions `
+                            -formToolStripActions $formToolStripActions
+                    } else {
+                        [MenuBar]$menuBar.MenuStrip = New-WFMenuStrip 
+                    }
+                    $window.MenuBar[$window.FormIndex] = $menuBar
+                }
+            }
+            if ($DoStatusBar) {
+                # TODO
             }
             if ($state -is [WindowState]) {
                 $formState = $state
@@ -42,6 +65,9 @@ function Build-WFFormControls {
                 $formState = [WindowState]::new()
             }
             if ($form) {
+                # Name
+                if ($Name) { $form.Name = $Name }
+                if ($Title) { $form.Text = $Title }
                 # Styling
                 $form.TopMost = $true
                 $form.AutoSize = $true
@@ -55,10 +81,13 @@ function Build-WFFormControls {
                         $form.StartPosition = 'Manual'
                         $form.Location = New-Object System.Drawing.Point($formState.x, $formState.y)
                     } elseif ($formState -is [WindowState]) {
-                        if ($formState.data.Display.Left -ge 0 -and $formState.data.Display.Top -ge 0) {
+                        if ($formState.Display.Left -ge 0 -and $formState.Display.Top -ge 0) {
                             $form.StartPosition = 'Manual'
-                            $form.Location = New-Object System.Drawing.Point($formState.data.Display.Left, $formState.data.Display.Top)
+                            $form.Location = New-Object System.Drawing.Point($formState.Display.Left, $formState.Display.Top)
                         }
+                    } else {
+                        # $form.StartPosition = 'CenterScreen'
+                        $form.StartPosition = 'WindowsDefaultBounds'
                     }
                 } else {
                     # $form.StartPosition = 'CenterScreen'
@@ -68,6 +97,9 @@ function Build-WFFormControls {
                 $widthMax = $form.PreferredSize.Width # use the default above.
             }
             #endregion
+            # # WFFormButtonFunctions
+            $path = "$($(Get-Item $PSScriptRoot).Parent.FullName)\Private\WFFormButtonFunctions.ps1"
+            . $path
             # WFFormControls
             $path = "$($(Get-Item $PSScriptRoot).Parent.FullName)\lib\WFFormControls.ps1"
             . $path
@@ -77,9 +109,12 @@ function Build-WFFormControls {
             # WFFormEvents
             $path = "$($(Get-Item $PSScriptRoot).Parent.FullName)\lib\WFFormEvents.ps1"
             . $path
+            # # WFFormButtonActions
+            # $path = "$($(Get-Item $PSScriptRoot).Parent.FullName)\lib\WFFormButtonActions.ps1"
+            # . $path
         } catch {
             $Message = "Build-WFFormControls: Error loading and creating form controls."
-            Add-LogText -Message $Message -IsError
+            Add-LogText -Messages $Message -IsError
             return $null
         }
     }
@@ -88,9 +123,7 @@ function Build-WFFormControls {
             "Window" {
                 if ($form -and $window.Forms.Count -gt 0) {
                     $window.Forms[$window.FormIndex] = $form
-                    if ($DoMenuBar) {
-                        $window.$MenuBar[$window.FormIndex] = $menuBar
-                    }
+                    $window.$MenuBar[$window.FormIndex] = $menuBar
                 }
                 return $window
             }
@@ -103,7 +136,7 @@ function Build-WFFormControls {
             }
             Default {
                 $Message = "Target for where to place data is incorrect. Window, Form or Tab."
-                Add-LogText -Message $Message -IsError
+                Add-LogText -Messages $Message -IsError
                 return $null
             }
         }

@@ -38,6 +38,6 @@ function Install-DevEnv {
 
     } else {
         $Message = "This script is only run on the Windows OS."
-        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay
+        Add-LogText -Messages $Message -IsError -SkipScriptLineDisplay
     }
 }

@@ -11,26 +11,23 @@ function Update-WFDataSet {
     process {
         try {
             # sender based
+            $control = $sender
             if ($sender -is [System.Windows.Forms.Control]) {
-                $control = $sender
                 $optionName = $control.Name
                 $optionText = $control.Text
                 if (-not $optionText) { $optionText = $optionName }
-                if ($sender -is [System.Windows.Forms.CheckBox]) {
-                    $isChecked = $control.Checked
-                } elseif ($sender -is [System.Windows.Forms.Button]) {
-                    $isChecked = $true
-                } elseif ($sender -is [System.Windows.Forms.TextBox]) {
-                    $isChecked = $true
-                } else {
-                    $isChecked = $true
-                }
+            }
+            if ($sender -is [System.Windows.Forms.CheckBox]) {
+                $isChecked = $control.Checked
+            } elseif ($sender -is [System.Windows.Forms.Button]) {
+                $isChecked = $true
+            } elseif ($sender -is [System.Windows.Forms.TextBox]) {
+                $isChecked = $true
             } else {
                 $optionName = $e
                 $optionText = $e
                 $isChecked = $true
             }
-
             # Implement your data update logic here
             $optionKeys = $optionName -split "_"
             # Assign to variables
@@ -54,6 +51,7 @@ function Update-WFDataSet {
                         $itemData.checked = $isChecked
                         $moduleData['changed'] = $true
                         $global:moduleDataChanged = $true
+                        if (-not $global:moduleDataArray['Control']) { $global:moduleDataArray['Control'] = @{} }
                         $global:moduleDataArray['Control']['ActionLast'] = $optionText
                         # if ($global:DoDebug -or $global:DoVerbose) {
                         $Message = "Update-WFDataSet Update $optionName '$optionText' DataSet: $dataSet, Item: $dataSetItem, Checked: $isChecked."
@@ -62,19 +60,23 @@ function Update-WFDataSet {
                         $global:moduleDataArray['changed'] = $true
                         return $true
                     } catch {
-                        Add-LogText -IsError -ErrorPSItem $_ "Update-WFDataSet Error valid json DataSet and Item, Field not found: $optionName"
+                        $Message = "Update-WFDataSet Error valid json DataSet and Item, Field not found: $optionName"
+                        Add-LogText -IsError -ErrorPSItem $_ -Messages $Message
                         return $false
                     }
                 } else {
-                    Add-LogText -IsError -ErrorPSItem $_ "Update-WFDataSet Error valid json DataSet, but Item not found: $optionName"
+                    $Message = "Update-WFDataSet Error valid json DataSet, but Item not found: $optionName"
+                    Add-LogText -IsError -Messages $Message
                     return $false
                 }
             } else {
-                Add-LogText -IsError -ErrorPSItem $_ "Update-WFDataSet Error json DataSet Key not found: $optionName"
+                $Message = "Update-WFDataSet Error json DataSet Key not found: $optionName"
+                Add-LogText -IsError -Messages $Message
                 return $false
             }
         } catch {
-            Add-LogText -IsError -ErrorPSItem $_ "Update-WFDataSet failed processing $optionName."
+            $Message = "Update-WFDataSet failed processing $optionName."
+            Add-LogText -IsError -ErrorPSItem $_ -Messages $Message
             return $false
         }
         return $false

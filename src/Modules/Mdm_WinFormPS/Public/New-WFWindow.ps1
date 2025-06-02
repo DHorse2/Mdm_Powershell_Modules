@@ -17,10 +17,15 @@ function New-WFWindow {
         [MenuBar[]]$menuBarArray = $null,
         [int]$formIndex = 0,
         [MarginClass]$margins,
+        [string]$Name,
         [string]$Title,
         [string]$TextInput,
         [array]$Buttons,
-        [switch]$DoMenuBar,
+        [System.Windows.Forms.ToolStripMenuItem[]]$formMenuActions,
+        [object[]]$formToolStripActions,
+        [MenuBar]$menuBar,
+        [switch]$DoMenuBars,
+        [switch]$DoAll,
         [switch]$DoControls,
         [switch]$DoEvents,
         # [switch]$DoTabIndex,
@@ -32,38 +37,57 @@ function New-WFWindow {
     process {
         try {
             if (-not $formsArray) {
+                # NOTE: Passing params requires a lot of boilerplate in PS
                 $functionParams = @{}
-                if ($DoControls) { $functionParams['DoControls'] = $true }
-                if ($DoEvents) { $functionParams['DoEvents'] = $true }
-                # Menu bar handled in this function
-                if ($DoMenuBar) { 
-                    $functionParams['DoMenuBar'] = $true 
-                    $menuBar = New-WFMenuStrip
-                    $menuBar.MenuStrip = (New-Object System.Windows.Forms.MenuStrip)
-                    $menuBar.ToolStrip = (New-Object System.Windows.Forms.ToolStrip)
-                    $functionParams['menuBar'] = $menuBar 
+                if ($formMenuActions) { $functionParams['formMenuActions'] = $formMenuActions }
+                if ($formToolStripActions) { $functionParams['formToolStripActions'] = $formToolStripActions }
+                if (-not $menuBar) {
+                    if ($formMenuActions) {
+                        [MenuBar]$menuBar = New-WFMenuStrip `
+                            -formMenuActions $formMenuActions `
+                            -formToolStripActions $formToolStripActions `
+                            @functionParams
+                    } else {
+                        [MenuBar]$menuBar = New-WFMenuStrip @functionParams
+                    }
                 }
+                if ($DoAll -or $DoControls) { $functionParams['DoControls'] = $true }
+                if ($DoAll -or $DoEvents) { $functionParams['DoEvents'] = $true }
+                # Menu bar handled in this function
+                if ($DoMenuBars) { $functionParams['DoMenuBars'] = $true }
+                if ($menuBar) { $functionParams['menuBar'] = $menuBar }
                 if ($Title) { $functionParams['Title'] = $Title }
+                if ($Name) { $functionParams['Name'] = $Name }
                 if ($margins) { $functionParams['margins'] = $margins }
                 if ($Buttons) { $functionParams['Buttons'] = $Buttons }
                 if ($state) { $functionParams['state'] = $state }
                 [System.Windows.Forms.Form]$form1 = New-WFForm @functionParams
-                # -DoControls:$DoControls `
+                # NOTE: This does not work in PS:
                 # -Title:$Title -margins:$margins `
-                # -OkButton:$OkButton -CancelButton:$CancelButton `
-                # -DoMenuBar:$DoMenuBar -state $state
                 [System.Windows.Forms.Form[]]$formsArray = [System.Windows.Forms.Form[]] @([System.Windows.Forms.Form]$form1)
+                [MenuBar[]]$menuBarArray = [MenuBar[]] @([MenuBar]$menuBar)
             }
-            # if ($DoMenuBar) {
+            # if ($DoMenuBars) {
             if (-not $menuBarArray) {
-                # [MenuBar[]]$menuBarArray = @([MenuBar]::new((New-Object System.Windows.Forms.MenuStrip), (New-Object System.Windows.Forms.ToolStrip)))
-                # [MenuBar[]]$menuBarArray = [MenuBar]::new()
+                # This shouldn't be done regardless but skipping it could be a problem later if turned on.
+                if (-not $menuBar) { 
+                    if ($formMenuActions) {
+                        [MenuBar]$menuBar = New-WFMenuStrip `
+                            -formMenuActions $formMenuActions `
+                            -formToolStripActions $formToolStripActions `
+                            @functionParams
+                    } else {
+                        [MenuBar]$menuBar = New-WFMenuStrip 
+                    }
+                }
                 [MenuBar[]]$menuBarArray = [MenuBar[]] @([MenuBar]$menuBar)
             }
             # }
+            if (-not $Name) { $Name = $global:appName }
             if (-not $window) {
                 # $window = [WFWindow]::new($formsArray)
                 $window = [WFWindow]::new(
+                    $Name,
                     [System.Windows.Forms.Form[]]$formsArray, 
                     [MenuBar[]]$menuBarArray,
                     $null,
@@ -78,16 +102,6 @@ function New-WFWindow {
                 $window.Forms = $formsArray
                 $window.MenuBar = $menuBarArray
             }
-            # if ($DoMenuBar) {
-                # if (-not $menuBar) { [MenuBar]$menuBar = $window.MenuBar[0] }
-                # if (-not $menuBar) { [MenuBar]$menuBar = New-WFMenuStrip }
-                # $window.MenuBar[0] = [MenuBar]$menuBar
-                #      if ($DoControls) {
-                #         $window.Forms[0].MainMenuStrip = [System.Windows.Forms.MenuStrip]$window.MenuBar[0].MenuStrip
-                #         $window.Forms[0].Controls.Add([System.Windows.Forms.ToolStrip]$window.MenuBar[0].ToolStrip)
-                #         $window.Forms[0].Controls.Add([System.Windows.Forms.MenuStrip]$window.MenuBar[0].MenuStrip)
-                #     }
-            # }
             if ($state -and $state -is [WindowState]) {
                 $window.state = $state
             } elseif ($null -eq $window.state) {

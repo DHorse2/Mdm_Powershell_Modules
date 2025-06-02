@@ -8,7 +8,7 @@ function Install-DevEnvOsWin {
         This script sets up a Windows OS for the development environment.
         It installs Chocolatey (if not already installed).
         It will update PowerShell (from vs 5 to 7).
-        TODO: sed, win linux, other tools?
+        TODO: FUTR: sed, win linux, other tools?
     .PARAMETER DoPause
         Switch: Pause between steps.
     .PARAMETER DoVerbose
@@ -28,7 +28,10 @@ function Install-DevEnvOsWin {
         Uses Security.Principal.WindowsPrincipal
 #>
     [CmdletBinding()]
-    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce,
+    [switch]$KeepOpen,
+    [switch]$Silent
+    )
     Initialize-Std -$DoPause -$DoVerbose -$DoDebug
     # Ensure the script is running as administrator
     if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
@@ -45,5 +48,6 @@ function Install-DevEnvOsWin {
 
     # Update PowerShell (from vs 5 to 7)
     winget install --id Microsoft.PowerShell --source winget
-    Wait-AnyKey
+    
+    if ($KeepOpen -and -not $Silent) { Wait-AnyKey -Message "Install-DevEnvOsWin Setup is completed." }
 }

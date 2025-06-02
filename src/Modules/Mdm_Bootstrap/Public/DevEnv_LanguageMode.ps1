@@ -45,7 +45,7 @@ function DevEnv_LanguageMode {
                     "    NoLanguage (not allowed) - (0) NoLanguage This would disable all scripts (like this one).", `
                     " " `
             )
-            Add-LogText -Message $Message
+            Add-LogText -Messages $Message
             exit 
         }
     }

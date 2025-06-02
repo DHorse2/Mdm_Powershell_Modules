@@ -20,6 +20,8 @@ class CommandResult {
     [string[]]$errorOutput
     [string]$CommandLine
     [string[]]$result
+    [System.Management.Automation.ErrorRecord]$ErrorPSItem
+
 
     # Constructor to initialize the properties
     CommandResult() {

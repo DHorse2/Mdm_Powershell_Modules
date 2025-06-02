@@ -3,7 +3,7 @@
 function New-WFForm {
     <#
 	.SYNOPSIS
-		Function to create a Form
+		TODO: Hold Function to create a Form
 	
 	.DESCRIPTION
 		Function to create a Form
@@ -12,10 +12,10 @@ function New-WFForm {
 		Specifies the Form. A new forw is returned if null.
 	
 	.PARAMETER Controls
-		TODO Specifies that you want create all the controls in the form.
+		Specifies that you want create all the controls in the form.
 	
 	.PARAMETER DoTabIndex
-		TODO Specifies that you want to create the tab index.
+		Specifies that you want to create the tab index.
 	
 	.PARAMETER Title
 		Specifies that you want to set the Title of the form
@@ -33,11 +33,15 @@ function New-WFForm {
     (
         [System.Windows.Forms.Form]$form,
         [string]$Title,
+        [string]$Name,
+        [System.Windows.Forms.ToolStripMenuItem[]]$formMenuActions,
+        [object[]]$formToolStripActions,
         [MenuBar]$menuBar,
         [MarginClass]$margins,
         [string]$TextInput,
         [array]$Buttons,
-        [switch]$DoMenuBar,
+        [switch]$DoMenuBars,
+        [switch]$DoAll,
         [switch]$DoControls,
         [switch]$DoEvents,
         # [switch]$DoTabIndex,
@@ -48,7 +52,7 @@ function New-WFForm {
         try {
             Get-Assembly -AssemblyName "System.Windows.Forms"
         } catch {
-            Add-LogText -IsError -ErrorPSItem $_ "Failed to load System.Windows.Forms assembly: $_"
+            Add-LogText -IsError -ErrorPSItem $_ "Failed to load System.Windows.Forms assembly."
             return
         }
     }
@@ -60,11 +64,8 @@ function New-WFForm {
                 $form.AutoSizeMode = [System.Windows.Forms.AutoSizeMode]::GrowAndShrink
                 # $form.Size = New-Object System.Drawing.Size($global:displayWindow.Width, $global:displayWindow.Height)
             }
-            if ($Title) {
-                $form.Text = $Title
-            } else {
-                $form.Text = "Unknown Windows GUI Form"
-            }
+            if ($Title) { $form.Text = $Title }
+            if ($Name) { $form.Name = $Name }
             # Styling
             $form.TopMost = $true
             $form.AutoSize = $true
@@ -81,18 +82,21 @@ function New-WFForm {
                 # $form.StartPosition = 'CenterScreen'
                 $form.StartPosition = 'WindowsDefaultBounds'
             }
-            # $form.Size = New-Object System.Drawing.Size($global:displayWindow.Width, $global:displayWindow.Height)
-
-            # if ($DoMenuBar) {
-            #     ($menuMain, $mainToolStrip) = New-WFMenuStrip -form $form
-            # }
-            if ($DoMenuBar) {
-                if (-not $menuBar) { [MenuBar]$menuBar = New-WFMenuStrip }
+            if ($DoMenuBars) {
+                if (-not $menuBar) { 
+                    if ($formMenuActions) {
+                        [MenuBar]$menuBar = New-WFMenuStrip `
+                            -formMenuActions $formMenuActions `
+                            -formToolStripActions $formToolStripActions
+                    } else {
+                        [MenuBar]$menuBar = New-WFMenuStrip 
+                    }
+                }
                 $form.MainMenuStrip = [System.Windows.Forms.MenuStrip]$menuBar.MenuStrip
-                $form.MainMenuStrip.Dock = [System.Windows.Forms.DockStyle]::Top
-                if ($DoControls) {
+                if ($DoAll -or $DoControls) {
                     $form.Controls.Add([System.Windows.Forms.MenuStrip]$menuBar.MenuStrip)
                     $form.Controls.Add([System.Windows.Forms.ToolStrip]$menuBar.ToolStrip)
+                    # $form.Controls.Add([System.Windows.Forms.ToolStrip]$menuBar.StatusBar)
                 }
             }
 
@@ -102,6 +106,9 @@ function New-WFForm {
             #     $form.Controls.Add($menuMain)
             #     [void]$form.Controls.Add($mainToolStrip)
             # }
+            # # WFFormButtonFunctions
+            $path = "$($(Get-Item $PSScriptRoot).Parent.FullName)\Private\WFFormButtonFunctions.ps1"
+            . $path
             # WFFormControls
             $path = "$($(Get-Item $PSScriptRoot).Parent.FullName)\lib\WFFormControls.ps1"
             . $path
@@ -122,17 +129,17 @@ function New-WFForm {
             function Get-Result ($default) {
                 $result = $form.ShowDialog()
                 if ($result -eq [System.Windows.Forms.DialogResult]::OK) {
-                    return $text.Text
+                    $result = $text.Text
+                } elseif ($result -eq [System.Windows.Forms.DialogResult]::Cancel) {
+                    $result = 'continue'
+                } else {
+                    $result = $default
                 }
-                if ($result -eq [System.Windows.Forms.DialogResult]::Cancel) {
-                    return 'continue'
-                }
-                $result = $default
                 if (-not $result) { $result = 'quit' }
                 return $result
             }
         } catch {
-            Add-LogText -IsError -ErrorPSItem $_ "Failed to create form using System.Windows.Forms assembly: $_"
+            Add-LogText -IsError -ErrorPSItem $_ "New-WFForm Failed to create form controls."
             return
         }
     } #PROCESS

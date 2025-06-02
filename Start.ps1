@@ -5,12 +5,15 @@ try {
 Write-Host "ExecutionPolicy:"
 $path = "$($(get-item $PSScriptRoot).FullName)\src\Modules\Mdm_Std_Library\Public\Check-Security.ps1"
 . "$path"
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
 Get-ExecutionPolicy
 }
 catch {
     Write-Error "Security error: $_"
 }
 # Set-ExecutionPolicy RemoteSigned
+# Language mode
+$ExecutionContext.SessionState.LanguageMode
 # Parameters
 $inArgs = $args
 $path = "$($(get-item $PSScriptRoot).FullName)\src\Modules\Mdm_Std_Library\Public\Get-Parameters.ps1"
@@ -48,5 +51,9 @@ if ($DoDebug -or $DoVerbose) {
 }
 $path = "$($(get-item $PSScriptRoot).FullName)\src\Modules\Mdm_Bootstrap\DevEnv_Module_Reset.ps1"
 . $path @global:combinedParams
+
+# Language mode
+DevEnv_LanguageMode "Full"
+$ExecutionContext.SessionState.LanguageMode
 
 Write-Host "=== Start completed ===" -ForegroundColor Green

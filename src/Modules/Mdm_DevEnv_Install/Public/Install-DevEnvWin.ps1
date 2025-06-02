@@ -27,32 +27,36 @@ function Install-DevEnvWin {
 
 
     [CmdletBinding()]
-    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
+    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce,
+    [switch]$KeepOpen,
+    [switch]$Silent
+    )
     # $IsMacOS
     # $IsLinux
     if ($IsWindows) {
 
-        if (Wait-YorNorQ -Message "Set up the Windows OS?" -eq "Y") { 
-            Install-DevEnvOsWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -ErrorAction Inquire 
+        if ($Silent -or (Wait-YorNorQ -Message "Set up the Windows OS?" -eq "Y")) { 
+            Install-DevEnvOsWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Silent:$Silent -KeepOpen:$KeepOpen -ErrorAction Inquire 
         }
 
-        if (Wait-YorNorQ -Message "Set up the IDE?"-eq "Y") { 
-            Install-DevEnvIdeWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -ErrorAction Inquire 
+        if ($Silent -or (Wait-YorNorQ -Message "Set up the IDE?"-eq "Y")) { 
+            Install-DevEnvIdeWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Silent:$Silent -KeepOpen:$KeepOpen -ErrorAction Inquire 
         }
 
-        if (Wait-YorNorQ -Message "Set up the LLM?"-eq "Y") { 
-            Install-DevEnvLlmWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -ErrorAction Inquire 
+        if ($Silent -or (Wait-YorNorQ -Message "Set up the LLM?"-eq "Y")) { 
+            Install-DevEnvLlmWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Silent:$Silent -KeepOpen:$KeepOpen -ErrorAction Inquire 
         }
 
-        if (Wait-YorNorQ -Message "Set up the Whisper Voice?"-eq "Y") { 
-            Install-DevEnvWhisperWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -ErrorAction Inquire 
+        if ($Silent -or (Wait-YorNorQ -Message "Set up the Whisper Voice?"-eq "Y")) { 
+            Install-DevEnvWhisperWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Silent:$Silent -KeepOpen:$KeepOpen -ErrorAction Inquire 
         }
 
-        if (Wait-YorNorQ -Message "Display current versions?"-eq "Y") { 
-            Get-DevEnvVersions -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug 
+        if ($Silent -or (Wait-YorNorQ -Message "Display current versions?"-eq "Y")) { 
+            Get-DevEnvVersions -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Silent:$Silent -KeepOpen:$KeepOpen
         }
     } else {
         $Message = "This script is only run on the Windows OS."
-        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay
+        Add-LogText -Messages $Message -IsError -SkipScriptLineDisplay
     }
+    if ($KeepOpen -and -not $Silent) { Wait-AnyKey -Message "Install-DevEnvWin Setup is completed." }
 }

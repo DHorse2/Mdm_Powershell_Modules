@@ -5,16 +5,24 @@ function Set-WFButtonLocation {
         $controlItem.Location = New-Object System.Drawing.Point($x, $y)
         $controlItem.BringToFront()
     }
-    # return @{
-    #     x = $x
-    #     y = $y
-    # }
+    return @{
+        x = $x
+        y = $y
+    }
 }
 function Set-WFButtonLocationBottom {
     param($sender, $e, $x, $y)
-    $controlItem = $sender.Controls["ButtonBar"]
-    if (-not $controlItem) { $controlItem = $sender.Controls["OkButton"] }
-    $x = $global:displayMargins.Left + 10
+    if ($sender -is [Form]) {
+        $controlItem = $sender.Controls["ButtonBar"]
+        if (-not $controlItem) { $controlItem = $sender.Controls["OkButton"] }
+    } elseif ($sender -is [Control]) {
+        $controlItem = $sender
+    } elseif ($null -eq $sender) {
+        $controlItem = $e
+    } else {
+        $controlItem = $sender
+    }
+    $x = $global:displayMargins.Left
     $y = $sender.ClientSize.Height - $controlItem.Height - $global:displayMargins.Bottom - $global:displayMargins.Top - 10 # $margins.Bottom
     $result = Set-WFButtonLocationAll -sender $sender -e $e -x $x -y $y
     return $result
@@ -27,48 +35,30 @@ function Set-WFButtonLocationAll {
             if (-not $controlItem) { $controlItem = $sender.Controls["OkButton"] }
             $x = $global:displayMargins.Left + 10
             # $y = $sender.Location.Y
-            $y = $sender.ClientSize.Height - $controlItem.Height - $global:displayMargins.Bottom - $global:displayMargins.Top - 10 # $margins.Bottom
+            $y = $sender.ClientSize.Height - $global:displayButtonSize.Height - $global:displayMargins.Bottom - $global:displayMargins.Top - 10 # $margins.Bottom
         }
-
         $buttonBar = $sender.Controls["ButtonBar"]
         if (-not $buttonBar) {
-            $previous = $sender.Controls["PreviousButton"]
-            if ($previous) { 
-                Set-WFButtonLocation -sender $sender -e $e -controlItem $previous -x $x -y $y
+            for ($buttonIndex = 0; $buttonIndex -lt $global:buttonBarUsed.Count; $buttonIndex++) {
+                $buttonName = $global:buttonBarUsed[$buttonIndex]
+                if ($buttonName -ne "AutoSave") {
+                    $button = $sender.Controls[$buttonName]
+                    if ($button) { 
+                        $result = Set-WFButtonLocation -sender $sender -e $e -controlItem $button -x $x -y $y
+                        $x += $global:displayMargins.Left + $global:displayButtonSize.Width + $global:displayMargins.Right
+
+                    }
+                }
             }
-            $ok = $sender.Controls["OkButton"]
-            if ($ok) { 
-                Set-WFButtonLocation -sender $sender -e $e -controlItem $ok -x $x -y $y 
-                $x += 50
-            }
-            $cancel = $sender.Controls["CancelButton"]
-            if ($cancel) { 
-                $x += 50
-                Set-WFButtonLocation -sender $sender -e $e -controlItem $cancel -x $x -y $y 
-            }
-            $apply = $sender.Controls["ApplyButton"]
-            if ($apply) { 
-                $x += 50
-                Set-WFButtonLocation -sender $sender -e $e -controlItem $apply -x $x -y $y 
-                $x = $result.x; $y = $result.y
-            }
-            $reset = $sender.Controls["ResetButton"]
-            if ($reset) { 
-                $x += 50
-                Set-WFButtonLocation -sender $sender -e $e -controlItem $reset -x $x -y $y 
-                $x = $result.x; $y = $result.y
-            }
-            $next = $sender.Controls["NextButton"]
-            if ($next) { 
-                $x += 50
-                Set-WFButtonLocation -sender $sender -e $e -controlItem $next -x $x -y $y 
-            }
+            # $x = $result.x; $y = $result.y
         } else {
-            Set-WFButtonLocation -sender $sender -e $e -controlItem $buttonBar -x $x -y $y
+            $result = Set-WFButtonLocation -sender $sender -e $e -controlItem $buttonBar -x $x -y $y
+            # $x = $result.x; $y = $result.y
         }
-        return @{
-            x = $x
-            y = $y
-        }
+        return $result
+        # return @{
+        #     x = $x
+        #     y = $y
+        # }
     }
 }

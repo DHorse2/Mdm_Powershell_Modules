@@ -175,10 +175,10 @@ function DevEnv_Install_Modules_Win {
             "    Logfile: $global:logFileNameFull", `
             "Script Root: $PSScriptRoot"
     )
-    Add-LogText -Message $Message $global:logFileNameFull `
+    Add-LogText -Messages $Message $global:logFileNameFull `
         -ForegroundColor Green
 
-    # TODO Codium setup
+    # TODO: INST: Codium setup
     # https://dev.to/opdev1004/how-to-add-open-with-vscodium-for-windows-3g0l
     if (-not $SkipRegistry) {
         try {
@@ -214,7 +214,7 @@ function DevEnv_Install_Modules_Win {
                     # Resolve the path
                     $appExePath = Resolve-Path $appExePath | Select-Object -ExpandProperty Path
                 } else {
-                    # TODO Throw an error
+                    # TODO hold Throw an error
                     Add-LogText "VSCodium not found." $global:logFileNameFull -IsError
                 }
             }
@@ -279,7 +279,7 @@ function DevEnv_Install_Modules_Win {
         
         } catch {
             $Message = "DevEnv_Install_Modules_Win: Registry update failure."
-            Add-LogText -Message $Message -IsError -ErrorPSItem $_
+            Add-LogText -Messages $Message -IsError -ErrorPSItem $_
         }
     }
 
@@ -337,7 +337,7 @@ function DevEnv_Install_Modules_Win {
                     " ", `
                     "Starting processing..."
             )
-            Add-LogText -Message $Message $global:logFileNameFull
+            Add-LogText -Messages $Message $global:logFileNameFull
             # }
             <# $moduleName is the current item #>
             Add-LogText "Remove modules if they exist..." $global:logFileNameFull
@@ -345,8 +345,8 @@ function DevEnv_Install_Modules_Win {
                 -Recurse -Force `
                 -ErrorAction SilentlyContinue
             # Load Module Config Data
-            $jsonFileName = "$global:moduleRootPath\Mdm_DevEnv_Install\Public\DevEnvModules.json"
-            $jsonData = Get-JsonData -jsonObject $jsonFileName
+            $jsonFileName = "$global:moduleRootPath\Mdm_DevEnv_Install\data\DevEnvModules.json"
+            $jsonData = Get-JsonData -jsonItem $jsonFileName
             # Active Module process
             foreach ($moduleName in $global:moduleNames) {
                 $moduleActive = Confirm-ModuleActive -Name $moduleName `
@@ -393,29 +393,29 @@ function DevEnv_Install_Modules_Win {
                             # if ($result.exitCode -ne 1 -or $result.errorOutput) {
                             $Message = "Robocopy error in Command $($result.CommandName), Result: $($result.exitCode) - $(Get-RobocopyExitMessage($result.exitCode))."
                             if ($result.errorOutput) { $Message += "`nDetails:`n $($result.errorOutput)" }
-                            Add-LogText -Message $Message -IsError
+                            Add-LogText -Messages $Message -IsError
                         } elseif ($result.result) {
                             if ($DoVerbose) {
-                                Add-LogText -Message $result.result -ForegroundColor Blue
-                                # if ($result.errorOutput) { Add-LogText -Message $result.errorOutPut -ForegroundColor Red }
+                                Add-LogText -Messages $result.result -ForegroundColor Blue
+                                # if ($result.errorOutput) { Add-LogText -Messages $result.errorOutPut -ForegroundColor Red }
                             }
                         } else {
                             $Message = "Robocopy completed normally for Command $($result.CommandName), Result: $($result.exitCode) - $(Get-RobocopyExitMessage($result.exitCode))."
                             if ($result.result) { $Message += "`nDetails:`n $($result.result)" }
-                            Add-LogText -Message $Message -ForegroundColor Blue
+                            Add-LogText -Messages $Message -ForegroundColor Blue
                         }
                     } catch {
                         $Message = "DevEnv_Install_Modules_Win: Copy files failure in Module $moduleName."
-                        Add-LogText -Message $Message -IsError -ErrorPSItem $_
+                        Add-LogText -Messages $Message -IsError -ErrorPSItem $_
                     }
                 } else {
                     $Message = "Robocopy skipped Inactive Module $moduleName."
-                    Add-LogText -Message $Message -ForegroundColor Blue
+                    Add-LogText -Messages $Message -ForegroundColor Blue
                 }
             }
         } catch {
             $Message = "DevEnv_Install_Modules_Win: Copy files failure."
-            Add-LogText -Message $Message -IsError -ErrorPSItem $_
+            Add-LogText -Messages $Message -IsError -ErrorPSItem $_
         }
     }
     # ================================= Help files
@@ -434,7 +434,7 @@ function DevEnv_Install_Modules_Win {
                     -NameFilter $nameFilter
             } catch {
                 $Message = "Export-Help Failed."
-                Add-LogText -Message $Message -IsError -ErrorPSItem $_
+                Add-LogText -Messages $Message -IsError -ErrorPSItem $_
             }
             # # Generate-Documentation - Write-Mdm_Help (redundant)
             # $importName = "Mdm_Modules"
@@ -465,7 +465,7 @@ function DevEnv_Install_Modules_Win {
                 # Import-Module -Name $importName -Force -ErrorAction Stop
             } catch {
                 $Message = "DevEnv_Install_Modules_Win, Export-Mdm_Help file to import $importName."
-                Add-LogText -Message $Message -IsError -ErrorPSItem $_
+                Add-LogText -Messages $Message -IsError -ErrorPSItem $_
             }
             try {
                 Add-LogText "==================================================================" $global:logFileNameFull `
@@ -476,7 +476,7 @@ function DevEnv_Install_Modules_Win {
                 Export-Mdm_Help -moduleRootPath $moduleRootPath
             } catch {
                 $Message = "DevEnv_Install_Modules_Win, Export-Mdm_Help failed."
-                Add-LogText -Message $Message -IsError -ErrorPSItem $_
+                Add-LogText -Messages $Message -IsError -ErrorPSItem $_
             }
             # Get-AllCommands
             try {
@@ -487,7 +487,7 @@ function DevEnv_Install_Modules_Win {
                 Get-AllCommands
             } catch {
                 $Message = "DevEnv_Install_Modules_Win, Get-AllCommands Failed."
-                Add-LogText -Message $Message -IsError -ErrorPSItem $_
+                Add-LogText -Messages $Message -IsError -ErrorPSItem $_
             }
             # Install Help files
             $helpSource = "$source\Mdm_Bootstrap\help"
@@ -500,7 +500,7 @@ function DevEnv_Install_Modules_Win {
             $Message = @( `
                     "Install Help Files:"
             )
-            Add-LogText -Message $Message $global:logFileNameFull
+            Add-LogText -Messages $Message $global:logFileNameFull
             # Copy files
             try {
                 # New Shell
@@ -523,12 +523,12 @@ function DevEnv_Install_Modules_Win {
                 }
             } catch {
                 $Message = "Failed to install help files."
-                Add-LogText -Message $Message -IsError -ErrorPSItem $_
+                Add-LogText -Messages $Message -IsError -ErrorPSItem $_
             }
             # Update system folders
         } catch {
             $Message = "DevEnv_Install_Modules_Win: Update failure."
-            Add-LogText -Message $Message -IsError -ErrorPSItem $_
+            Add-LogText -Messages $Message -IsError -ErrorPSItem $_
         }
     }
 
@@ -559,7 +559,7 @@ function DevEnv_Install_Modules_Win {
     # } catch {
     #     $Message = "No need to remove module: $moduleName."
     #     Write-Host $Message
-    #     # Add-LogText -Message $Message -IsWarning -SkipScriptLineDisplay -ErrorPSItem $_
+    #     # Add-LogText -Messages $Message -IsWarning -SkipScriptLineDisplay -ErrorPSItem $_
     # }
     # # Import Modules
     # try {
@@ -574,7 +574,7 @@ function DevEnv_Install_Modules_Win {
     #     # -Verbose `
     # } catch {
     #     $Message = "Failed to import module: $moduleName."
-    #     Add-LogText -Message $Message -IsError -ErrorPSItem $_
+    #     Add-LogText -Messages $Message -IsError -ErrorPSItem $_
     # }
     # Export-ModuleMemberScan
     try {
@@ -586,7 +586,7 @@ function DevEnv_Install_Modules_Win {
         $null = Export-ModuleMemberScan -TraceDetails "$moduleRootPath\$moduleName"
     } catch {
         $Message = "Export-ModuleMemberScan failed."
-        Add-LogText -Message $Message -IsError -ErrorPSItem $_
+        Add-LogText -Messages $Message -IsError -ErrorPSItem $_
     }
     # ================================= Wrapup
     $global:timeCompleted = "{0:G}" -f (get-date)
@@ -600,7 +600,7 @@ function DevEnv_Install_Modules_Win {
             "==================================================================", `
             "" `
     )
-    Add-LogText -Message $Message $global:logFileNameFull `
+    Add-LogText -Messages $Message $global:logFileNameFull `
         -ForegroundColor Green
 
     Add-LogText "==================================================================" $global:logFileNameFull `

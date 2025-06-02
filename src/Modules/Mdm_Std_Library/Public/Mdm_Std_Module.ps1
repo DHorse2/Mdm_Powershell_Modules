@@ -64,7 +64,7 @@ Function Export-ModuleMemberScan {
         $Private = @( Get-ChildItem -Path "$modulePrivate\*.ps1" -ErrorAction SilentlyContinue )
         if ($DoVerbose) {
             $Message = "ModuleMemberScan Module: $($module.Name)"
-            Add-LogText -Message $Message
+            Add-LogText -Messages $Message
             $moduleNameDisplayed = $true
         }
         # $TraceDetails = $false
@@ -82,14 +82,14 @@ Function Export-ModuleMemberScan {
                     if (-not $moduleNameDisplayed) { 
                         $moduleNameDisplayed = $true
                         $Message = "Scan Module $($module.Name): "
-                        Add-LogText -Message $Message -NoNewLine
+                        Add-LogText -Messages $Message -NoNewLine
                     }
                     if ($Verbose -or $DoVerbose) {
                         $Message = "   Component: $($functionName) with functions: $functionsString"
-                        Add-LogText -Message $Message
+                        Add-LogText -Messages $Message
                     } else {
                         $Message = "$functionName "
-                        Add-LogText -Message $Message -NoNewline
+                        Add-LogText -Messages $Message -NoNewline
                     }
                 }
                 if ($functions) {
@@ -97,13 +97,13 @@ Function Export-ModuleMemberScan {
                     . $import.FullName
                     if ($TraceDetails -and ($Verbose -or $DoVerbose)) {
                         $Message = "        Function imported: $($import.FullName)" 
-                        Add-LogText -Message $Message -ForegroundColor Green 
+                        Add-LogText -Messages $Message -ForegroundColor Green 
                     }
                 } else {
                     # If no functions are found, create a wrapper function
                     if ($TraceDetails -and ($Verbose -or $DoVerbose)) {
                         $Message = "        Executable Script: $($import.FullName)" 
-                        Add-LogText -Message $Message -ForegroundColor Green 
+                        Add-LogText -Messages $Message -ForegroundColor Green 
                     }
                     $scriptNameFull = $import.FullName
                     $scriptName = "$($functionName)_Func"
@@ -117,7 +117,7 @@ function $scriptName {
                     Invoke-Expression $wrapperFunction
                     if ($TraceDetails -and ($Verbose -or $DoVerbose)) {
                         $Message = " Created wrapper function: $scriptName." # Script: $scriptNameFull"
-                        Add-LogText -Message $Message -ForegroundColor Green 
+                        Add-LogText -Messages $Message -ForegroundColor Green 
                     }
                 }
                 if ($import.FullName.IndexOf("Private") -lt 0) {
@@ -126,25 +126,25 @@ function $scriptName {
                     $module.PublicFunctions += $functionsString
                     if ($TraceDetails -and ($Verbose -or $DoVerbose)) {
                         $Message = "         Public Component: $($import.FullName) with functions: $($functions.Name -join ', ')"
-                        Add-LogText -Message $Message -ForegroundColor Green 
+                        Add-LogText -Messages $Message -ForegroundColor Green 
                     }
                 } else { 
                     # Private
                     $module.PrivateFunctions += $functionsString
                     if ($TraceDetails -and ($Verbose -or $DoVerbose)) {
                         $Message = "         Private Component: $($import.FullName) skipped." 
-                        Add-LogText -Message $Message -ForegroundColor Green 
+                        Add-LogText -Messages $Message -ForegroundColor Green 
                     }
                 }
             } catch {
                 $Message = "Failed to import component $($import.FullName):"
                 Add-LogText -IsWarning -ErrorPSItem $_ -Message $Message
-                # Add-LogText -Message $Message
+                # Add-LogText -Messages $Message
             }
         }
         if ($TraceDetails -and -not($Verbose -or $DoVerbose)) {
             $Message = " " 
-            Add-LogText -Message $Message
+            Add-LogText -Messages $Message
         }
     }
     end { return $module }

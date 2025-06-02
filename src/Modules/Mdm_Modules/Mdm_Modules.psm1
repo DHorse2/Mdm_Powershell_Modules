@@ -11,8 +11,8 @@ Using module "..\Mdm_WinFormPS\Mdm_WinFormPS.psm1"
 # . $PSScriptRoot\..\Mdm_DevEnv_Install\Mdm_DevEnv_Install.psm1
 #
 # Get-ModuleRootPath may not be available so: 
-# TODO Crashes in Powershell: Get-ModuleRootPath crash powershell.
-# TODO Crashes in Powershell: Get-Module crash powershell.
+# NOTE: Crashes in Powershell: Get-ModuleRootPath crash powershell.
+# NOTE: Crashes in Powershell: Get-Module crash powershell.
 # $importName = "Mdm_Modules"
 # if (-not $global:moduleRootPath) {
 #     $folderPath = (get-item $PSScriptRoot).FullName

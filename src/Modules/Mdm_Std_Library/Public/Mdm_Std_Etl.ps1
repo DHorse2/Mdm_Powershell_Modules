@@ -289,7 +289,7 @@ function Get-LineFromFile {
     # Check if the file exists
     if (-Not (Test-Path $FileName)) {
         $Message = "The script '$FileName' does not exist."
-        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_
+        Add-LogText -Messages $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_
         return
     }
     # Read the content of the script file
@@ -298,7 +298,7 @@ function Get-LineFromFile {
     # Check if the line number is valid
     if ($FileLineNumber -lt 1 -or $FileLineNumber -gt $scriptContent.Count) {
         $Message = "Line number $FileLineNumber is out of range for the script '$FileName'."
-        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_
+        Add-LogText -Messages $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_
         return
     }
 

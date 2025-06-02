@@ -72,7 +72,7 @@ try {
     $path = "$($(Get-Item $PSScriptRoot).FullName)\Get-ModuleValidated.ps1"
     . $path
     # $moduleActive = Confirm-ModuleActive -Name $importName `
-    #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\Public\DevEnvModules.json" `
+    #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\data\DevEnvModules.json" `
     #     @global:combinedParams
     # if ($moduleActive) { 
 
@@ -96,7 +96,7 @@ try {
     # $null = Get-Import -Name $importName ` !!! This crashed
     # -CheckActive -CheckImported -ErrorAction Continue  @global:importParams
     # $moduleActive = Confirm-ModuleActive -Name $importName `
-    #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\Public\DevEnvModules.json" `
+    #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\data\DevEnvModules.json" `
     #     @global:combinedParams
     # if ($moduleActive) { 
     #     if ($DoVerbose) { 
@@ -115,7 +115,7 @@ try {
     # $null = Get-Import -Name $importName `
     #     -CheckActive -CheckImported -ErrorAction Continue  @global:importParams
     # $moduleActive = Confirm-ModuleActive -Name $importName `
-    #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\Public\DevEnvModules.json" `
+    #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\data\DevEnvModules.json" `
     #     @global:combinedParams
     # if ($moduleActive) { 
     #     if ($DoVerbose) { 
@@ -134,7 +134,7 @@ try {
     # $null = Get-Import -Name $importName `
     #     -CheckActive -CheckImported -ErrorAction Continue  @global:importParams
     # $moduleActive = Confirm-ModuleActive -Name $importName `
-    #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\Public\DevEnvModules.json" `
+    #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\data\DevEnvModules.json" `
     #     @global:combinedParams
     # if ($moduleActive) { 
     #     if ($DoVerbose) { 
@@ -153,7 +153,7 @@ try {
     # $null = Get-Import -Name $importName `
     #     -CheckActive -CheckImported -ErrorAction Continue  @global:importParams
     # $moduleActive = Confirm-ModuleActive -Name $importName `
-    #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\Public\DevEnvModules.json" `
+    #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\data\DevEnvModules.json" `
     #     @global:combinedParams
     # if ($moduleActive) { 
     #     if ($DoVerbose) { 
@@ -174,7 +174,7 @@ try {
     # $null = Get-Import -Name $importName `
     #     -CheckActive -CheckImported -ErrorAction Continue  @global:importParams
     # $moduleActive = Confirm-ModuleActive -Name $importName `
-    #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\Public\DevEnvModules.json" `
+    #     -jsonFileName "$global:moduleRootPath\Mdm_DevEnv_Install\data\DevEnvModules.json" `
     #     @global:combinedParams
     # if ($moduleActive) { 
     #     if ($DoVerbose) { 

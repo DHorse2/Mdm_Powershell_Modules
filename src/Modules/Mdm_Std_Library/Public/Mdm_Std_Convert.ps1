@@ -191,8 +191,10 @@ function ConvertTo-Text {
             default { 
                 Write-Debug "default: $textInType"
                 # Unknow object
-                # TODO throw warning
-                $textOut += $textIn            
+                $textOut += $textIn
+                $Message = "Unknow object $textIn"
+                Add-LogText $Message -IsWarning
+
             }
         }
     } else { 
@@ -265,9 +267,9 @@ function ConvertTo-EscapedText {
                 }              
                 default { 
                     Write-Debug "Unknow object"
-                    # TODO throw warning
-                    $textOut += "Error. Cant handle type $textInType for $textIn"
-                    Add-LogText $textOut
+                    $Message = "Error. Cant handle type $textInType for $textIn"
+                    $textOut += $Message
+                    Add-LogText $Message -IsWarning
                 }
             }       
         }

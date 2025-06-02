@@ -203,12 +203,12 @@ function Invoke-Invoke {
                 if (-not $Command.ContainsKey('CommandLine') -or -not $Command.ContainsKey('CommandName')) {
                     Write-Verbose " Bad Keys"
                     $Message = "The hashtable does not contain the required keys."
-                    Add-LogText -Message $Message -IsError
+                    Add-LogText -Messages $Message -IsError
                     return
                 }
             } else {
                 $Message = "The variable `Command` is not a hashtable."
-                Add-LogText -Message $Message -IsError
+                Add-LogText -Messages $Message -IsError
                 return
             }
             $CommandLine = $Command['CommandLine']
@@ -223,15 +223,15 @@ function Invoke-Invoke {
         }
         if (-not $Command['CommandLine'] -or -not $Command['CommandName']) {
             $Message = "The hashtable must contain both 'CommandLine' and 'CommandName' keys. `nCommand: $Command"
-            Add-LogText -Message $Message -IsError
+            Add-LogText -Messages $Message -IsError
             return
         }            
         if ($DoVerbose) {
-            Add-LogText -Message "Received Command: $($Command | Out-String)" -ForegroundColor Red
+            Add-LogText -Messages "Received Command: $($Command | Out-String)" -ForegroundColor Red
         }
         if (-not $CommandLine -or -not $CommandName) {
             $Message = "Both CommandLine and CommandName must be provided. `nCommandName($CommandName)- CommandLine($CommandLine)"
-            Add-LogText -Message $Message -IsError
+            Add-LogText -Messages $Message -IsError
             return
         }
         [void]$CommandLines.Add( @{
@@ -259,7 +259,7 @@ function Invoke-Invoke {
                 }
                 # $installProcess = 
                 if ($DoVerbose) { 
-                    Add-LogText -Message "NOTE: Opening new window..." `
+                    Add-LogText -Messages "NOTE: Opening new window..." `
                         `
                         -ForegroundColor Red
                 }
@@ -294,12 +294,12 @@ function Invoke-Invoke {
                 if ($exitCode -ne 1 -or $errorOutput) {
                     $Message = "$CommandName error $exitCode - $(Get-RobocopyExitMessage($exitCode))."
                     if ($errorOutput) { $Message += "`nDetails: $errorOutput" }
-                    Add-LogText -Message $Message -IsError
+                    Add-LogText -Messages $Message -IsError
                 } elseif ($standardOutput) {
                     if ($DoVerbose) { 
-                        Add-LogText -Message "Output from $($CommandName): `n$standardOutput" -IsError
+                        Add-LogText -Messages "Output from $($CommandName): `n$standardOutput" -IsError
                     } else {
-                        Add-LogText -Message "Ok"
+                        Add-LogText -Messages "Ok"
                     }
                 }
             }

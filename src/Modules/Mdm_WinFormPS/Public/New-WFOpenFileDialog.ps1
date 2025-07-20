@@ -38,8 +38,8 @@
 	param
 	(
 		[Parameter(Mandatory = $true)]
-		[Alias('Title')]
-		[string]$Title,
+		# [Alias('Title')]
+		[string]$title,
 		[Parameter(Mandatory = $true)]
 		[string]$Path,
 		[string]$Filter = "All files (*.*)|*.*",

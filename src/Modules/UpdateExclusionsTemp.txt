@@ -1,8 +1,5 @@
-G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Build.ps1
-G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\commands.txt
-G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\GoToBootstrap.ps1
-G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\GoToRoot.ps1
-G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\Update.ps1
-G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\UpdateExclusions.txt
-G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\UpdateExclusionsTemp.txt
+G:\Script\Powershell\Mdm_Powershell_Modules\Build.ps1
+G:\Script\Powershell\Mdm_Powershell_Modules\commands.txt
+G:\Script\Powershell\Mdm_Powershell_Modules\GoToBootstrap.ps1
+G:\Script\Powershell\Mdm_Powershell_Modules\Update_Mdm.ps1
 G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\readmd.md

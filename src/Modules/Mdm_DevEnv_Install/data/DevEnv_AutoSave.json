@@ -1,6 +1,269 @@
 {
+  "Components": {
+    "description": "Components",
+    "items": [
+      {
+        "label": "Pip",
+        "required": true,
+        "component": "Repository",
+        "checked": false,
+        "Description": "xxx"
+      },
+      {
+        "label": "Chocolatey",
+        "required": true,
+        "component": "Repository",
+        "checked": false,
+        "Description": "xxx"
+      },
+      {
+        "label": "winget",
+        "required": true,
+        "component": "Repository",
+        "checked": false,
+        "Description": "xxx"
+      },
+      {
+        "label": "GetVersions",
+        "required": true,
+        "component": "Repository",
+        "checked": true,
+        "Description": "List the version of components"
+      },
+      {
+        "label": "OsWin",
+        "required": false,
+        "component": "OsWin",
+        "checked": true,
+        "Description": "xxx"
+      },
+      {
+        "label": "Ide",
+        "required": false,
+        "component": "Ide",
+        "checked": true,
+        "Description": "Windows development environment for neural network projects."
+      },
+      {
+        "label": "Llm",
+        "required": false,
+        "component": "Llm",
+        "checked": true,
+        "Description": "Large Language Model (LLM)"
+      },
+      {
+        "label": "Whisper",
+        "required": false,
+        "component": "Whisper",
+        "checked": true,
+        "Description": "Whisper is designed to run voice recognition locally."
+      },
+      {
+        "label": "VsCodium",
+        "required": false,
+        "component": "Ide",
+        "checked": true,
+        "Description": "VS Codium IDE"
+      },
+      {
+        "label": "VsCode",
+        "required": false,
+        "component": "Ide",
+        "checked": true,
+        "Description": "Visual Studio Code IDE"
+      },
+      {
+        "label": "NodeJs",
+        "required": false,
+        "component": "Ide",
+        "checked": true,
+        "Description": "NodeJS"
+      },
+      {
+        "label": "Python",
+        "required": false,
+        "component": "Ide",
+        "checked": false,
+        "Description": "Python language"
+      },
+      {
+        "label": "MSTools",
+        "required": false,
+        "component": "Ide",
+        "checked": false,
+        "Description": "Micrsoft toolchain"
+      },
+      {
+        "label": "Rust`",
+        "required": false,
+        "component": "Ide",
+        "checked": false,
+        "Description": "Rust language"
+      },
+      {
+        "label": "PowerShell",
+        "required": false,
+        "component": "OsWin",
+        "checked": false,
+        "Description": "Windows Powershell Scripting Environment"
+      },
+      {
+        "label": "tensorflow",
+        "required": false,
+        "component": "Llm",
+        "checked": false,
+        "Description": "Python neural network libraries (TensorFlow, Keras, PyTorch)"
+      },
+      {
+        "label": "keras",
+        "required": false,
+        "component": "Llm",
+        "checked": false,
+        "Description": "Python neural network libraries (TensorFlow, Keras, PyTorch)"
+      },
+      {
+        "label": "torch",
+        "required": false,
+        "component": "Llm",
+        "checked": false,
+        "Description": "Python neural network libraries (TensorFlow, Keras, PyTorch)"
+      },
+      {
+        "label": "torchvision",
+        "required": false,
+        "component": "Llm",
+        "checked": false,
+        "Description": "Python neural network libraries (TensorFlow, Keras, PyTorch)"
+      },
+      {
+        "label": "whisper",
+        "required": false,
+        "component": "whisper",
+        "checked": false,
+        "Description": "xxx"
+      },
+      {
+        "label": "virtualenv",
+        "required": false,
+        "component": "Whisper",
+        "checked": false,
+        "Description": "xxx"
+      }
+    ],
+    "type": "DataSet"
+  },
+  "Categories": {
+    "description": "Categories",
+    "items": [
+      {
+        "label": "Core",
+        "Description": "Core functionalities.",
+        "checked": true
+      },
+      {
+        "label": "StandardFunctions",
+        "Description": "Standard functions for common tasks. (Std extends Common)",
+        "checked": true
+      },
+      {
+        "label": "Common",
+        "Description": "General resource management tasks, focusing on actions like creating, modifying, and retrieving resources.",
+        "checked": true
+      },
+      {
+        "label": "Automation",
+        "Description": "Verbs that facilitate the automation of tasks and processes.",
+        "checked": true
+      },
+      {
+        "label": "Cleanup",
+        "Description": "Verbs that deal with the removal of unnecessary or temporary resources.",
+        "checked": true
+      },
+      {
+        "label": "Communications",
+        "Description": "Data transmission and communication, facilitating the exchange of information between sources and destinations.",
+        "checked": true
+      },
+      {
+        "label": "GuiConfig",
+        "Description": "Verbs related to setting up and managing configurations for resources.",
+        "checked": true
+      },
+      {
+        "label": "Data",
+        "Description": "Data manipulation and management, including actions for storing, transforming, and organizing data.",
+        "checked": true
+      },
+      {
+        "label": "Devices",
+        "Description": "Managing and inspecting devices.",
+        "checked": true
+      },
+      {
+        "label": "Diagnostic",
+        "Description": "Troubleshooting and diagnostics, aimed at examining resources to identify and resolve issues.",
+        "checked": true
+      },
+      {
+        "label": "Forms",
+        "Description": "Windows Systems Forms and related functionalities.",
+        "checked": true
+      },
+      {
+        "label": "FileSystem",
+        "Description": "File system (FS), storage, and I/O operations.",
+        "checked": true
+      },
+      {
+        "label": "Lifecycle",
+        "Description": "Management of resources throughout their lifecycle, covering actions related to deployment, approval, and state changes.",
+        "checked": true
+      },
+      {
+        "label": "Monitoring",
+        "Description": "Verbs focused on observing and tracking the performance or status of resources.",
+        "checked": true
+      },
+      {
+        "label": "Network",
+        "Description": "Anything network-related.",
+        "checked": true
+      },
+      {
+        "label": "Remote",
+        "Description": "Anything related to remote access and invocation.",
+        "checked": true
+      },
+      {
+        "label": "Reporting",
+        "Description": "Verbs related to generating reports or summaries of resource states and activities.",
+        "checked": true
+      },
+      {
+        "label": "Security",
+        "Description": "Access control and protection of resources, including actions for granting, blocking, and safeguarding access.",
+        "checked": true
+      },
+      {
+        "label": "Shell",
+        "Description": "Shell, process, invocation, command (cmd), and related verbs.",
+        "checked": true
+      },
+      {
+        "label": "Validation",
+        "Description": "Verbs that ensure the correctness or compliance of resources.",
+        "checked": true
+      },
+      {
+        "label": "Other",
+        "Description": "Other and special types.",
+        "checked": true
+      }
+    ],
+    "type": "DataSet"
+  },
   "Modules": {
-    "type": "DataSet",
     "description": "Modules",
     "items": [
       {
@@ -67,11 +330,14 @@
         "memberScan": false,
         "Description": "Newtonsoft.Json_Newtonsoft"
       }
-    ]
+    ],
+    "type": "DataSet"
   },
   "source": "G:\\Script\\Powershell\\Mdm_Powershell_Modules\\src\\Modules\\Mdm_DevEnv_Install\\data\\DevEnv_AutoSave.json",
+  "changed": false,
   "GuiConfig": {
     "source": "G:\\Script\\Powershell\\Mdm_Powershell_Modules\\src\\Modules\\Mdm_DevEnv_Install\\data\\DevEnvGuiConfig.json",
+    "changed": false,
     "Modules": {
       "type": "DataSet",
       "items": [
@@ -142,6 +408,118 @@
       ],
       "description": "Modules"
     },
+    "Categories": {
+      "type": "DataSet",
+      "items": [
+        {
+          "label": "Core",
+          "Description": "Core functionalities.",
+          "checked": true
+        },
+        {
+          "label": "StandardFunctions",
+          "Description": "Standard functions for common tasks. (Std extends Common)",
+          "checked": true
+        },
+        {
+          "label": "Common",
+          "Description": "General resource management tasks, focusing on actions like creating, modifying, and retrieving resources.",
+          "checked": true
+        },
+        {
+          "label": "Automation",
+          "Description": "Verbs that facilitate the automation of tasks and processes.",
+          "checked": true
+        },
+        {
+          "label": "Cleanup",
+          "Description": "Verbs that deal with the removal of unnecessary or temporary resources.",
+          "checked": true
+        },
+        {
+          "label": "Communications",
+          "Description": "Data transmission and communication, facilitating the exchange of information between sources and destinations.",
+          "checked": true
+        },
+        {
+          "label": "GuiConfig",
+          "Description": "Verbs related to setting up and managing configurations for resources.",
+          "checked": true
+        },
+        {
+          "label": "Data",
+          "Description": "Data manipulation and management, including actions for storing, transforming, and organizing data.",
+          "checked": true
+        },
+        {
+          "label": "Devices",
+          "Description": "Managing and inspecting devices.",
+          "checked": true
+        },
+        {
+          "label": "Diagnostic",
+          "Description": "Troubleshooting and diagnostics, aimed at examining resources to identify and resolve issues.",
+          "checked": true
+        },
+        {
+          "label": "Forms",
+          "Description": "Windows Systems Forms and related functionalities.",
+          "checked": true
+        },
+        {
+          "label": "FileSystem",
+          "Description": "File system (FS), storage, and I/O operations.",
+          "checked": true
+        },
+        {
+          "label": "Lifecycle",
+          "Description": "Management of resources throughout their lifecycle, covering actions related to deployment, approval, and state changes.",
+          "checked": true
+        },
+        {
+          "label": "Monitoring",
+          "Description": "Verbs focused on observing and tracking the performance or status of resources.",
+          "checked": true
+        },
+        {
+          "label": "Network",
+          "Description": "Anything network-related.",
+          "checked": true
+        },
+        {
+          "label": "Remote",
+          "Description": "Anything related to remote access and invocation.",
+          "checked": true
+        },
+        {
+          "label": "Reporting",
+          "Description": "Verbs related to generating reports or summaries of resource states and activities.",
+          "checked": true
+        },
+        {
+          "label": "Security",
+          "Description": "Access control and protection of resources, including actions for granting, blocking, and safeguarding access.",
+          "checked": true
+        },
+        {
+          "label": "Shell",
+          "Description": "Shell, process, invocation, command (cmd), and related verbs.",
+          "checked": true
+        },
+        {
+          "label": "Validation",
+          "Description": "Verbs that ensure the correctness or compliance of resources.",
+          "checked": true
+        },
+        {
+          "label": "Other",
+          "Description": "Other and special types.",
+          "checked": true
+        }
+      ],
+      "description": "Categories"
+    },
+    "type": "DataSet",
     "GuiConfig": {
       "FunctionName": "BillyBob",
       "Module": "Modularus",
@@ -310,384 +688,6 @@
         }
       ],
       "description": "Components"
-    },
-    "changed": false,
-    "Categories": {
-      "type": "DataSet",
-      "items": [
-        {
-          "label": "Core",
-          "Description": "Core functionalities.",
-          "checked": true
-        },
-        {
-          "label": "StandardFunctions",
-          "Description": "Standard functions for common tasks. (Std extends Common)",
-          "checked": true
-        },
-        {
-          "label": "Common",
-          "Description": "General resource management tasks, focusing on actions like creating, modifying, and retrieving resources.",
-          "checked": true
-        },
-        {
-          "label": "Automation",
-          "Description": "Verbs that facilitate the automation of tasks and processes.",
-          "checked": true
-        },
-        {
-          "label": "Cleanup",
-          "Description": "Verbs that deal with the removal of unnecessary or temporary resources.",
-          "checked": true
-        },
-        {
-          "label": "Communications",
-          "Description": "Data transmission and communication, facilitating the exchange of information between sources and destinations.",
-          "checked": true
-        },
-        {
-          "label": "GuiConfig",
-          "Description": "Verbs related to setting up and managing configurations for resources.",
-          "checked": true
-        },
-        {
-          "label": "Data",
-          "Description": "Data manipulation and management, including actions for storing, transforming, and organizing data.",
-          "checked": true
-        },
-        {
-          "label": "Devices",
-          "Description": "Managing and inspecting devices.",
-          "checked": true
-        },
-        {
-          "label": "Diagnostic",
-          "Description": "Troubleshooting and diagnostics, aimed at examining resources to identify and resolve issues.",
-          "checked": true
-        },
-        {
-          "label": "Forms",
-          "Description": "Windows Systems Forms and related functionalities.",
-          "checked": true
-        },
-        {
-          "label": "FileSystem",
-          "Description": "File system (FS), storage, and I/O operations.",
-          "checked": true
-        },
-        {
-          "label": "Lifecycle",
-          "Description": "Management of resources throughout their lifecycle, covering actions related to deployment, approval, and state changes.",
-          "checked": true
-        },
-        {
-          "label": "Monitoring",
-          "Description": "Verbs focused on observing and tracking the performance or status of resources.",
-          "checked": true
-        },
-        {
-          "label": "Network",
-          "Description": "Anything network-related.",
-          "checked": true
-        },
-        {
-          "label": "Remote",
-          "Description": "Anything related to remote access and invocation.",
-          "checked": true
-        },
-        {
-          "label": "Reporting",
-          "Description": "Verbs related to generating reports or summaries of resource states and activities.",
-          "checked": true
-        },
-        {
-          "label": "Security",
-          "Description": "Access control and protection of resources, including actions for granting, blocking, and safeguarding access.",
-          "checked": true
-        },
-        {
-          "label": "Shell",
-          "Description": "Shell, process, invocation, command (cmd), and related verbs.",
-          "checked": true
-        },
-        {
-          "label": "Validation",
-          "Description": "Verbs that ensure the correctness or compliance of resources.",
-          "checked": true
-        },
-        {
-          "label": "Other",
-          "Description": "Other and special types.",
-          "checked": true
-        }
-      ],
-      "description": "Categories"
-    },
-    "type": "DataSet"
-  },
-  "changed": false,
-  "Components": {
-    "type": "DataSet",
-    "description": "Components",
-    "items": [
-      {
-        "label": "Pip",
-        "required": true,
-        "component": "Repository",
-        "checked": false,
-        "Description": "xxx"
-      },
-      {
-        "label": "Chocolatey",
-        "required": true,
-        "component": "Repository",
-        "checked": false,
-        "Description": "xxx"
-      },
-      {
-        "label": "winget",
-        "required": true,
-        "component": "Repository",
-        "checked": false,
-        "Description": "xxx"
-      },
-      {
-        "label": "GetVersions",
-        "required": true,
-        "component": "Repository",
-        "checked": true,
-        "Description": "List the version of components"
-      },
-      {
-        "label": "OsWin",
-        "required": false,
-        "component": "OsWin",
-        "checked": true,
-        "Description": "xxx"
-      },
-      {
-        "label": "Ide",
-        "required": false,
-        "component": "Ide",
-        "checked": true,
-        "Description": "Windows development environment for neural network projects."
-      },
-      {
-        "label": "Llm",
-        "required": false,
-        "component": "Llm",
-        "checked": true,
-        "Description": "Large Language Model (LLM)"
-      },
-      {
-        "label": "Whisper",
-        "required": false,
-        "component": "Whisper",
-        "checked": true,
-        "Description": "Whisper is designed to run voice recognition locally."
-      },
-      {
-        "label": "VsCodium",
-        "required": false,
-        "component": "Ide",
-        "checked": true,
-        "Description": "VS Codium IDE"
-      },
-      {
-        "label": "VsCode",
-        "required": false,
-        "component": "Ide",
-        "checked": true,
-        "Description": "Visual Studio Code IDE"
-      },
-      {
-        "label": "NodeJs",
-        "required": false,
-        "component": "Ide",
-        "checked": true,
-        "Description": "NodeJS"
-      },
-      {
-        "label": "Python",
-        "required": false,
-        "component": "Ide",
-        "checked": false,
-        "Description": "Python language"
-      },
-      {
-        "label": "MSTools",
-        "required": false,
-        "component": "Ide",
-        "checked": false,
-        "Description": "Micrsoft toolchain"
-      },
-      {
-        "label": "Rust`",
-        "required": false,
-        "component": "Ide",
-        "checked": false,
-        "Description": "Rust language"
-      },
-      {
-        "label": "PowerShell",
-        "required": false,
-        "component": "OsWin",
-        "checked": false,
-        "Description": "Windows Powershell Scripting Environment"
-      },
-      {
-        "label": "tensorflow",
-        "required": false,
-        "component": "Llm",
-        "checked": false,
-        "Description": "Python neural network libraries (TensorFlow, Keras, PyTorch)"
-      },
-      {
-        "label": "keras",
-        "required": false,
-        "component": "Llm",
-        "checked": false,
-        "Description": "Python neural network libraries (TensorFlow, Keras, PyTorch)"
-      },
-      {
-        "label": "torch",
-        "required": false,
-        "component": "Llm",
-        "checked": false,
-        "Description": "Python neural network libraries (TensorFlow, Keras, PyTorch)"
-      },
-      {
-        "label": "torchvision",
-        "required": false,
-        "component": "Llm",
-        "checked": false,
-        "Description": "Python neural network libraries (TensorFlow, Keras, PyTorch)"
-      },
-      {
-        "label": "whisper",
-        "required": false,
-        "component": "whisper",
-        "checked": false,
-        "Description": "xxx"
-      },
-      {
-        "label": "virtualenv",
-        "required": false,
-        "component": "Whisper",
-        "checked": false,
-        "Description": "xxx"
-      }
-    ]
-  },
-  "Categories": {
-    "type": "DataSet",
-    "description": "Categories",
-    "items": [
-      {
-        "label": "Core",
-        "Description": "Core functionalities.",
-        "checked": true
-      },
-      {
-        "label": "StandardFunctions",
-        "Description": "Standard functions for common tasks. (Std extends Common)",
-        "checked": true
-      },
-      {
-        "label": "Common",
-        "Description": "General resource management tasks, focusing on actions like creating, modifying, and retrieving resources.",
-        "checked": true
-      },
-      {
-        "label": "Automation",
-        "Description": "Verbs that facilitate the automation of tasks and processes.",
-        "checked": true
-      },
-      {
-        "label": "Cleanup",
-        "Description": "Verbs that deal with the removal of unnecessary or temporary resources.",
-        "checked": true
-      },
-      {
-        "label": "Communications",
-        "Description": "Data transmission and communication, facilitating the exchange of information between sources and destinations.",
-        "checked": true
-      },
-      {
-        "label": "GuiConfig",
-        "Description": "Verbs related to setting up and managing configurations for resources.",
-        "checked": true
-      },
-      {
-        "label": "Data",
-        "Description": "Data manipulation and management, including actions for storing, transforming, and organizing data.",
-        "checked": true
-      },
-      {
-        "label": "Devices",
-        "Description": "Managing and inspecting devices.",
-        "checked": true
-      },
-      {
-        "label": "Diagnostic",
-        "Description": "Troubleshooting and diagnostics, aimed at examining resources to identify and resolve issues.",
-        "checked": true
-      },
-      {
-        "label": "Forms",
-        "Description": "Windows Systems Forms and related functionalities.",
-        "checked": true
-      },
-      {
-        "label": "FileSystem",
-        "Description": "File system (FS), storage, and I/O operations.",
-        "checked": true
-      },
-      {
-        "label": "Lifecycle",
-        "Description": "Management of resources throughout their lifecycle, covering actions related to deployment, approval, and state changes.",
-        "checked": true
-      },
-      {
-        "label": "Monitoring",
-        "Description": "Verbs focused on observing and tracking the performance or status of resources.",
-        "checked": true
-      },
-      {
-        "label": "Network",
-        "Description": "Anything network-related.",
-        "checked": true
-      },
-      {
-        "label": "Remote",
-        "Description": "Anything related to remote access and invocation.",
-        "checked": true
-      },
-      {
-        "label": "Reporting",
-        "Description": "Verbs related to generating reports or summaries of resource states and activities.",
-        "checked": true
-      },
-      {
-        "label": "Security",
-        "Description": "Access control and protection of resources, including actions for granting, blocking, and safeguarding access.",
-        "checked": true
-      },
-      {
-        "label": "Shell",
-        "Description": "Shell, process, invocation, command (cmd), and related verbs.",
-        "checked": true
-      },
-      {
-        "label": "Validation",
-        "Description": "Verbs that ensure the correctness or compliance of resources.",
-        "checked": true
-      },
-      {
-        "label": "Other",
-        "Description": "Other and special types.",
-        "checked": true
-      }
-    ]
+    }
   }
 }

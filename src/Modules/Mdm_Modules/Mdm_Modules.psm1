@@ -16,7 +16,7 @@ Using module "..\Mdm_WinFormPS\Mdm_WinFormPS.psm1"
 # $importName = "Mdm_Modules"
 # if (-not $global:moduleRootPath) {
 #     $folderPath = (get-item $PSScriptRoot).FullName
-#     $folderName = Split-Path $folderPath -Leaf 
+#     $folderName = Split-Path $folderPath -Parent 
 #     if ( $folderName -eq "Public" -or $folderName -eq "Private" ) {
 #         $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.Parent.FullName
 #     } else { $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName }
@@ -24,14 +24,15 @@ Using module "..\Mdm_WinFormPS\Mdm_WinFormPS.psm1"
 # if (-not $global:projectRootPath) { $global:projectRootPath = (get-item $global:moduleRootPath).Parent.Parent.FullName }
 # Import-Module -Name "$global:moduleRootPath\$importName" -Force -ErrorAction Continue
 #
-Write-Host "Mdm_Modules.psm1"
-$path = "$($(get-item $PSScriptRoot).FullName)\Project.ps1"
-. "$path"
+$moduleName = "Mdm_Modules.psm1"
+if ($DoVerbose) { Write-Host "== $moduleName ==" -ForegroundColor Green }
+$path = "$($(get-item $PSScriptRoot).FullName)\ProjectLib.ps1"
+. $path @global:combinedParams
 
-[bool]$DoVerbose = $global:DoVerbose
-[bool]$DoPause = $global:DoPause
-[bool]$DoDebug = $global:DoDebug
-[bool]$DoForce = $global:DoForce
+[bool]$DoVerbose = $global:app.DoVerbose
+[bool]$DoPause = $global:app.DoPause
+[bool]$DoDebug = $global:app.DoDebug
+[bool]$DoForce = $global:app.DoForce
 
 if ($DoVerbose) { 
     Write-Host "Mdm_Modules.psm1"
@@ -41,15 +42,17 @@ if ($DoVerbose) {
 }
 
 # Import all modules and set commonParameters
-$path = "$($(get-item $PSScriptRoot).FullName)\Import-All.ps1"
-. "$path"
+$actionStep = 0
+# ImportAllLib
+$path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Std_Library\lib\ImportAllLib.ps1"
+. $path @global:combinedParams
 
 # Export all the functions
 # Export-ModuleMember -Function $Public.Basename -Alias *
 # Project settings and paths
 # Get-ModuleRootPath
-$path = "$($(get-item $PSScriptRoot).FullName)\Project.ps1"
-. "$path"
+$path = "$($(get-item $PSScriptRoot).FullName)\ProjectLib.ps1"
+. $path @global:combinedParams
 # $importName = "Mdm_Std_Library"
 # $importName = "Mdm_Bootstrap"
 # $importName = "Mdm_DevEnv_Install"

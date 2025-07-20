@@ -17,7 +17,7 @@ function Update-JsonData {
         if ($jsonObjectA -or $jsonObjectB) {
             if ($jsonObjectA) {
                 foreach ($property in $jsonObjectA.PSObject.Properties) {
-                    if ($global:DoVerbose) {
+                    if ($global:app.DoVerbose) {
                         Write-Host "prop: $($property.Name)"
                     }
                     if ($jsonObjectB) {

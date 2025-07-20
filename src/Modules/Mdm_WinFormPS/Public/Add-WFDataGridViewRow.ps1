@@ -55,14 +55,14 @@
 		
 		[Parameter(ParameterSetName = 'Row',
 				   Mandatory = $true)]
-		[string]$Title,
-		
+		[string]$title,
+
 		[Parameter(ParameterSetName = 'Row')]
-		[Array]$Values,
+		[array]$Values,
 		
 		[Parameter(ParameterSetName = 'Collection',
 				   Mandatory = $true)]
-		[int32]$Collection
+		[int]$Collection
 	)
 	
 	BEGIN
@@ -78,7 +78,7 @@
 		ELSEIF ($PSCmdlet.ParameterSetName -eq 'Row')
 		{
 			$Row = New-Object -TypeName System.Windows.Forms.DataGridViewRow
-			$Row.HeaderCell.Value = $Title
+			$Row.HeaderCell.Value = $title
 			$Row.CreateCells($DataGridView, $Values)
 			
 			# Add the row

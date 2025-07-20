@@ -37,11 +37,12 @@ function Export-Mdm_Help {
         [switch]$DoForce,
         [switch]$DoVerbose,
         [switch]$DoDebug,
-        [switch]$DoPause
+        [switch]$DoPause,
+        [string]$logFileNameFull = ""
     )
     begin {
         $Message = "Write Mdm_Help help..."
-        Add-LogText -Messages $Message -SkipScriptLineDisplay
+        Add-LogText -Message $Message -SkipScriptLineDisplay -logFileNameFull $logFileNameFull
         if (-not $moduleRootPath) { $moduleRootPath = (get-item $PSScriptRoot).Parent.FullName }
         if (-not $projectRootPath) { $projectRootPath = (get-item $moduleRootPath).Parent.Parent.FullName }
         if (-not $localModuleNames) { $localModuleNames = $global:moduleCoreNames }
@@ -51,7 +52,7 @@ function Export-Mdm_Help {
         foreach ($moduleName in $localModuleNames) {
             # Standard Functions
             $Message = "Write Mdm_Help: $moduleName"
-            Add-LogText -Messages $Message -SkipScriptLineDisplay
+            Add-LogText -Message $Message -SkipScriptLineDisplay -logFileNameFull $logFileNameFull
             # Remove Module
             try {
                 Remove-Module -Name $moduleName `
@@ -59,9 +60,10 @@ function Export-Mdm_Help {
                     -ErrorAction Stop
             } catch { 
                 $Message = "No need to remove module: $moduleName."
-                Add-LogText -Messages $Message `
+                Add-LogText -Message $Message `
                     -SkipScriptLineDisplay `
-                    -ErrorPSItem $_
+                    -ErrorPSItem $_ `
+                    -logFileNameFull $logFileNameFull
             }
             # Import Module -Name $moduleRootPath\$moduleName\$moduleName
             try {
@@ -70,7 +72,7 @@ function Export-Mdm_Help {
                     -ErrorAction Stop
             } catch { 
                 $Message = "Failed to import module in Export-Mdm_Help: $moduleName."
-                Add-LogText -Messages $Message -IsError -ErrorPSItem $_
+                Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                 continue            
             }
             # Output list of powershell commands in the module
@@ -92,7 +94,7 @@ function Export-Mdm_Help {
                 Write-Host " "
             } catch { 
                 $Message = "Error creating reports in Export-Mdm_Help for module: $moduleName."
-                Add-LogText -Messages $Message -IsError -ErrorPSItem $_
+                Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                 continue       
             }
         }
@@ -104,7 +106,7 @@ function Export-Mdm_Help {
             | Out-File "$moduleRootPath\Mdm_Bootstrap\help\CommandList.txt"
         } catch { 
             $Message = "Error aggragating files in Export-Mdm_Help."
-            Add-LogText -Messages $Message -IsError -ErrorPSItem $_
+            Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
             continue            
         }
         #endregion
@@ -116,7 +118,7 @@ function Export-Mdm_Help {
                 -ErrorAction Stop
         } catch {
             $Message = "Get-Template had an error in Export-Mdm_Help."
-            Add-LogText -Messages $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
+            Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
         }
         # ConvertFrom-Template
         try {
@@ -130,7 +132,7 @@ function Export-Mdm_Help {
                 -ErrorAction Stop
         } catch {
             $Message = "Convert Readme Template had an error in Export-Mdm_Help."
-            Add-LogText -Messages $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
+            Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
         }
         # Out-File
         try {
@@ -143,17 +145,17 @@ function Export-Mdm_Help {
             # Save the HTML to a file
             if (-not(Test-Path $outputFilePath -PathType Container)) {
                 $Message = "The project path has been set incorrectly. Abnormal error."
-                Add-LogText -Messages $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
+                Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                 return
             }            
             $DocFilled | Out-File -FilePath "$outputFilePath\$outputFileName" -Encoding utf8
 
             # Output the path of the generated HTML file
-            Add-LogText "Readme documentation saved to: $outputFilePath\$outputFileName`n + `
+            Add-LogText "Readme documentation saved to: $outputFilePath\$outputFileName$global:NL + `
             Location: $outputFilePath\$outputFileName" $logFileNameFull
         } catch {
             $Message = "Unable to save Readme document to disk in Export-Mdm_Help."
-            Add-LogText -Messages $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
+            Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
         }
         #endregion
     }
@@ -169,19 +171,20 @@ function Write-Module_Help {
         [switch]$DoForce,
         [switch]$DoVerbose,
         [switch]$DoDebug,
-        [switch]$DoPause
+        [switch]$DoPause,
+        [string]$logFileNameFull = ""
     )
     process {
         # Import Module
         try {
             $Message = "Write Mdm_Help: $moduleName"
-            Add-LogText -Messages $Message -SkipScriptLineDisplay
+            Add-LogText -Message $Message -SkipScriptLineDisplay -logFileNameFull $logFileNameFull
             Import-Module -Name $moduleName `
                 -force `
                 -ErrorAction Stop
         } catch {
             $Message = "Failed to import module: $moduleName."
-            Add-LogText -Messages $Message -IsError -ErrorPSItem $_
+            Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
         }
         # Get-Module
         try {
@@ -194,7 +197,7 @@ function Write-Module_Help {
             | Out-File -FilePath "$moduleRootPath\Mdm_Bootstrap\help\$($moduleName)_ModuleCommandList.txt"
         } catch {
             $Message = "Failed to generate help for module: $moduleName."
-            Add-LogText -Messages $Message -IsError -ErrorPSItem $_
+            Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
         }
     }
 }
@@ -224,7 +227,8 @@ function Write-Mdm_Help {
         [switch]$DoForce,
         [switch]$DoVerbose,
         [switch]$DoDebug,
-        [switch]$DoPause
+        [switch]$DoPause,
+        [string]$logFileNameFull = ""
     )
     process {
         # TODO Check path
@@ -243,7 +247,7 @@ function Write-Mdm_Help {
                     -ErrorAction Stop
             } catch { 
                 $Message = "Failed to remove module: $moduleName."
-                Add-LogText -Messages $Message -IsWarning -ErrorPSItem $_
+                Add-LogText -Message $Message -IsWarning -ErrorPSItem $_ -logFileNameFull $logFileNameFull
             }
             # Import
             try {
@@ -252,7 +256,7 @@ function Write-Mdm_Help {
                     -ErrorAction Stop
             } catch { 
                 $Message = "Failed to import module: $moduleName."
-                Add-LogText -Messages $Message -IsError -ErrorPSItem $_
+                Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                 continue            
             }
             # Command Report
@@ -265,7 +269,7 @@ function Write-Mdm_Help {
                 | Out-File -FilePath $outputFileName
             } catch {
                 $Message = "Mdm_Help Get-Command report failed for module: $moduleName."
-                Add-LogText -Messages $Message -IsError -ErrorPSItem $_
+                Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                 continue            
             }
             # Command List
@@ -277,7 +281,7 @@ function Write-Mdm_Help {
                 | Out-File -FilePath $outputFileName
             } catch {
                 $Message = "Mdm_Help Get-Command names failed for module: $moduleName."
-                Add-LogText -Messages $Message -IsError -ErrorPSItem $_
+                Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                 continue            
             }
         }            
@@ -316,7 +320,7 @@ function Test-Help () {
     Add-LogText $outText
 }
 # Extracr-Help
-function Build-HelpHtml {
+function New-HelpHtml {
     <#
      .SYNOPSIS
         A short one-line action-based description, e.g. 'Tests if a function is valid'
@@ -347,7 +351,7 @@ function Build-HelpHtml {
         Specify a URI to a help page, this will show when Get-Help -Online is used.
 
      .EXAMPLE
-        $htmlContent += Build-HelpHtml `
+        $htmlContent += New-HelpHtml `
             -helpInfoObject $helpInfo `
             -moduleObject $moduleInfo `
             -cmdletObject $cmdlet `
@@ -374,7 +378,8 @@ function Build-HelpHtml {
         [object]$cmdletObject,
         [object[]]$htmlContentLocal,
         [switch]$SkipName,
-        [switch]$SkipType
+        [switch]$SkipType,
+        [string]$logFileNameFull = ""
     )
     begin {
         try {
@@ -397,7 +402,7 @@ function Build-HelpHtml {
                 }
             }
         } catch {
-            $Message = "Error in Headings. Begin block of Build-HelpHtml for $cmdlet.Name"
+            $Message = "Error in Headings. Begin block of New-HelpHtml for $cmdlet.Name"
             Add-LogText $Message `
                 -IsError -ErrorPSItem $_ `
                 -logFileNameFull $logFileNameFull        
@@ -477,17 +482,17 @@ function Build-HelpHtml {
                                                 }
                                             } else {
                                                 $Message = "Parameter Name is NULL in Parameter Details."
-                                                Add-LogText -Messages $Message -IsWarning -ErrorPSItem $_
+                                                Add-LogText -Message $Message -IsWarning -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                                             }
                                         } catch {
                                             $Message = "Invalid ParamItem in Parameter Details."
-                                            Add-LogText -Messages $Message -IsError -ErrorPSItem $_
+                                            Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                                         }
                                     }
                                 }
                             } catch {
                                 $Message = "Invalid Parameter in Help Info."
-                                Add-LogText -Messages $Message -IsError -ErrorPSItem $_
+                                Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                             }
                         }
                         $htmlContentLocal += "<p></p>"
@@ -510,35 +515,35 @@ function Build-HelpHtml {
                                 if (-not $headingDone) {
                                     $htmlContentLocal += "<p><strong>Examples</strong>:</p>"
                                     $headingDone = $true
-                                } else { $exampleContent = "$exampleContent`n" }
+                                } else { $exampleContent = "$exampleContent$global:NL" }
                                 $exampleContentItem = @()
                                 if ($exampleItemDetails.title.Length) { $exampleContentItem += "Example: $($exampleItemDetails.title)" }
                                 if ($exampleItemDetails.label.Length) { $exampleContentItem += "       Label: $($exampleItemDetails.label)" }
                                 if ($exampleItemDetails.introduction.Length) { $exampleContentItem += "Introduction: $($exampleItemDetails.introduction)" }
                                 if ($exampleItemDetails.code.Length) { $exampleContentItem += "      Syntax: $($exampleItemDetails.code)" }
                                 if ($exampleItemDetails.remarks.Length) { $exampleContentItem += "     Remarks:$($exampleItemDetails.remarks)" }
-                                $exampleContentItem = ConvertTo-EscapedText (($exampleContentItem) -join "`n")
+                                $exampleContentItem = ConvertTo-EscapedText (($exampleContentItem) -join "$global:NL")
                                 $exampleContent = "$exampleContent$exampleContentItem"
                             }
                             $htmlContentLocal += "<pre>$exampleContent</pre>"
                         }
                     }
                 } else {
-                    $Message = "Unknown Type of HelpInfo in Build-HelpHtml for $cmdlet.Name`nObject type: $helpInfoType"
-                    Add-LogText $Message `
+                    $Message = "Unknown Type of HelpInfo in New-HelpHtml for $cmdlet.Name`nObject type: $helpInfoType"
+                    Add-LogText -Message $Message `
                         -IsError `
                         -logFileNameFull $logFileNameFull        
                 }
             }
         } catch {
-            $Message = "Detail processing error in Build-HelpHtml for $cmdlet.Name"
-            Add-LogText $Message `
+            $Message = "Detail processing error in New-HelpHtml for $cmdlet.Name"
+            Add-LogText -Message $Message `
                 -IsError -ErrorPSItem $_ `
                 -logFileNameFull $logFileNameFull        
         }
     }
     end {
-        # return $htmlContentLocal -join "`n"
+        # return $htmlContentLocal -join "$global:NL"
         return $htmlContentLocal
     }
 }
@@ -549,17 +554,17 @@ function Export-Help {
         # $moduleName,
         $projectRootPath,
         $moduleRootPath,
-        $logFileNameFull,
         $nameFilter,
         [switch]$DoForce,
         [switch]$DoVerbose,
         [switch]$DoDebug,
-        [switch]$DoPause
+        [switch]$DoPause,
+        [string]$logFileNameFull = ""
     )
     process {
         if (-not $moduleRootPath) { $moduleRootPath = (get-item $PSScriptRoot).Parent.FullName }
         if (-not $projectRootPath) { $projectRootPath = (get-item $moduleRootPath).Parent.Parent.FullName }
-        if (-not $logFileNameFull) { $logFileNameFull = $global:logFileNameFull }
+        if (-not $logFileNameFull) { $logFileNameFull = $global:app.logFileNameFull }
         if (-not $nameFilter) { $nameFilter = "*" }
         # Process modules
         try {
@@ -589,15 +594,15 @@ function Export-Help {
                         # } catch {
                         #     $Message = "Remove module skipped for: $moduleName."
                         #     # Write-Host "$Message"
-                        #     # Add-LogText -Messages $Message -IsWarning -logFileNameFull $logFileNameFull -ErrorPSItem $_
-                        #     Add-LogText -Messages $Message -ErrorPSItem $_ -logFileNameFull $logFileNameFull
+                        #     # Add-LogText -Message $Message -IsWarning -logFileNameFull $logFileNameFull -ErrorPSItem $_
+                        #     Add-LogText -Message $Message -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                         #     # continue, the functions will have help defined.
                         # }
                         # Get all cmdlets in the Module
                         try {
-                            # if (-not ((Get-Module -Name $moduleName) -or $global:DoForce)) {
+                            # if (-not ((Get-Module -Name $moduleName) -or $global:app.DoForce)) {
                             #     $modulePath = "$global:moduleRootPath\$moduleName"
-                            #     if ($DoVerbose) { Write-Output "Exists: $(Test-Path "$modulePath"): $modulePath" }
+                            #     if ($DoVerbose) { Write-Host "Exists: $(Test-Path "$modulePath"): $modulePath" }
                             #     Import-Module -Name $modulePath @global:importParams
                             # }
                             # Import-Module -Name $moduleName `
@@ -609,7 +614,7 @@ function Export-Help {
                         } catch {
                             $Message = "Failed to import module: $($moduleName)."
                             # Write-Host "$Message"
-                            Add-LogText -Messages $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
+                            Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                             $htmlContent += "<p<strong>>$Message</strong></p>"
                             continue      
                         }
@@ -623,22 +628,22 @@ function Export-Help {
                                 if ($helpInfo) { 
                                     $helpInfoType = $helpInfo.GetType().Name
                                     # $htmlContent += "<h2>$($moduleName)</h2>"
-                                    $htmlContent += Build-HelpHtml `
+                                    $htmlContent += New-HelpHtml `
                                         -helpInfoObject $helpInfo `
                                         -moduleObject $moduleInfo `
                                         -SkipName -SkipType `
                                         -ErrorAction Stop
                                 } else {
-                                    $Message = "Build-HelpHtml is empty for module: $moduleName."
+                                    $Message = "New-HelpHtml is empty for module: $moduleName."
                                     # Write-Host "$Message"
-                                    Add-LogText -Messages $Message `
+                                    Add-LogText -Message $Message `
                                         -IsWarning -SkipScriptLineDisplay -ErrorPSItem $_ `
                                         -logFileNameFull $logFileNameFull
                                 }
                             } catch {
-                                $Message = "Build-HelpHtml failed for module: $moduleName."
+                                $Message = "New-HelpHtml failed for module: $moduleName."
                                 # Write-Host "$Message"
-                                Add-LogText -Messages $Message `
+                                Add-LogText -Message $Message `
                                     -IsWarning -SkipScriptLineDisplay -ErrorPSItem $_ `
                                     -logFileNameFull $logFileNameFull
                                 # continue, the functions will have help defined.
@@ -646,7 +651,7 @@ function Export-Help {
                         } catch {
                             $Message = "Failed to get help for module: $moduleName."
                             # Write-Host "$Message"
-                            Add-LogText -Messages $Message `
+                            Add-LogText -Message $Message `
                                 -IsWarning -SkipScriptLineDisplay -ErrorPSItem $_ `
                                 -logFileNameFull $logFileNameFull
                             $htmlContent += "<p<strong>>$Message</strong></p>"
@@ -654,9 +659,9 @@ function Export-Help {
                         }
                         # Get all cmdlets in the Module
                         try {
-                            if (-not ((Get-Module -Name $moduleName) -or $global:DoForce)) {
+                            if (-not ((Get-Module -Name $moduleName) -or $global:app.DoForce)) {
                                 $modulePath = "$global:moduleRootPath\$moduleName"
-                                if ($DoVerbose) { Write-Output "Exists: $(Test-Path "$modulePath"): $modulePath" }
+                                if ($DoVerbose) { Write-Host "Exists: $(Test-Path "$modulePath"): $modulePath" }
                                 if ($moduleName -ne "Mdm_Modules") {
                                     Import-Module -Name $moduleName @global:importParams
                                 }
@@ -666,7 +671,11 @@ function Export-Help {
                             foreach ($cmdlet in $cmdlets) {
                                 # Get-Help
                                 try {
-                                    Add-LogText $cmdlet.Name $logFileNameFull
+                                    if ($Verbose -or $DoVerbose) {
+                                        Add-LogText $cmdlet.Name $logFileNameFull
+                                    } else {
+                                        Add-LogText "$($cmdlet.Name) " $logFileNameFull -NoNewLine
+                                    }
                                     $htmlContent += "<h2>$($cmdlet.Name)</h2>"
                                     # $null = Debug-SubmitFunction -functionName $cmdlet.Name -invocationFunctionName $($MyInvocation.MyCommand.Name) # Debug-Script
                                     $helpInfo = Get-Help $cmdlet.Name -Full `
@@ -674,25 +683,25 @@ function Export-Help {
                                 } catch {
                                     $Message = "There is no help for function: $($cmdlet.Name)."
                                     # Write-Host "$Message $_"
-                                    Add-LogText -Messages $Message `
+                                    Add-LogText -Message $Message `
                                         -IsWarning -SkipScriptLineDisplay -ErrorPSItem $_ `
                                         -logFileNameFull $logFileNameFull
                                     $htmlContent += "<p><strong>$Message</strong></p>"
                                     continue      
                                 }
-                                # Build-HelpHtml
+                                # New-HelpHtml
                                 try {
                                     $helpInfoType = $helpInfo.GetType().Name
-                                    $htmlContent += Build-HelpHtml `
+                                    $htmlContent += New-HelpHtml `
                                         -helpInfoObject $helpInfo `
                                         -moduleObject $moduleInfo `
                                         -cmdletObject $cmdlet `
                                         -SkipName `
                                         -ErrorAction Stop
                                 } catch {
-                                    $Message = "Build-HelpHtml failed for function: $($cmdlet.Name)."
+                                    $Message = "New-HelpHtml failed for function: $($cmdlet.Name)."
                                     # Write-Host "$Message $_"
-                                    Add-LogText -Messages $Message `
+                                    Add-LogText -Message $Message `
                                         -IsError -ErrorPSItem $_ `
                                         -logFileNameFull $logFileNameFull
                                     $htmlContent += "<p<strong>>$Message</strong></p>"
@@ -700,10 +709,13 @@ function Export-Help {
                                 }
                                 $htmlContent += "<p></p>"
                             }
+                            if (-not ($Verbose -or $DoVerbose)) {
+                                Add-LogText "" $logFileNameFull
+                            }
                         } catch {
                             $Message - "Failed to get cmdlets (functions & commands) for module: $($moduleFolder.FullName)."
                             # Write-Host "$Message $_"
-                            Add-LogText -Messages $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -logFileNameFull $logFileNameFull
+                            Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                             $htmlContent += "<p<strong>>$Message</strong></p>"
                             # continue # (over)writing with an empty or module only help items might be ill-advised.
                         }
@@ -720,7 +732,7 @@ function Export-Help {
                             $Message = "Get-Template had an error."
                             Write-Host -Message "$Message $_"
                             $htmlContent += "<p<strong>>$Message</strong></p>"
-                            Add-LogText -Messages $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
+                            Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                         }
                         # ConvertFrom-Template
                         try {
@@ -737,7 +749,7 @@ function Export-Help {
                             $Message = "Convert Html Template had an error."
                             Write-Host "$Message $_"
                             $htmlContent += "<p<strong>>$Message</strong></p>"
-                            Add-LogText -Messages $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
+                            Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                         }
                         # Out-File
                         try {
@@ -759,20 +771,20 @@ function Export-Help {
                             $Message = "Unable to save html document to disk."
                             Write-Host "$Message $_"
                             $htmlContent += "<p<strong>>$Message</strong></p>"
-                            Add-LogText -Messages $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
+                            Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                         }
                     } catch {
                         $Message = "Unhandled exception processing help in Export-Help:"
                         Write-Host "$Message $_"
                         $htmlContent += "<p<strong>>$Message</strong></p>"
-                        Add-LogText -Messages $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
+                        Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                     }
                 }
             }
         } catch {
             $Message = "Unhandled exception in Export-Help loop:"
             Write-Host "$Message $_"
-            Add-LogText -Messages $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
+            Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
             $htmlContent += "<p<strong>>$Message</strong></p>"
         }
         # Import-Module -Name $moduleName `
@@ -782,11 +794,11 @@ function Export-Help {
                 -Force `
                 -ErrorAction Stop
             $Message = "Successful import module: $moduleRootPath\$moduleName."
-            Add-LogText -Messages $Message -logFileNameFull $logFileNameFull
+            Add-LogText -Message $Message -logFileNameFull $logFileNameFull
         } catch {
             $Message = "Failed import of module: $moduleRootPath\$moduleName."
             Write-Host "$Message $_"
-            Add-LogText -Messages $Message -IsError -ErrorPSItem $_ -SkipScriptLineDisplay -logFileNameFull $logFileNameFull
+            Add-LogText -Message $Message -IsError -ErrorPSItem $_ -SkipScriptLineDisplay -logFileNameFull $logFileNameFull
             continue
         }
     }
@@ -797,7 +809,8 @@ function Get-Template {
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         $templateNameFull,
-        [switch]$UseDefault
+        [switch]$UseDefault,
+        [string]$logFileNameFull = ""
     )
     process {
         try {
@@ -838,8 +851,8 @@ function Get-Template {
 </html>
 "@
             } else {
-                $Message = "Missing template file in Get-Template.`n`"$templateNameFull`" not found."
-                Add-LogText -Messages $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
+                $Message = "Missing template file in Get-Template.$global:NL`"$templateNameFull`" not found."
+                Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
             }
         }
         return $templateDoc
@@ -852,11 +865,11 @@ function Initialize-TemplateData {
     )
     $templateData['{{Date}}'] = Get-Date
     if ($global:companyName) { $templateData['{{CompanyName}}'] = $global:companyName }
-    if ($global:timeStarted) { $templateData['{{DateStarted}}'] = $("{0:yyyy/mm/dd}" -f ($timeStarted)) }
-    if ($global:timeStarted) { $templateData['{{TimeStarted}}'] = $global:timeStarted }
-    if ($global:timeStartedFormatted) { $templateData['{{TimeStartedFormated}}'] = $global:timeStartedFormatted }
-    if ($global:timeCompleted) { $templateData['{{DateCompleted}}'] = $("{0:yyyy/mm/dd}" -f ($timeCompleted)) }
-    if ($global:timeCompleted) { $templateData['{{TimeCompleted}}'] = $global:timeCompleted }
+    if ($global:app.timeStarted) { $templateData['{{DateStarted}}'] = $("{0:yyyy/mm/dd}" -f ($timeStarted)) }
+    if ($global:app.timeStarted) { $templateData['{{TimeStarted}}'] = $global:app.timeStarted }
+    if ($global:app.timeStartedFormatted) { $templateData['{{TimeStartedFormated}}'] = $global:app.timeStartedFormatted }
+    if ($global:app.timeCompleted) { $templateData['{{DateCompleted}}'] = $("{0:yyyy/mm/dd}" -f ($timeCompleted)) }
+    if ($global:app.timeCompleted) { $templateData['{{TimeCompleted}}'] = $global:app.timeCompleted }
     if ($global:author) { $templateData['{{Author}}'] = $global:author }
     if ($global:copyright) { $templateData['{{Copyright}}'] = $global:copyright }
     if ($global:license) { $templateData['{{License}}'] = $global:license }
@@ -874,13 +887,14 @@ function ConvertFrom-Template {
         $templateDoc,
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        $templateData
+        $templateData,
+        [string]$logFileNameFull = ""
     )
     process {
         # Create the full HTML document
         # Replace placeholders with actual values
         try {
-            $templateContentJoined = $templateContent -join "`n"
+            $templateContentJoined = $templateContent -join "$global:NL"
             $docFilled = Resolve-Variables $templateDoc
             $docFilled = $docFilled `
                 -replace '{{TemplateContent}}', $templateContentJoined `
@@ -897,7 +911,7 @@ function ConvertFrom-Template {
                         #     $docFilled = $docFilled -replace [regex]::Escape($key), $templateInsertDoc
                         # } catch {
                         #     $Message = "Unable to process document insert referenced in template."
-                        #     Add-LogText -Messages $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
+                        #     Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                         # }
                     } else {
                         $docFilled = $docFilled -replace [regex]::Escape($key), $templateData[$key]
@@ -906,9 +920,9 @@ function ConvertFrom-Template {
             }
         } catch {
             $Message = "Error in Tempate File DATA processing."
-            Add-LogText -Messages $Message `
+            Add-LogText -Message $Message `
                 -IsError -ErrorPSItem $_ `
-                       
+                -logFileNameFull $logFileNameFull
         }
         # Loop through $docFilled looking for "{{File: "
         try {
@@ -925,17 +939,17 @@ function ConvertFrom-Template {
                     # Replace the full match in $docFilled with the content of the file
                     $docFilled = $docFilled -replace [regex]::Escape($match.Value), $templateInsertDoc
                 } catch {
-                    $Message = "Unable to process document match $($match.Value[0]) insert for file: $fileName`n For match: $($match)"
-                    Add-LogText -Messages $Message `
+                    $Message = "Unable to process document match $($match.Value[0]) insert for file: $fileName$global:NL For match: $($match)"
+                    Add-LogText -Message $Message `
                         -IsError -ErrorPSItem $_ `
-                               
+                        -logFileNameFull $logFileNameFull
                 }
             }
         } catch {
             $Message = "Error in Template File TEXT processing."
-            Add-LogText -Messages $Message `
+            Add-LogText -Message $Message `
                 -IsError -ErrorPSItem $_ `
-                       
+                -logFileNameFull $logFileNameFull
         }
         return $docFilled
     }

@@ -71,11 +71,11 @@ function Find-FileInDirectory {
             $CurrentPath = Find-FileInDirectory -CurrentPath $item.FullName -CurrentDepth ($CurrentDepth + 1) -MaxDepth $MaxDepth
         } elseif ($item.Name -eq $FileName) {
             # If it's the file we're looking for, output the full path
-            Write-Output "Found: $($item.FullName)"
+            Write-Host "Found: $($item.FullName)"
             return $CurrentPath
         }
     }
-    Write-Output "File '$FileName' not found in the directory $StartPath to depth $MaxDepth."
+    Write-Host "File '$FileName' not found in the directory $StartPath to depth $MaxDepth."
     return $null
 }
 function Search-FileUpDirectory {
@@ -93,7 +93,7 @@ function Search-FileUpDirectory {
         # Check if the file exists in the current directory
         $filePath = Join-Path -Path $currentPath -ChildPath $FileName
         if (Test-Path -Path $filePath) {
-            Write-Output "Found: $filePath"
+            Write-Host "Found: $filePath"
             return $filePath
         }
 
@@ -102,7 +102,7 @@ function Search-FileUpDirectory {
         $Depth++
     }
 
-    Write-Output "File '$FileName' not found in the directory $StartPath to depth $MaxDepth."
+    Write-Host "File '$FileName' not found in the directory $StartPath to depth $MaxDepth."
     return $null
 }
 function Search-FileInDirectory {
@@ -121,8 +121,8 @@ function Search-FileInDirectory {
 
     # If no files were found, output a message
     if (-not $CurrentPath -or -not (Get-ChildItem -Path $startPath -Filter $FileName -Recurse -ErrorAction SilentlyContinue)) {
-        Write-Output "File '$FileName' not found in the directory $StartPath to depth $MaxDepth."
-        if (-not $CurrentPath) { Write-Output "$currentPath is null." }
+        Write-Host "File '$FileName' not found in the directory $StartPath to depth $MaxDepth."
+        if (-not $CurrentPath) { Write-Host "$currentPath is null." }
         return $null
     }
     return $CurrentPath
@@ -139,7 +139,7 @@ function Find-File {
         $CurrentPath = Search-FileUpDirectory -FileName $FileName -StartPath $StartPath -MaxDepth $MaxDepthUp
         if (-not $CurrentPath) { Search-FileInDirectory -FileName $FileName -StartPath $StartPath -MaxDepth -$MaxDepthIn }
         if (-not $CurrentPath) {
-            Write-Output "File '$FileName' not found in the directory '$startPath' within depth up ($MaxDepthUp) and inward ($MaxDepthIn)."
+            Write-Host "File '$FileName' not found in the directory '$startPath' within depth up ($MaxDepthUp) and inward ($MaxDepthIn)."
             return $null
         }
         return $CurrentPath
@@ -163,22 +163,26 @@ function Search-StringInFiles {
         [string]$SearchString,
         [switch]$SkipLineDetail,
         [switch]$DoLog,
-        [string]$resultFileNameFull
+        [string]$resultFileNameFull,
+        [string]$logFileNameFull = ""
     )
     begin {
-        $output = @()
+        $outputBuffer = @()
         $Message = "Seaching for $SearchString"
+        Add-LogText -ForegroundColor DarkYellow -Message $Message -logFileNameFull $logFileNameFull
+        $outputBuffer += $Message
         if (-not $Path) { 
             $Path = $env:PSModulePath 
             $Message += " (Using default powershell path)"
+            Add-LogText -ForegroundColor DarkYellow -Message $Message -logFileNameFull $logFileNameFull
         }
-        Write-Host $Message -ForegroundColor DarkYellow
-        $output += $Message
+        $outputBuffer += $Message
+
         $Message = "  Extensions: $Extensions"
+        Add-LogText -ForegroundColor DarkYellow -Message $Message -logFileNameFull $logFileNameFull
+        $outputBuffer += $Message
         $pathContainsString = $false
         $count = 0
-        Write-Host $Message -ForegroundColor DarkYellow
-        $output += $Message
         $directories = $Path -split ';'
         $extensionArray = $Extensions -split ';'
         $fileNamesArray = $FileNames -split ";"
@@ -190,8 +194,9 @@ function Search-StringInFiles {
             $countDirectory = 0
             if (Test-Path $directory) {
                 # $directoryName = Split-Path -Path $directory -Leaf
-                Write-Host "Folder [$directoryIndex] $directory" -ForegroundColor DarkYellow
-                $output += $Message
+                $Message = "Folder [$directoryIndex] $directory"
+                Add-LogText -ForegroundColor DarkYellow -Message $Message -logFileNameFull $logFileNameFull
+                $outputBuffer += $Message
                 # Get all files with the specified extensions recursively
                 # Get all files recursively
                 $files = Get-ChildItem -Path $directory -Recurse -File
@@ -217,7 +222,7 @@ function Search-StringInFiles {
                                                 # if (-not $SkipLineDetail) {
                                                 #     Write-Host "  File: $($file.FullName)"
                                                 # }
-                                                $output += $Message
+                                                $outputBuffer += $Message
                                                 $fileContainsString = $true
                                                 $directoryContainsString = $true
                                                 $pathContainsString = $true
@@ -232,8 +237,8 @@ function Search-StringInFiles {
                                                 $sliceLen = [Math]::Min(30, $line.Length)
                                                 $Message = "$($line.Substring(0,$sliceLen)) :: Link: $($file):$($lineNumber):"
                                                 # $Message = " $($file):$($lineNumber):"
-                                                Write-Host $Message
-                                                $output += $Message
+                                                Add-LogText -ForegroundColor DarkYellow -Message $Message -logFileNameFull $logFileNameFull
+                                                $outputBuffer += $Message
 
                                                 # line number and the line content
                                                 # Format 1
@@ -247,8 +252,9 @@ function Search-StringInFiles {
                                 }
                                 if (-not $SkipLineDetail -and $fileContainsString -and $countFile -ge 7) {
                                     # line number and the line content
-                                    Write-Host "        Found $countFile."
-                                    $output += $Message
+                                    $Message = "        Found $countFile."
+                                    Add-LogText -ForegroundColor DarkYellow -Message $Message -logFileNameFull $logFileNameFull
+                                    $outputBuffer += $Message
                                 }
                                 $countDirectory += $countFile
                             }
@@ -268,21 +274,24 @@ function Search-StringInFiles {
                 if ($directoryContainsString) {
                     # The string was found in the directory
                     if (-not $SkipLineDetail -and $countDirectory -gt 7) {
-                        Write-Host "  Found $countDirectory."
-                        $output += $Message
+                        $Message = "  Found $countDirectory."
+                        Add-LogText -ForegroundColor DarkYellow -Message $Message -logFileNameFull $logFileNameFull
+                        $outputBuffer += $Message
                     }
                 } else {
                     # String missing from directory
                 }
             } else {
-                Write-Host "Directory not found [$directoryIndex] $directory"
-                $output += $Message
+                $Message = "Directory not found [$directoryIndex] $directory"
+                Add-LogText -ForegroundColor DarkYellow -Message $Message -logFileNameFull $logFileNameFull
+                $outputBuffer += $Message
             }
             $count += $countDirectory
         }
         if (-not $SkipLineDetail -and $count -gt 7) {
-            Write-Host "Total count: $count."
-            $output += $Message
+            $Message = "Total count: $count."
+            Add-LogText -ForegroundColor DarkYellow -Message $Message -logFileNameFull $logFileNameFull
+            $outputBuffer += $Message
         }
     }
     end {
@@ -294,7 +303,7 @@ function Search-StringInFiles {
         }
         if ($DoLog) {
             if (-not $resultFileNameFull) { $resultFileNameFull = ".\SearchResults.txt" }
-            $output | Out-File -FilePath $resultFileNameFull -Encoding utf8
+            $outputBuffer | Out-File -FilePath $resultFileNameFull -Encoding utf8
         }
     }
     # Example usage:

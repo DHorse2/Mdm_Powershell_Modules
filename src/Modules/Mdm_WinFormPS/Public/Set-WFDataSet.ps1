@@ -10,21 +10,21 @@ function Set-WFDataSet {
     )
     process {
         try {
-            if (-not $dataArray) { $dataArray = $global:moduleDataArray }
+            if (-not $dataArray) { $dataArray = $global:appDataArray }
             if ($dataSetItem -and $dataSet) {
                 if (-not $dataArray.ContainsKey($dataSet)) {
                     $dataArray[$dataSet] = @{}
-                    Add-LogText -Messages "Set-WFDataSet: DataSetItem $dataSet, $dataSetItem does not exist."
+                    Add-LogText -Message "Set-WFDataSet: DataSetItem $dataSet, $dataSetItem does not exist."
                 }
                 if (-not $dataArray[$dataSet].item) {
                     $dataArray[$dataSet].item = @{}
-                    Add-LogText -Messages "Set-WFDataSet: DataSetItem $dataSet, $dataSetItem does not exist."
+                    Add-LogText -Message "Set-WFDataSet: DataSetItem $dataSet, $dataSetItem does not exist."
                 }
                 $dataArray[$dataSet].item[$dataSetItem] = $inputDataArray
             } elseif ($dataSet) {
                 if (-not $dataArray.ContainsKey($dataSet)) {
                     $dataArray[$dataSet] = @{}
-                    Add-LogText -Messages "Set-WFDataSet: DataSetItem $dataSet, $dataSetItem does not exist."
+                    Add-LogText -Message "Set-WFDataSet: DataSetItem $dataSet, $dataSetItem does not exist."
                 }
                 $dataArray[$dataSet] = $inputDataArray
             } else {

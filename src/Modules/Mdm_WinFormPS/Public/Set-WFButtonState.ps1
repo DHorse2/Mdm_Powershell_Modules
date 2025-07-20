@@ -1,7 +1,7 @@
 
 # Set-WFButtonState
 function Set-WFButtonState {
-    param ($sender, $e, $text)
+    param ($sender, $e, $text, $logFileNameFull = "")
     try {
         if ($sender -is [WFWindow]) {
             $button = $sender
@@ -9,6 +9,8 @@ function Set-WFButtonState {
         } elseif ($sender -is [System.Windows.Forms.Form]) {
             $button = $sender
             $buttonAction = $e
+        } elseif ($sender -is [System.Windows.Forms.CheckBox]) {
+            $buttonAction = "CheckBox"
         } elseif ($sender -is [System.Windows.Forms.Control]) { 
             $button = $sender
             $buttonAction = $sender.Name
@@ -16,10 +18,12 @@ function Set-WFButtonState {
             $buttonAction = $e 
         }
         if (-not $text) { $text = $buttonAction }
-        Update-WFStatusBarStrip -sender $sender -e $e -statusBarLabel 'statusBarActionState' -text $text
+        Update-WFStatusBarStrip -sender $sender -e $e -statusBarLabel 'statusBarActionState' -text $text -logFileNameFull $logFileNameFull
         New-WFSpeakerBeep
         $form = Find-WFForm -sender $sender -e $e
-        if ($form) {
+        if ($sender -is [WFWindow]) {
+            $null
+        } elseif ($form) {
             switch ($buttonAction) {
                 # State
                 "Load" {
@@ -31,7 +35,7 @@ function Set-WFButtonState {
                     if ($apply) {
                         $apply.Enabled = $false
                     }
-                    $global:moduleDataChanged = $false
+                    $global:appDataChanged = $false
                 }
                 # State
                 "Changed" {
@@ -43,7 +47,11 @@ function Set-WFButtonState {
                     if ($apply) {
                         $apply.Enabled = $true
                     }
-                    $global:moduleDataChanged = $true
+                    $global:appDataChanged = $true
+                }
+                # Data
+                "CheckBox" {
+                    $global:appDataChanged = $true
                 }
                 # Buttons
                 "PreviousButton" {
@@ -81,20 +89,23 @@ function Set-WFButtonState {
                     if ($apply) {
                         $apply.Enabled = $false
                     }
-                    $global:moduleDataChanged = $true
+                    $global:appDataChanged = $true
                 }
                 "NextButton" {
                     # Change focus to next TabPage
                     # disable on last page
                 }
                 Default {
-                    Add-LogText -IsError "Set-WFButtonState failed processing. $buttonAction is invalid."
+                    $Message = "Set-WFButtonState failed processing. $buttonAction is invalid."
+                    Add-LogText -IsError $Message -logFileNameFull $logFileNameFull
                 }
             }
         } else {
-            Add-LogText -IsError "Set-WFButtonState could not find a form $buttonAction."
+            $Message = "Set-WFButtonState could not find a form $buttonAction."
+            Add-LogText -IsError $Message -logFileNameFull $logFileNameFull
         }
     } catch {
-        Add-LogText -IsError -ErrorPSItem $_ "Set-WFButtonState Failed to update button state $buttonAction."
+        $Message = "Set-WFButtonState Failed to update button state $buttonAction."
+        Add-LogText -IsError -ErrorPSItem $_ $Message -logFileNameFull $logFileNameFull
     }
 }            

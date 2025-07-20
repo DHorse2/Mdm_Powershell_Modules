@@ -36,7 +36,7 @@
 		[Parameter(Mandatory = $true)]
 		[string]$Message,
 		
-		[string]$Title,
+		[string]$title,
 		
 		[System.Windows.Forms.MessageBoxButtons]$Buttons = "OK",
 		
@@ -51,7 +51,7 @@
 	{
 		if ($PSCmdlet.ShouldProcess("MessageBox", "Show a new message box"))
 		{
-			[System.Windows.Forms.MessageBox]::Show($Message, $Title, $Buttons, $Icon)
+			[System.Windows.Forms.MessageBox]::Show($Message, $title, $Buttons, $Icon)
 		}
 	}
 } #New-MessageBox

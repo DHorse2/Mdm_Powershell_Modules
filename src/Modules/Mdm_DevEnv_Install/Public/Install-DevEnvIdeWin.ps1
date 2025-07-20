@@ -33,12 +33,23 @@ function Install-DevEnvIdeWin {
 #>
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce,
+    [string]$logFileNameFull = "",
     [switch]$KeepOpen,
     [switch]$Silent
     )
     Initialize-Std -$DoPause -$DoVerbose -$DoDebug
 
-    if ($KeepOpen -and -not $Silent) { Wait-AnyKey -Message "Install-DevEnvIdeWin Setup is starting." }
+    $installDevEnvIdeWinParams = @{}
+    if ($DoForce) { $installDevEnvIdeWinParams['DoForce'] = $true }
+    if ($DoVerbose) { $installDevEnvIdeWinParams['DoVerbose'] = $true }
+    if ($DoDebug) { $installDevEnvIdeWinParams['DoDebug'] = $true }
+    if ($DoPause) { $installDevEnvIdeWinParams['DoPause'] = $true }
+    # if ($KeepOpen) { $installDevEnvIdeWinParams['KeepOpen'] = $true }
+    # if ($Silent) { $installDevEnvIdeWinParams['Silent'] = $true }
+    if ($logFileNameFull) { $installDevEnvIdeWinParams['logFileNameFull'] = $logFileNameFull }
+    $installDevEnvIdeWinParams['ErrorAction'] = 'Inquire' 
+
+    if ($DoPause -or ($KeepOpen -and -not $Silent)) { Wait-AnyKey -Message "Install-DevEnvIdeWin Setup is starting." }
 
     Write-Verbose "######################"
     Write-Verbose  "Copying PowerShell modules to System32 PowerShell modules directory..."
@@ -86,5 +97,5 @@ function Install-DevEnvIdeWin {
 
     Write-Host  "Rust toolchain"
 
-    if ($KeepOpen -and -not $Silent) { Wait-AnyKey -Message "Install-DevEnvIdeWind Setup is completed." }
+    if ($DoPause -or ($KeepOpen -and -not $Silent)) { Wait-AnyKey -Message "Install-DevEnvIdeWind Setup is completed." }
 }

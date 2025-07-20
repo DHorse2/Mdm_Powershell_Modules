@@ -22,7 +22,8 @@ function Update-WFStatusBarStrip {
     [CmdletBinding()]
     param($sender, $e,
         $statusBarLabel,
-        $text
+        $text,
+        $logFileNameFull = ""
     )
     begin {
         try {
@@ -38,13 +39,13 @@ function Update-WFStatusBarStrip {
                 } else { $senderName = $sender.Text }
             } else {
                 $Message = "Update-WFStatusBarStrip the sender is not a Control and has no Parents for $($senderName)."
-                Add-LogText -IsError -Messages $Message
+                Add-LogText -IsError -Message $Message -logFileNameFull $logFileNameFull
                 return
             }
             $parentControl = Find-WFForm -sender $sender -e $e
         } catch {
             $Message = "Update-WFStatusBarStrip error walking Control Parents for $($senderName)."
-            Add-LogText -IsError -ErrorPSItem $_ -Messages $Message
+            Add-LogText -IsError -ErrorPSItem $_ -Message $Message -logFileNameFull $logFileNameFull
             return
         }
     }
@@ -54,18 +55,8 @@ function Update-WFStatusBarStrip {
             if ($parentControl -is [System.Windows.Forms.Form]) {
                 # You can now access the form and its properties
                 $form = $parentControl
-                $statusBarStrip = $null
-                # Assuming $form is your form instance
-                foreach ($control in $form.Controls) {
-                    if ($control -is [System.Windows.Forms.ToolStrip]) {
-                        Write-Verbose "Found a ToolStrip."
-                        if ($control.Items['StdStatusBar']) {
-                            $statusBarStrip = $control
-                            break
-                        }
-                    }
-                }
-                # Ensure you have access to the form
+                $statusBarStrip = Find-WFToolStrip -toolStrip "StdStatusBar" -form $form -logFileNameFull $logFileNameFull
+
                 # $statusBarStrip = $form.Controls['StdStatusBar']
                 if ($statusBarStrip) {
                     if ($statusBarStrip.Items[$statusBarLabel]) {
@@ -80,19 +71,19 @@ function Update-WFStatusBarStrip {
                         Write-Verbose "ToolStrip updated."
                     } else { 
                         $Message = "Update-WFStatusBarStrip Status Bar Label not found for $($senderName)."
-                        Add-LogText -IsError -Messages $Message
+                        Add-LogText -IsError -Message $Message -logFileNameFull $logFileNameFull
                     }
                 } else {
                     $Message = "Update-WFStatusBarStrip Status Bar not found for $($senderName)."
-                    Add-LogText -IsError -Messages $Message
+                    Add-LogText -IsError -Message $Message -logFileNameFull $logFileNameFull
                 }
             } else {
                 $Message = "Update-WFStatusBarStrip the sender Parent does not lead to the form. $($senderName)."
-                Add-LogText -IsError -Messages $Message
+                Add-LogText -IsError -Message $Message -logFileNameFull $logFileNameFull
             }
         } catch {
             $Message = "Update-WFStatusBarStrip error updating Form Status Bar for $($senderName)."
-            Add-LogText -IsError -ErrorPSItem $_ -Messages $Message
+            Add-LogText -IsError -ErrorPSItem $_ -Message $Message -logFileNameFull $logFileNameFull
         }
     }
     end {

@@ -32,7 +32,7 @@
 		[Parameter(Mandatory = $true)]
 		[string]$Message,
 		[Alias('WindowsTitle')]
-		[string]$Title,
+		[string]$title,
 		[Alias('DefaultText')]
 		[string]$DefaultInputText
 	)
@@ -54,8 +54,8 @@
 	{
 		if ($PSCmdlet.ShouldProcess("InputBox", "Show a new Input box with the following message: $Message"))
 		{
-			#[Microsoft.VisualBasic.Interaction]::InputBox($Message, $Title, $DefaultInputText, $XPosition, $YPosition)
-			Write-output $([Microsoft.VisualBasic.Interaction]::InputBox($Message, $Title, $DefaultInputText))
+			#[Microsoft.VisualBasic.Interaction]::InputBox($Message, $title, $DefaultInputText, $XPosition, $YPosition)
+			Write-output $([Microsoft.VisualBasic.Interaction]::InputBox($Message, $title, $DefaultInputText))
 		}
 	}
 } #New-InputBox

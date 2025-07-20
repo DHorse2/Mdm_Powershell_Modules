@@ -10,6 +10,6 @@ function Set-WFTabPage {
     if ($tabPage) {
         $tabControl.SelectedTab = $tabPage
     } else {
-        Write-Output "TabPage '$tabPageText' not found."
+        Write-Verbose "TabPage '$tabPageText' not found."
     }
 }

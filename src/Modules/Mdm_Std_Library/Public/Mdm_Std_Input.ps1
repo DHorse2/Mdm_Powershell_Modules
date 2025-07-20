@@ -31,7 +31,7 @@ function Wait-ForKeyPress {
     Write-Host -NoNewline "" -ForegroundColor $ForegroundColor -BackgroundColor $BackgroundColor
 
     # $keyPressed = $false
-    # $job = Start-Job -ScriptBlock {
+    # $global:job = Start-Job -ScriptBlock {
     #     [Console]::ReadKey($true) | Out-Null
     #     return $true
     # }
@@ -39,14 +39,14 @@ function Wait-ForKeyPress {
     # $duration = 10
     # for ($i = 0; $i -lt $duration; $i++) {
     #     Start-Sleep -Seconds 1
-    #     if ($job.HasExited) {
-    #         $keyPressed = $job.Receive()
+    #     if ($global:job.HasExited) {
+    #         $keyPressed = $global:job.Receive()
     #         break
     #     }
     # }
     # # Clean up the job
-    # Stop-Job $job
-    # Remove-Job $job
+    # Stop-Job $global:job
+    # Remove-Job $global:job
     return $keyPressed
 }
 function Wait-AnyKey {
@@ -76,25 +76,29 @@ function Wait-AnyKey {
         [string]$Message = "",
         [Parameter(Mandatory = $false)]
         [int]$timeout = -1,        
+        [string]$logFileNameFull = "",
         [switch]$DoForce,
         [switch]$DoVerbose,
         [switch]$DoDebug,
         [switch]$DoPause
     )
 
-    Write-Debug "$Message Pause: $global:DoPause"
+    Write-Debug "$Message Pause: $global:app.DoPause"
     if ([string]::IsNullOrEmpty($Message)) {
         $Message = $global:msgAnykey
     }
     if ([string]::IsNullOrEmpty($Message)) {
         $Message = 'Enter any key to continue: '
     }
-    Set-StdGlobals `
-        -DoPause:$DoPause `
-        -DoVerbose:$DoVerbose `
-        -DoDebug:$DoDebug
-    # Write-Host "$Message Pause: $global:DoPause"
-    # if ($global:DoPause) {
+    $localParams = @{}
+    if ($DoForce) { $localParams['DoForce'] = $true }
+    if ($DoVerbose) { $localParams['DoVerbose'] = $true }
+    if ($DoDebug) { $localParams['DoDebug'] = $true }
+    if ($DoPause) { $localParams['DoPause'] = $true }
+    Set-StdGlobals @localParams
+
+    # Write-Host "$Message Pause: $global:app.DoPause"
+    # if ($global:app.DoPause) {
     # Check if running PowerShell ISE
     if ($psISE) {
         Add-Type -AssemblyName System.Windows.Forms
@@ -123,7 +127,7 @@ function Wait-CheckDoPause {
 #>
     [CmdletBinding()]
     param ()
-    return $global:DoPause
+    return $global:app.DoPause
 }
 function Wait-YorNorQ {
     <#
@@ -148,13 +152,14 @@ function Wait-YorNorQ {
     param(
         [Parameter(Mandatory = $false)]
         [string]$Message = "",
+        [string]$logFileNameFull = "",
         [switch]$DoForce,
         [switch]$DoVerbose,
         [switch]$DoDebug,
         [switch]$DoPause
     )
     # ($local:DoPause, $local:DoVerbose, $local:DoDebug, $local:message ) = Get-StdGlobals
-    # if ($global:DoPause) {
+    # if ($global:app.DoPause) {
     if ([string]::IsNullOrEmpty($Message)) {
         $Message = $global:msgYorN
     }

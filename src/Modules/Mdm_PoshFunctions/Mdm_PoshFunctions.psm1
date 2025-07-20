@@ -252,3 +252,9 @@ enum PFUserAccountControl {
 }
 
 # EOF: PoshFunctions.psm1
+# Session Arrays
+if (-not $global:moduleArray) {
+    $global:moduleArray = @{}
+    $global:moduleSequence = 0
+}
+if (-not $global:moduleArray['Mdm_PoshFunctions']) { $global:moduleArray['Mdm_PoshFunctions'] = "Imported" }

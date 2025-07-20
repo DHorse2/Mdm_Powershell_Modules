@@ -85,7 +85,7 @@
 			}
 		}
 		
-		if ($Items -is [Array])
+		if ($Items -is [array])
 		{
 			$ListView.BeginUpdate()
 			foreach ($item in $Items)

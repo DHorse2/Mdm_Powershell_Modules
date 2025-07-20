@@ -1,1 +1,0 @@
-. .\src\Modules\Mdm_Modules\Build.ps1

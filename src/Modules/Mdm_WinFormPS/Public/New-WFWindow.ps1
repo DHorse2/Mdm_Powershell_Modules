@@ -5,7 +5,7 @@ Get-Assembly -AssemblyName "System.Windows.Forms"
 # WindowClass
 # $path = "$global:moduleRootPath\Mdm_WinFormPS\Public\WindowClass.psm1"
 # $path = "$($(Get-Item $PSScriptRoot).FullName)\WindowClass.psm1"
-# . "$path"
+# . $path @global:combinedParams
 # $path = "$global:moduleRootPath\Mdm_WinFormPS\Public\WindowClass.psm1"
 # Import-Module -Name $path
 
@@ -17,9 +17,9 @@ function New-WFWindow {
         [MenuBar[]]$menuBarArray = $null,
         [int]$formIndex = 0,
         [MarginClass]$margins,
-        [string]$Name,
-        [string]$Title,
-        [string]$TextInput,
+        [string]$Name = "",
+        [string]$title = "",
+        [string]$TextInput = "",
         [array]$Buttons,
         [System.Windows.Forms.ToolStripMenuItem[]]$formMenuActions,
         [object[]]$formToolStripActions,
@@ -29,6 +29,7 @@ function New-WFWindow {
         [switch]$DoControls,
         [switch]$DoEvents,
         # [switch]$DoTabIndex,
+        [string]$logFileNameFull = "",
         $state = $null
     )
     begin {
@@ -38,32 +39,31 @@ function New-WFWindow {
         try {
             if (-not $formsArray) {
                 # NOTE: Passing params requires a lot of boilerplate in PS
-                $functionParams = @{}
-                if ($formMenuActions) { $functionParams['formMenuActions'] = $formMenuActions }
-                if ($formToolStripActions) { $functionParams['formToolStripActions'] = $formToolStripActions }
+                $localParams = @{}
+                if ($formMenuActions) { $localParams['formMenuActions'] = $formMenuActions }
+                if ($formToolStripActions) { $localParams['formToolStripActions'] = $formToolStripActions }
                 if (-not $menuBar) {
                     if ($formMenuActions) {
                         [MenuBar]$menuBar = New-WFMenuStrip `
-                            -formMenuActions $formMenuActions `
-                            -formToolStripActions $formToolStripActions `
-                            @functionParams
+                            -logFileNameFull $logFileNameFull `
+                            @localParams
+
                     } else {
-                        [MenuBar]$menuBar = New-WFMenuStrip @functionParams
+                        [MenuBar]$menuBar = New-WFMenuStrip -logFileNameFull $logFileNameFull
                     }
                 }
-                if ($DoAll -or $DoControls) { $functionParams['DoControls'] = $true }
-                if ($DoAll -or $DoEvents) { $functionParams['DoEvents'] = $true }
+                if ($DoAll -or $DoControls) { $localParams['DoControls'] = $true }
+                if ($DoAll -or $DoEvents) { $localParams['DoEvents'] = $true }
                 # Menu bar handled in this function
-                if ($DoMenuBars) { $functionParams['DoMenuBars'] = $true }
-                if ($menuBar) { $functionParams['menuBar'] = $menuBar }
-                if ($Title) { $functionParams['Title'] = $Title }
-                if ($Name) { $functionParams['Name'] = $Name }
-                if ($margins) { $functionParams['margins'] = $margins }
-                if ($Buttons) { $functionParams['Buttons'] = $Buttons }
-                if ($state) { $functionParams['state'] = $state }
-                [System.Windows.Forms.Form]$form1 = New-WFForm @functionParams
-                # NOTE: This does not work in PS:
-                # -Title:$Title -margins:$margins `
+                if ($DoMenuBars) { $localParams['DoMenuBars'] = $true }
+                if ($menuBar) { $localParams['menuBar'] = $menuBar }
+                if ($title) { $localParams['Title'] = $title }
+                if ($Name) { $localParams['Name'] = $Name }
+                if ($margins) { $localParams['margins'] = $margins }
+                if ($Buttons) { $localParams['Buttons'] = $Buttons }
+                if ($state) { $localParams['state'] = $state }
+                [System.Windows.Forms.Form]$form1 = New-WFForm @localParams
+                # TODO Hold NOTE: This does not work in PS: # -Title:$title -margins:$margins `
                 [System.Windows.Forms.Form[]]$formsArray = [System.Windows.Forms.Form[]] @([System.Windows.Forms.Form]$form1)
                 [MenuBar[]]$menuBarArray = [MenuBar[]] @([MenuBar]$menuBar)
             }
@@ -73,11 +73,10 @@ function New-WFWindow {
                 if (-not $menuBar) { 
                     if ($formMenuActions) {
                         [MenuBar]$menuBar = New-WFMenuStrip `
-                            -formMenuActions $formMenuActions `
-                            -formToolStripActions $formToolStripActions `
-                            @functionParams
+                            -logFileNameFull $logFileNameFull `
+                            @localParams
                     } else {
-                        [MenuBar]$menuBar = New-WFMenuStrip 
+                        [MenuBar]$menuBar = New-WFMenuStrip -logFileNameFull $logFileNameFull
                     }
                 }
                 [MenuBar[]]$menuBarArray = [MenuBar[]] @([MenuBar]$menuBar)
@@ -95,7 +94,8 @@ function New-WFWindow {
                     0,
                     $null, 
                     $margins, 
-                    $state
+                    $state,
+                    $logFileNameFull
                 )
                 
             } else {
@@ -108,7 +108,8 @@ function New-WFWindow {
                 $window.state = [System.Windows.WindowState]::new()
             }
         } catch {
-            Add-LogText -IsError -ErrorPSItem $_ -Message "New-WFWindow: Unable to create window."
+            $Message = "New-WFWindow: Unable to create window."
+            Add-LogText -IsError -ErrorPSItem $_ -Message $Message -logFileNameFull $logFileNameFull
         }
     }
     end {

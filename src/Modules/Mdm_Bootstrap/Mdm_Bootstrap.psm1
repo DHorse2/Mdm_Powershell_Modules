@@ -1,35 +1,36 @@
 Using module "..\Mdm_Std_Library\Mdm_Std_Library.psm1"
 
-Write-Host "Mdm_Bootstrap.psm1"
+$moduleName = "Mdm_Bootstrap.psm1"
+if ($DoVerbose) { Write-Host "== $moduleName ==" -ForegroundColor Green }
 $now = Get-Date -UFormat '%Y%m%d%R%z'
 #region function Wrappers
 # Build and Update
-function Invoke-Build {
-    [CmdletBinding()]
-    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
+function Invoke-Build_Mdm {
+    # [CmdletBinding()]
+    # param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
     process {
-        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Build.ps1"
-        . "$path"
-        # . "$global:moduleRootPath\Build.ps1"
+        $functionParams = $PSBoundParameters
+        $path = "$($(get-item $PSScriptRoot).FullName)\Public\Build_Mdm.ps1"
+        . $path @functionParams
     }
 }
-function Invoke-Update {
-    [CmdletBinding()]
-    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
+function Invoke-Update_Mdm {
+    # [CmdletBinding()]
+    # param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
     process {
-        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Update.ps1"
-        . "$path"
-        # . "$global:moduleRootPath\Update.ps1"
+        $functionParams = $PSBoundParameters
+        $path = "$($(get-item $PSScriptRoot).FullName)\Public\Update_Mdm.ps1"
+        . $path @functionParams
     }
 }
 # Environment
 function Invoke-DevEnv_Module_Reset {
-    [CmdletBinding()]
-    param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
+    # [CmdletBinding()]
+    # param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
     process {
-        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Bootstrap\DevEnv_Module_Reset.ps1"
-        . "$path"
-        # . "$global:moduleRootPath\Mdm_Bootstrap\DevEnv_Module_Reset.ps1"
+        $functionParams = $PSBoundParameters
+        $path = "$($(get-item $PSScriptRoot).FullName)\Public\DevEnv_Module_Reset.ps1"
+        . $path @functionParams
     }
 }
 # Go To Locations
@@ -38,7 +39,7 @@ function Enter-ProjectRoot {
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
     process {
         $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Bootstrap\Public\GoToProjectRoot.ps1"
-        . "$path"
+        . $path @global:combinedParams
         # . "$global:moduleRootPath\Mdm_Bootstrap\Public\GoToProjectRoot.ps1"
     }
 }
@@ -47,7 +48,7 @@ function Enter-ModuleRoot {
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
     process {
         $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Bootstrap\Public\GoToModuleRoot.ps1"
-        . "$path"
+        . $path @global:combinedParams
         # . "$global:moduleRootPath\Mdm_Bootstrap\Public\GoToModuleRoot.ps1"
     }
 }
@@ -56,7 +57,7 @@ function Enter-GoToBootstrap {
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce)
     process {
         $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Bootstrap\Public\GoToBootstrap.ps1"
-        . "$path"
+        . $path @global:combinedParams
         # . "$global:moduleRootPath\Mdm_Bootstrap\Public\GoToBootstrap.ps1"
     }
 }
@@ -118,7 +119,7 @@ function Initialize-Dev_Env_Win {
         There should be not requirement to update the path
         assuming you install to a powershell directory.
     .OUTPUTS
-        Preparse the Windows OS for development.
+        Prepares the Windows OS for development.
 #>
     [CmdletBinding()]
     param (
@@ -138,8 +139,8 @@ function Initialize-Dev_Env_Win {
         # CONTINUE
         # Project settings and paths
         # Get-ModuleRootPath
-        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Modules\Project.ps1"
-        . "$path"
+        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Std_Library\lib\ProjectLib.ps1"
+        . $path @global:combinedParams
         $scriptDrive = Split-Path -Path "$global:moduleRootPath" -Qualifier
         Set-Location $scriptDrive
         Set-Location -Path "$global:moduleRootPath"
@@ -182,9 +183,9 @@ function Initialize-Dev_Env_Win {
 function Add-RegistryPath {
     <#
     .SYNOPSIS
-        Add to HKLM Environtment Path
+        Add to HKLM Environment Path
     .DESCRIPTION
-        This loads the specifiect Path key (PATH by default) and adds the new path to it.
+        This loads the specific Path key (PATH by default) and adds the new path to it.
     .PARAMETER envPathToUpdate
         The Path key to use.
     .PARAMETER moduleRootPath
@@ -276,7 +277,7 @@ Function Assert-RegistryValue {
     .NOTES
         Source: https://stackoverflow.com/questions/5648931/test-if-registry-value-exists
     .OUTPUTS
-        True/Fale if the key exists.
+        True/False if the key exists.
         null/ItemProperty if PassThur switch is present.
 #>    [CmdletBinding()]
     param(
@@ -310,10 +311,10 @@ function Get-ModuleRootPath {
     [CmdletBinding()]
     param (
         $folderPath,
-        [switch]$DoClear
+        [switch]$DoClearGlobal
     )
     begin {
-        if ($DoClear -or $folderPath) {
+        if ($DoClearGlobal -or $folderPath) {
             $global:moduleRootPath = $null
             $global:projectRootPath = $null
         }
@@ -321,11 +322,11 @@ function Get-ModuleRootPath {
     process {
         # Project settings and paths
         # Get-ModuleRootPath
-        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Modules\Project.ps1"
-        . "$path"
+        $path = "$($(get-item $PSScriptRoot).Parent.FullName)\Mdm_Std_Library\lib\ProjectLib.ps1"
+        . $path @global:combinedParams
         # if (-not $global:moduleRootPath) {
         #     if (-not $folderPath) { $folderPath = (get-item $PSScriptRoot).FullName }
-        #     $folderName = Split-Path $folderPath -Leaf 
+        #     $folderName = Split-Path $folderPath -Parent 
         #     if ( $folderName -eq "Public" -or $folderName -eq "Private" ) {
         #         $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.Parent.FullName
         #     } else { $global:moduleRootPath = (get-item $PSScriptRoot ).Parent.FullName }
@@ -340,7 +341,7 @@ function Get-ModuleRootPath {
 # This works with uninstalled Modules (both)
 # $importName = "Mdm_Std_Library"
 # Get-ModuleRootPath
-# # if (-not (Get-Module -Name $importName)) {
+# # if (-not (Get-Module -moduleName $importName)) {
 # Import-Module -Name "$global:moduleRootPath\$importName" -Force -ErrorAction Inquire
 # }
 . "$global:moduleRootPath\Mdm_Bootstrap\Public\DevEnv_Install_Modules_Win.ps1"
@@ -366,6 +367,9 @@ function Get-ModuleRootPath {
 Export-ModuleMember -Function `
     DevEnv_Install_Modules_Win, `
     Initialize-Dev_Env_Win, `
+    # Update
+    Invoke-Build_Mdm, `
+    Invoke-Update_Mdm, `
     # Reset `
     Invoke-DevEnv_Module_Reset, `
     # Utils `
@@ -375,14 +379,10 @@ Export-ModuleMember -Function `
     Get-ModuleRootPath, `
     # GoTo Location `
     Enter-ProjectRoot, `
-    Enter-ModuleRoot, `
-    Enter-GoToBootstrap, `
-    # Build `
-    Invoke-Build, `
-    Invoke-Update
+    Enter-ModuleRoot
 
-Set-Alias -Name Build -Value Invoke-Build
-Set-Alias -Name Update -Value Invoke-Update
+Set-Alias -Name Build_Mdm -Value Invoke-Build_Mdm
+Set-Alias -Name Update_Mdm -Value Invoke-Update_Mdm
 
 Set-Alias -Name GoProject -Value Enter-ProjectRoot
 Set-Alias -Name GoModule -Value Enter-ModuleRoot
@@ -392,11 +392,17 @@ Set-Alias -Name DevEnvReset -Value Invoke-DevEnv_Module_Reset
 Set-Alias -Name IDevEnvModules -Value DevEnv_Install_Modules_Win
 # Export the aliases
 Export-ModuleMember -Alias `
-    Build, `
-    Update, `
+    Build_Mdm, `
+    Update_Mdm, `
     GoProject, `
     GoModule, `
     GoBootstrap, `
     DevEnvReset, `
     IDevEnvModules
 #endregion
+# Session Arrays
+if (-not $global:moduleArray) {
+    $global:moduleArray = @{}
+    $global:moduleSequence = 0
+}
+if (-not $global:moduleArray['Mdm_Bootstrap']) { $global:moduleArray['Mdm_Bootstrap'] = "Imported" }

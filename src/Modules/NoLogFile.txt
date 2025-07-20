@@ -1,0 +1,5 @@
+06/10/2025 10:05:21 - Check-Security - Microsoft.PowerShell.Security. 
+Check-Security Import Okay. 
+DevEnv_LanguageMode "Full". 
+Error Importing Module Microsoft.PowerShell.Security. The term 'DevEnv_LanguageMode' is not recognized as a name of a cmdlet, function, script file, or executable program.
+Check the spelling of the name, or if a path was included, verify that the path is correct and try again.. 

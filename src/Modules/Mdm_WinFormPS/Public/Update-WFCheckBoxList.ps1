@@ -1,6 +1,6 @@
 
-# Build-WFCheckBoxList
-function Build-WFCheckBoxList {
+# Update-WFCheckBoxList
+function Update-WFCheckBoxList {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory = $true)]
@@ -10,22 +10,24 @@ function Build-WFCheckBoxList {
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [System.Windows.Forms.Form]$form,
+        [string]$logFileNameFull = "",
         [string]$Name,
         [System.Windows.Forms.GroupBox]$groupBox,
         [string]$groupBoxLabel = "",
         [switch]$NotDialog,
         [MarginClass]$margins,
-        [int]$xPos = $global:displayWindow.Top,
-        [int]$yPos = $global:displayWindow.Top,
+        [int]$xPos = $global:displayMargins.Left,
+        [int]$yPos = 0, # $global:displayWindow.Top,
         [int]$xWidth = 100,
         [int]$yHeight = 30,
-        [int]$groupHeightMax = 300
+        [int]$groupBoxHeightMax = 300
     )
     begin { 
         [Collections.ArrayList]$checkboxes = @()
         # Create a Graphics object
         $graphics = $form.CreateGraphics()
         $xTop = $xPos
+        $yPos += 10 # + padding
         $yTop = $yPos
         if (-not $groupBox) {
             # Create a GroupBox to hold the checkboxes
@@ -41,14 +43,13 @@ function Build-WFCheckBoxList {
             # $yPos += [Math]::Max($size.Height, $yPos)
         }
         if ($Name) { $groupBox.Name = $Name }
-        $yPos += 10 # + padding
         # Common event handler for CheckBox click events
         $global:checkboxEventHandler = {
             param($sender, $e)
             Update-WFDataSet -sender $sender -e $e
-            $global:moduleDataChanged = $true
+            $global:appDataChanged = $true
             $textOut = "Changed"
-            Set-WFButtonState -sender $sender -e $e -text $textOut
+            Set-WFButtonState -sender $sender -e $e -text $textOut -logFileNameFull $logFileNameFull
         }
         # Common event handler for CheckBox click events
         # $global:checkboxEventHandler = {
@@ -90,7 +91,7 @@ function Build-WFCheckBoxList {
                 foreach ($checkboxItem in $jsonCheckboxes.items) {
                     if ($checkboxItem -is [PSCustomObject]) {
                         if ($checkboxItem.label.Length -gt $xWidthMax) { $xWidthMax = $checkboxItem.label.Length }
-                        if ($yPos -ge $groupHeightMax) {
+                        if ($yPos -ge $groupBoxHeightMax) {
                             $yPosMax = [Math]::Max($yPos, $yHeightMax)
                             $yPos = $yTop
                             $xPos += ($xWidth + 20)
@@ -103,6 +104,8 @@ function Build-WFCheckBoxList {
                         if ($checkboxItem.label.Length -gt $xWidthMeasured) {
                             $xWidthMeasured = $checkboxItem.label.Length
                         }
+                        $checkbox.Margin = $global:displayMargins.Margin
+                        $checkbox.Padding = $global:displayMargins.Padding
                         $checkbox.Location = New-Object System.Drawing.Point($xPos, $yPos)
                         $xTmp = $xWidth
                         $yTmp = $yHeight - 5
@@ -110,7 +113,7 @@ function Build-WFCheckBoxList {
                         $size = $graphics.MeasureString($checkbox.Text, $checkbox.Font)
                         # Set the label width based on the measured width
                         $xTmp = [int]$size.Width + 50 + 10  # + some padding
-                        # Adjust column width updward dynamically
+                        # Adjust column width upward dynamically
                         if ($xTmp -gt $xWidth) { $xWidth = $xTmp }
                         # Actual Height
                         $yTmp = [int]$size.Height
@@ -121,19 +124,19 @@ function Build-WFCheckBoxList {
                         $groupBox.Controls.Add($checkbox) 
                         # }
                         $checkbox.Add_Click($global:checkboxEventHandler)
-                        $yPos += $yTmp + 10 # + padding
+                        $yPos += $yTmp
                         # $yPos += $yHeight
                         if ($yPos -ge $yPosMax) { $yPosMax = $yPos }
                     }
                 }
             }
             # $xPosMax = $xPos + $xWidthMax
-            # $yPosMax += 20 # + padding
+            $yPosMax += $global:displayMargins.Bottom # + padding
             # Adjust the size of the group box or form
             $groupBox.Size = New-Object System.Drawing.Size($xPosMax, $yPosMax)
         } catch {
             $Message = "An error occurred while building the checkbox list ($checkbox)."
-            Add-LogText -Messages $Message -IsError -ErrorPSItem $_
+            Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
             return $null
         }
         return $groupBox 

@@ -1,0 +1,5 @@
+06/10/2025 10:08:01 - Check-Security - Microsoft.PowerShell.Security. 
+Check-Security Import Okay. 
+DevEnv_LanguageMode "Full". 
+Your Session language mode (ConstrainedLanguage) can require "FullLanguage" mode. 
+Error Importing Module Microsoft.PowerShell.Security. PowerShell updated your execution policy successfully, but the setting is overridden by a policy defined at a more specific scope.  Due to the override, your shell will retain its current effective execution policy of Bypass. Type "Get-ExecutionPolicy -List" to view your execution policy settings. For more information please see "Get-Help Set-ExecutionPolicy".. 

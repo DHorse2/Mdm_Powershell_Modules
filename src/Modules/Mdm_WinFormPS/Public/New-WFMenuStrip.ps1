@@ -22,7 +22,8 @@ function New-WFMenuStrip {
         [System.Windows.Forms.ToolStripMenuItem[]]$formMenuActions,
         [object[]]$formToolStripActions,
         [switch]$SkipFileMenu,
-        [switch]$SkipHelpMenu
+        [switch]$SkipHelpMenu,
+        [string]$logFileNameFull = ""
     )
     begin {
         # User Menu
@@ -123,7 +124,8 @@ function New-WFMenuStrip {
                     try {
                         [void]$menuMainStrip.Items.Add($menuItem)
                     } catch {
-                        Add-LogText -IsError -ErrorPSItem $_ "New-WFMenuStrip Invalid MenuStrip Item: $menuItem."
+                        $Message = "New-WFMenuStrip Invalid MenuStrip Item: $menuItem."
+                        Add-LogText -IsError -ErrorPSItem $_ -Message $Message -logFileNameFull $logFileNameFull
                     }
                 }
             }
@@ -148,7 +150,7 @@ function New-WFMenuStrip {
                     try {
                         [void]$mainToolStrip.Items.Add($control)
                     } catch {
-                        Add-LogText -IsError -ErrorPSItem $_ "New-WFMenuStrip Invalid ToolStrip Control: $control."
+                        Add-LogText -IsError -ErrorPSItem $_ "New-WFMenuStrip Invalid ToolStrip Control: $control." -logFileNameFull $logFileNameFull
                     }
                 }
             }
@@ -180,7 +182,8 @@ function New-WFMenuStrip {
             [void]$StatusBarStrip.Items.Add($statusBarMessage)
             #endregion
         } catch {
-            Add-LogText -IsError -ErrorPSItem $_ "New-WFMenuStrip Failed to create menu strip."
+            $Message = "New-WFMenuStrip Failed to create menu strip."
+            Add-LogText -IsError -ErrorPSItem $_ $Message -logFileNameFull $logFileNameFull
         }
     }
     end {
@@ -192,7 +195,8 @@ function New-WFMenuStrip {
                 # $form.Controls.Add([System.Windows.Forms.ToolStrip]$statusBarStrip)
             }
         } catch {
-            Add-LogText -IsError -ErrorPSItem $_ "New-WFMenuStrip Failed to add menu strip to form. $_"
+            $Message = "New-WFMenuStrip Failed to add menu strip to form. $_"
+            Add-LogText -IsError -ErrorPSItem $_ $Message -logFileNameFull $logFileNameFull
         }
         # things are valid by now
         $result = [MenuBar]::new()
@@ -209,14 +213,14 @@ function New-WFMenuStrip {
 function DoShowAbout {
     param($sender, $e)
     Write-Host "DoShowAbout"
-    Update-WFStatusBarStrip -sender $global:window "DoShowAbout" -statusBarLabel 'statusBarActionState'
+    Update-WFStatusBarStrip -sender $global:window "DoShowAbout" -statusBarLabel 'statusBarActionState' -logFileNameFull $logFileNameFull
     # TODO DoShowAbout 
     [void] [System.Windows.Forms.MessageBox]::Show( “PowerShell GUI script with dialog elements and menus v1.0”, “About script”, “OK”, “Information” )
 }
 function DoOpenFile {
     param($sender, $e, $initialDirectory, $filter)
     Write-Host "DoOpenFile"
-    Update-WFStatusBarStrip -sender $global:window -"DoOpenFile" -statusBarLabel 'statusBarActionState'
+    Update-WFStatusBarStrip -sender $global:window -"DoOpenFile" -statusBarLabel 'statusBarActionState' -logFileNameFull $logFileNameFull
     if (-not $initialDirectory) { $initialDirectory = $global:fileDialogInitialDirectory }
     if (-not $filter) { $filter = $global:fileDialogFilter }
 
@@ -234,28 +238,29 @@ function DoOpenFile {
         #     -Name $dataSet `
         #     -parentObject $dataOut `
         #     -Append `
-        #     -jsonItem $filePath
+        #     -jsonItem $filePath -logFileNameFull $logFileNameFull
+        # $fileResult = $global:jsonDataResult
         # Update Buttons and state
         $global:dataSet = "Data"
         $global:dataSetState = "Custom"
-        $dataSetLastUpdate = Read-WFDataSet -fileNameFull $filePath -dataSetState $global:dataSetState
+        $dataSetLastUpdate = Read-WFDataSet -fileNameFull $filePath -dataSetState $global:dataSetState -logFileNameFull $logFileNameFull
     }
 }
 function DoFileSave {
     param($sender, $e)
     Write-Host "DoFileSave"
-    Update-WFStatusBarStrip -sender $global:window -e "DoFileSave" -statusBarLabel 'statusBarActionState'
-    if ($global:moduleDataChanged) {
-        Write-WFDataSet -sender $sender -e $e -commandSource "Save"
+    Update-WFStatusBarStrip -sender $global:window -e "DoFileSave" -statusBarLabel 'statusBarActionState' -logFileNameFull $logFileNameFull
+    if ($global:appDataChanged) {
+        Write-WFDataSet -sender $sender -e $e -commandSource "Save" -logFileNameFull $logFileNameFull
     }
 }
 function DoFileSaveAs {
     param($sender, $e)
     Write-Host "DoFileSaveAs"
-    Update-WFStatusBarStrip -sender $global:window -e "DoFileSaveAs" -statusBarLabel 'statusBarActionState'
+    Update-WFStatusBarStrip -sender $global:window -e "DoFileSaveAs" -statusBarLabel 'statusBarActionState' -logFileNameFull $logFileNameFull
     Function Get-FileName {
         param($sender, $e, $initialDirectory, $filter, $fileName, $title)
-        Update-WFStatusBarStrip -sender $global:window -e "Get-FileName" -statusBarLabel 'statusBarActionState'
+        Update-WFStatusBarStrip -sender $global:window -e "Get-FileName" -statusBarLabel 'statusBarActionState' -logFileNameFull $logFileNameFull
         if (-not $initialDirectory -and -not $fileName) { $initialDirectory = $global:fileDialogInitialDirectory }
         if (-not $filter) { $filter = $global:fileDialogFilter }
         $SaveFileDialog = New-Object System.Windows.Forms.SaveFileDialog
@@ -274,14 +279,14 @@ function DoFileSaveAs {
         if ($SaveFileDialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
             //Get the path of specified file
             $savefile = $SaveFileDialog.FileName
-            Write-WFDataSet -sender $global:window -e $e -fileNameFull $saveFile -commandSource "SaveAs"
+            Write-WFDataSet -sender $global:window -e $e -fileNameFull $saveFile -commandSource "SaveAs" -logFileNameFull $logFileNameFull
             # Update Buttons and state
         }
         $SaveFileDialog.FileName
     }
     # Get-FileName -initialDirectory ".\"
     $initialDirectory
-    $fileNameFull = $global:moduleDataArray['source']
+    $fileNameFull = $global:appDataArray['source']
     if (-not $fileNameFull) {
         $dataSourceName = "$global:appName"
         if (-not $dataSourceName) { $dataSourceName = "DataSet" }
@@ -297,13 +302,13 @@ function DoFileSaveAs {
 function DoCloseForm { 
     param($sender, $e)
     Write-Host "DoCloseForm"
-    Update-WFStatusBarStrip -sender $global:window -e "DoCloseForm" -statusBarLabel 'statusBarActionState'
+    Update-WFStatusBarStrip -sender $global:window -e "DoCloseForm" -statusBarLabel 'statusBarActionState' -logFileNameFull $logFileNameFull
     $form.Close() 
 }
 function DoShowHelp { 
     param($sender, $e)
     Write-Host "DoShowHelp"
-    Update-WFStatusBarStrip -sender $global:window -e "DoShowHelp" -statusBarLabel 'statusBarActionState'
+    Update-WFStatusBarStrip -sender $global:window -e "DoShowHelp" -statusBarLabel 'statusBarActionState' -logFileNameFull $logFileNameFull
     # TODO DoShowHelp 
 }        
 #endregion

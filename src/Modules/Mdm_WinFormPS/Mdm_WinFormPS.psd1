@@ -40,15 +40,10 @@
 
     # Functions to export from this module
     FunctionsToExport    = @(
-        'Load-WFDataGridView',
-        'Load-WFListBox',
-        'Refresh-WFDataGridView',
         'Add-WFDataGridViewColumn',
         'Add-WFDataGridViewRow',
         'Add-WFListViewItem',
         'Add-WFRichTextBoxText',
-        'Build-WFCheckBoxList',
-        'Build-WFFormControls',
         'Clear-WFDataGridViewSelection',
         'Clear-WFErrorProvider',
         'Clear-WFListBox',
@@ -64,6 +59,8 @@
         'Enable-WFTabControl',
         'Enable-WFTextBox',
         'Find-WFDataGridViewValue',
+        'Find-WFForm',
+        'Find-WFToolStrip',
         'Get-WFCheckedListBoxItem',
         'Get-WFComboboxItem',
         'Get-WFDataSet',
@@ -73,6 +70,8 @@
         'Get-WFListViewItem',
         'Import-WFDataGridView',
         'Import-WFListBox',
+        'Load-WFDataGridView',
+        'Load-WFListBox',
         'New-WFBalloonNotification',
         'New-WFForm',
         'New-WFInputBox',
@@ -83,6 +82,7 @@
         'New-WFSpeakerBeep',
         'New-WFWindow',
         'Read-WFDataSet'
+        'Refresh-WFDataGridView',
         'Remove-WFListBoxItem',
         'Reset-WFDataGridViewFormat',
         'Set-WFButtonLocation',
@@ -95,12 +95,14 @@
         'Set-WFForm',
         'Set-WFListViewColumn',
         'Set-WFRichTextBox',
-        'Set-WFTabPage',
         'Show-WFForm',
+        'Update-WFButtonBar',
+        'Update-WFCheckBoxList',
         'Update-WFDataGridView',
         'Update-WFDataSet',
+        'Update-WFFormControls',
         'Update-WFStatusBarStrip',
-        'WindowStateDefault',
+        'ScriptDefault',
         'Write-WFDataSet'
         )
 

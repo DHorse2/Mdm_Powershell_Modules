@@ -24,10 +24,23 @@ function Install-DevEnvLlmWin {
 #>
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce,
+    [string]$logFileNameFull = "",
     [switch]$KeepOpen,
     [switch]$Silent
     )
+
+    $installDevEnvLlmWinParams = @{}
+    if ($DoForce) { $installDevEnvLlmWinParams['DoForce'] = $true }
+    if ($DoVerbose) { $installDevEnvLlmWinParams['DoVerbose'] = $true }
+    if ($DoDebug) { $installDevEnvLlmWinParams['DoDebug'] = $true }
+    if ($DoPause) { $installDevEnvLlmWinParams['DoPause'] = $true }
+    # if ($KeepOpen) { $installDevEnvLlmWinParams['KeepOpen'] = $true }
+    # if ($Silent) { $installDevEnvLlmWinParams['Silent'] = $true }
+    if ($logFileNameFull) { $installDevEnvLlmWinParams['logFileNameFull'] = $logFileNameFull }
+    $installDevEnvLlmWinParams['ErrorAction'] = 'Inquire' 
+
     Initialize-Std -$DoPause -$DoVerbose -$DoDebug
+
     Write-Verbose "######################"
     Write-Verbose  "Copying PowerShell modules to System32 PowerShell modules directory..."
     Write-Verbose "Script Security Check and Elevate"
@@ -64,5 +77,5 @@ function Install-DevEnvLlmWin {
 
     Write-Host "Development environment setup is complete."
 
-    if ($KeepOpen -and -not $Silent) { Wait-AnyKey -Message "Install-DevEnvLlmWin Setup is completed." }
+    if ($DoPause -or ($KeepOpen -and -not $Silent)) { Wait-AnyKey -Message "Install-DevEnvLlmWin Setup is completed." }
 }

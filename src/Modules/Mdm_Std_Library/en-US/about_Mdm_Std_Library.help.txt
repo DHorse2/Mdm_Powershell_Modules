@@ -10,58 +10,91 @@ DESCRIPTION
     This includes managing state, permissions, exceptions, path and files.
     Also other functions like pausing, prompting, displaying and searching.
     Also, help functions to auto-generate help more concisely & verbose.
+    Finally, Standard System.Windows.Forms objects for build GUI's
+    There is an opinionated window and database architecture.
     The universally available switches appear here.
 
     Global Setting
     These are initialized on the first import. 
-    1. You can set them permanently. They are found at the top of the psm1 file.
+    1. You can set them permanently. They are found at the top of the ProjectRun.psm1 file.
     2. You can also set them after the std include for script specific requirements.
     For example, altering the logFileName as needed. 
 
 PARAMETER DoPause
-    Switch: Pause between steps.
+    Switch: Pause between steps and perform occasional prompts.
 
 PARAMETER DoVerbose
-    Switch: Verbose output and prompts.
+    Switch: Verbose output.
 
 PARAMETER DoDebug
-    Switch: Debug this script.
+    Switch: Debug this script with a high level of display output.
+
+PARAMETER DoForce
+    Switch: Force basic PS functions such as imports.
 
 OUTPUTS
     The Standard Functions Module
     
 GLOBALS
+    The following includes import basic information about the module.
+    These are things you will or might set.
+        appName = ?
     # Logging
-    logFileName = "Mdm_Installation_Log"
-    logFilePath = "$global:projectRootPath\log"
-    logFileNameFull = ""
+        logFileName = "Mdm_Installation_Log"
+        logFilePath = "$global:projectRootPath\log"
+    # or:
+        logFileNameFull = ""
     # Use a single log file repeatedly appending to it.
-    LogOneFile = $false
+    # Or the file name provided with the year and date appended to it.
+        LogOneFile = $false
 
-    # This indicates that the modules have not been previously imported. 
-    InitDone = $true
-    InitStdDone = $false
+    # This indicates which modules, apps and log files have not been previously setup.
+        moduleArray
+        appNameArray
+        [CommandApp]app = appNameArray[appName]
+        logFileNameArray
+
+    # This indicates which App Components are initialized.
+        InitDone = $false
+        InitStdDone = $false
+        InitLogFileDone = $false
+        InitGuiDone = $false
 
     # Modules array
-    moduleNames = @("Mdm_Bootstrap", "Mdm_Std_Library", "Mdm_DevEnv_Install", "Mdm_Modules")
+        moduleNames = @(
+        "Mdm_Bootstrap", 
+        "Mdm_Std_Library", 
+        "Mdm_DevEnv_Install", 
+        "Mdm_Modules")
 
     # Error display handling options:
-    UseTrace = $true;
-    UseTraceDetails = $true;
-    UseTraceStack = $true;
+        UseTrace = $true;
+        UseTraceDetails = $true;
+        UseTraceStack = $true;
         # include debug info with warnings
         UseTraceWarning = $true;
         # include full details with warnings
         UseTraceWarningDetails = $false;
         
-    # pause on this cmdlet/function name
-    DebugFunctionNames = "Add-RegistryPath"
+    # Pause on this cmdlet/function name
+        DebugFunctionNames = "Add-RegistryPath"
 
-    DoVerbose = $false
-    DoPause = $false
-    DoDebug = $false
-    msgAnykey = ""
-    msgYorN = ""
+    # Program flow control, verbosity and debugging
+        DoVerbose = $false
+        DoPause = $false
+        DoDebug = $false
+        DoForce = $false
+
+    # Default messages for prompts    
+        msgAnykey = ""
+        msgYorN = ""
 
 EXAMPLE
-    import-module Mdm_Std_Library
+    Import-Module Mdm_Std_Library
+
+EXAMPLE
+    Initialize-StdGlobals `
+        -InitForce -InitStd -InitLogFile -InitGui `
+        -appName $appName -appDirectory $appDirectory `
+        -Title $title  -logFilePath "$appDirectory\log" `
+        -DoOpen -DoCheckState -DoClearGlobal -DoSetGlobal

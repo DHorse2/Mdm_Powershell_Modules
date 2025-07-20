@@ -1,11 +1,14 @@
 
 ModuleType Version    PreRelease Name                                ExportedCommands
 ---------- -------    ---------- ----                                ----------------
-Script     1.0                   Mdm_DevEnv_Install                  {DevEnvGui, Get-DevEnvVersions, Install-DevEnv, Install-DevEnvIdeWin…}
-Script     1.0                   Mdm_Modules                         {Add-LogError, Add-LogText, Add-RegistryPath, Add-WFDataGridViewColumn…}
+Script     1.0                   Mdm_Bootstrap                       {Add-RegistryPath, Assert-RegistryValue, DevEnv_Install_Modules_Win, DevEnv_LanguageMode…}
+Script     1.0                   Mdm_DevEnv_Install                  {DevEnvGui, Get-DevEnvVersions, Get-JsonData, Install-DevEnv…}
+Script     1.0                   Mdm_Modules                         {ConvertFrom-SecureString, ConvertTo-SecureString, Get-Acl, Get-AuthenticodeSignature…}
+Script     1.0                   Mdm_Std_Library                     {Add-LogError, Add-LogText, Assert-Debug, Confirm-Module…}
+Script     1.0.0                 Mdm_WinFormPS                       {Add-WFDataGridViewColumn, Add-WFDataGridViewRow, Add-WFListViewItem, Add-WFRichTextBoxText…}
 Manifest   7.0.0.0               Microsoft.PowerShell.Management     {Add-Content, Clear-Content, Clear-Item, Clear-ItemProperty…}
-Manifest   7.0.0.0               Microsoft.PowerShell.Security       {ConvertFrom-SecureString, ConvertTo-SecureString, Get-Acl, Get-AuthenticodeSignatur…
+Manifest   7.0.0.0               Microsoft.PowerShell.Security       {ConvertFrom-SecureString, ConvertTo-SecureString, Get-Acl, Get-AuthenticodeSignature…}
 Manifest   7.0.0.0               Microsoft.PowerShell.Utility        {Add-Member, Add-Type, Clear-Variable, Compare-Object…}
 Script     0.2.0                 PowerShellEditorServices.Commands   {Clear-Host, ConvertFrom-ScriptExtent, ConvertTo-ScriptExtent, Find-Ast…}
-Script     2.4.0      beta0      PSReadLine                          {Get-PSReadLineKeyHandler, Get-PSReadLineOption, Remove-PSReadLineKeyHandler, Set-PS…
+Script     2.4.0      beta0      PSReadLine                          {Get-PSReadLineKeyHandler, Get-PSReadLineOption, Remove-PSReadLineKeyHandler, Set-PSReadLineKeyHandler…}
 

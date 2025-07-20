@@ -32,7 +32,7 @@ function New-WFForm {
     param
     (
         [System.Windows.Forms.Form]$form,
-        [string]$Title,
+        [string]$title,
         [string]$Name,
         [System.Windows.Forms.ToolStripMenuItem[]]$formMenuActions,
         [object[]]$formToolStripActions,
@@ -64,7 +64,7 @@ function New-WFForm {
                 $form.AutoSizeMode = [System.Windows.Forms.AutoSizeMode]::GrowAndShrink
                 # $form.Size = New-Object System.Drawing.Size($global:displayWindow.Width, $global:displayWindow.Height)
             }
-            if ($Title) { $form.Text = $Title }
+            if ($title) { $form.Text = $title }
             if ($Name) { $form.Name = $Name }
             # Styling
             $form.TopMost = $true
@@ -108,16 +108,16 @@ function New-WFForm {
             # }
             # # WFFormButtonFunctions
             $path = "$($(Get-Item $PSScriptRoot).Parent.FullName)\Private\WFFormButtonFunctions.ps1"
-            . $path
+            . $path @global:combinedParams
             # WFFormControls
             $path = "$($(Get-Item $PSScriptRoot).Parent.FullName)\lib\WFFormControls.ps1"
-            . $path
+            . $path @global:combinedParams
             # WFFormButtons
             $path = "$($(Get-Item $PSScriptRoot).Parent.FullName)\lib\WFFormButtons.ps1"
-            . $path
+            . $path @global:combinedParams
             # WFFormEvents
             $path = "$($(Get-Item $PSScriptRoot).Parent.FullName)\lib\WFFormEvents.ps1"
-            . $path
+            . $path @global:combinedParams
 
             # State
             if ($state) {

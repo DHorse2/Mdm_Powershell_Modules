@@ -1,4 +1,4 @@
-function Build-WFFormControls {
+function Update-WFFormControls {
     [CmdletBinding()]
     param (
         [string]$Target = "Window",
@@ -15,7 +15,7 @@ function Build-WFFormControls {
         [MenuBar]$menuBar,
         [MarginClass]$margins,
         [string]$Name,
-        [string]$Title,
+        [string]$title,
         [string]$TextInput,
         [array]$Buttons,
         [switch]$DoMenuBars,
@@ -24,6 +24,7 @@ function Build-WFFormControls {
         [switch]$DoAll,
         [switch]$DoControls,
         [switch]$DoEvents,
+        [string]$logFileNameFull = "",
         $state = $null
     )
     process {
@@ -67,7 +68,7 @@ function Build-WFFormControls {
             if ($form) {
                 # Name
                 if ($Name) { $form.Name = $Name }
-                if ($Title) { $form.Text = $Title }
+                if ($title) { $form.Text = $title }
                 # Styling
                 $form.TopMost = $true
                 $form.AutoSize = $true
@@ -81,9 +82,9 @@ function Build-WFFormControls {
                         $form.StartPosition = 'Manual'
                         $form.Location = New-Object System.Drawing.Point($formState.x, $formState.y)
                     } elseif ($formState -is [WindowState]) {
-                        if ($formState.Display.Left -ge 0 -and $formState.Display.Top -ge 0) {
+                        if ($formState.display.Left -ge 0 -and $formState.display.Top -ge 0) {
                             $form.StartPosition = 'Manual'
-                            $form.Location = New-Object System.Drawing.Point($formState.Display.Left, $formState.Display.Top)
+                            $form.Location = New-Object System.Drawing.Point($formState.display.Left, $formState.display.Top)
                         }
                     } else {
                         # $form.StartPosition = 'CenterScreen'
@@ -99,22 +100,22 @@ function Build-WFFormControls {
             #endregion
             # # WFFormButtonFunctions
             $path = "$($(Get-Item $PSScriptRoot).Parent.FullName)\Private\WFFormButtonFunctions.ps1"
-            . $path
+            . $path @global:combinedParams
             # WFFormControls
             $path = "$($(Get-Item $PSScriptRoot).Parent.FullName)\lib\WFFormControls.ps1"
-            . $path
+            . $path @global:combinedParams
             # WFFormButtons
             $path = "$($(Get-Item $PSScriptRoot).Parent.FullName)\lib\WFFormButtons.ps1"
-            . $path
+            . $path @global:combinedParams
             # WFFormEvents
             $path = "$($(Get-Item $PSScriptRoot).Parent.FullName)\lib\WFFormEvents.ps1"
-            . $path
+            . $path @global:combinedParams
             # # WFFormButtonActions
             # $path = "$($(Get-Item $PSScriptRoot).Parent.FullName)\lib\WFFormButtonActions.ps1"
-            # . $path
+            # . $path @global:combinedParams
         } catch {
-            $Message = "Build-WFFormControls: Error loading and creating form controls."
-            Add-LogText -Messages $Message -IsError
+            $Message = "Update-WFFormControls: Error loading and creating form controls."
+            Add-LogText -Message $Message -IsError -logFileNameFull $logFileNameFull
             return $null
         }
     }
@@ -136,7 +137,7 @@ function Build-WFFormControls {
             }
             Default {
                 $Message = "Target for where to place data is incorrect. Window, Form or Tab."
-                Add-LogText -Messages $Message -IsError
+                Add-LogText -Message $Message -IsError -logFileNameFull $logFileNameFull
                 return $null
             }
         }

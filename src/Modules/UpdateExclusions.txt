@@ -2,7 +2,7 @@ Build.ps1
 commands.txt
 GoToBootstrap.ps1
 GoToRoot.ps1
-Update.ps1
+Update_Mdm.ps1
 UpdateExclusions.txt
 UpdateExclusionsTemp.txt
 G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\readmd.md

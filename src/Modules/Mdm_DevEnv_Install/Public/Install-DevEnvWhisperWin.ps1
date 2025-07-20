@@ -21,9 +21,20 @@ function Install-DevEnvWhisperWin {
 #>
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce,
+    [string]$logFileNameFull = "",
     [switch]$KeepOpen,
     [switch]$Silent
     )
+    $installDevEnvWhisperWinParams = @{}
+    if ($DoForce) { $installDevEnvWhisperWinParams['DoForce'] = $true }
+    if ($DoVerbose) { $installDevEnvWhisperWinParams['DoVerbose'] = $true }
+    if ($DoDebug) { $installDevEnvWhisperWinParams['DoDebug'] = $true }
+    if ($DoPause) { $installDevEnvWhisperWinParams['DoPause'] = $true }
+    # if ($KeepOpen) { $installDevEnvWhisperWinParams['KeepOpen'] = $true }
+    # if ($Silent) { $installDevEnvWhisperWinParams['Silent'] = $true }
+    if ($logFileNameFull) { $installDevEnvWhisperWinParams['logFileNameFull'] = $logFileNameFull }
+    $installDevEnvWhisperWinParams['ErrorAction'] = 'Inquire' 
+
     # Install Whisper on Windows
     Initialize-Std -$DoPause -$DoVerbose -$DoDebug
     # Check Administrator Privileges
@@ -74,5 +85,5 @@ function Install-DevEnvWhisperWin {
     Write-Verbose "`"$venvPath\Scripts\Activate.ps1`""
     Write-Verbose "To transcribe audio, use: `whisper your_audio_file.mp3 --model small`""
 
-    if ($KeepOpen -and -not $Silent) { Wait-AnyKey -Message "Install-DevEnvWhisperWin Setup is completed." }
+    if ($DoPause -or ($KeepOpen -and -not $Silent)) { Wait-AnyKey -Message "Install-DevEnvWhisperWin Setup is completed." }
 }

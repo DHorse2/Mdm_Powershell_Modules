@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_Modules Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="05/21/2025 18:20:14">
+    <meta name="date" content="06/03/2025 17:53:36">
     <meta name="copyright" content="&Copy-Item; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -158,6 +158,8 @@ Exported functions from Bootstrap, Standard Library, Development Environment Ins
  description: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
+ required: false, globbing: false, pipelineInput: false, position: named KeepOpen
+ required: false, globbing: false, pipelineInput: false, position: named Silent
  required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -168,6 +170,8 @@ Exported functions from Bootstrap, Standard Library, Development Environment Ins
 <p>  - <strong>DoDebug</strong>: Debug this script.
 </p>
 <p>  - <strong>DoForce</strong></p>
+<p>  - <strong>KeepOpen</strong></p>
+<p>  - <strong>Silent</strong></p>
 <p></p>
 <p><strong>Return: </strong> Should output a file and display.
 </p>
@@ -524,66 +528,6 @@ Introduction: @{Text=PS &gt; }
       Syntax: Assert-RegistryValue &quot;PATH&quot;
      Remarks:    </pre>
 <p></p>
-<h2>Build-WFCheckBoxList</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> 
-Build-WFCheckBoxList [-jsonData] &lt;psobject&gt; [-form] &lt;Form&gt; [[-margins] &lt;Margins&gt;] [[-groupBox] &lt;GroupBox&gt;] [[-groupBoxLabel] &lt;string&gt;] [[-xPos] &lt;int&gt;] [[-yPos] &lt;int&gt;] [[-xWidth] &lt;int&gt;] [[-yHeight] &lt;int&gt;] [[-groupHeightMax] &lt;int&gt;] [-NotDialog] [&lt;CommonParameters&gt;]
-</p>
-<p><strong>Syntax:</strong> <pre>name: Build-WFCheckBoxList
-CommonParameters: True
-parameter:           </pre></p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>NotDialog</strong></p>
-<p>  - <strong>form</strong></p>
-<p>  - <strong>groupBox</strong></p>
-<p>  - <strong>groupBoxLabel</strong></p>
-<p>  - <strong>groupHeightMax</strong></p>
-<p>  - <strong>jsonData</strong></p>
-<p>  - <strong>margins</strong></p>
-<p>  - <strong>xPos</strong></p>
-<p>  - <strong>xWidth</strong></p>
-<p>  - <strong>yHeight</strong></p>
-<p>  - <strong>yPos</strong></p>
-<p></p>
-<p><strong>Return: </strong> System.Object
-</p>
-<p></p>
-<p></p>
-<h2>Build-WFFormControls</h2>
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> 
-Build-WFFormControls [[-Target] &lt;string&gt;] [[-window] &lt;WFWindow&gt;] [[-form] &lt;Form&gt;] [[-formIndex] &lt;int&gt;] [[-tabPage] &lt;TabPage&gt;] [[-tabIndex] &lt;int&gt;] [[-groupBox] &lt;GroupBox&gt;] [[-groupBoxLabel] &lt;string&gt;] [[-jsonData] &lt;hashtable&gt;] [[-margins] &lt;Margins&gt;] [[-Title] &lt;string&gt;] [[-TextInput] &lt;string&gt;] [[-OkButton] &lt;string&gt;] [[-CancelButton] &lt;string&gt;] [[-state] &lt;Object&gt;] [-DoMenuBar] [-DoControls] [-DoEvents] [-DoTabIndex] [&lt;CommonParameters&gt;]
-</p>
-<p><strong>Syntax:</strong> <pre>name: Build-WFFormControls
-CommonParameters: True
-parameter:                   </pre></p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>CancelButton</strong></p>
-<p>  - <strong>DoControls</strong></p>
-<p>  - <strong>DoEvents</strong></p>
-<p>  - <strong>DoMenuBar</strong></p>
-<p>  - <strong>DoTabIndex</strong></p>
-<p>  - <strong>OkButton</strong></p>
-<p>  - <strong>Target</strong></p>
-<p>  - <strong>TextInput</strong></p>
-<p>  - <strong>Title</strong></p>
-<p>  - <strong>form</strong></p>
-<p>  - <strong>formIndex</strong></p>
-<p>  - <strong>groupBox</strong></p>
-<p>  - <strong>groupBoxLabel</strong></p>
-<p>  - <strong>jsonData</strong></p>
-<p>  - <strong>margins</strong></p>
-<p>  - <strong>state</strong></p>
-<p>  - <strong>tabIndex</strong></p>
-<p>  - <strong>tabPage</strong></p>
-<p>  - <strong>window</strong></p>
-<p></p>
-<p><strong>Return: </strong> System.Object
-</p>
-<p></p>
-<p></p>
 <h2>Clear-WFDataGridViewSelection</h2>
 
 <p><strong>Type:</strong> Function</p>
@@ -681,6 +625,22 @@ Introduction: @{Text=PS &gt; }
 Introduction: @{Text=PS &gt; }
       Syntax: Clear-WFRichTextBox -RichTextBox $RichTextBox
      Remarks:    </pre>
+<p></p>
+<h2>Close-WFForm</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Close-WFForm [[-form] &lt;Object&gt;] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Close-WFForm
+CommonParameters: True
+parameter: @{name=form; required=false; pipelineInput=true (ByValue); isDynamic=false; globbing=false; parameterSetName=(All); parameterValue=Object; type=; position=0; aliases=None}</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>form</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
 <p></p>
 <h2>ConvertTo-WFDataTable</h2>
 
@@ -816,7 +776,7 @@ You could override it if you had other local modules to install
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 7 SkipHelp
  required: false, globbing: false, pipelineInput: false, position: named SkipRegistry
  required: false, globbing: false, pipelineInput: false, position: named SkipCopy
- required: false, globbing: false, pipelineInput: false, position: named DoNewWindow
+ required: false, globbing: false, pipelineInput: false, position: named jobActionMethodNewWindow
  description: Switch to execute copy commands in a separate shell window.
 
  required: false, globbing: false, pipelineInput: false, position: named description: MacroDM currently. It's optional.
@@ -854,7 +814,7 @@ You could override it if you had other local modules to install
 <p>  - <strong>SkipHelp</strong></p>
 <p>  - <strong>SkipRegistry</strong></p>
 <p>  - <strong>SkipCopy</strong></p>
-<p>  - <strong>DoNewWindow</strong>: Switch to execute copy commands in a separate shell window.
+<p>  - <strong>jobActionMethodNewWindow</strong>: Switch to execute copy commands in a separate shell window.
 </p>
 <p>  - <strong>companyName</strong>: MacroDM currently. It&apos;s optional.
 </p>
@@ -1204,6 +1164,56 @@ Introduction:
       Syntax: Find-WFDataGridViewValue -DataGridView $datagridview1 -Value $textbox1.Text Find-WFDataGridViewValue -DataGridView $datagridview1 -Value $textbox1.Text -RowForeColor &apos;Red&apos; -RowBackColor &apos;Black&apos; Find-WFDataGridViewValue -DataGridView $datagridview1 -Value $textbox1.Text -SelectRow
      Remarks:              </pre>
 <p></p>
+<h2>Find-WFForm</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Walks (navigates) up the Parent of a control to locate the Form</p>
+<p><strong>Detailed Description:</strong> xxx
+</p>
+<p><strong>Syntax:</strong> <pre>Find-WFForm
+ sender
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 1 e
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 DefaultToRoot
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>sender</strong></p>
+<p>  - <strong>e</strong></p>
+<p>  - <strong>DefaultToRoot</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Find-WFForm -sender $sender -e $e 
+Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+     Remarks:    </pre>
+<p></p>
+<h2>Find-WFToolStrip</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Walks (navigates) up the Parent of a control to locate the Form</p>
+<p><strong>Detailed Description:</strong> xxx
+</p>
+<p><strong>Syntax:</strong> <pre>Find-WFToolStrip
+ sender
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 1 e
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 toolStrip
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 form
+ parameterValue: Form, required: false, globbing: false, pipelineInput: false, position: 4 DefaultToRoot
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>sender</strong></p>
+<p>  - <strong>e</strong></p>
+<p>  - <strong>toolStrip</strong></p>
+<p>  - <strong>form</strong></p>
+<p>  - <strong>DefaultToRoot</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Find-WFToolStrip -sender $sender -e $e 
+Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+     Remarks:    </pre>
+<p></p>
 <h2>Get-DevEnvVersions</h2>
 
 
@@ -1223,6 +1233,8 @@ Introduction:
  description: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
+ required: false, globbing: false, pipelineInput: false, position: named KeepOpen
+ required: false, globbing: false, pipelineInput: false, position: named Silent
  required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -1233,6 +1245,8 @@ Introduction:
 <p>  - <strong>DoDebug</strong>: Debug this script.
 </p>
 <p>  - <strong>DoForce</strong></p>
+<p>  - <strong>KeepOpen</strong></p>
+<p>  - <strong>Silent</strong></p>
 <p></p>
 <p><strong>Return: </strong> Should output a file and display.
 </p>
@@ -1341,6 +1355,44 @@ parameter:  </pre></p>
 Introduction:   
       Syntax: Get-WFComboboxItem -ComboBox $Combobox -SelectedItem Get-WFComboboxItem -ComboBox $Combobox Get-WFComboboxItem -ComboBox $Combobox -all
      Remarks:              </pre>
+<p></p>
+<h2>Get-WFDataSet</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Get-WFDataSet [[-dataSet] &lt;Object&gt;] [[-dataSetItem] &lt;Object&gt;] [[-dataArray] &lt;hashtable&gt;] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Get-WFDataSet
+CommonParameters: True
+parameter:   </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>dataArray</strong></p>
+<p>  - <strong>dataSet</strong></p>
+<p>  - <strong>dataSetItem</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Get-WFDataSetTreeView</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Get-WFDataSetTreeView [[-dataArray] &lt;hashtable&gt;] [[-treeView] &lt;TreeView&gt;] [[-control] &lt;Object&gt;] [-DoAll] [-DoControls] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Get-WFDataSetTreeView
+CommonParameters: True
+parameter:     </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoAll</strong></p>
+<p>  - <strong>DoControls</strong></p>
+<p>  - <strong>control</strong></p>
+<p>  - <strong>dataArray</strong></p>
+<p>  - <strong>treeView</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
 <p></p>
 <h2>Get-WFForm</h2>
 
@@ -1621,6 +1673,8 @@ and then installs TensorFlow, Keras, and PyTorch.
  description: Switch: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
+ required: false, globbing: false, pipelineInput: false, position: named KeepOpen
+ required: false, globbing: false, pipelineInput: false, position: named Silent
  required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -1631,6 +1685,8 @@ and then installs TensorFlow, Keras, and PyTorch.
 <p>  - <strong>DoDebug</strong>: Switch: Debug this script.
 </p>
 <p>  - <strong>DoForce</strong></p>
+<p>  - <strong>KeepOpen</strong></p>
+<p>  - <strong>Silent</strong></p>
 <p></p>
 <p><strong>Return: </strong> A log of the installed modules
 </p>
@@ -1663,6 +1719,8 @@ Libraries: TensorFlow, Keras, PyTorch.
  description: Switch: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
+ required: false, globbing: false, pipelineInput: false, position: named KeepOpen
+ required: false, globbing: false, pipelineInput: false, position: named Silent
  required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -1673,6 +1731,8 @@ Libraries: TensorFlow, Keras, PyTorch.
 <p>  - <strong>DoDebug</strong>: Switch: Debug this script.
 </p>
 <p>  - <strong>DoForce</strong></p>
+<p>  - <strong>KeepOpen</strong></p>
+<p>  - <strong>Silent</strong></p>
 <p></p>
 <p><strong>Return: </strong> none.
 </p>
@@ -1695,7 +1755,7 @@ Introduction: @{Text=PS &gt; }
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_Modules Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="05/21/2025 18:20:14">
+    <meta name="date" content="06/03/2025 17:53:36">
     <meta name="copyright" content="&Copy-Item; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -1847,6 +1907,8 @@ TODO: FUTR: sed, win linux, other tools?
  description: Switch: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
+ required: false, globbing: false, pipelineInput: false, position: named KeepOpen
+ required: false, globbing: false, pipelineInput: false, position: named Silent
  required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -1857,6 +1919,8 @@ TODO: FUTR: sed, win linux, other tools?
 <p>  - <strong>DoDebug</strong>: Switch: Debug this script.
 </p>
 <p>  - <strong>DoForce</strong></p>
+<p>  - <strong>KeepOpen</strong></p>
+<p>  - <strong>Silent</strong></p>
 <p></p>
 <p><strong>Return: </strong> none.
 </p>
@@ -1886,6 +1950,8 @@ Introduction: @{Text=PS &gt; }
  description: Switch: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
+ required: false, globbing: false, pipelineInput: false, position: named KeepOpen
+ required: false, globbing: false, pipelineInput: false, position: named Silent
  required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -1896,6 +1962,8 @@ Introduction: @{Text=PS &gt; }
 <p>  - <strong>DoDebug</strong>: Switch: Debug this script.
 </p>
 <p>  - <strong>DoForce</strong></p>
+<p>  - <strong>KeepOpen</strong></p>
+<p>  - <strong>Silent</strong></p>
 <p></p>
 <p><strong>Return: </strong> none.
 </p>
@@ -1927,6 +1995,8 @@ When complete it displays current version for the environment.
 
  required: false, globbing: false, pipelineInput: false, position: named DoDebug
  required: false, globbing: false, pipelineInput: false, position: named DoForce
+ required: false, globbing: false, pipelineInput: false, position: named KeepOpen
+ required: false, globbing: false, pipelineInput: false, position: named Silent
  required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -1936,6 +2006,8 @@ When complete it displays current version for the environment.
 </p>
 <p>  - <strong>DoDebug</strong></p>
 <p>  - <strong>DoForce</strong></p>
+<p>  - <strong>KeepOpen</strong></p>
+<p>  - <strong>Silent</strong></p>
 <p></p>
 <p><strong>Return: </strong> Install the development components.
 </p>
@@ -2058,7 +2130,7 @@ Introduction: @{Text=PS C:\&gt;}
 
 
 <p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> Function to create a Form</p>
+<p><strong>Synopsis:</strong> TODO: Hold Function to create a Form</p>
 <p><strong>Detailed Description:</strong> Function to create a Form
 </p>
 <p><strong>Syntax:</strong> <pre>New-WFForm
@@ -2068,31 +2140,37 @@ Introduction: @{Text=PS C:\&gt;}
  parameterValue: Form, required: false, globbing: false, pipelineInput: false, position: 1 description: Specifies that you want to set the Title of the form
 
  Title
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 menuBar
- parameterValue: MenuBar, required: false, globbing: false, pipelineInput: false, position: 3 margins
- parameterValue: Margins, required: false, globbing: false, pipelineInput: false, position: 4 TextInput
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 5 OkButton
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 6 CancelButton
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 7 DoMenuBar
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 Name
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 formMenuActions
+ parameterValue: ToolStripMenuItem[], required: false, globbing: false, pipelineInput: false, position: 4 formToolStripActions
+ parameterValue: Object[], required: false, globbing: false, pipelineInput: false, position: 5 menuBar
+ parameterValue: MenuBar, required: false, globbing: false, pipelineInput: false, position: 6 margins
+ parameterValue: MarginClass, required: false, globbing: false, pipelineInput: false, position: 7 TextInput
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 8 Buttons
+ parameterValue: Array, required: false, globbing: false, pipelineInput: false, position: 9 DoMenuBars
+ required: false, globbing: false, pipelineInput: false, position: named DoAll
  required: false, globbing: false, pipelineInput: false, position: named DoControls
  required: false, globbing: false, pipelineInput: false, position: named DoEvents
  required: false, globbing: false, pipelineInput: false, position: named Inquire
  description: [switch]$DoTabIndex,
 
  required: false, globbing: false, pipelineInput: false, position: named state
- parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 8</pre></p>
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 10</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>form</strong>: Specifies the Form. A new forw is returned if null.
 </p>
 <p>  - <strong>Title</strong>: Specifies that you want to set the Title of the form
 </p>
+<p>  - <strong>Name</strong></p>
+<p>  - <strong>formMenuActions</strong></p>
+<p>  - <strong>formToolStripActions</strong></p>
 <p>  - <strong>menuBar</strong></p>
 <p>  - <strong>margins</strong></p>
 <p>  - <strong>TextInput</strong></p>
-<p>  - <strong>OkButton</strong></p>
-<p>  - <strong>CancelButton</strong></p>
-<p>  - <strong>DoMenuBar</strong></p>
+<p>  - <strong>Buttons</strong></p>
+<p>  - <strong>DoMenuBars</strong></p>
+<p>  - <strong>DoAll</strong></p>
 <p>  - <strong>DoControls</strong></p>
 <p>  - <strong>DoEvents</strong></p>
 <p>  - <strong>Inquire</strong>: [switch]$DoTabIndex,
@@ -2145,10 +2223,18 @@ Introduction: @{Text=PS C:\&gt;}
 </p>
 <p><strong>Syntax:</strong> <pre>New-WFMenuStrip
  form
- parameterValue: Form, required: false, globbing: false, pipelineInput: false, position: 1</pre></p>
+ parameterValue: Form, required: false, globbing: false, pipelineInput: false, position: 1 formMenuActions
+ parameterValue: ToolStripMenuItem[], required: false, globbing: false, pipelineInput: false, position: 2 formToolStripActions
+ parameterValue: Object[], required: false, globbing: false, pipelineInput: false, position: 3 SkipFileMenu
+ required: false, globbing: false, pipelineInput: false, position: named SkipHelpMenu
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>form</strong></p>
+<p>  - <strong>formMenuActions</strong></p>
+<p>  - <strong>formToolStripActions</strong></p>
+<p>  - <strong>SkipFileMenu</strong></p>
+<p>  - <strong>SkipHelpMenu</strong></p>
 <p></p>
 <p><strong>Examples</strong>:</p>
 <pre>Example: -------------------------- EXAMPLE 1 --------------------------
@@ -2216,9 +2302,9 @@ The function will return the literal path of the file(s) selected</p>
 The function will return the literal path of the file(s) selected
 </p>
 <p><strong>Syntax:</strong> <pre>New-WFOpenFileDialog
- description: Specifies the Title of the window.
+ description: [Alias('Title')]
 
- WindowsTitle
+ Title
  parameterValue: String, required: true, globbing: false, pipelineInput: false, position: 1 description: Specifies the Path where the dialog will open.
 
  Path
@@ -2239,7 +2325,7 @@ The function will return the literal path of the file(s) selected
  required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>WindowsTitle</strong>: Specifies the Title of the window.
+<p>  - <strong>Title</strong>: [Alias(&apos;Title&apos;)]
 </p>
 <p>  - <strong>Path</strong>: Specifies the Path where the dialog will open.
 </p>
@@ -2335,26 +2421,54 @@ Introduction: @{Text=PS C:\&gt;}
 <h2>New-WFWindow</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-New-WFWindow [[-window] &lt;WFWindow&gt;] [[-formsArray] &lt;Form[]&gt;] [[-menuBarArray] &lt;MenuBar[]&gt;] [[-formIndex] &lt;int&gt;] [[-margins] &lt;Margins&gt;] [[-Title] &lt;string&gt;] [[-TextInput] &lt;string&gt;] [[-OkButton] &lt;string&gt;] [[-CancelButton] &lt;string&gt;] [[-state] &lt;Object&gt;] [-DoMenuBar] [-DoControls] [-DoEvents] [&lt;CommonParameters&gt;]
+New-WFWindow [[-window] &lt;WFWindow&gt;] [[-formsArray] &lt;Form[]&gt;] [[-menuBarArray] &lt;MenuBar[]&gt;] [[-formIndex] &lt;int&gt;] [[-margins] &lt;MarginClass&gt;] [[-Name] &lt;string&gt;] [[-Title] &lt;string&gt;] [[-TextInput] &lt;string&gt;] [[-Buttons] &lt;array&gt;] [[-formMenuActions] &lt;ToolStripMenuItem[]&gt;] [[-formToolStripActions] &lt;Object[]&gt;] [[-menuBar] &lt;MenuBar&gt;] [[-state] &lt;Object&gt;] [-DoMenuBars] [-DoAll] [-DoControls] [-DoEvents] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: New-WFWindow
 CommonParameters: True
-parameter:             </pre></p>
+parameter:                 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>CancelButton</strong></p>
+<p>  - <strong>Buttons</strong></p>
+<p>  - <strong>DoAll</strong></p>
 <p>  - <strong>DoControls</strong></p>
 <p>  - <strong>DoEvents</strong></p>
-<p>  - <strong>DoMenuBar</strong></p>
-<p>  - <strong>OkButton</strong></p>
+<p>  - <strong>DoMenuBars</strong></p>
+<p>  - <strong>Name</strong></p>
 <p>  - <strong>TextInput</strong></p>
 <p>  - <strong>Title</strong></p>
 <p>  - <strong>formIndex</strong></p>
+<p>  - <strong>formMenuActions</strong></p>
+<p>  - <strong>formToolStripActions</strong></p>
 <p>  - <strong>formsArray</strong></p>
 <p>  - <strong>margins</strong></p>
+<p>  - <strong>menuBar</strong></p>
 <p>  - <strong>menuBarArray</strong></p>
 <p>  - <strong>state</strong></p>
 <p>  - <strong>window</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Read-WFDataSet</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Read-WFDataSet [[-fileNameFull] &lt;string&gt;] [[-sourceDirectory] &lt;string&gt;] [[-dataSourceName] &lt;string&gt;] [[-dataSet] &lt;string&gt;] [[-dataSetState] &lt;string&gt;] [[-dataArray] &lt;hashtable&gt;] [-IgnoreState] [-DoReturn] [-SkipStatusUpdate] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Read-WFDataSet
+CommonParameters: True
+parameter:         </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>DoReturn</strong></p>
+<p>  - <strong>IgnoreState</strong></p>
+<p>  - <strong>SkipStatusUpdate</strong></p>
+<p>  - <strong>dataArray</strong></p>
+<p>  - <strong>dataSet</strong></p>
+<p>  - <strong>dataSetState</strong></p>
+<p>  - <strong>dataSourceName</strong></p>
+<p>  - <strong>fileNameFull</strong></p>
+<p>  - <strong>sourceDirectory</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
 </p>
@@ -2436,6 +2550,44 @@ parameter:             </pre></p>
 Introduction: @{Text=PS C:\&gt;}
       Syntax: Reset-DataGridViewFormat -DataGridView $DataGridViewObj
      Remarks:    </pre>
+<p></p>
+<h2>Set-WFButtonLocation</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Set-WFButtonLocation [[-sender] &lt;Object&gt;] [[-e] &lt;Object&gt;] [[-controlItem] &lt;Object&gt;] [[-x] &lt;Object&gt;] [[-y] &lt;Object&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Set-WFButtonLocation
+CommonParameters: False
+parameter:     </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>controlItem</strong></p>
+<p>  - <strong>e</strong></p>
+<p>  - <strong>sender</strong></p>
+<p>  - <strong>x</strong></p>
+<p>  - <strong>y</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Set-WFButtonState</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Set-WFButtonState [[-sender] &lt;Object&gt;] [[-e] &lt;Object&gt;] [[-text] &lt;Object&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Set-WFButtonState
+CommonParameters: False
+parameter:   </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>e</strong></p>
+<p>  - <strong>sender</strong></p>
+<p>  - <strong>text</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
 <p></p>
 <h2>Set-WFDataGridView</h2>
 
@@ -2637,8 +2789,26 @@ Introduction:
       Syntax: Set-WFDataGridViewFilter -DataGridView $datagridview1 -DataTable $ProcessesDT -AllColumns -Filter $textbox1.Text Set-WFDataGridViewFilter -DataGridView $datagridview1 -DataTable $ProcessesDT -ColumnName &quot;Name&quot; -Filter $textbox1.Text
      Remarks:         </pre>
 <p></p>
+<h2>Set-WFDataSet</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Set-WFDataSet [[-dataSet] &lt;Object&gt;] [[-dataSetItem] &lt;Object&gt;] [[-dataArray] &lt;hashtable&gt;] [[-inputDataArray] &lt;Object&gt;] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Set-WFDataSet
+CommonParameters: True
+parameter:    </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>dataArray</strong></p>
+<p>  - <strong>dataSet</strong></p>
+<p>  - <strong>dataSetItem</strong></p>
+<p>  - <strong>inputDataArray</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
 <h2>Set-WFForm</h2>
-
 
 
 
@@ -2653,9 +2823,7 @@ Introduction:
  parameterValue: Form, required: false, globbing: false, pipelineInput: false, position: 1 description: Specifies the text/Title of the form
 
  Text
- parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 description: Set the Window State of the form.
-
- WindowState
+ parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 2 State
  parameterValue: String, required: false, globbing: false, pipelineInput: false, position: 3 BringToFront
  description: Bring the form to the front of the screen
 
@@ -2668,8 +2836,7 @@ Introduction:
 </p>
 <p>  - <strong>Text</strong>: Specifies the text/Title of the form
 </p>
-<p>  - <strong>WindowState</strong>: Set the Window State of the form.
-</p>
+<p>  - <strong>State</strong></p>
 <p>  - <strong>BringToFront</strong>: Bring the form to the front of the screen
 </p>
 <p>  - <strong>WhatIf</strong></p>
@@ -2750,6 +2917,23 @@ Introduction: @{Text=PS C:\&gt;}
       Syntax: Set-WFRichTextBox -PipelineVariable $value1 -RichTextBox $value2
      Remarks:    </pre>
 <p></p>
+<h2>Set-WFTabPage</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Set-WFTabPage [[-tabControl] &lt;TabControl&gt;] [[-tabPageText] &lt;string&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Set-WFTabPage
+CommonParameters: False
+parameter:  </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>tabControl</strong></p>
+<p>  - <strong>tabPageText</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
 <h2>Show-WFForm</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
@@ -2762,6 +2946,50 @@ parameter:  </pre></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>NotDialog</strong></p>
 <p>  - <strong>window</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Update-WFButtonBar</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Update-WFButtonBar [[-sender] &lt;Object&gt;] [[-e] &lt;Object&gt;] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Update-WFButtonBar
+CommonParameters: True
+parameter:  </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>e</strong></p>
+<p>  - <strong>sender</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Update-WFCheckBoxList</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Update-WFCheckBoxList [-jsonData] &lt;psobject&gt; [-form] &lt;Form&gt; [[-Name] &lt;string&gt;] [[-groupBox] &lt;GroupBox&gt;] [[-groupBoxLabel] &lt;string&gt;] [[-margins] &lt;MarginClass&gt;] [[-xPos] &lt;int&gt;] [[-yPos] &lt;int&gt;] [[-xWidth] &lt;int&gt;] [[-yHeight] &lt;int&gt;] [[-groupHeightMax] &lt;int&gt;] [-NotDialog] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Update-WFCheckBoxList
+CommonParameters: True
+parameter:            </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Name</strong></p>
+<p>  - <strong>NotDialog</strong></p>
+<p>  - <strong>form</strong></p>
+<p>  - <strong>groupBox</strong></p>
+<p>  - <strong>groupBoxLabel</strong></p>
+<p>  - <strong>groupHeightMax</strong></p>
+<p>  - <strong>jsonData</strong></p>
+<p>  - <strong>margins</strong></p>
+<p>  - <strong>xPos</strong></p>
+<p>  - <strong>xWidth</strong></p>
+<p>  - <strong>yHeight</strong></p>
+<p>  - <strong>yPos</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
 </p>
@@ -2786,6 +3014,129 @@ parameter:  </pre></p>
 </p>
 <p>  - <strong>WhatIf</strong></p>
 <p>  - <strong>Confirm</strong></p>
+<p></p>
+<p></p>
+<h2>Update-WFDataSet</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Update-WFDataSet [[-sender] &lt;Object&gt;] [[-e] &lt;Object&gt;] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Update-WFDataSet
+CommonParameters: True
+parameter:  </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>e</strong></p>
+<p>  - <strong>sender</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Update-WFFormControls</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Update-WFFormControls [[-Target] &lt;string&gt;] [[-window] &lt;WFWindow&gt;] [[-form] &lt;Form&gt;] [[-formIndex] &lt;int&gt;] [[-tabPage] &lt;TabPage&gt;] [[-tabIndex] &lt;int&gt;] [[-groupBox] &lt;GroupBox&gt;] [[-groupBoxLabel] &lt;string&gt;] [[-jsonData] &lt;hashtable&gt;] [[-formMenuActions] &lt;ToolStripMenuItem[]&gt;] [[-formToolStripActions] &lt;Object[]&gt;] [[-menuBar] &lt;MenuBar&gt;] [[-margins] &lt;MarginClass&gt;] [[-Name] &lt;string&gt;] [[-Title] &lt;string&gt;] [[-TextInput] &lt;string&gt;] [[-Buttons] &lt;array&gt;] [[-state] &lt;Object&gt;] [-DoMenuBars] [-DoTabIndex] [-DoStatusBar] [-DoAll] [-DoControls] [-DoEvents] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Update-WFFormControls
+CommonParameters: True
+parameter:                        </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>Buttons</strong></p>
+<p>  - <strong>DoAll</strong></p>
+<p>  - <strong>DoControls</strong></p>
+<p>  - <strong>DoEvents</strong></p>
+<p>  - <strong>DoMenuBars</strong></p>
+<p>  - <strong>DoStatusBar</strong></p>
+<p>  - <strong>DoTabIndex</strong></p>
+<p>  - <strong>Name</strong></p>
+<p>  - <strong>Target</strong></p>
+<p>  - <strong>TextInput</strong></p>
+<p>  - <strong>Title</strong></p>
+<p>  - <strong>form</strong></p>
+<p>  - <strong>formIndex</strong></p>
+<p>  - <strong>formMenuActions</strong></p>
+<p>  - <strong>formToolStripActions</strong></p>
+<p>  - <strong>groupBox</strong></p>
+<p>  - <strong>groupBoxLabel</strong></p>
+<p>  - <strong>jsonData</strong></p>
+<p>  - <strong>margins</strong></p>
+<p>  - <strong>menuBar</strong></p>
+<p>  - <strong>state</strong></p>
+<p>  - <strong>tabIndex</strong></p>
+<p>  - <strong>tabPage</strong></p>
+<p>  - <strong>window</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Update-WFStatusBarStrip</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> Update the Status Bar at the bottom of the Form.</p>
+<p><strong>Detailed Description:</strong> Buttons call this functions with text updates to Label on the Status Bar.
+</p>
+<p><strong>Syntax:</strong> <pre>Update-WFStatusBarStrip
+ sender
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 1 e
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 statusBarLabel
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 3 text
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 4</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>sender</strong></p>
+<p>  - <strong>e</strong></p>
+<p>  - <strong>statusBarLabel</strong></p>
+<p>  - <strong>text</strong></p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: Update-WFStatusBarStrip -sender $sender -e $e -statusBarLabel &apos;statusBarActionState&apos; -text $textOut
+Explanation of the function or its result. You can include multiple examples with additional .EXAMPLE lines
+     Remarks:    </pre>
+<p></p>
+<h2>Update-WFTextBox</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Update-WFTextBox [[-textBox] &lt;Object&gt;] [[-text] &lt;Object&gt;] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Update-WFTextBox
+CommonParameters: True
+parameter:  </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>text</strong></p>
+<p>  - <strong>textBox</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
+<h2>Write-WFDataSet</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Write-WFDataSet [[-sender] &lt;Object&gt;] [[-e] &lt;Object&gt;] [[-fileNameFull] &lt;string&gt;] [[-sourceDirectory] &lt;string&gt;] [[-dataSourceName] &lt;string&gt;] [[-dataSetState] &lt;string&gt;] [[-dataArray] &lt;hashtable&gt;] [[-commandSource] &lt;string&gt;] [-IgnoreState] [-SkipStatusUpdate] [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Write-WFDataSet
+CommonParameters: True
+parameter:          </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>IgnoreState</strong></p>
+<p>  - <strong>SkipStatusUpdate</strong></p>
+<p>  - <strong>commandSource</strong></p>
+<p>  - <strong>dataArray</strong></p>
+<p>  - <strong>dataSetState</strong></p>
+<p>  - <strong>dataSourceName</strong></p>
+<p>  - <strong>e</strong></p>
+<p>  - <strong>fileNameFull</strong></p>
+<p>  - <strong>sender</strong></p>
+<p>  - <strong>sourceDirectory</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
 <p></p>
 <p></p>
 <h2>ConvertFrom-SecureString</h2>

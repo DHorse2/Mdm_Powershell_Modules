@@ -8,15 +8,15 @@ function DevEnv_LanguageMode {
     # This works with uninstalled Modules
     $importName = "Mdm_Std_Library"
     # Project settings and paths
-    # Get-ModuleRootPath
-    $path = "$($(get-item $PSScriptRoot).Parent.Parent.FullName)\Mdm_Modules\Project.ps1"
-    . "$path"
+    # Get-ModuleRootPath projectLib.ps1
+    $path = "$($(get-item $PSScriptRoot).Parent.Parent.FullName)\Mdm_Std_Library\lib\ProjectLib.ps1"
+    . $path
     [string]$source = "$global:projectRootPath\src\Modules"
     $global:moduleRootPath = $source
     $global:projectRootPath = (get-item $global:moduleRootPath).Parent.Parent.FullName
     Import-Module -Name "$global:moduleRootPath\$importName" -Force -ErrorAction Continue
 
-    Write-Host " Language Mode: $ExecutionContext.SessionState.LanguageMode"
+    Write-Host "Language Mode: $($ExecutionContext.SessionState.LanguageMode)"
     switch ($languageMode) {
         "Full" { $regValue = "8" }
         "Constrained" { $regValue = "4" }
@@ -45,7 +45,7 @@ function DevEnv_LanguageMode {
                     "    NoLanguage (not allowed) - (0) NoLanguage This would disable all scripts (like this one).", `
                     " " `
             )
-            Add-LogText -Messages $Message
+            Add-LogText -Message $Message -logFileNameFull $logFileNameFull
             exit 
         }
     }

@@ -29,9 +29,21 @@ function Install-DevEnvOsWin {
 #>
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce,
+    [string]$logFileNameFull = "",
     [switch]$KeepOpen,
     [switch]$Silent
     )
+
+    $installDevEnvOsWinParams = @{}
+    if ($DoForce) { $installDevEnvOsWinParams['DoForce'] = $true }
+    if ($DoVerbose) { $installDevEnvOsWinParams['DoVerbose'] = $true }
+    if ($DoDebug) { $installDevEnvOsWinParams['DoDebug'] = $true }
+    if ($DoPause) { $installDevEnvOsWinParams['DoPause'] = $true }
+    # if ($KeepOpen) { $installDevEnvOsWinParams['KeepOpen'] = $true }
+    # if ($Silent) { $installDevEnvOsWinParams['Silent'] = $true }
+    if ($logFileNameFull) { $installDevEnvOsWinParams['logFileNameFull'] = $logFileNameFull }
+    $installDevEnvOsWinParams['ErrorAction'] = 'Inquire' 
+
     Initialize-Std -$DoPause -$DoVerbose -$DoDebug
     # Ensure the script is running as administrator
     if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
@@ -49,5 +61,5 @@ function Install-DevEnvOsWin {
     # Update PowerShell (from vs 5 to 7)
     winget install --id Microsoft.PowerShell --source winget
     
-    if ($KeepOpen -and -not $Silent) { Wait-AnyKey -Message "Install-DevEnvOsWin Setup is completed." }
+    if ($DoPause -or ($KeepOpen -and -not $Silent)) { Wait-AnyKey -Message "Install-DevEnvOsWin Setup is completed." }
 }

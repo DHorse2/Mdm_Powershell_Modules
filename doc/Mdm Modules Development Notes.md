@@ -8,6 +8,11 @@ Search-StringInFiles -SearchString 'Author' -Path "G:\Script\Powershell\Mdm_Powe
 
 Search-StringInFiles -SearchString 'David G' -Path "G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules" -Extensions "txt;ps1*;psm1;psd1;md;json;csv;xml*"
 
+Positional Params:
+Get-Help -Name "Get-ChildItem" -Parameter * | 
+  Sort-Object -Property position | 
+  Select-Object -Property name, position  
+
 # Excluded from search
 
 help*,log*,.inactive*,doc*, en-US, commands.txt, *.html

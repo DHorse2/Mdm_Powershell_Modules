@@ -92,25 +92,25 @@ These are found at the top of the Mdm_Std_Library.psm1 file after the module mem
     [string]$global:debugMode = "Write"
     
     # Control and defaults
-    [bool]$global:DoVerbose = $false
-    [bool]$global:DoPause = $false
-    [bool]$global:DoDebug = $false
-    [bool]$global:DoForce = $false
+    $global:app.DoVerbose = $false
+    $global:app.DoPause = $false
+    $global:app.DoDebug = $false
+    $global:app.DoForce = $false
     [string]$global:msgAnykey = ""
     [string]$global:msgYorN = ""
     
     # Color of error and warning text
-    $global:opt = (Get-Host).PrivateData
+    $global:PrivateData = (Get-Host).PrivateData
     $global:messageBackgroundColor = [System.ConsoleColor]::Black
     $global:messageForegroundColor = [System.ConsoleColor]::White
-    $messageWarningBackgroundColor = [System.ConsoleColor]::Black
-    $messageWarningForegroundColor = [System.ConsoleColor]::DarkYellow
-    # $messageWarningForegroundColor = [System.ConsoleColor]::White
-    $messageErrorBackgroundColor = [System.ConsoleColor]::Black
-    $messageErrorForegroundColor = [System.ConsoleColor]::Red
+    $global:messageWarningBackgroundColor = [System.ConsoleColor]::Black
+    $global:messageWarningForegroundColor = [System.ConsoleColor]::DarkYellow
+    # $global:messageWarningForegroundColor = [System.ConsoleColor]::White
+    $global:messageErrorBackgroundColor = [System.ConsoleColor]::Black
+    $global:messageErrorForegroundColor = [System.ConsoleColor]::Red
 
-    $global:timeStarted = Get-Date
-    $global:timeStartedFormatted = "{0:yyyyMMdd_HHmmss}" -f $global:timeStarted
-    $global:timeCompleted = $null
+    $global:app.timeStarted = Get-Date
+    $global:app.timeStartedFormatted = "{0:yyyyMMdd_HHmmss}" -f $global:app.timeStarted
+    $global:app.timeCompleted = [System.DateTime]::MinValue
     $global:lastError = $null
     ```

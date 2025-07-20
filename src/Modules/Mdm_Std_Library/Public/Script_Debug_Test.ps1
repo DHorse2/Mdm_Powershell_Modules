@@ -4,8 +4,8 @@ if (-not $global:DebugInScriptDebugger `
     -and $global:DebugProgressFindName `
     -and $(Debug-AssertFunction($functionName))) {
     $Message = "Debug $($MyInvocation.MyCommand.Name) for $($functionName)"
-    Add-LogText -Messages $Message `
-        -IsWarning -DoTraceWarningDetails `
-       
+    Add-LogText -Message $Message `
+        -IsWarning -UseTraceWarningDetails `
+        -logFileNameFull $logFileNameFull
     $null = Debug-Script -DoPause 5 -functionName $functionName -logFileNameFull $logFileNameFull
 }

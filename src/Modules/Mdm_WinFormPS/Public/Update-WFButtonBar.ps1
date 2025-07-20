@@ -1,7 +1,7 @@
 
 function Update-WFButtonBar {
     [CmdletBinding()]
-    param ($sender, $e)
+    param ($sender, $e, $logFileNameFull = "")
     begin {
         if ($sender) {
             $button = $sender
@@ -12,24 +12,11 @@ function Update-WFButtonBar {
             $buttonText = $e
         }
         if (-not $buttonText) { $buttonText = $buttonName }
-        # $isChecked = $button.Checked
-        $isPressed = $true
-
-        # Implement your data update logic here - NOT USED
-        $buttonKeys = $buttonName -split "_"
-        # Assign to variables
-        $dataSet = $buttonKeys[0]
-        $dataSetItemSet = $buttonKeys[1..($buttonKeys.Length - 1)]
-        $dataSetItem = $dataSetItemSet -join "_"
-        if (-not $dataSetItem) {
-            $dataSetItem = $dataSet
-            $dataSet = "Form"
-        }
-        Write-Host "Update-WFButtonBar Control $buttonName '$buttonText' DataSet: $dataSet, Item: $dataSetItem, Checked: $isChecked."
+        Write-Host "Update-WFButtonBar Control $buttonName '$buttonText'."
     }
     process {
-        Update-WFStatusBarStrip -sender $sender -e $e -statusBarLabel 'statusBarActionState' -text $textOut
-        switch ($dataSetItem) {
+        Update-WFStatusBarStrip -sender $sender -e $e -statusBarLabel 'statusBarActionState' -text $textOut -logFileNameFull $logFileNameFull
+        switch ($buttonName) {
             "PreviousButton" { 
                 # Enable if used
                 # Disable on page 1

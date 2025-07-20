@@ -18,7 +18,8 @@ function Find-WFForm {
     
     [CmdletBinding()]
     param($sender, $e,
-        [switch]$DefaultToRoot
+        [switch]$DefaultToRoot,
+        [string]$logFileNameFull = ""
     )
     begin {
         $parentControl = $null
@@ -34,14 +35,14 @@ function Find-WFForm {
                 }
             } else {
                 $Message = "Find-WFForm the sender is not a Control and has no Parents for $($senderName)."
-                Add-LogText -IsError -Messages $Message
+                Add-LogText -IsError -Message $Message -logFileNameFull $logFileNameFull
             }
             if (-not $DefaultToRoot -and ($parentControl -isnot [System.Windows.Forms.Form])) { 
                 $parentControl = $null
             }
         } catch {
             $Message = "Find-WFForm error walking Control Parents for $($senderName)."
-            Add-LogText -IsError -ErrorPSItem $_ -Messages $Message
+            Add-LogText -IsError -ErrorPSItem $_ -Message $Message -logFileNameFull $logFileNameFull
         }
         return $parentControl
     }

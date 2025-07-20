@@ -94,7 +94,7 @@
 			# Add Message with a return character
 			$RichTextBox.SelectionColor = $MessageColor
 			$RichTextBox.AppendText("$Message`r")
-			Write-Verbose -Message "$SortableTime $Message"
+			Write-Verbose -Message "$SortableTime"
 		}
 		CATCH
 		{

@@ -1,4 +1,5 @@
 
+# Get-JsonData
 function Get-JsonData {
     [CmdletBinding()]
     param(
@@ -9,7 +10,8 @@ function Get-JsonData {
         [hashtable]$parentObject,
         [switch]$AddSource,
         [switch]$Append,
-        [switch]$UpdateGlobal
+        [switch]$UpdateGlobal,
+        [string]$logFileNameFull = ""
     )
 
     begin {
@@ -22,13 +24,14 @@ function Get-JsonData {
             try {
                 if (-Not (Test-Path $JsonItem)) {
                     $Message = "Get-JsonData: The specified JSON file does not exist: $JsonItem"
-                    Add-LogText -IsError -Message $Message
+                    Add-LogText -IsError -Message $Message -logFileNameFull $logFileNameFull
                     return $false
                 }
                 # Read the JSON file
                 $jsonContent = Get-Content -Path $JsonItem -Raw -ErrorAction Stop
             } catch {
-                Add-LogText -IsError -ErrorPSItem $_ "Get-JsonData Json item doesn't exist: $($JsonItem)"
+                $Message = "Get-JsonData Json item doesn't exist: $($JsonItem)"
+                Add-LogText -IsError -ErrorPSItem $_ $Message -logFileNameFull $logFileNameFull
                 return $false
             }
         }
@@ -43,12 +46,12 @@ function Get-JsonData {
             $newdata = $jsonContent | ConvertFrom-Json -ErrorAction Stop
             $data = $newdata
             if ($data) {
-                if ($global:DoDebug -and $global:DoVerbose) {
+                if ($global:app.DoDebug -and $global:app.DoVerbose) {
                     $Message = "Data: $($data | ConvertTo-Json -Depth 10)"
-                    Add-LogText $Message -ForegroundColor Blue
+                    Add-LogText $Message -ForegroundColor Blue -logFileNameFull $logFileNameFull
                 }
                 foreach ($property in $data.PSObject.Properties) {
-                    if ($global:DoVerbose) {
+                    if ($global:app.DoVerbose) {
                         Write-Host "prop: $($property.Name)"
                     }
                     if ($Append) {
@@ -68,17 +71,19 @@ function Get-JsonData {
                     }
                 }
             } else {
-                Add-LogText -IsWarning "Get-JsonData Json item is empty: $($JsonItem)"
+                $Message = "Get-JsonData Json item is empty: $($JsonItem)"
+                Add-LogText -IsWarning $Message -logFileNameFull $logFileNameFull
             }
         } catch {
-            Add-LogText -IsError -ErrorPSItem $_ "Get-JsonData Error processing the json Content: $($JsonItem)"
-            return $false
+            $Message = "Get-JsonData Error processing the json Content: $($JsonItem)"
+            Add-LogText -IsError -ErrorPSItem $_ $Message -logFileNameFull $logFileNameFull
+            return $null
         }
         if ($DoDebug) {
             $Message = "JsonContent: $jsonContent Count($($jsonData.items.Count))"
-            Add-LogText -Messages $Message -ForegroundColor Blue
+            Add-LogText -Message $Message -ForegroundColor Blue -logFileNameFull $logFileNameFull
             $Message = "JsonData: $($jsonData | Format-List -Property *)"
-            Add-LogText -Messages $Message -ForegroundColor Blue
+            Add-LogText -Message $Message -ForegroundColor Blue -logFileNameFull $logFileNameFull
         }
         # 
         # Collect results if not using parentObject
@@ -88,12 +93,14 @@ function Get-JsonData {
             $dataOut['source'] = $jsonItem
             $dataOut['changed'] = $false
         }
+        [hashtable]$global:jsonDataResult = $dataOut
         if ($UpdateGlobal) {
-            $global:moduleDataArray[$Name] = $dataOut
+            $global:appDataArray[$Name] = $dataOut
         }
         # return results if not using parentObject
         if (-not $parentObject) {
-            return $dataOut
+            $dataOut
+            # return $dataOut
         }
     }
 }

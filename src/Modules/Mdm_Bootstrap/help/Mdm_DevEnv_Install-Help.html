@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_DevEnv_Install Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="05/21/2025 18:20:07">
+    <meta name="date" content="06/03/2025 17:53:24">
     <meta name="copyright" content="&Copy-Item; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -226,6 +226,8 @@ Exported functions from Bootstrap, Standard Library, Development Environment Ins
  description: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
+ required: false, globbing: false, pipelineInput: false, position: named KeepOpen
+ required: false, globbing: false, pipelineInput: false, position: named Silent
  required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -236,6 +238,8 @@ Exported functions from Bootstrap, Standard Library, Development Environment Ins
 <p>  - <strong>DoDebug</strong>: Debug this script.
 </p>
 <p>  - <strong>DoForce</strong></p>
+<p>  - <strong>KeepOpen</strong></p>
+<p>  - <strong>Silent</strong></p>
 <p></p>
 <p><strong>Return: </strong> Should output a file and display.
 </p>
@@ -304,6 +308,8 @@ Explanation of the function or its result. You can include multiple examples wit
  description: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
+ required: false, globbing: false, pipelineInput: false, position: named KeepOpen
+ required: false, globbing: false, pipelineInput: false, position: named Silent
  required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -314,6 +320,8 @@ Explanation of the function or its result. You can include multiple examples wit
 <p>  - <strong>DoDebug</strong>: Debug this script.
 </p>
 <p>  - <strong>DoForce</strong></p>
+<p>  - <strong>KeepOpen</strong></p>
+<p>  - <strong>Silent</strong></p>
 <p></p>
 <p><strong>Return: </strong> Should output a file and display.
 </p>
@@ -386,6 +394,8 @@ and then installs TensorFlow, Keras, and PyTorch.
  description: Switch: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
+ required: false, globbing: false, pipelineInput: false, position: named KeepOpen
+ required: false, globbing: false, pipelineInput: false, position: named Silent
  required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -396,6 +406,8 @@ and then installs TensorFlow, Keras, and PyTorch.
 <p>  - <strong>DoDebug</strong>: Switch: Debug this script.
 </p>
 <p>  - <strong>DoForce</strong></p>
+<p>  - <strong>KeepOpen</strong></p>
+<p>  - <strong>Silent</strong></p>
 <p></p>
 <p><strong>Return: </strong> A log of the installed modules
 </p>
@@ -428,6 +440,8 @@ Libraries: TensorFlow, Keras, PyTorch.
  description: Switch: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
+ required: false, globbing: false, pipelineInput: false, position: named KeepOpen
+ required: false, globbing: false, pipelineInput: false, position: named Silent
  required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -438,6 +452,8 @@ Libraries: TensorFlow, Keras, PyTorch.
 <p>  - <strong>DoDebug</strong>: Switch: Debug this script.
 </p>
 <p>  - <strong>DoForce</strong></p>
+<p>  - <strong>KeepOpen</strong></p>
+<p>  - <strong>Silent</strong></p>
 <p></p>
 <p><strong>Return: </strong> none.
 </p>
@@ -460,7 +476,7 @@ Introduction: @{Text=PS &gt; }
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_DevEnv_Install Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="05/21/2025 18:20:07">
+    <meta name="date" content="06/03/2025 17:53:24">
     <meta name="copyright" content="&Copy-Item; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -612,6 +628,8 @@ TODO: FUTR: sed, win linux, other tools?
  description: Switch: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
+ required: false, globbing: false, pipelineInput: false, position: named KeepOpen
+ required: false, globbing: false, pipelineInput: false, position: named Silent
  required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -622,6 +640,8 @@ TODO: FUTR: sed, win linux, other tools?
 <p>  - <strong>DoDebug</strong>: Switch: Debug this script.
 </p>
 <p>  - <strong>DoForce</strong></p>
+<p>  - <strong>KeepOpen</strong></p>
+<p>  - <strong>Silent</strong></p>
 <p></p>
 <p><strong>Return: </strong> none.
 </p>
@@ -651,6 +671,8 @@ Introduction: @{Text=PS &gt; }
  description: Switch: Debug this script.
 
  required: false, globbing: false, pipelineInput: false, position: named DoForce
+ required: false, globbing: false, pipelineInput: false, position: named KeepOpen
+ required: false, globbing: false, pipelineInput: false, position: named Silent
  required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -661,6 +683,8 @@ Introduction: @{Text=PS &gt; }
 <p>  - <strong>DoDebug</strong>: Switch: Debug this script.
 </p>
 <p>  - <strong>DoForce</strong></p>
+<p>  - <strong>KeepOpen</strong></p>
+<p>  - <strong>Silent</strong></p>
 <p></p>
 <p><strong>Return: </strong> none.
 </p>
@@ -692,6 +716,8 @@ When complete it displays current version for the environment.
 
  required: false, globbing: false, pipelineInput: false, position: named DoDebug
  required: false, globbing: false, pipelineInput: false, position: named DoForce
+ required: false, globbing: false, pipelineInput: false, position: named KeepOpen
+ required: false, globbing: false, pipelineInput: false, position: named Silent
  required: false, globbing: false, pipelineInput: false, position: named</pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
@@ -701,6 +727,8 @@ When complete it displays current version for the environment.
 </p>
 <p>  - <strong>DoDebug</strong></p>
 <p>  - <strong>DoForce</strong></p>
+<p>  - <strong>KeepOpen</strong></p>
+<p>  - <strong>Silent</strong></p>
 <p></p>
 <p><strong>Return: </strong> Install the development components.
 </p>

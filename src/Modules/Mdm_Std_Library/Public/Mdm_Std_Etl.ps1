@@ -18,7 +18,7 @@ function Get-SavedDirectoryName {
     .PARAMETER DoDebug
         Switch: Debug this script.
     .OUTPUTS
-        Does a Set-Location to this directory. Rhelpeturns it as a string.
+        Does a Set-Location to this directory. Returns it as a string.
     .EXAMPLE
         Get-SavedDirectoryName
     .NOTES
@@ -54,7 +54,7 @@ function Set-SavedDirectoryName {
         Save working directory.
     .DESCRIPTION
         Save working directory with a view to restoring it later.
-        The default is to save the current directoy.
+        The default is to save the current directory.
     .PARAMETER dirWdPassed
         The Working Directory Name.
     .OUTPUTS
@@ -74,7 +74,7 @@ function Set-SavedDirectoryName {
     if ($null -ne $dirWdPassed) { 
         $global:dirWdSaved = $dirWdPassed 
     } else {
-        # The default is to save the current directoy.
+        # The default is to save the current directory.
         if ($null -eq $global:dirWdSaved -or $global:dirWdSaved -ne $PWD.Path) {
             $global:dirWdSaved = $PWD.Path
         }
@@ -92,7 +92,7 @@ function Get-FileNamesFromPath {
     .OUTPUTS
         A list of files.
     .EXAMPLE
-        Get-FileNamesFromPath "C:\Progams places"
+        Get-FileNamesFromPath "C:\Programs places"
     .NOTES
         none.
 #>
@@ -125,11 +125,11 @@ function Get-UriFromPath {
 function Set-LocationToPath {
     <#
     .SYNOPSIS
-        Set the currrent directory.
+        Set the current directory.
     .DESCRIPTION
-        Set the currrent working directory to the passed path.
+        Set the current working directory to the passed path.
     .PARAMETER workingDirectory
-        The direcotry to set as the current working directory.
+        The directory to set as the current working directory.
     .PARAMETER saveDirectory
         Save the passed directory path.
     .OUTPUTS
@@ -233,7 +233,7 @@ function Copy-ItemWithProgressDisplay {
     
     Other Robocopy options:
     /L :: List only - don't copy, timestamp or delete any files.
-    /X :: report all eXtra files, not just those selected.
+    /X :: report all extra files, not just those selected.
     /V :: produce Verbose output, showing skipped files.
     /TS :: include source file Time Stamps in the output.
     /FP :: include Full Pathname of files in the output.
@@ -269,6 +269,7 @@ function Copy-ItemWithProgressDisplay {
         if ($displayInterval -ge 10 -or ($copyTime.Seconds - $copyTimeLast) -ge 5) {
             $displayInterval = 0
             $copyTimeLast = $copyTime.Seconds
+            # Does $source.count work? When?
             [int]$percent = $itemCount / $source.count * 100
             Write-Progress `
                 -Activity "Copying ... ($percent %) ($($copyTime.Elapsed) secs.)" `
@@ -284,12 +285,13 @@ function Get-LineFromFile {
     [CmdletBinding()]
     param (
         [string]$FileName,
-        [int]$FileLineNumber
+        [int]$FileLineNumber,
+        [string]$logFileNameFull = ""
     )
     # Check if the file exists
     if (-Not (Test-Path $FileName)) {
         $Message = "The script '$FileName' does not exist."
-        Add-LogText -Messages $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_
+        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -logFileNameFull $logFileNameFull
         return
     }
     # Read the content of the script file
@@ -298,7 +300,7 @@ function Get-LineFromFile {
     # Check if the line number is valid
     if ($FileLineNumber -lt 1 -or $FileLineNumber -gt $scriptContent.Count) {
         $Message = "Line number $FileLineNumber is out of range for the script '$FileName'."
-        Add-LogText -Messages $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_
+        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -ErrorPSItem $_ -logFileNameFull $logFileNameFull
         return
     }
 
@@ -326,9 +328,9 @@ function Resolve-Type {
     # If the type is found, set the flag to true
     if ($types) {
         $typeFound = $true
-        Write-Host "$TypeName type found."
+        Add-LogText -Message "$TypeName type found."
     } else {
-        Write-Host "$TypeName type not found."
+        Add-LogText -Message "$TypeName type not found."
     }
 
     # Return the result
@@ -363,16 +365,17 @@ function Test-ResolveType {
     $exists = Resolve-Type -TypeName $typeToCheck
 
     if ($exists) {
-        Write-Host "You can proceed with using the $typeToCheck type."
+        Add-LogText -Message "You can proceed with using the $typeToCheck type."
     } else {
-        Write-Host "The $typeToCheck type is not available."
+        Add-LogText -Message "The $typeToCheck type is not available."
     }
 }
 function Resolve-Variables {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
-        [string]$inputString
+        [string]$inputString,
+        [string]$logFileNameFull = ""
     )
     # Use a regex to find all variable references in the string
     try {
@@ -399,7 +402,7 @@ function Resolve-Variables {
                     $resolvedString = $resolvedString -replace [regex]::Escape($match.Value), $varValue
                 } else {
                     $Message = "Resolve-Variables: $varName has a null value."
-                    Add-LogText $Message -IsError -ErrorPSItem $_
+                    Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                 }
             }
             Write-Debug "$i variables found."
@@ -411,7 +414,7 @@ function Resolve-Variables {
 
     } catch {
         $Message = "Resolve-Variables encountered an error."
-        Add-LogText $Message -IsError -ErrorPSItem $_        
+        Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull   
     }
 }
 #endregion
@@ -466,13 +469,13 @@ function Get-TestHtmlData {
 function Test-HtmlData {
     <#
     .SYNOPSIS
-        A basic function to show one or more ojbects.
+        A basic function to show one or more objects.
     .DESCRIPTION
         This isn't being used. It might be useful for testing.
     .PARAMETER InputObject
         This is a ValueFromPipeline and can be used with one or more objects.
     .PARAMETER FileName
-        The name of the file inclulding its path.
+        The name of the file including its path.
     .PARAMETER DoPause
         Switch: Pause between steps.
     .PARAMETER DoVerbose
@@ -480,7 +483,7 @@ function Test-HtmlData {
     .PARAMETER DoDebug
         Switch: Debug this script.
     .OUTPUTS
-        A list to the current ouput.
+        A list to the current output.
     .EXAMPLE
         Test-HtmlData $MyData -DoPause
     .LINK

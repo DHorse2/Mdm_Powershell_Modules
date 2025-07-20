@@ -19,19 +19,20 @@
     FunctionsToExport = 
         "Get-DevEnvVersions",
         "Install-DevEnvOsWin",
+        "Install-DevEnvRepository",
         "Install-DevEnvModules",
         "Install-DevEnvIdeWin",
         "Install-DevEnvLlmWin",
         "Install-DevEnvWhisperWin",
         "Install-DevEnvWin",
         "Install-DevEnv",
-        "DevEnvGui",
-        "Get-JsonData"
+        "DevEnvGui"
     CmdletsToExport         = @()
     VariablesToExport       = @()
     AliasesToExport         =
         "Get-Vs",
         "IWinLlm",
+        "IWinWhisper",
         "IWinIde",
         "IWinOs",
         "IDevEnv",

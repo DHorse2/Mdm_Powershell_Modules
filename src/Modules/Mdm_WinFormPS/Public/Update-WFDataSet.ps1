@@ -2,7 +2,9 @@
 # Function to update data
 function Update-WFDataSet {
     [CmdletBinding()]
-    param($sender, $e)
+    param($sender, $e,
+    [string]$logFileNameFull = ""
+    )
     # param (
     #     $optionName, 
     #     $optionText, 
@@ -40,7 +42,7 @@ function Update-WFDataSet {
             }
             Write-Host "Update-WFDataSet Control $optionName '$optionText' DataSet: $dataSet, Item: $dataSetItem, Checked: $isChecked."
             # Locate Data Type
-            $moduleData = $global:moduleDataArray[$dataSet]
+            $moduleData = $global:appDataArray[$dataSet]
             if ($moduleData) {
                 # Locate Data Item
                 # Find the specific item in the array
@@ -50,33 +52,33 @@ function Update-WFDataSet {
                         # Found, Update it.
                         $itemData.checked = $isChecked
                         $moduleData['changed'] = $true
-                        $global:moduleDataChanged = $true
-                        if (-not $global:moduleDataArray['Control']) { $global:moduleDataArray['Control'] = @{} }
-                        $global:moduleDataArray['Control']['ActionLast'] = $optionText
-                        # if ($global:DoDebug -or $global:DoVerbose) {
+                        $global:appDataChanged = $true
+                        if (-not $global:appDataArray['Control']) { $global:appDataArray['Control'] = @{} }
+                        $global:appDataArray['Control']['ActionLast'] = $optionText
+                        # if ($global:app.DoDebug -or $global:app.DoVerbose) {
                         $Message = "Update-WFDataSet Update $optionName '$optionText' DataSet: $dataSet, Item: $dataSetItem, Checked: $isChecked."
-                        Add-LogText $Message
+                        Add-LogText $Message -logFileNameFull $logFileNameFull
                         # }
-                        $global:moduleDataArray['changed'] = $true
+                        $global:appDataArray['changed'] = $true
                         return $true
                     } catch {
                         $Message = "Update-WFDataSet Error valid json DataSet and Item, Field not found: $optionName"
-                        Add-LogText -IsError -ErrorPSItem $_ -Messages $Message
+                        Add-LogText -IsError -ErrorPSItem $_ -Message $Message -logFileNameFull $logFileNameFull
                         return $false
                     }
                 } else {
                     $Message = "Update-WFDataSet Error valid json DataSet, but Item not found: $optionName"
-                    Add-LogText -IsError -Messages $Message
+                    Add-LogText -IsError -Message $Message -logFileNameFull $logFileNameFull
                     return $false
                 }
             } else {
                 $Message = "Update-WFDataSet Error json DataSet Key not found: $optionName"
-                Add-LogText -IsError -Messages $Message
+                Add-LogText -IsError -Message $Message -logFileNameFull $logFileNameFull
                 return $false
             }
         } catch {
             $Message = "Update-WFDataSet failed processing $optionName."
-            Add-LogText -IsError -ErrorPSItem $_ -Messages $Message
+            Add-LogText -IsError -ErrorPSItem $_ -Message $Message -logFileNameFull $logFileNameFull
             return $false
         }
         return $false

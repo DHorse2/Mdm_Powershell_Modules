@@ -12,6 +12,13 @@
     # Scripts prior to importing this module.
     # ScriptsToProcess        = @()
     # ModuleToProcess         = @()
+    RequiredAssemblies   = @(
+        'System.Windows.Forms', # For Windows Forms
+        'System.Drawing', # For drawing support
+        'Microsoft.VisualBasic',
+        'PresentationCore', # For WPF
+        'System.Management.Automation.dll'
+    )
 
     # Exports
     # Do not use wildcards. Use an empty array if there are no exports.

@@ -4,7 +4,7 @@ function ConvertFrom-HashValue {
     param (
         $textIn,
         $textOut = @(),
-        $textLineBreak = "`n"
+        $textLineBreak = "$global:NL"
     )
     process {
         Write-Debug "String"
@@ -80,7 +80,8 @@ function ConvertTo-Text {
     param (
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
-        $textIn
+        $textIn,
+        [string]$logFileNameFull = ""
     )
     Write-Debug "ConvertTo-Text"
     # Initialize description text
@@ -98,7 +99,7 @@ function ConvertTo-Text {
                     if ($textIn.text -is [System.Collections.IEnumerable] `
                             -and -not ($textIn.text -is [string])) {
                         # If the description is an array, join it into a single string
-                        # $textOut = $textIn.text -join "`n"
+                        # $textOut = $textIn.text -join "$global:NL"
                         $textOut += $textIn.text
                     } else {
                         $textOut += $textIn.text
@@ -140,7 +141,7 @@ function ConvertTo-Text {
                     # Return the formatted string
                     # $formattedString
                 }
-                $textOut += $formattedProperties -join "`n"  # Join with new line for better readability            
+                $textOut += $formattedProperties -join "$global:NL"  # Join with new line for better readability            
             }            
             "System.Management.Automation.PSObject[]" {
                 Write-Debug "PSObject[]"
@@ -158,7 +159,7 @@ function ConvertTo-Text {
                     # }
                     # Join the formatted properties with a comma and space
                 }
-                # $textOut += $formattedProperties -join "`n"  # Join with new line for better readability            
+                # $textOut += $formattedProperties -join "$global:NL"  # Join with new line for better readability            
             }
             "System.Management.Automation.PSObject" {
                 Write-Debug "PSObject"
@@ -168,14 +169,14 @@ function ConvertTo-Text {
                 foreach ($property in $properties) {
                     $formattedProperties += "$($property.Name): $($property.Value)"
                 }
-                $textOut += $formattedProperties -join "`n"  # Join with new line for better readability            
+                $textOut += $formattedProperties -join "$global:NL"  # Join with new line for better readability            
             }
             "System.Collections.IEnumerable" {
                 Write-Debug "IEnumerable"
                 # Access the Text property if it exists
                 $textOut += ($textIn | ForEach-Object {
                         if ($textIn.PSObject.Properties['Text']) { $textInType.Text } 
-                    }) -join "`n"
+                    }) -join "$global:NL"
             }
             "System.Management.Automation.PSCustomObject" {
                 Write-Debug "PSCustomObject"
@@ -193,7 +194,7 @@ function ConvertTo-Text {
                 # Unknow object
                 $textOut += $textIn
                 $Message = "Unknow object $textIn"
-                Add-LogText $Message -IsWarning
+                Add-LogText -Message $Message -IsWarning -logFileNameFull $logFileNameFull
 
             }
         }
@@ -269,7 +270,7 @@ function ConvertTo-EscapedText {
                     Write-Debug "Unknow object"
                     $Message = "Error. Cant handle type $textInType for $textIn"
                     $textOut += $Message
-                    Add-LogText $Message -IsWarning
+                    Add-LogText -Message $Message -IsWarning -logFileNameFull $logFileNameFull
                 }
             }       
         }
@@ -358,8 +359,8 @@ function Convert-MediaToConsoleColor {
             }
         }
     } else {
-        Write-Error -Message $("Expected [System.Windows.Media.Color] or [System.ConsoleColor]`n" `
-                + "Got type: $mediaColorType from: $mediaColor.`n"  `
+        Write-Error -Message $("Expected [System.Windows.Media.Color] or [System.ConsoleColor]$global:NL" `
+                + "Got type: $mediaColorType from: $mediaColor.$global:NL"  `
                 + "Attempting to Convert-NameToConsoleColor by value.")
         return Convert-NameToConsoleColor $mediaColor
     }

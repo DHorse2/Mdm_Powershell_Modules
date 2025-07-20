@@ -9,10 +9,16 @@
             "name": "Script Verbose",
             "type": "PowerShell",
             "request": "launch",
-            "script": " . .\\${fileBasename}",
-            "args": [
-                "-Verbose"
-            ],
+            "script": " . .\\${fileBasename} -DoVerbose",
+            "args": [],
+            "cwd": "${file}"
+        },
+        {
+            "name": "Script DoPause",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": " . .\\${fileBasename} -DoVerbose -DoPause",
+            "args": [],
             "cwd": "${file}"
         },
         {
@@ -27,7 +33,15 @@
             "name": "Function Verbose",
             "type": "PowerShell",
             "request": "launch",
-            "script": "${fileBasenameNoExtension} -Verbose",
+            "script": "${fileBasenameNoExtension} -DoVerbose",
+            "args": [],
+            "cwd": "${file}"
+        },
+        {
+            "name": "Function DoPause",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${fileBasenameNoExtension} -DoVerbose -DoPause",
             "args": [],
             "cwd": "${file}"
         },

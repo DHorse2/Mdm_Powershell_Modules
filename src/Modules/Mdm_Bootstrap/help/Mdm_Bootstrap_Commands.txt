@@ -1,12 +1,33 @@
 
 Module        PSEdition CommandType Name
 ------        --------- ----------- ----
+Mdm_Bootstrap              Function DevEnv_LanguageMode
+Mdm_Bootstrap              Function Invoke-DevEnv_Module_Reset
+Mdm_Bootstrap              Function Get-ModuleRootPath
+Mdm_Bootstrap              Function Enter-ModuleRoot
 Mdm_Bootstrap              Function Add-RegistryPath
-Mdm_Bootstrap              Function GoToBootstrap_Func
+Mdm_Bootstrap              Function DevEnv_Install_Modules_Win
+Mdm_Bootstrap              Function Invoke-Update
 Mdm_Bootstrap              Function Initialize-Dev_Env_Win
-Mdm_Bootstrap              Function GoToProjectRoot_Func
+Mdm_Bootstrap              Function Enter-GoToBootstrap
+Mdm_Bootstrap              Function Enter-ProjectRoot
+Mdm_Bootstrap              Function Invoke-Build
+Mdm_Bootstrap              Function Assert-RegistryValue
+Mdm_Bootstrap                 Alias Build
+Mdm_Bootstrap                 Alias Update
+Mdm_Bootstrap                 Alias GoProject
+Mdm_Bootstrap                 Alias DevEnvReset
+Mdm_Bootstrap                 Alias IDevEnvModules
+Mdm_Bootstrap                 Alias GoBootstrap
+Mdm_Bootstrap                 Alias GoModule
+Mdm_Bootstrap              Function Add-RegistryPath
+Mdm_Bootstrap              Function Enter-ProjectRoot
+Mdm_Bootstrap              Function Initialize-Dev_Env_Win
+Mdm_Bootstrap              Function Enter-GoToBootstrap
+Mdm_Bootstrap              Function Enter-ModuleRoot
+Mdm_Bootstrap              Function Invoke-DevEnv_Module_Reset
+Mdm_Bootstrap              Function Invoke-Build
 Mdm_Bootstrap              Function Get-ModuleRootPath
 Mdm_Bootstrap              Function Assert-RegistryValue
-Mdm_Bootstrap              Function GoToModuleRoot_Func
-Mdm_Bootstrap              Function DevEnv_Module_Reset_Func
+Mdm_Bootstrap              Function Invoke-Update
 

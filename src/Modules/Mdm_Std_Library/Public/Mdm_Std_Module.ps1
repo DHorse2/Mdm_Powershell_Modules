@@ -33,10 +33,14 @@ Function Export-ModuleMemberScan {
         [string]$modulePublicFolder,
         [string]$modulePrivateFolder,
         [switch]$TraceDetails,
+
+        [string]$appName = "",
+        [int]$actionStep = 0,
         [switch]$DoForce,
         [switch]$DoVerbose,
         [switch]$DoDebug,
-        [switch]$DoPause
+        [switch]$DoPause,
+        [string]$logFileNameFull = ""
     )
     begin {
         if (-not $modulePublicFolder) { $modulePublic = "$moduleRootPath\Public" }
@@ -44,7 +48,7 @@ Function Export-ModuleMemberScan {
         if (-not $modulePrivateFolder) { $modulePrivate = "$moduleRootPath\Private" }
         else { $modulePrivate = "$moduleRootPath\$modulePrivateFolder" }
 
-        # $moduleName = Split-Path ((get-item $moduleRootPath ).FullName) -leaf
+        # $moduleName = Split-Path ((get-item $moduleRootPath ).FullName) -Leaf
         $moduleName = [System.IO.Path]::GetFileName($moduleRootPath)
         # Create a new module object
         $module = New-Object PSObject -Property @{
@@ -64,14 +68,14 @@ Function Export-ModuleMemberScan {
         $Private = @( Get-ChildItem -Path "$modulePrivate\*.ps1" -ErrorAction SilentlyContinue )
         if ($DoVerbose) {
             $Message = "ModuleMemberScan Module: $($module.Name)"
-            Add-LogText -Messages $Message
+            Add-LogText -Message $Message -ForegroundColor Green -logFileNameFull $logFileNameFull
             $moduleNameDisplayed = $true
         }
         # $TraceDetails = $false
         # Dot source the files
         Foreach ($import in @($Public + $Private + $Flat)) {
             Try {
-                # $fileName = Split-Path $import -leaf
+                # $fileName = Split-Path $import -Leaf
                 $functionName = [System.IO.Path]::GetFileNameWithoutExtension($import.FullName)
                 # Get functions defined in the script
                 $functions = Get-Command -Name * -CommandType Function | Where-Object { $_.Source -eq $import.FullName } -ErrorAction Continue
@@ -82,14 +86,14 @@ Function Export-ModuleMemberScan {
                     if (-not $moduleNameDisplayed) { 
                         $moduleNameDisplayed = $true
                         $Message = "Scan Module $($module.Name): "
-                        Add-LogText -Messages $Message -NoNewLine
+                        Add-LogText -Message $Message -NoNewLine -logFileNameFull $logFileNameFull
                     }
                     if ($Verbose -or $DoVerbose) {
                         $Message = "   Component: $($functionName) with functions: $functionsString"
-                        Add-LogText -Messages $Message
+                        Add-LogText -Message $Message -ForegroundColor Yellow -logFileNameFull $logFileNameFull
                     } else {
                         $Message = "$functionName "
-                        Add-LogText -Messages $Message -NoNewline
+                        Add-LogText -Message $Message -NoNewline -logFileNameFull $logFileNameFull
                     }
                 }
                 if ($functions) {
@@ -97,13 +101,13 @@ Function Export-ModuleMemberScan {
                     . $import.FullName
                     if ($TraceDetails -and ($Verbose -or $DoVerbose)) {
                         $Message = "        Function imported: $($import.FullName)" 
-                        Add-LogText -Messages $Message -ForegroundColor Green 
+                        Add-LogText -Message $Message -ForegroundColor Green -logFileNameFull $logFileNameFull
                     }
                 } else {
                     # If no functions are found, create a wrapper function
                     if ($TraceDetails -and ($Verbose -or $DoVerbose)) {
                         $Message = "        Executable Script: $($import.FullName)" 
-                        Add-LogText -Messages $Message -ForegroundColor Green 
+                        Add-LogText -Message $Message -ForegroundColor Green -logFileNameFull $logFileNameFull
                     }
                     $scriptNameFull = $import.FullName
                     $scriptName = "$($functionName)_Func"
@@ -117,7 +121,7 @@ function $scriptName {
                     Invoke-Expression $wrapperFunction
                     if ($TraceDetails -and ($Verbose -or $DoVerbose)) {
                         $Message = " Created wrapper function: $scriptName." # Script: $scriptNameFull"
-                        Add-LogText -Messages $Message -ForegroundColor Green 
+                        Add-LogText -Message $Message -ForegroundColor Green -logFileNameFull $logFileNameFull
                     }
                 }
                 if ($import.FullName.IndexOf("Private") -lt 0) {
@@ -126,25 +130,25 @@ function $scriptName {
                     $module.PublicFunctions += $functionsString
                     if ($TraceDetails -and ($Verbose -or $DoVerbose)) {
                         $Message = "         Public Component: $($import.FullName) with functions: $($functions.Name -join ', ')"
-                        Add-LogText -Messages $Message -ForegroundColor Green 
+                        Add-LogText -Message $Message -ForegroundColor Green -logFileNameFull $logFileNameFull
                     }
                 } else { 
                     # Private
                     $module.PrivateFunctions += $functionsString
                     if ($TraceDetails -and ($Verbose -or $DoVerbose)) {
                         $Message = "         Private Component: $($import.FullName) skipped." 
-                        Add-LogText -Messages $Message -ForegroundColor Green 
+                        Add-LogText -Message $Message -ForegroundColor Green -logFileNameFull $logFileNameFull
                     }
                 }
             } catch {
                 $Message = "Failed to import component $($import.FullName):"
-                Add-LogText -IsWarning -ErrorPSItem $_ -Message $Message
-                # Add-LogText -Messages $Message
+                Add-LogText -IsWarning -ErrorPSItem $_ -Message $Message -logFileNameFull $logFileNameFull
+                # Add-LogText -Message $Message
             }
         }
         if ($TraceDetails -and -not($Verbose -or $DoVerbose)) {
             $Message = " " 
-            Add-LogText -Messages $Message
+            Add-LogText -Message $Message -logFileNameFull $logFileNameFull
         }
     }
     end { return $module }
@@ -260,6 +264,7 @@ function Confirm-Module {
         [ValidateNotNullOrEmpty()]
         [string]$Name,
         [string]$modulePath,
+        [string]$logFileNameFull = "",
         [switch]$DoForce,
         [switch]$DoVerbose,
         [switch]$DoDebug,
@@ -269,12 +274,112 @@ function Confirm-Module {
         if (-not $modulePath) {
             $modulePath = "$global:moduleRootPath\$Name"
         }
-        if ($DoVerbose) { Write-Output "Exists: $(Test-Path "$modulePath"): $modulePath" }
+        if ($DoVerbose) { Add-LogText -Message "Exists: $(Test-Path "$modulePath"): $modulePath" -logFileNameFull $logFileNameFull }
         if (-not(Test-Path "$modulePath\$Name.psm1") -and -not(Test-Path "$modulePath\$Name.psd1")) {
             $moduleValid = $false
         } else { $moduleValid = $true }
     }
     end { $moduleValid }
+}
+function Get-ModulePrivateData {
+    <#
+    .SYNOPSIS
+        Retrieves the Module's PrivateData.
+    .DESCRIPTION
+        Gets the PrivateData settings of the specified module.
+    .PARAMETER ModuleName
+        The name of the module to retrieve PrivateData from. If not specified, retrieves from all loaded modules.
+    .PARAMETER Filter
+        A wildcard filter to limit the returned settings.
+    .EXAMPLE
+        Get-ModulePrivateData -ModuleName "MyModule"
+    .OUTPUTS
+        System.Collections.Hashtable
+    #>
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $false)]
+        [string]$ModuleName,
+
+        [Parameter(Mandatory = $false)]
+        [string]$Filter = "*"
+    )
+
+    process {
+        # Initialize a hashtable to hold the private data
+        $privateData = @{}
+
+        # Get the specified module or all loaded modules if none specified
+        $modules = if ($ModuleName) {
+            Get-Module -Name $ModuleName
+        } else {
+            Get-Module
+        }
+
+        foreach ($module in $modules) {
+            if ($module.PrivateData) {
+                # Add the private data to the hashtable
+                foreach ($key in $module.PrivateData.PSObject.Properties.Name) {
+                    $privateData[$key] = $module.PrivateData.$key
+                }
+            }
+        }
+
+        # Filter the hashtable based on the keys if a filter is provided
+        if ($Filter) {
+            return $privateData.GetEnumerator() | Where-Object { $_.Key -like $Filter } | ForEach-Object { @{ $_.Key = $_.Value } }
+        } else {
+            return $privateData
+        }
+    }
+}
+function Set-ModulePrivateData {
+    <#
+    .SYNOPSIS
+        Sets fields in the Module's PrivateData.
+    .DESCRIPTION
+        Updates the PrivateData settings of the specified module.
+    .PARAMETER ModuleName
+        The name of the module to update PrivateData for.
+    .PARAMETER Key
+        The key of the PrivateData field to set.
+    .PARAMETER Value
+        The value to set for the specified key.
+    .EXAMPLE
+        Set-ModulePrivateData -ModuleName "MyModule" -Key "Setting1" -Value "New Value"
+    .OUTPUTS
+        System.Void
+    #>
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$ModuleName,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Key,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Value
+    )
+
+    process {
+        # Get the specified module
+        $module = Get-Module -Name $ModuleName -ErrorAction Stop
+
+        # Check if the module has PrivateData
+        if (-not $module.PrivateData) {
+            $module.PrivateData = New-Object PSObject -Property @{}
+        }
+
+        # Set the specified key in the PrivateData
+        $module.PrivateData | Add-Member -MemberType NoteProperty -Name $Key -Value $Value -Force
+
+        # Optionally, output the updated PrivateData
+        Write-Output "Updated PrivateData for module '$ModuleName':"
+        $module.PrivateData
+    }
 }
 function Get-ModuleProperty {
     <#
@@ -333,28 +438,30 @@ function Get-ModuleConfig {
         Retrieves the Module configuration.
     .DESCRIPTION
         Gets the Module configuration settings.
+    .PARAMETER Filter
+        A wildcard filter to limit the returned settings.
     .EXAMPLE
         Get-ModuleConfig
     .OUTPUTS
         System.Collections.Hashtable
-#>
-
+    #>
 
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
         [string]$Filter = "*"
     )
-    begin {
-        $config = @{
-            "Setting1" = "Value1"
-            "Setting2" = "Value2"
-            "Setting3" = "Value3"
-        }
-    }
+
     process {
+        # Load the existing configuration
+        $config = @{}
+        foreach ($key in Get-ChildItem -Path "Module.Config") {
+            $config[$key.PSChildName] = Get-Item -Path $key.PSPath
+        }
+
+        # Filter the hashtable based on the keys if a filter is provided
         if ($Filter) {
-            return @($config | Where-Object { $_.Name -like $Filter })
+            return $config.GetEnumerator() | Where-Object { $_.Key -like $Filter } | ForEach-Object { @{ $_.Key = $_.Value } }
         } else {
             return $config
         }
@@ -375,17 +482,29 @@ function Set-ModuleConfig {
         }
     .OUTPUTS
         System.Void
-#>
-
+    #>
 
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
         [System.Collections.Hashtable]$Config
     )
+
     process {
-        foreach ($key in $config.Keys) {
-            Set-Item -Path ("Module.Config.$key") -Value $config[$key]
+        # Load the existing configuration
+        $existingConfig = @{}
+        foreach ($key in Get-ChildItem -Path "Module.Config") {
+            $existingConfig[$key.PSChildName] = Get-Item -Path $key.PSPath
+        }
+
+        # Merge existing configuration with new values
+        foreach ($key in $Config.Keys) {
+            $existingConfig[$key] = $Config[$key]
+        }
+
+        # Update the module configuration with the merged values
+        foreach ($key in $existingConfig.Keys) {
+            Set-Item -Path ("Module.Config.$key") -Value $existingConfig[$key]
         }
     }
 }

@@ -1,7 +1,6 @@
 
-$path = "$PSScriptRoot\src\Modules\Mdm_Modules\Project.ps1"
-. "$path"
-
+# GoToModules
+# G:\Script\Powershell\Mdm_Powershell_Modules\src\Modules\GoToBootstrap.ps1
+$path = "$($(get-item $PSScriptRoot).FullName)\src\Modules\Mdm_Std_Library\lib\ProjectLib.ps1"
+. $path
 Set-Location -Path "$global:moduleRootPath"
-Write-Host "Reset the environment"
-Write-Host ". .\DevEnv_Module_Reset.ps1"

@@ -4,7 +4,8 @@ function Add-WFDataSetTreeViewNodes {
     [CmdletBinding()]
     param (
         [System.Windows.Forms.TreeNode]$parentNode,
-        $dataSetData
+        $dataSetData,
+		[string]$logFileNameFull = ""
     )
     # [hashtable]
     # [array]
@@ -18,7 +19,7 @@ function Add-WFDataSetTreeViewNodes {
             $itemType = $item.GetType()
             $node = New-Object System.Windows.Forms.TreeNode($item.ToString())
             if ($item -is [hashtable] -or $item -is [array] -or $item -is [PSCustomObject]) {
-                Add-WFDataSetTreeViewNodes -parentNode $node -dataSetData $item
+                Add-WFDataSetTreeViewNodes -parentNode $node -dataSetData $item -logFileNameFull $logFileNameFull
             }
             $parentNode.Nodes.Add($node)
         }
@@ -32,7 +33,7 @@ function Add-WFDataSetTreeViewNodes {
                     $nodeFirst = $false
                     $Node.Text = $value.ToString()
                 }
-                Add-WFDataSetTreeViewNodes -parentNode $node -dataSetData $value
+                Add-WFDataSetTreeViewNodes -parentNode $node -dataSetData $value -logFileNameFull $logFileNameFull
             } else {
                 $node.Text += ": $value"
             }
@@ -47,7 +48,7 @@ function Add-WFDataSetTreeViewNodes {
             }
             $propertyValue = $property.Value
             if ($propertyValue -is [hashtable] -or $propertyValue -is [PSCustomObject] -or $propertyValue -is [array]) {
-                Add-WFDataSetTreeViewNodes -parentNode $node -dataSetData $propertyValue
+                Add-WFDataSetTreeViewNodes -parentNode $node -dataSetData $propertyValue -logFileNameFull $logFileNameFull
             } else {
                 $node.Text += ": $($property.Value)"
             }
@@ -55,7 +56,7 @@ function Add-WFDataSetTreeViewNodes {
         }
     } else {
         $Message = "Get-WFDataSetTreeViewNodes invalid data in DataSet format: $($dataSetData.GetType())"
-        Add-LogText -Messages $Message -IsError -ErrorPSItem $_
+        Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
         return
     }
     # $nodeIndex = $parentNode.Nodes.Add($node)
@@ -68,7 +69,8 @@ function Get-WFDataSetTreeView {
         [System.Windows.Forms.TreeView]$treeView,
         $control,
         [switch]$DoAll,
-        [switch]$DoControls
+        [switch]$DoControls,
+        [string]$logFileNameFull = ""
     )
     process {
         try {
@@ -79,7 +81,7 @@ function Get-WFDataSetTreeView {
                 $dataSetObject = $dataArray
             } else {
                 $Message = "Get-WFDataSetTreeView invalid DataSet format. String or Hashtable only."
-                Add-LogText -Messages $Message -IsError -ErrorPSItem $_
+                Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
                 return $null
             }
             # form
@@ -94,11 +96,11 @@ function Get-WFDataSetTreeView {
             if ($DoAll -or $DoControls -and $control) { $control.Controls.Add($treeView) }
             $rootNode = New-Object System.Windows.Forms.TreeNode("Root")
             # Add-Nodes
-            Add-WFDataSetTreeViewNodes -parentNode $rootNode -dataSetData $dataSetObject
+            Add-WFDataSetTreeViewNodes -parentNode $rootNode -dataSetData $dataSetObject -logFileNameFull $logFileNameFull
             $nodeIndex = $treeView.Nodes.Add($rootNode)
         } catch {
             $Message = "Get-WFDataSetTreeView unable to process Json TreeView."
-            Add-LogText -Messages $Message -IsError -ErrorPSItem $_
+            Add-LogText -Message $Message -IsError -ErrorPSItem $_ -logFileNameFull $logFileNameFull
             return $null
         }
     }

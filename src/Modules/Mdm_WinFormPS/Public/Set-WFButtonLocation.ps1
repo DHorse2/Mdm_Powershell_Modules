@@ -12,9 +12,14 @@ function Set-WFButtonLocation {
 }
 function Set-WFButtonLocationBottom {
     param($sender, $e, $x, $y)
-    if ($sender -is [Form]) {
-        $controlItem = $sender.Controls["ButtonBar"]
-        if (-not $controlItem) { $controlItem = $sender.Controls["OkButton"] }
+    if ($sender -is [WFWindow]) {
+        $form = $sender.Forms[$sender.FormIndex]
+        $controlItem = $form.Controls["ButtonBar"]
+        if (-not $controlItem) { $controlItem = $form.Controls["OkButton"] }
+    } elseif ($sender -is [Form]) {
+        $form = $sender
+        $controlItem = $form.Controls["ButtonBar"]
+        if (-not $controlItem) { $controlItem = $form.Controls["OkButton"] }
     } elseif ($sender -is [Control]) {
         $controlItem = $sender
     } elseif ($null -eq $sender) {
@@ -23,7 +28,9 @@ function Set-WFButtonLocationBottom {
         $controlItem = $sender
     }
     $x = $global:displayMargins.Left
-    $y = $sender.ClientSize.Height - $controlItem.Height - $global:displayMargins.Bottom - $global:displayMargins.Top - 10 # $margins.Bottom
+    if (-not $form) { $form = Find-WFForm -sender $sender -e $e}    
+    $y = $form.Controls['TabControls'].PreferredSize.Height + $global:displayMargins.Top + 10 + 60 # extra space
+    # $y = $sender.ClientSize.Height - $controlItem.Height - $global:displayMargins.Bottom - $global:displayMargins.Top - 10 # $margins.Bottom
     $result = Set-WFButtonLocationAll -sender $sender -e $e -x $x -y $y
     return $result
 }

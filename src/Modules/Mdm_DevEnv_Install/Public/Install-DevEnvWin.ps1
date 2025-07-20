@@ -28,35 +28,44 @@ function Install-DevEnvWin {
 
     [CmdletBinding()]
     param ([switch]$DoPause, [switch]$DoVerbose, [switch]$DoDebug, [switch]$DoForce,
-    [switch]$KeepOpen,
-    [switch]$Silent
+        [string]$logFileNameFull = "",
+        [switch]$KeepOpen,
+        [switch]$Silent
     )
+    $installDevEnvWinParams = @{}
+    if ($DoForce) { $installDevEnvWinParams['DoForce'] = $true }
+    if ($DoVerbose) { $installDevEnvWinParams['DoVerbose'] = $true }
+    if ($DoDebug) { $installDevEnvWinParams['DoDebug'] = $true }
+    if ($DoPause) { $installDevEnvWinParams['DoPause'] = $true }
+    $installDevEnvWinParams['ErrorAction'] = 'Inquire' 
+    if ($KeepOpen) { $installDevEnvWinParams['KeepOpen'] = $true }
+    if ($Silent) { $installDevEnvWinParams['Silent'] = $true }
+    if ($logFileNameFull) { $installDevEnvWinParams['logFileNameFull'] = $logFileNameFull }
     # $IsMacOS
     # $IsLinux
     if ($IsWindows) {
-
         if ($Silent -or (Wait-YorNorQ -Message "Set up the Windows OS?" -eq "Y")) { 
-            Install-DevEnvOsWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Silent:$Silent -KeepOpen:$KeepOpen -ErrorAction Inquire 
+            Install-DevEnvOsWin @installDevEnvWinParams
         }
 
         if ($Silent -or (Wait-YorNorQ -Message "Set up the IDE?"-eq "Y")) { 
-            Install-DevEnvIdeWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Silent:$Silent -KeepOpen:$KeepOpen -ErrorAction Inquire 
+            Install-DevEnvIdeWin @installDevEnvWinParams
         }
 
         if ($Silent -or (Wait-YorNorQ -Message "Set up the LLM?"-eq "Y")) { 
-            Install-DevEnvLlmWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Silent:$Silent -KeepOpen:$KeepOpen -ErrorAction Inquire 
+            Install-DevEnvLlmWin @installDevEnvWinParams
         }
 
         if ($Silent -or (Wait-YorNorQ -Message "Set up the Whisper Voice?"-eq "Y")) { 
-            Install-DevEnvWhisperWin -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Silent:$Silent -KeepOpen:$KeepOpen -ErrorAction Inquire 
+            Install-DevEnvWhisperWin @installDevEnvWinParams
         }
 
         if ($Silent -or (Wait-YorNorQ -Message "Display current versions?"-eq "Y")) { 
-            Get-DevEnvVersions -DoPause:$DoPause -DoVerbose:$DoVerbose -DoDebug:$DoDebug -Silent:$Silent -KeepOpen:$KeepOpen
+            Get-DevEnvVersions @installDevEnvWinParams
         }
     } else {
         $Message = "This script is only run on the Windows OS."
-        Add-LogText -Messages $Message -IsError -SkipScriptLineDisplay
+        Add-LogText -Message $Message -IsError -SkipScriptLineDisplay -logFileNameFull $logFileNameFull
     }
-    if ($KeepOpen -and -not $Silent) { Wait-AnyKey -Message "Install-DevEnvWin Setup is completed." }
+    if ($DoPause -or ($KeepOpen -and -not $Silent)) { Wait-AnyKey -Message "Install-DevEnvWin Setup is completed." }
 }

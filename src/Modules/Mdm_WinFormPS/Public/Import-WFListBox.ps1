@@ -64,7 +64,7 @@
 		{
 			$listBox.Items.AddRange($Items)
 		}
-		elseif ($Items -is [Array])
+		elseif ($Items -is [array])
 		{
 			$listBox.BeginUpdate()
 			foreach ($obj in $Items)

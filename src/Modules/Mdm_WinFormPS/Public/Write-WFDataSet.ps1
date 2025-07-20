@@ -10,18 +10,23 @@ function Write-WFDataSet {
         [switch]$IgnoreState,
         [hashtable]$dataArray,
         [string]$commandSource = "",
-        [switch]$SkipStatusUpdate
+        [switch]$SkipStatusUpdate,
+        [string]$logFileNameFull = "",
+        [switch]$DoForce,
+        [switch]$DoVerbose,
+        [switch]$DoDebug,
+        [switch]$DoPause
     )
     process {
-        $global:fileSystemActive = $true
+        $global:dataSetBusy = $true
         try {
             if (-not $dataSourceName) { $dataSourceName = $global:dataSourceName }
             if (-not $dataSourceName) { $dataSourceName = $global:appName }
             if (-not $dataSourceName) { $dataSourceName = "Application" }
-            if (-not $dataArray) { $dataArray = $global:moduleDataArray }
+            if (-not $dataArray) { $dataArray = $global:appDataArray }
             $description = ""
             if (-not $sourceDirectory) {
-                $sourceDirectory = "$global:fileDialogInitialDirectory"
+                $sourceDirectory = "$global:dataSetDirectory"
             }
             # Id
             if (-not $IgnoreState) {
@@ -31,9 +36,11 @@ function Write-WFDataSet {
             if (-not $SkipStatusUpdate) {
                 $textOut = $dataSetState
                 if ($dataSetState -ne "AutoSave" ) {
-                    Update-WFStatusBarStrip -sender $sender -e $e -statusBarLabel 'statusBarDataSetState' -text $textOut
+                    if ($global:appDataChanged) { $textOut = "Changed" }
+                    if ($fileNameFull) { $textOut = "User Data" }
+                    Update-WFStatusBarStrip -sender $sender -e $e -statusBarLabel 'statusBarDataSetState' -text $textOut -logFileNameFull $logFileNameFull
                 $textOut = "Write"
-                Update-WFStatusBarStrip -sender $sender -e $e -statusBarLabel 'statusBarActionState' -text $textOut
+                Update-WFStatusBarStrip -sender $sender -e $e -statusBarLabel 'statusBarActionState' -text $textOut -logFileNameFull $logFileNameFull
             }
         }    
             New-WFSpeakerBeep
@@ -50,7 +57,8 @@ function Write-WFDataSet {
                 $dataArray['changed'] = $false
                 $jsonString = $dataArray | ConvertTo-Json -Depth 7
                 $jsonString | Out-File -FilePath $outputFileNameFull -Encoding UTF8
-                Write-Host "JSON data $description has been written to $outputFileNameFull."                    
+                $Message = "JSON data $description has been written to $outputFileNameFull."                    
+                Add-LogText -Message $Message -logFileNameFull $logFileNameFull
 
                 # Update DataSets
                 try {
@@ -77,36 +85,41 @@ function Write-WFDataSet {
                                             # Specify expected file path
                                             $outputFileNameFull = "$source\$($dataSourceId)$($description).json" 
                                         }
-                                        # Stemp 3: Method 1 Set-Content
+                                        # Step 3: Method 1 Set-Content
                                         # Set-Content -Path $outputFileNameFull -Value $jsonString -Encoding UTF8
-                                        # Stemp 3: Method 2 use Out-File (used in logging)
+                                        # Step 3: Method 2 use Out-File (used in logging)
                                         $jsonString | Out-File -FilePath $outputFileNameFull -Encoding UTF8
-                                        Write-Host "JSON data $description has been written to $outputFileNameFull."                    
+                                        $Message = "JSON data $description has been written to $outputFileNameFull."                    
+                                        Add-LogText -Message $Message -logFileNameFull $logFileNameFull
                                     } else {
                                         $Message = "Write-WFDataSet Current DataSet $description is unchanged. State $dataSetState for $dataSourceName."
-                                        Add-LogText -Messages $Message
+                                        Add-LogText -Message $Message -logFileNameFull $logFileNameFull
                                     }
                                 }
                             } catch {
-                                Add-LogText -IsCritical -IsError -ErrorPSItem $_  "Write-WFDataSet error processing DataSet. State $dataSetState for $dataSourceName, DataSet: $dataSet."
-                                $global:fileSystemActive = $false
+                                $Message = "Write-WFDataSet error processing DataSet. State $dataSetState for $dataSourceName, DataSet: $dataSet."
+                                Add-LogText -IsCritical -IsError -ErrorPSItem $_ -Message $Message -logFileNameFull $logFileNameFull
+                                $global:dataSetBusy = $false
                                 return $false
                             }
                         }
-                        $global:moduleDataChanged = $false
+                        $global:appDataChanged = $false
                     }
                 } catch {
-                    Add-LogText -IsCritical -IsError -ErrorPSItem $_  "Write-WFDataSet failed processing $dataSetState for $dataSourceName."
-                    $global:fileSystemActive = $false
+                    $Message = "Write-WFDataSet failed processing $dataSetState for $dataSourceName."
+                    Add-LogText -IsCritical -IsError -ErrorPSItem $_ -Message $Message -logFileNameFull $logFileNameFull
+                    $global:dataSetBusy = $false
                     return $false
                 }
             } else {
-                Add-LogText -Messages "Write-WFDataSet $dataSetState, $dataSourceName is unchanged."
+                $Message = "Write-WFDataSet $dataSetState, $dataSourceName is unchanged."
+                Add-LogText -Message $Message -logFileNameFull $logFileNameFull
             }
         } catch {
-            Add-LogText -IsCritical -IsError -ErrorPSItem $_ -Message "Write-WFDataSet write Current Dataset error storing DataSet State $dataSetState, $dataSourceName."
+            $Message = "Write-WFDataSet write Current Dataset error storing DataSet State $dataSetState, $dataSourceName."
+            Add-LogText -IsCritical -IsError -ErrorPSItem $_ -Message $Message -logFileNameFull $logFileNameFull
         }
-        $global:fileSystemActive = $false
+        $global:dataSetBusy = $false
         return $false
     }
 }

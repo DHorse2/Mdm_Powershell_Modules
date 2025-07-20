@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mdm_Std_Library Help by MacroDM for PowerShell</title>
     <meta name="author" content="David G. Horsman">
-    <meta name="date" content="05/21/2025 18:19:57">
+    <meta name="date" content="06/03/2025 17:52:25">
     <meta name="copyright" content="&Copy-Item; David G. Horsman. All rights reserved.">
     <meta name="license" content="MIT">
     <style>
@@ -188,11 +188,11 @@ EXAMPLE
 <h2>Add-LogError</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Add-LogError [-Message] &lt;Object&gt; [[-logFileNameFull] &lt;Object&gt;] [[-ErrorPSItem] &lt;ErrorRecord&gt;] [[-ForegroundColor] &lt;Object&gt;] [[-BackgroundColor] &lt;Object&gt;] [-IsCritical] [-IsError] [-IsWarning] [-SkipScriptLineDisplay] [-DoTraceWarningDetails] [-NoNewLine] [-DoForce] [-DoVerbose] [-DoDebug] [-DoPause] [&lt;CommonParameters&gt;]
+Add-LogError [-Message] &lt;Object&gt; [[-logFileNameFull] &lt;Object&gt;] [[-ErrorPSItem] &lt;ErrorRecord&gt;] [[-ForegroundColor] &lt;Object&gt;] [[-BackgroundColor] &lt;Object&gt;] [[-inputEventSender] &lt;Control&gt;] [[-inputEventArgs] &lt;EventArgs&gt;] [-IsCritical] [-IsError] [-IsWarning] [-SkipScriptLineDisplay] [-DoTraceWarningDetails] [-NoNewLine] [-DoForce] [-DoVerbose] [-DoDebug] [-DoPause] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Add-LogError
 CommonParameters: True
-parameter:               </pre></p>
+parameter:                 </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>BackgroundColor</strong></p>
@@ -209,6 +209,8 @@ parameter:               </pre></p>
 <p>  - <strong>Message</strong></p>
 <p>  - <strong>NoNewLine</strong></p>
 <p>  - <strong>SkipScriptLineDisplay</strong></p>
+<p>  - <strong>inputEventArgs</strong></p>
+<p>  - <strong>inputEventSender</strong></p>
 <p>  - <strong>logFileNameFull</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
@@ -218,11 +220,11 @@ parameter:               </pre></p>
 <h2>Add-LogText</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Add-LogText [-Messages] &lt;Object&gt; [[-logFileNameFull] &lt;string&gt;] [[-ForegroundColor] &lt;Object&gt;] [[-BackgroundColor] &lt;Object&gt;] [[-ErrorPSItem] &lt;ErrorRecord&gt;] [-TrimWhitespace] [-DoEscapes] [-IsCritical] [-IsError] [-IsWarning] [-DoTraceWarningDetails] [-SkipScriptLineDisplay] [-NoNewLine] [-DoForce] [-DoVerbose] [-DoDebug] [-DoPause] [&lt;CommonParameters&gt;]
+Add-LogText [-Messages] &lt;Object&gt; [[-logFileNameFull] &lt;string&gt;] [[-ForegroundColor] &lt;Object&gt;] [[-BackgroundColor] &lt;Object&gt;] [[-ErrorPSItem] &lt;ErrorRecord&gt;] [[-inputEventSender] &lt;Control&gt;] [[-inputEventArgs] &lt;EventArgs&gt;] [-TrimWhitespace] [-DoEscapes] [-IsCritical] [-IsError] [-IsWarning] [-DoTraceWarningDetails] [-SkipScriptLineDisplay] [-NoNewLine] [-DoForce] [-DoVerbose] [-DoDebug] [-DoPause] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Add-LogText
 CommonParameters: True
-parameter:                 </pre></p>
+parameter:                   </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>BackgroundColor</strong></p>
@@ -241,6 +243,8 @@ parameter:                 </pre></p>
 <p>  - <strong>NoNewLine</strong></p>
 <p>  - <strong>SkipScriptLineDisplay</strong></p>
 <p>  - <strong>TrimWhitespace</strong></p>
+<p>  - <strong>inputEventArgs</strong></p>
+<p>  - <strong>inputEventSender</strong></p>
 <p>  - <strong>logFileNameFull</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
@@ -264,67 +268,6 @@ parameter:   </pre></p>
 <p><strong>Return: </strong> System.Object
 </p>
 <p></p>
-<p></p>
-<h2>Build-HelpHtml</h2>
-
-
-
-
-
-
-<p><strong>Type:</strong> Function</p>
-<p><strong>Synopsis:</strong> A short one-line action-based description, e.g. &apos;Tests if a function is valid&apos;</p>
-<p><strong>Detailed Description:</strong> A longer description of the function, its purpose, common use cases, etc.
-</p>
-<p><strong>Syntax:</strong> <pre>Build-HelpHtml
- description: [System.Management.Automation.HelpInfo]
-Used to pass the help information that will be formatted into HTML.
-
- helpInfoObject
- parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue, ByPropertyName), position: 1 description: [System.Management.Automation.PSModuleInfo]
-Accepts a cmdlet object. Used to generate help content specific to a module.
-
- moduleObject
- parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 description: Accepts a cmdlet object. Used to generate help content for a specific cmdlet.
-
- cmdletObject
- parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 3 description: Used to hold the passed HTML content that will be appended to or modified within the function.
-
- htmlContentLocal
- parameterValue: Object[], required: false, globbing: false, pipelineInput: false, position: 4 SkipName
- description: [switch] Don't output the Name line.
-
- required: false, globbing: false, pipelineInput: false, position: named SkipType
- description: [switch] Don't output the command (object) type line.
-
- required: false, globbing: false, pipelineInput: false, position: named</pre></p>
-<p></p>
-<p><strong>Parameters:</strong></p>
-<p>  - <strong>helpInfoObject</strong>: [System.Management.Automation.HelpInfo]
-Used to pass the help information that will be formatted into HTML.
-</p>
-<p>  - <strong>moduleObject</strong>: [System.Management.Automation.PSModuleInfo]
-Accepts a cmdlet object. Used to generate help content specific to a module.
-</p>
-<p>  - <strong>cmdletObject</strong>: Accepts a cmdlet object. Used to generate help content for a specific cmdlet.
-</p>
-<p>  - <strong>htmlContentLocal</strong>: Used to hold the passed HTML content that will be appended to or modified within the function.
-</p>
-<p>  - <strong>SkipName</strong>: [switch] Don&apos;t output the Name line.
-</p>
-<p>  - <strong>SkipType</strong>: [switch] Don&apos;t output the command (object) type line.
-</p>
-<p></p>
-<p><strong>Examples</strong>:</p>
-<pre>Example: -------------------------- EXAMPLE 1 --------------------------
-Introduction: @{Text=PS &gt; }
-      Syntax: $htmlContent += Build-HelpHtml `
-    -helpInfoObject $helpInfo `
-    -moduleObject $moduleInfo `
-    -cmdletObject $cmdlet `
-    -SkipName `
-    -ErrorAction Stop
-     Remarks:    </pre>
 <p></p>
 <h2>Confirm-Module</h2>
 <p><strong>Type:</strong> Function</p>
@@ -617,7 +560,7 @@ parameter: @{name=functionName; required=true; pipelineInput=false; isDynamic=fa
 <h2>Debug-Script</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Debug-Script [[-functionName] &lt;Object&gt;] [[-commandLine] &lt;Object&gt;] [[-Message] &lt;Object&gt;] [[-DoPause] &lt;Object&gt;] [[-PsDebug] &lt;Object&gt;] [[-logFileNameFull] &lt;string&gt;] [[-ErrorPSItem] &lt;Object&gt;] [-Break] [-DoPrompt] [&lt;CommonParameters&gt;]
+Debug-Script [[-functionName] &lt;Object&gt;] [[-CommandLine] &lt;Object&gt;] [[-Message] &lt;Object&gt;] [[-DoPause] &lt;Object&gt;] [[-PsDebug] &lt;Object&gt;] [[-logFileNameFull] &lt;string&gt;] [[-ErrorPSItem] &lt;Object&gt;] [-Break] [-DoPrompt] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Debug-Script
 CommonParameters: True
@@ -625,12 +568,12 @@ parameter:         </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Break</strong></p>
+<p>  - <strong>CommandLine</strong></p>
 <p>  - <strong>DoPause</strong></p>
 <p>  - <strong>DoPrompt</strong></p>
 <p>  - <strong>ErrorPSItem</strong></p>
 <p>  - <strong>Message</strong></p>
 <p>  - <strong>PsDebug</strong></p>
-<p>  - <strong>commandLine</strong></p>
 <p>  - <strong>functionName</strong></p>
 <p>  - <strong>logFileNameFull</strong></p>
 <p></p>
@@ -894,7 +837,7 @@ Introduction: @{Text=PS &gt; }
  description: The error message.
 
  Message
- parameterValue: Exception, required: false, globbing: false, pipelineInput: false, position: 1 description: TODO The error type.
+ parameterValue: Exception, required: false, globbing: false, pipelineInput: false, position: 1 description: TODO: FUTR: The error type.
 
  ErrorCategory
  parameterValueGroup: @{parameterValue=System.Management.Automation.PSObject[]}, required: false, globbing: false, pipelineInput: false, position: 2 DoForce
@@ -912,7 +855,7 @@ Introduction: @{Text=PS &gt; }
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Message</strong>: The error message.
 </p>
-<p>  - <strong>ErrorCategory</strong>: TODO The error type.
+<p>  - <strong>ErrorCategory</strong>: TODO: FUTR: The error type.
 </p>
 <p>  - <strong>DoForce</strong></p>
 <p>  - <strong>DoVerbose</strong>: Switch: Verbose output and prompts.
@@ -1001,14 +944,19 @@ Introduction: @{Text=PS &gt; }
 <h2>Get-JsonData</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Get-JsonData [-jsonObject] &lt;string&gt; [[-parentObject] &lt;hashtable&gt;] [&lt;CommonParameters&gt;]
+Get-JsonData [-jsonItem] &lt;string&gt; [[-Name] &lt;string&gt;] [[-jsonContent] &lt;string&gt;] [[-parentObject] &lt;hashtable&gt;] [-AddSource] [-Append] [-UpdateGlobal] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Get-JsonData
 CommonParameters: True
-parameter:  </pre></p>
+parameter:       </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
-<p>  - <strong>jsonObject</strong></p>
+<p>  - <strong>AddSource</strong></p>
+<p>  - <strong>Append</strong></p>
+<p>  - <strong>Name</strong></p>
+<p>  - <strong>UpdateGlobal</strong></p>
+<p>  - <strong>jsonContent</strong></p>
+<p>  - <strong>jsonItem</strong></p>
 <p>  - <strong>parentObject</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
@@ -1293,6 +1241,21 @@ Introduction: @{Text=PS &gt; }
       Syntax: Set-StdGlobals -DoPause -DoVerbose -DoDebug
      Remarks:    </pre>
 <p></p>
+<h2>Get-StdStatus</h2>
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> 
+Get-StdStatus [&lt;CommonParameters&gt;]
+</p>
+<p><strong>Syntax:</strong> <pre>name: Get-StdStatus
+CommonParameters: True
+parameter: </pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p></p>
+<p><strong>Return: </strong> System.Object
+</p>
+<p></p>
+<p></p>
 <h2>Get-Template</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
@@ -1478,23 +1441,26 @@ parameter: </pre></p>
 <h2>Invoke-Invoke</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Invoke-Invoke [[-Command] &lt;hashtable&gt;] [[-CommandLineOnly] &lt;string&gt;] [[-CommandNameOnly] &lt;string&gt;] [[-Options] &lt;string&gt;] [-DoNewWindow] [-DoForce] [-DoVerbose] [-DoDebug] [-DoPause] [-HandleError] [&lt;CommonParameters&gt;]
+Invoke-Invoke [[-Commands] &lt;ArrayList&gt;] [[-ScriptBlock] &lt;scriptblock&gt;] [[-Command] &lt;hashtable&gt;] [[-CommandLineOnly] &lt;string&gt;] [[-CommandNameOnly] &lt;string&gt;] [[-Options] &lt;string&gt;] [-jobActionSkipWait] [-jobActionMethodNewWindow] [-DoForce] [-DoVerbose] [-DoDebug] [-DoPause] [-HandleError] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Invoke-Invoke
 CommonParameters: True
-parameter:          </pre></p>
+parameter:             </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
 <p>  - <strong>Command</strong></p>
 <p>  - <strong>CommandLineOnly</strong></p>
 <p>  - <strong>CommandNameOnly</strong></p>
+<p>  - <strong>Commands</strong></p>
 <p>  - <strong>DoDebug</strong></p>
 <p>  - <strong>DoForce</strong></p>
-<p>  - <strong>DoNewWindow</strong></p>
 <p>  - <strong>DoPause</strong></p>
 <p>  - <strong>DoVerbose</strong></p>
 <p>  - <strong>HandleError</strong></p>
 <p>  - <strong>Options</strong></p>
+<p>  - <strong>ScriptBlock</strong></p>
+<p>  - <strong>jobActionMethodNewWindow</strong></p>
+<p>  - <strong>jobActionSkipWait</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
 </p>
@@ -1566,6 +1532,67 @@ parameter:  </pre></p>
 <p><strong>Return: </strong> System.Object
 </p>
 <p></p>
+<p></p>
+<h2>New-HelpHtml</h2>
+
+
+
+
+
+
+<p><strong>Type:</strong> Function</p>
+<p><strong>Synopsis:</strong> A short one-line action-based description, e.g. &apos;Tests if a function is valid&apos;</p>
+<p><strong>Detailed Description:</strong> A longer description of the function, its purpose, common use cases, etc.
+</p>
+<p><strong>Syntax:</strong> <pre>New-HelpHtml
+ description: [System.Management.Automation.HelpInfo]
+Used to pass the help information that will be formatted into HTML.
+
+ helpInfoObject
+ parameterValue: Object, required: true, globbing: false, pipelineInput: true (ByValue, ByPropertyName), position: 1 description: [System.Management.Automation.PSModuleInfo]
+Accepts a cmdlet object. Used to generate help content specific to a module.
+
+ moduleObject
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 2 description: Accepts a cmdlet object. Used to generate help content for a specific cmdlet.
+
+ cmdletObject
+ parameterValue: Object, required: false, globbing: false, pipelineInput: false, position: 3 description: Used to hold the passed HTML content that will be appended to or modified within the function.
+
+ htmlContentLocal
+ parameterValue: Object[], required: false, globbing: false, pipelineInput: false, position: 4 SkipName
+ description: [switch] Don't output the Name line.
+
+ required: false, globbing: false, pipelineInput: false, position: named SkipType
+ description: [switch] Don't output the command (object) type line.
+
+ required: false, globbing: false, pipelineInput: false, position: named</pre></p>
+<p></p>
+<p><strong>Parameters:</strong></p>
+<p>  - <strong>helpInfoObject</strong>: [System.Management.Automation.HelpInfo]
+Used to pass the help information that will be formatted into HTML.
+</p>
+<p>  - <strong>moduleObject</strong>: [System.Management.Automation.PSModuleInfo]
+Accepts a cmdlet object. Used to generate help content specific to a module.
+</p>
+<p>  - <strong>cmdletObject</strong>: Accepts a cmdlet object. Used to generate help content for a specific cmdlet.
+</p>
+<p>  - <strong>htmlContentLocal</strong>: Used to hold the passed HTML content that will be appended to or modified within the function.
+</p>
+<p>  - <strong>SkipName</strong>: [switch] Don&apos;t output the Name line.
+</p>
+<p>  - <strong>SkipType</strong>: [switch] Don&apos;t output the command (object) type line.
+</p>
+<p></p>
+<p><strong>Examples</strong>:</p>
+<pre>Example: -------------------------- EXAMPLE 1 --------------------------
+Introduction: @{Text=PS &gt; }
+      Syntax: $htmlContent += New-HelpHtml `
+    -helpInfoObject $helpInfo `
+    -moduleObject $moduleInfo `
+    -cmdletObject $cmdlet `
+    -SkipName `
+    -ErrorAction Stop
+     Remarks:    </pre>
 <p></p>
 <h2>Open-LogFile</h2>
 <p><strong>Type:</strong> Function</p>
@@ -1902,15 +1929,15 @@ parameter:    </pre></p>
 <h2>Set-ErrorBreakOnFunction</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Set-ErrorBreakOnFunction [[-functionName] &lt;Object&gt;] [[-LineNumber] &lt;int&gt;] [[-commandLine] &lt;string&gt;] [&lt;CommonParameters&gt;]
+Set-ErrorBreakOnFunction [[-functionName] &lt;Object&gt;] [[-LineNumber] &lt;int&gt;] [[-CommandLine] &lt;string&gt;] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Set-ErrorBreakOnFunction
 CommonParameters: True
 parameter:   </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>CommandLine</strong></p>
 <p>  - <strong>LineNumber</strong></p>
-<p>  - <strong>commandLine</strong></p>
 <p>  - <strong>functionName</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
@@ -1920,15 +1947,15 @@ parameter:   </pre></p>
 <h2>Set-ErrorBreakOnLine</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Set-ErrorBreakOnLine [-functionName] &lt;Object&gt; [[-LineNumber] &lt;int&gt;] [[-commandLine] &lt;string&gt;] [&lt;CommonParameters&gt;]
+Set-ErrorBreakOnLine [-functionName] &lt;Object&gt; [[-LineNumber] &lt;int&gt;] [[-CommandLine] &lt;string&gt;] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Set-ErrorBreakOnLine
 CommonParameters: True
 parameter:   </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>CommandLine</strong></p>
 <p>  - <strong>LineNumber</strong></p>
-<p>  - <strong>commandLine</strong></p>
 <p>  - <strong>functionName</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
@@ -1938,15 +1965,15 @@ parameter:   </pre></p>
 <h2>Set-ErrorBreakOnVariable</h2>
 <p><strong>Type:</strong> Function</p>
 <p><strong>Synopsis:</strong> 
-Set-ErrorBreakOnVariable [-watchVariable] &lt;Object&gt; [[-Write] &lt;int&gt;] [[-commandLine] &lt;string&gt;] [&lt;CommonParameters&gt;]
+Set-ErrorBreakOnVariable [-watchVariable] &lt;Object&gt; [[-Write] &lt;int&gt;] [[-CommandLine] &lt;string&gt;] [&lt;CommonParameters&gt;]
 </p>
 <p><strong>Syntax:</strong> <pre>name: Set-ErrorBreakOnVariable
 CommonParameters: True
 parameter:   </pre></p>
 <p></p>
 <p><strong>Parameters:</strong></p>
+<p>  - <strong>CommandLine</strong></p>
 <p>  - <strong>Write</strong></p>
-<p>  - <strong>commandLine</strong></p>
 <p>  - <strong>watchVariable</strong></p>
 <p></p>
 <p><strong>Return: </strong> System.Object
